@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/ico">
+        <file>img/Open-Folder.ico</file>
+    </qresource>
+</RCC>
