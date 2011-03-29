@@ -18,9 +18,11 @@ public slots:
     void selectedShader(ShaderLab::Shader);
     void vertexFileSelected(const QString&);
     void fragmentFileSelected(const QString&);
+    void closeTabRequest(int index);
 
 signals:
     void selectedFile(const QString& , ShaderLab::Shader);
+    void closeTabRequest(ShaderLab::Shader);
 
 public:
     explicit MainWindow(QWidget *parent = 0);

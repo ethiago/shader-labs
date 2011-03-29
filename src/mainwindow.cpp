@@ -13,8 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
     openFile = new QFileDialog(this);
     openFile->setAcceptMode(QFileDialog::AcceptOpen);
 
+    for(int i = 0; i < ui->tabWidget->count(); ++i)
+        ui->tabWidget->removeTab(i);
+
+
     connect(ui->actionOpen_Shader_Code, SIGNAL(triggered()), this, SLOT(openDialog()));
     connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShader(ShaderLab::Shader)));
+    connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabRequest(int)));
 }
 
 MainWindow::~MainWindow()
@@ -62,12 +67,42 @@ void MainWindow::selectedShader(ShaderLab::Shader sh)
 
 void MainWindow::setVisibleVertexTab(bool v)
 {
-    ui->vertexTab->setVisible(v);
+    int ind = ui->tabWidget->indexOf(ui->vertexTab);
+
+    if(v == true)
+    {
+        if(ind == -1)
+        {
+            ui->tabWidget->insertTab(ui->tabWidget->count(), ui->vertexTab, tr("vertex"));
+        }
+    }else
+    {
+
+        if(ind != -1)
+        {
+            ui->tabWidget->removeTab(ind);
+        }
+    }
 }
 
 void MainWindow::setVisibleFragmentTab(bool v)
 {
-    ui->fragmentTab->setVisible(v);
+    int ind = ui->tabWidget->indexOf(ui->fragmentTab);
+
+    if(v == true)
+    {
+        if(ind == -1)
+        {
+            ui->tabWidget->insertTab(ui->tabWidget->count(), ui->fragmentTab, tr("fragment"));
+        }
+    }else
+    {
+
+        if(ind != -1)
+        {
+            ui->tabWidget->removeTab(ind);
+        }
+    }
 }
 
 void MainWindow::setVertexCode(const QString& code)
@@ -82,12 +117,22 @@ void MainWindow::setFragmentCode(const QString& code)
 
 bool MainWindow::visibleVertexTab(void)
 {
-    return ui->vertexTab->isVisible();
+    int ind = ui->tabWidget->indexOf(ui->vertexTab);
+
+    if(ind == -1)
+        return false;
+    else
+        return true;
 }
 
 bool MainWindow::visibleFragmentTab(void)
 {
-    return ui->fragmentTab->isVisible();
+    int ind = ui->tabWidget->indexOf(ui->fragmentTab);
+
+    if(ind == -1)
+        return false;
+    else
+        return true;
 }
 
 QString MainWindow::vertexCode(void)
@@ -98,4 +143,14 @@ QString MainWindow::vertexCode(void)
 QString MainWindow::fragmentCode(void)
 {
     return ui->fragmentCodeBox->toPlainText();
+}
+
+void MainWindow::closeTabRequest(int index)
+{
+    QWidget *pt = ui->tabWidget->widget(index);
+
+    if(pt == ui->vertexTab)
+        emit closeTabRequest(ShaderLab::Vertex);
+    else if(pt == ui->fragmentTab)
+        emit closeTabRequest(ShaderLab::Fragment);
 }
