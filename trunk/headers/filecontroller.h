@@ -13,6 +13,7 @@ public:
 
 public slots:
     void openFile(const QString& filename, ShaderLab::Shader);
+    void closeShader(ShaderLab::Shader);
 
 private:
     MainWindow * view;
