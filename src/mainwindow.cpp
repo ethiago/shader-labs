@@ -154,3 +154,66 @@ void MainWindow::closeTabRequest(int index)
     else if(pt == ui->fragmentTab)
         emit closeTabRequest(ShaderLab::Fragment);
 }
+
+bool MainWindow::visibleShader(ShaderLab::Shader shader)
+{
+    QWidget *pt;
+
+    if(shader == ShaderLab::Vertex)
+        pt = ui->vertexTab;
+    else if(shader == ShaderLab::Fragment)
+        pt = ui->fragmentTab;
+
+
+    int ind = ui->tabWidget->indexOf(pt);
+
+    if(ind == -1)
+        return false;
+    else
+        return true;
+
+}
+
+QString MainWindow::shaderCode(ShaderLab::Shader shader)
+{
+    if(shader == ShaderLab::Vertex)
+        return ui->vertexCodeBox->toPlainText();
+    else if(shader == ShaderLab::Fragment)
+        return ui->fragmentCodeBox->toPlainText();
+}
+
+void MainWindow::setVisibleShader(bool v, ShaderLab::Shader shader)
+{
+    QWidget *pt;
+    QString label;
+
+    if(shader == ShaderLab::Vertex)
+    {
+        pt = ui->vertexTab;
+        label = tr("vertex");
+    }else if(shader == ShaderLab::Fragment)
+    {
+        pt = ui->fragmentTab;
+        label = tr("fragment");
+    }
+
+    int ind = ui->tabWidget->indexOf(pt);
+    if(v == true)
+    {
+        if(ind == -1)
+            ui->tabWidget->insertTab(ui->tabWidget->count(), pt, label);
+    }else
+    {
+
+        if(ind != -1)
+            ui->tabWidget->removeTab(ind);
+    }
+}
+
+void MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shader)
+{
+    if(shader == ShaderLab::Vertex)
+        ui->vertexCodeBox->setText(code);
+    if(shader == ShaderLab::Fragment)
+        ui->fragmentCodeBox->setText(code);
+}
