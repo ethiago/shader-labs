@@ -28,10 +28,16 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void setVisibleShader(bool, ShaderLab::Shader);
+    void setShaderCode(const QString&, ShaderLab::Shader);
+
     void setVisibleVertexTab(bool);
     void setVisibleFragmentTab(bool);
     void setVertexCode(const QString &);
     void setFragmentCode(const QString &);
+
+    bool visibleShader(ShaderLab::Shader);
+    QString shaderCode(ShaderLab::Shader);
 
     bool visibleVertexTab(void);
     bool visibleFragmentTab(void);
