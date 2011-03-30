@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>686</width>
-    <height>389</height>
+    <width>743</width>
+    <height>526</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,7 +66,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>686</width>
+     <width>743</width>
      <height>25</height>
     </rect>
    </property>
@@ -78,6 +78,8 @@
      <string>&amp;File</string>
     </property>
     <addaction name="actionOpen_Shader_Code"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -96,17 +98,35 @@
    </attribute>
    <addaction name="actionOpen_Shader_Code"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QDockWidget" name="dockWidget">
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>41</height>
+    </size>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <zorder>tabWidget</zorder>
+   </widget>
+  </widget>
   <action name="actionOpen_Shader_Code">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
      <normaloff>:/ico/img/Open-Folder.ico</normaloff>:/ico/img/Open-Folder.ico</iconset>
    </property>
    <property name="text">
-    <string>&amp;Open Shader Code ...</string>
+    <string>&amp;Open Shader Code...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>&amp;Exit</string>
    </property>
   </action>
  </widget>
