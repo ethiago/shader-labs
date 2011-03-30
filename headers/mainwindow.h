@@ -4,16 +4,20 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <codechoicedialog.h>
+#include "gldisplay.h"
 
 namespace Ui {
     class MainWindow;
 }
+
+using namespace ShaderLab;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public slots:
+    void exitApplication(void);
     void openDialog(void);
     void selectedShader(ShaderLab::Shader);
     void vertexFileSelected(const QString&);
@@ -49,6 +53,8 @@ private:
 
     QFileDialog *openFile;
     CodeChoiceDialog *choiceDialog;
+
+    GLDisplay *display;
 
 };
 

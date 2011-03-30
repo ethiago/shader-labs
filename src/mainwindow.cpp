@@ -16,10 +16,12 @@ MainWindow::MainWindow(QWidget *parent) :
     for(int i = 0; i < ui->tabWidget->count(); ++i)
         ui->tabWidget->removeTab(i);
 
+    display = new GLDisplay(ui->dockWidget);
 
     connect(ui->actionOpen_Shader_Code, SIGNAL(triggered()), this, SLOT(openDialog()));
     connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShader(ShaderLab::Shader)));
     connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabRequest(int)));
+    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(exitApplication()));
 }
 
 MainWindow::~MainWindow()
@@ -180,6 +182,7 @@ QString MainWindow::shaderCode(ShaderLab::Shader shader)
         return ui->vertexCodeBox->toPlainText();
     else if(shader == ShaderLab::Fragment)
         return ui->fragmentCodeBox->toPlainText();
+
 }
 
 void MainWindow::setVisibleShader(bool v, ShaderLab::Shader shader)
@@ -216,4 +219,9 @@ void MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shader)
         ui->vertexCodeBox->setText(code);
     if(shader == ShaderLab::Fragment)
         ui->fragmentCodeBox->setText(code);
+}
+
+void MainWindow::exitApplication(void)
+{
+    exit(0);
 }
