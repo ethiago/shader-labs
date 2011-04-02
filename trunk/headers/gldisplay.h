@@ -10,7 +10,7 @@ class GLDisplay : public QGLWidget
     Q_OBJECT
 
 public:
-    GLDisplay(QWidget *parent);
+    GLDisplay(QWidget *parent = 0);
 
     void initializeGL();
     void resizeGL(int w, int h);

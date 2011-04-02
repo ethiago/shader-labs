@@ -67,7 +67,7 @@
      <x>0</x>
      <y>0</y>
      <width>743</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -102,14 +102,18 @@
    <property name="minimumSize">
     <size>
      <width>200</width>
-     <height>41</height>
+     <height>200</height>
     </size>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
-    <zorder>tabWidget</zorder>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <action name="actionOpen_Shader_Code">

@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <codechoicedialog.h>
 #include "gldisplay.h"
+#include <QVBoxLayout>
 
 namespace Ui {
     class MainWindow;
@@ -50,6 +51,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QVBoxLayout *glDisplayLayout;
 
     QFileDialog *openFile;
     CodeChoiceDialog *choiceDialog;
