@@ -8,32 +8,40 @@ GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent)
 
 void GLDisplay::initializeGL()
 {
-     glEnable(GL_DEPTH_TEST);
-     glEnable(GL_CULL_FACE);
-     glClearColor(0.0, 0.0, 0.0, 0.0);
-     glEnable(GL_DEPTH_TEST);     
- }
+    glClearColor(0.0, 0.0, 0.0, 0.0);
 
- void GLDisplay::resizeGL(int width, int height)
- {
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+}
 
-     int side = qMin(width, height);
-     glViewport((width - side) / 2, (height - side) / 2, side, side);
+void GLDisplay::resizeGL(int width, int height)
+{
 
-     glMatrixMode(GL_PROJECTION);
-     glLoadIdentity();
+    int side = qMin(width, height);
+    glViewport((width - side) / 2, (height - side) / 2, side, side);
 
-     glOrtho(-0.5, +0.5, +0.5, -0.5, 4.0, 15.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1.5, 1.5, -1.5, 1.5, -0.5, 5.0);
 
-     glMatrixMode(GL_MODELVIEW);
- }
+    glMatrixMode(GL_MODELVIEW);
+}
 
- void GLDisplay::paintGL()
- {
+void GLDisplay::paintGL()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
     glLoadIdentity();
 
-    GLUquadric *quad = gluNewQuadric();
+    glColor3f(1.0, 1.0, 1.0);
 
+    // Liga o modo Wire Frame
+    glPolygonMode(GL_FRONT, GL_LINE);
+    glPolygonMode(GL_BACK, GL_LINE);
+
+    GLUquadric *quad = gluNewQuadric();
     glColor3f(255,255,255);
     gluSphere(quad, 1.0, 10, 10);
- }
+
+    glFlush();
+}

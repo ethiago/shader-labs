@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QFile>
-
+#include <QVBoxLayout>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
     for(int i = 0; i < ui->tabWidget->count(); ++i)
         ui->tabWidget->removeTab(i);
 
-    display = new GLDisplay(ui->dockWidget);
+    //glDisplayLayout = new QVBoxLayout(ui->dockWidgetContents);
+    display = new GLDisplay();
+    ui->verticalLayout->addWidget(display);
 
     connect(ui->actionOpen_Shader_Code, SIGNAL(triggered()), this, SLOT(openDialog()));
     connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShader(ShaderLab::Shader)));
