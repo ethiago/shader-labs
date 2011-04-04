@@ -3,40 +3,55 @@
 #include <QGLShader>
 #include <QDebug>
 
-ShaderCodeController::ShaderCodeController(FileController *fc) :
-    QObject(fc), fileController(fc)
+ShaderCodeController::ShaderCodeController(FileController *fc, MainWindow *w) :
+    QObject(fc), fileController(fc), mainWindow(w)
 {
+    connect(mainWindow, SIGNAL(runShaders()), this, SLOT(runShaderCode()));
 }
 
-void ShaderCodeController::runShaderCode(ShaderLab::Shader shader)
+void ShaderCodeController::runShaderCode(void)
 {
-    QString code;
-    QGLShaderProgram *program;
+    QString vcode;
+    QString fcode;
+
+    bool vCompiled = false;
+    bool fCompiled = false;
+
+    QGLShaderProgram *program = new QGLShaderProgram(this);
     QGLShader *vshader;
+    QGLShader *fshader;
 
-    switch(shader)
+    vcode = fileController->getVertexCode();
+    fcode = fileController->getFragmentCode();
+
+    if(! vcode.isEmpty())
     {
-        case Vertex:
-            code = fileController->getVertexCode();
-            vshader = new QGLShader(QGLShader::Vertex, this);
-
-            vshader->compileSourceCode(code);
-
-            qDebug() << vshader->log();
-
-            program = new QGLShaderProgram(this);
-            program->addShader(vshader);
-
-            //program->bindAttributeLocation("vertex", PROGRAM_VERTEX_ATTRIBUTE);
-            //program->bindAttributeLocation("texCoord", PROGRAM_TEXCOORD_ATTRIBUTE);
-            program->link();
-
-            program->bind();
-            program->setUniformValue("texture", 0);
-            break;
-
-    case Fragment:
-            break;
+        vshader = new QGLShader(QGLShader::Vertex, this);
+        vCompiled = vshader->compileSourceCode(vcode);
+        qDebug() << "======== vertex =========\n" << vshader->log();
     }
 
+    if(! fcode.isEmpty())
+    {
+        fshader = new QGLShader(QGLShader::Fragment, this);
+        fCompiled = fshader->compileSourceCode(fcode);
+        qDebug() << "======= fragment ========\n" << fshader->log();
+    }
+
+    if((!vCompiled) && (!fCompiled))
+    {
+        qDebug() << "Ih cagou.....";
+        return;
+    }
+
+    if(vCompiled)
+        program->addShader(vshader);
+    if(fCompiled)
+        program->addShader(fshader);
+
+    program->link();
+    program->bind();
+
+    mainWindow->updateDisplay();
 }
+

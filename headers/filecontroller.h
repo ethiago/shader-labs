@@ -11,6 +11,7 @@ class FileController : public QObject
 public:
     explicit FileController(MainWindow *v);
     QString getVertexCode(void);
+    QString getFragmentCode(void);
 
 public slots:
     void openFile(const QString& filename, ShaderLab::Shader);

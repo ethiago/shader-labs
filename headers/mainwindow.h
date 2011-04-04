@@ -24,9 +24,11 @@ public slots:
     void vertexFileSelected(const QString&);
     void fragmentFileSelected(const QString&);
     void closeTabRequest(int index);
+    void runShadersSelected(void);
 
 signals:
     void selectedFile(const QString& , ShaderLab::Shader);
+    void runShaders(void);
     void closeTabRequest(ShaderLab::Shader);
 
 public:
@@ -49,9 +51,11 @@ public:
     QString vertexCode(void);
     QString fragmentCode(void);
 
+    void updateDisplay();
+
 private:
     Ui::MainWindow *ui;
-    QVBoxLayout *glDisplayLayout;
+  //  QVBoxLayout *glDisplayLayout;
 
     QFileDialog *openFile;
     CodeChoiceDialog *choiceDialog;
