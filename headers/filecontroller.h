@@ -10,6 +10,7 @@ class FileController : public QObject
     Q_OBJECT
 public:
     explicit FileController(MainWindow *v);
+    QString getVertexCode(void);
 
 public slots:
     void openFile(const QString& filename, ShaderLab::Shader);
