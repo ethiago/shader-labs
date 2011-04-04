@@ -10,46 +10,60 @@ FileController::FileController(MainWindow *v) :
 
     view->setVisibleVertexTab(false);
     view->setVisibleFragmentTab(false);
+
+    vertexOpened = false;
+    fragmentOpened = false;
 }
 
 void FileController::openFile(const QString& filename, ShaderLab::Shader shader)
 {
     QFile file(filename);
-    file.open(QFile::ReadOnly);
+    if(!file.open(QFile::ReadOnly))
+        return;
 
     switch(shader)
     {
         case ShaderLab::Vertex:
             view->setVertexCode(file.readAll());
             view->setVisibleVertexTab(true);
+            vertexOpened = true;
             break;
         case ShaderLab::Fragment:
             view->setFragmentCode(file.readAll());
             view->setVisibleFragmentTab(true);
+            fragmentOpened = true;
             break;
     }
 
     file.close();
-
-
-
 }
 
 void FileController::closeShader(ShaderLab::Shader shader)
 {
     if(shader == ShaderLab::Vertex)
+    {
         view->setVisibleVertexTab(false);
-    else if(shader == ShaderLab::Fragment)
+        vertexOpened = false;
+    }else if(shader == ShaderLab::Fragment)
+    {
         view->setVisibleFragmentTab(false);
+        fragmentOpened = false;
+    }
 }
 
 QString FileController::getVertexCode(void)
 {
-    return view->vertexCode();
+    if(vertexOpened)
+        return view->vertexCode();
+    else
+        return QString();
 }
 
 QString FileController::getFragmentCode(void)
 {
-    return view->fragmentCode();
+    if(fragmentOpened)
+        return view->fragmentCode();
+    else
+        return QString();
 }
 
