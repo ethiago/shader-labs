@@ -22,6 +22,9 @@ private:
     QString vertexFileName;
     QString fragmentFileName;
 
+    bool vertexOpened;
+    bool fragmentOpened;
+
 };
 
 #endif // FILECONTROLLER_H
