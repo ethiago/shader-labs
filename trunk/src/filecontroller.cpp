@@ -15,7 +15,6 @@ FileController::FileController(MainWindow *v) :
 void FileController::openFile(const QString& filename, ShaderLab::Shader shader)
 {
     QFile file(filename);
-    ShaderCodeController sc(this);
     file.open(QFile::ReadOnly);
 
     switch(shader)
@@ -23,7 +22,6 @@ void FileController::openFile(const QString& filename, ShaderLab::Shader shader)
         case ShaderLab::Vertex:
             view->setVertexCode(file.readAll());
             view->setVisibleVertexTab(true);
-            sc.runShaderCode(ShaderLab::Vertex);
             break;
         case ShaderLab::Fragment:
             view->setFragmentCode(file.readAll());
@@ -49,3 +47,9 @@ QString FileController::getVertexCode(void)
 {
     return view->vertexCode();
 }
+
+QString FileController::getFragmentCode(void)
+{
+    return view->fragmentCode();
+}
+

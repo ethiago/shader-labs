@@ -16,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     for(int i = 0; i < ui->tabWidget->count(); ++i)
         ui->tabWidget->removeTab(i);
 
-    //glDisplayLayout = new QVBoxLayout(ui->dockWidgetContents);
     display = new GLDisplay();
     ui->verticalLayout->addWidget(display);
 
@@ -24,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShader(ShaderLab::Shader)));
     connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabRequest(int)));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(exitApplication()));
+    connect(ui->actionRunShaders, SIGNAL(triggered()), this, SLOT(runShadersSelected()));
 }
 
 MainWindow::~MainWindow()
@@ -226,4 +226,14 @@ void MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shader)
 void MainWindow::exitApplication(void)
 {
     exit(0);
+}
+
+void MainWindow::runShadersSelected(void)
+{
+    emit runShaders();
+}
+
+void MainWindow::updateDisplay()
+{
+    display->updateGL();
 }
