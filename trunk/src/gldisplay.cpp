@@ -40,6 +40,7 @@ void GLDisplay::paintGL()
     glPolygonMode(GL_BACK, GL_LINE);
 
     GLUquadric *quad = gluNewQuadric();
+
     glColor3f(255,255,255);
     gluSphere(quad, 1.0, 10, 10);
 

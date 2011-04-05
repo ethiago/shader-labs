@@ -25,6 +25,9 @@ public slots:
     void fragmentFileSelected(const QString&);
     void closeTabRequest(int index);
     void runShadersSelected(void);
+    void viewMenuClicked(QAction*);
+    void dockOutputVisibilityChange(bool);
+    void dockRenderVisibilityChange(bool);
 
 signals:
     void selectedFile(const QString& , ShaderLab::Shader);
@@ -38,20 +41,12 @@ public:
     void setVisibleShader(bool, ShaderLab::Shader);
     void setShaderCode(const QString&, ShaderLab::Shader);
 
-    void setVisibleVertexTab(bool);
-    void setVisibleFragmentTab(bool);
-    void setVertexCode(const QString &);
-    void setFragmentCode(const QString &);
-
     bool visibleShader(ShaderLab::Shader);
     QString shaderCode(ShaderLab::Shader);
 
-    bool visibleVertexTab(void);
-    bool visibleFragmentTab(void);
-    QString vertexCode(void);
-    QString fragmentCode(void);
-
     void updateDisplay();
+
+    void setOutputText(const QString& );
 
 private:
     Ui::MainWindow *ui;

@@ -13,6 +13,7 @@ void ShaderCodeController::runShaderCode(void)
 {
     QString vcode;
     QString fcode;
+    QString output = "";
 
     bool vCompiled = false;
     bool fCompiled = false;
@@ -28,18 +29,19 @@ void ShaderCodeController::runShaderCode(void)
     {
         vshader = new QGLShader(QGLShader::Vertex, this);
         vCompiled = vshader->compileSourceCode(vcode);
-        qDebug() << "======== vertex =========\n" << vshader->log();
+        output += "======== vertex =========\n" + vshader->log();
     }
 
     if(! fcode.isEmpty())
     {
         fshader = new QGLShader(QGLShader::Fragment, this);
         fCompiled = fshader->compileSourceCode(fcode);
-        qDebug() << "======= fragment ========\n" << fshader->log();
+        output += "======= fragment ========\n" + fshader->log();
     }
 
     if((!vCompiled) && (!fCompiled))
     {
+        mainWindow->setOutputText(output);
         qDebug() << "Ih cagou.....";
         return;
     }
@@ -52,6 +54,10 @@ void ShaderCodeController::runShaderCode(void)
     program->link();
     program->bind();
 
+    output += "======== linker =========\n" + program->log();
+
+
+    mainWindow->setOutputText(output);
     mainWindow->updateDisplay();
 }
 

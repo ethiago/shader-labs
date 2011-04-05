@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/ico">
-        <file>img/Open-Folder.ico</file>
+        <file alias="open">img/Open-Folder.ico</file>
+        <file alias="run">img/System-run-icon.png</file>
     </qresource>
 </RCC>
