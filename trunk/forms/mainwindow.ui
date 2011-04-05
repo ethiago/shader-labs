@@ -13,12 +13,28 @@
   <property name="windowTitle">
    <string>Shader Lab</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../shaderlab.qrc">
+    <normaloff>:/ico/img/1302041633_Flask.png</normaloff>:/ico/img/1302041633_Flask.png</iconset>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
      <number>6</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
@@ -51,8 +67,13 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="font">
+           <font>
+            <family>Courier 10 Pitch</family>
+           </font>
+          </property>
           <property name="readOnly">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -68,8 +89,13 @@
           <property name="enabled">
            <bool>true</bool>
           </property>
+          <property name="font">
+           <font>
+            <family>Courier 10 Pitch</family>
+           </font>
+          </property>
           <property name="readOnly">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -155,13 +181,16 @@
       <number>8</number>
      </property>
      <property name="rightMargin">
-      <number>0</number>
+      <number>4</number>
      </property>
      <property name="bottomMargin">
       <number>1</number>
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
        <property name="topMargin">
         <number>0</number>
        </property>
@@ -176,7 +205,7 @@
   <widget class="QDockWidget" name="dockOutPutWidget">
    <property name="minimumSize">
     <size>
-     <width>96</width>
+     <width>97</width>
      <height>121</height>
     </size>
    </property>
@@ -191,6 +220,18 @@
    </attribute>
    <widget class="QWidget" name="dockOutPutWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <property name="leftMargin">
+      <number>4</number>
+     </property>
+     <property name="topMargin">
+      <number>3</number>
+     </property>
+     <property name="rightMargin">
+      <number>4</number>
+     </property>
+     <property name="bottomMargin">
+      <number>3</number>
+     </property>
      <item>
       <widget class="QPlainTextEdit" name="outputTextBox">
        <property name="enabled">
@@ -205,9 +246,12 @@
    </widget>
   </widget>
   <action name="actionOpen_Shader_Code">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/open</normaloff>:/ico/open</iconset>
+     <normaloff>:/ico/img/1302039979_Folder.png</normaloff>:/ico/img/1302039979_Folder.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Open Shader Code...</string>
@@ -215,8 +259,18 @@
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302043859_Log Out.png</normaloff>:/ico/img/1302043859_Log Out.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Exit</string>
    </property>
@@ -224,7 +278,7 @@
   <action name="actionRunShaders">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/run</normaloff>:/ico/run</iconset>
+     <normaloff>:/ico/img/1302039654_buttons_20.png</normaloff>:/ico/img/1302039654_buttons_20.png</iconset>
    </property>
    <property name="text">
     <string>Run</string>
@@ -232,13 +286,23 @@
    <property name="shortcut">
     <string>Ctrl+R</string>
    </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="actionAplication_optput">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>false</bool>
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302044102_mail-new.png</normaloff>:/ico/img/1302044102_mail-new.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Application output</string>
@@ -250,6 +314,10 @@
    </property>
    <property name="checked">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302044079_previewer.png</normaloff>:/ico/img/1302044079_previewer.png</iconset>
    </property>
    <property name="text">
     <string>R&amp;ender area</string>

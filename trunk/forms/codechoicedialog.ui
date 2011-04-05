@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Open Shader Code</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../shaderlab.qrc">
+    <normaloff>:/ico/img/1302039979_Folder.png</normaloff>:/ico/img/1302039979_Folder.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
@@ -49,6 +53,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../shaderlab.qrc"/>
+ </resources>
  <connections/>
 </ui>

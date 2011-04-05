@@ -2,5 +2,40 @@
     <qresource prefix="/ico">
         <file alias="open">img/Open-Folder.ico</file>
         <file alias="run">img/System-run-icon.png</file>
+        <file>img/1302039654_buttons_20.png</file>
+        <file>img/1302039662_misc_22.png</file>
+        <file>img/1302039667_misc_55.png</file>
+        <file>img/1302039684_buttons_01.png</file>
+        <file>img/1302039698_buttons_33.png</file>
+        <file>img/1302039702_buttons_16.png</file>
+        <file>img/1302039733_books_07.png</file>
+        <file>img/1302039812_Network_radar.png</file>
+        <file>img/1302039817_Badge-cancel.png</file>
+        <file>img/1302039820_Signal_stop.png</file>
+        <file>img/1302039824_player_play.png</file>
+        <file>img/1302039830_Badge-tick.png</file>
+        <file>img/1302039833_Signal_attention.png</file>
+        <file>img/1302039837_Empty_document_new.png</file>
+        <file>img/1302039864_Empty_document_delete.png</file>
+        <file>img/1302039875_System_monitoring.png</file>
+        <file>img/1302039894_Doc_yellow.png</file>
+        <file>img/1302039924_Disquette.png</file>
+        <file>img/1302039945_Text.png</file>
+        <file>img/1302039950_Book.png</file>
+        <file>img/1302039953_blueprint.png</file>
+        <file>img/1302039979_Folder.png</file>
+        <file>img/1302039995_Doc.png</file>
+        <file>img/1302040119_folder_closed_16x16.gif</file>
+        <file>img/1302041040_br.png</file>
+        <file>img/1302041055_de.png</file>
+        <file>img/1302041058_es.png</file>
+        <file>img/1302041061_it.png</file>
+        <file>img/1302041067_fr.png</file>
+        <file>img/1302041362_Folder.png</file>
+        <file>img/1302041633_Flask.png</file>
+        <file>img/1302042512_Flask.ico</file>
+        <file>img/1302043859_Log Out.png</file>
+        <file>img/1302044079_previewer.png</file>
+        <file>img/1302044102_mail-new.png</file>
     </qresource>
 </RCC>
