@@ -128,6 +128,9 @@
      <height>150</height>
     </size>
    </property>
+   <property name="windowTitle">
+    <string>Render Area</string>
+   </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
