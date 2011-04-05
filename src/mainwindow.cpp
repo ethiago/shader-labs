@@ -10,6 +10,9 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->dockOutPutWidget->setVisible(false);
+    ui->actionAplication_optput->setChecked(false);
+
     openFile = new QFileDialog(this);
     openFile->setAcceptMode(QFileDialog::AcceptOpen);
 
@@ -24,6 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabRequest(int)));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(exitApplication()));
     connect(ui->actionRunShaders, SIGNAL(triggered()), this, SLOT(runShadersSelected()));
+    connect(ui->menuView, SIGNAL(triggered(QAction*)), this, SLOT(viewMenuClicked(QAction*)));
+    connect(ui->dockOutPutWidget, SIGNAL(visibilityChanged(bool)), this, SLOT(dockOutputVisibilityChange(bool)));
+    connect(ui->dockRenderWidget, SIGNAL(visibilityChanged(bool)), this, SLOT(dockRenderVisibilityChange(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -38,6 +44,7 @@ void MainWindow::openDialog(void)
     choiceDialog->open();
 }
 
+
 void MainWindow::vertexFileSelected(const QString& vertexCodeFileName)
 {
     emit selectedFile(vertexCodeFileName, ShaderLab::Vertex);
@@ -47,6 +54,7 @@ void MainWindow::fragmentFileSelected(const QString& fragmentCodeFileName)
 {
     emit selectedFile(fragmentCodeFileName, ShaderLab::Fragment);
 }
+
 
 void MainWindow::selectedShader(ShaderLab::Shader sh)
 {
@@ -67,86 +75,6 @@ void MainWindow::selectedShader(ShaderLab::Shader sh)
             openFile->open(this, SLOT(fragmentFileSelected(const QString&)));
             break;
     }
-}
-
-void MainWindow::setVisibleVertexTab(bool v)
-{
-    int ind = ui->tabWidget->indexOf(ui->vertexTab);
-
-    if(v == true)
-    {
-        if(ind == -1)
-        {
-            ui->tabWidget->insertTab(ui->tabWidget->count(), ui->vertexTab, tr("vertex"));
-        }
-    }else
-    {
-
-        if(ind != -1)
-        {
-            ui->tabWidget->removeTab(ind);
-        }
-    }
-}
-
-void MainWindow::setVisibleFragmentTab(bool v)
-{
-    int ind = ui->tabWidget->indexOf(ui->fragmentTab);
-
-    if(v == true)
-    {
-        if(ind == -1)
-        {
-            ui->tabWidget->insertTab(ui->tabWidget->count(), ui->fragmentTab, tr("fragment"));
-        }
-    }else
-    {
-
-        if(ind != -1)
-        {
-            ui->tabWidget->removeTab(ind);
-        }
-    }
-}
-
-void MainWindow::setVertexCode(const QString& code)
-{
-    ui->vertexCodeBox->setText(code);
-}
-
-void MainWindow::setFragmentCode(const QString& code)
-{
-    ui->fragmentCodeBox->setText(code);
-}
-
-bool MainWindow::visibleVertexTab(void)
-{
-    int ind = ui->tabWidget->indexOf(ui->vertexTab);
-
-    if(ind == -1)
-        return false;
-    else
-        return true;
-}
-
-bool MainWindow::visibleFragmentTab(void)
-{
-    int ind = ui->tabWidget->indexOf(ui->fragmentTab);
-
-    if(ind == -1)
-        return false;
-    else
-        return true;
-}
-
-QString MainWindow::vertexCode(void)
-{
-    return ui->vertexCodeBox->toPlainText();
-}
-
-QString MainWindow::fragmentCode(void)
-{
-    return ui->fragmentCodeBox->toPlainText();
 }
 
 void MainWindow::closeTabRequest(int index)
@@ -236,4 +164,28 @@ void MainWindow::runShadersSelected(void)
 void MainWindow::updateDisplay()
 {
     display->updateGL();
+}
+
+void MainWindow::viewMenuClicked(QAction* act)
+{
+    if(act == ui->actionAplication_optput)
+        ui->dockOutPutWidget->setVisible(act->isChecked());
+    else if(act == ui->actionRender_area)
+        ui->dockRenderWidget->setVisible(act->isChecked());
+
+}
+
+void MainWindow::setOutputText(const QString& s)
+{
+    ui->outputTextBox->setPlainText(s);
+}
+
+void MainWindow::dockOutputVisibilityChange(bool v)
+{
+    ui->actionAplication_optput->setChecked(v);
+}
+
+void MainWindow::dockRenderVisibilityChange(bool v)
+{
+    ui->actionRender_area->setChecked(v);
 }

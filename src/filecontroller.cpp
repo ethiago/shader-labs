@@ -8,8 +8,8 @@ FileController::FileController(MainWindow *v) :
     connect(view, SIGNAL(selectedFile(const QString&, ShaderLab::Shader)), this, SLOT(openFile(const QString&, ShaderLab::Shader)));
     connect(view, SIGNAL(closeTabRequest(ShaderLab::Shader)), this, SLOT(closeShader(ShaderLab::Shader)));
 
-    view->setVisibleVertexTab(false);
-    view->setVisibleFragmentTab(false);
+    view->setVisibleShader(false, Vertex);
+    view->setVisibleShader(false, Fragment);
 
     vertexOpened = false;
     fragmentOpened = false;
@@ -24,13 +24,13 @@ void FileController::openFile(const QString& filename, ShaderLab::Shader shader)
     switch(shader)
     {
         case ShaderLab::Vertex:
-            view->setVertexCode(file.readAll());
-            view->setVisibleVertexTab(true);
+            view->setShaderCode(file.readAll(), Vertex);
+            view->setVisibleShader(true, Vertex);
             vertexOpened = true;
             break;
         case ShaderLab::Fragment:
-            view->setFragmentCode(file.readAll());
-            view->setVisibleFragmentTab(true);
+            view->setShaderCode(file.readAll(), Fragment);
+            view->setVisibleShader(true, Fragment);
             fragmentOpened = true;
             break;
     }
@@ -40,21 +40,18 @@ void FileController::openFile(const QString& filename, ShaderLab::Shader shader)
 
 void FileController::closeShader(ShaderLab::Shader shader)
 {
+    view->setVisibleShader(false, shader);
+
     if(shader == ShaderLab::Vertex)
-    {
-        view->setVisibleVertexTab(false);
         vertexOpened = false;
-    }else if(shader == ShaderLab::Fragment)
-    {
-        view->setVisibleFragmentTab(false);
+    else if(shader == ShaderLab::Fragment)
         fragmentOpened = false;
-    }
 }
 
 QString FileController::getVertexCode(void)
 {
     if(vertexOpened)
-        return view->vertexCode();
+        return view->shaderCode(Vertex);
     else
         return QString();
 }
@@ -62,7 +59,7 @@ QString FileController::getVertexCode(void)
 QString FileController::getFragmentCode(void)
 {
     if(fragmentOpened)
-        return view->fragmentCode();
+        return view->shaderCode(Fragment);
     else
         return QString();
 }
