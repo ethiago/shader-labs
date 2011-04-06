@@ -1,11 +1,11 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <QDebug>
 #include <QFile>
 #include <QVBoxLayout>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui(new Ui::MainWindow),  choiceDialog(new CodeChoiceDialog(this))
 {
     ui->setupUi(this);
@@ -47,11 +47,13 @@ void MainWindow::openDialog(void)
 
 void MainWindow::vertexFileSelected(const QString& vertexCodeFileName)
 {
+    openFile->close();
     emit selectedFile(vertexCodeFileName, ShaderLab::Vertex);
 }
 
 void MainWindow::fragmentFileSelected(const QString& fragmentCodeFileName)
 {
+    openFile->close();
     emit selectedFile(fragmentCodeFileName, ShaderLab::Fragment);
 }
 
@@ -106,13 +108,17 @@ bool MainWindow::visibleShader(ShaderLab::Shader shader)
 
 }
 
-QString MainWindow::shaderCode(ShaderLab::Shader shader)
+QString MainWindow::shaderCode(ShaderLab::Shader shadertype)
 {
-    if(shader == ShaderLab::Vertex)
-        return ui->vertexCodeBox->toPlainText();
-    else if(shader == ShaderLab::Fragment)
-        return ui->fragmentCodeBox->toPlainText();
-
+    switch(shadertype)
+    {
+        case ShaderLab::Vertex:
+            return ui->vertexCodeBox->toPlainText();
+            break;
+        case ShaderLab::Fragment:
+            return ui->fragmentCodeBox->toPlainText();
+            break;
+    }
 }
 
 void MainWindow::setVisibleShader(bool v, ShaderLab::Shader shader)

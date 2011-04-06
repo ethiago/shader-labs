@@ -3,9 +3,10 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
-#include <codechoicedialog.h>
-#include "gldisplay.h"
 #include <QVBoxLayout>
+
+#include "codechoicedialog.h"
+#include "gldisplay.h"
 
 namespace Ui {
     class MainWindow;
