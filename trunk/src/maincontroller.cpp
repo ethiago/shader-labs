@@ -48,17 +48,14 @@ void MainController::openShaderCode(const QString& filepath, ShaderLab::Shader s
 void MainController::closeShaderCode(ShaderLab::Shader shaderType)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
-
     it = fileControllers.find(shaderType);
 
     if(it != fileControllers.end())
     {
         FileController* fc = it.value();
-
         fileControllers.erase(it);
 
         fc->close();
-
         delete fc;
 
         mainWindow->setVisibleShader(false, shaderType);
@@ -72,10 +69,11 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
 void MainController::runAllActiveShaders(void)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
+    QGLShaderProgram program;
+    QString output = tr("No active shader code to compile.");
+
     bool atLeastOne = false;
     bool tmp;
-    QGLShaderProgram program;
-    QString output;
 
     for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
     {
@@ -87,8 +85,13 @@ void MainController::runAllActiveShaders(void)
             program.addShader(it.value()->getShader());
     }
 
-    program.link();
-    program.bind();
+    if(atLeastOne)
+    {
+        program.link();
+        output += program.log();
+
+        program.bind();
+    }
 
     mainWindow->setOutputText(output);
     mainWindow->updateDisplay();
