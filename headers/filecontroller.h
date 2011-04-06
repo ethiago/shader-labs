@@ -2,28 +2,33 @@
 #define FILECONTROLLER_H
 
 #include <QObject>
+#include <QGLShader>
+
 #include "mainwindow.h"
 #include "global.h"
 
 class FileController : public QObject
 {
     Q_OBJECT
-public:
-    explicit FileController(MainWindow *v);
-    QString getVertexCode(void);
-    QString getFragmentCode(void);
 
-public slots:
-    void openFile(const QString& filename, ShaderLab::Shader);
-    void closeShader(ShaderLab::Shader);
+public:
+    explicit FileController(QString filepath, ShaderLab::Shader shadertype,
+                            QObject *parent = 0);
+
+    ~FileController();
+
+    QString getFileContent(void);
+    int close(void);
+
+    bool compile(const QString& code);
+    bool compile(void);
+    QGLShader* getShader(void);
+    QString log();
 
 private:
-    MainWindow * view;
-    QString vertexFileName;
-    QString fragmentFileName;
-
-    bool vertexOpened;
-    bool fragmentOpened;
+    QString filePath;
+    QGLShader *shader;
+    ShaderLab::Shader shaderType;
 
 };
 

@@ -1,16 +1,13 @@
 #include <QtGui/QApplication>
+
 #include "mainwindow.h"
 #include "filecontroller.h"
-#include "shadercodecontroller.h"
+#include "maincontroller.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    MainWindow w;
-    FileController *fc = new FileController(&w);
-    ShaderCodeController *scc = new ShaderCodeController(fc, &w);
-    w.show();
+    new MainController();
 
     return a.exec();
 }

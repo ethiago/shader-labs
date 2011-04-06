@@ -18,13 +18,14 @@ SOURCES += src/main.cpp \
     src/codechoicedialog.cpp \
     src/filecontroller.cpp \
     src/gldisplay.cpp \
-    src/shadercodecontroller.cpp
+    src/maincontroller.cpp \
+    src/global.cpp
 HEADERS += headers/mainwindow.h \
     headers/codechoicedialog.h \
     headers/global.h \
     headers/filecontroller.h \
     headers/gldisplay.h \
-    headers/shadercodecontroller.h
+    headers/maincontroller.h
 FORMS += forms/mainwindow.ui \
     forms/codechoicedialog.ui
 RESOURCES += shaderlab.qrc

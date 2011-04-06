@@ -1,66 +1,71 @@
+#include <QString>
+#include <QFile>
+
 #include "filecontroller.h"
-#include "shadercodecontroller.h"
 
-
-FileController::FileController(MainWindow *v) :
-    QObject(v), view(v)
+FileController::FileController(QString filepath, ShaderLab::Shader shadertype,
+                               QObject *parent) : QObject(parent)
 {
-    connect(view, SIGNAL(selectedFile(const QString&, ShaderLab::Shader)), this, SLOT(openFile(const QString&, ShaderLab::Shader)));
-    connect(view, SIGNAL(closeTabRequest(ShaderLab::Shader)), this, SLOT(closeShader(ShaderLab::Shader)));
+    filePath = filepath;
+    shaderType = shadertype;
 
-    view->setVisibleShader(false, Vertex);
-    view->setVisibleShader(false, Fragment);
-
-    vertexOpened = false;
-    fragmentOpened = false;
-}
-
-void FileController::openFile(const QString& filename, ShaderLab::Shader shader)
-{
-    QFile file(filename);
-    if(!file.open(QFile::ReadOnly))
-        return;
-
-    switch(shader)
+    switch(shadertype)
     {
         case ShaderLab::Vertex:
-            view->setShaderCode(file.readAll(), Vertex);
-            view->setVisibleShader(true, Vertex);
-            vertexOpened = true;
+            shader = new QGLShader(QGLShader::Vertex, this);
             break;
         case ShaderLab::Fragment:
-            view->setShaderCode(file.readAll(), Fragment);
-            view->setVisibleShader(true, Fragment);
-            fragmentOpened = true;
+            shader = new QGLShader(QGLShader::Fragment, this);
             break;
     }
-
-    file.close();
 }
 
-void FileController::closeShader(ShaderLab::Shader shader)
+FileController::~FileController()
 {
-    view->setVisibleShader(false, shader);
-
-    if(shader == ShaderLab::Vertex)
-        vertexOpened = false;
-    else if(shader == ShaderLab::Fragment)
-        fragmentOpened = false;
+    delete shader;
 }
 
-QString FileController::getVertexCode(void)
+QString FileController::getFileContent(void)
 {
-    if(vertexOpened)
-        return view->shaderCode(Vertex);
-    else
-        return QString();
+    QString content;
+    QFile file(filePath);
+
+    if(file.open(QFile::ReadOnly))
+    {
+        content = file.readAll();
+        file.close();
+        return content;
+    }
+
+    return QString();
 }
 
-QString FileController::getFragmentCode(void)
+int FileController::close(void)
 {
-    if(fragmentOpened)
-        return view->shaderCode(Fragment);
-    else
-        return QString();
+    return 1;
 }
 
+bool FileController::compile(const QString& code)
+{
+    if(!code.isEmpty())
+    {
+        return shader->compileSourceCode(code);
+    }
+
+    return false;
+}
+
+bool FileController::compile(void)
+{
+    return shader->compileSourceFile(filePath);
+}
+
+QString FileController::log()
+{
+    return shader->log();
+}
+
+QGLShader *FileController::getShader(void)
+{
+    return shader;
+}
