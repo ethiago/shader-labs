@@ -10,7 +10,7 @@ CodeChoiceDialog::CodeChoiceDialog(QWidget *parent) :
     connect(ui->openFragment, SIGNAL(clicked()), this, SLOT(openFragment()));
 }
 
-void CodeChoiceDialog::openVertex()
+/*void CodeChoiceDialog::openVertex()
 {
     emit shader(ShaderLab::Vertex);
     close();
@@ -20,4 +20,21 @@ void CodeChoiceDialog::openFragment()
 {
     emit shader(ShaderLab::Fragment);
     close();
+}*/
+
+void CodeChoiceDialog::addButton(ShaderLab::Shader shadertype)
+{
+    CommandLinkButton *button = new CommandLinkButton(shadertype, ui->scrollAreaWidgetContents);
+    buttons.insert(shadertype, button);
+
+    ui->verticalLayout->addWidget(button);
+
+    connect(button, SIGNAL(clicked(ShaderLab::Shader)),
+            this, SLOT(arebaba(ShaderLab::Shader)));
+
+}
+
+void CodeChoiceDialog::arebaba(ShaderLab::Shader shadertype)
+{
+    emit shader(shadertype);
 }

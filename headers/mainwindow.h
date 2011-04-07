@@ -4,7 +4,10 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QVBoxLayout>
+#include <QTabWidget>
+#include <QMap>
 
+#include "shadercodecontainer.h"
 #include "codechoicedialog.h"
 #include "gldisplay.h"
 
@@ -22,13 +25,13 @@ public slots:
     void exitApplication(void);
     void openDialog(void);
     void selectedShader(ShaderLab::Shader);
-    void vertexFileSelected(const QString&);
-    void fragmentFileSelected(const QString&);
+    void fileSelected(const QString&);
     void closeTabRequest(int index);
     void runShadersSelected(void);
     void viewMenuClicked(QAction*);
     void dockOutputVisibilityChange(bool);
     void dockRenderVisibilityChange(bool);
+    void addShader(ShaderLab::Shader shadertype);
 
 signals:
     void selectedFile(const QString& , ShaderLab::Shader);
@@ -51,12 +54,15 @@ public:
 
 private:
     Ui::MainWindow *ui;
-  //  QVBoxLayout *glDisplayLayout;
 
     QFileDialog *openFile;
     CodeChoiceDialog *choiceDialog;
 
     GLDisplay *display;
+    QTabWidget *tabArea;
+
+    QMap<ShaderLab::Shader, ShaderCodeContainer*> codeTabs;
+    ShaderLab::Shader tempShader;
 
 };
 
