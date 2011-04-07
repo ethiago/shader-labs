@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui(new Ui::MainWindow),  choiceDialog(new CodeChoiceDialog(this))
 {
     ui->setupUi(this);
+    tabArea = new QTabWidget(ui->centralWidget);
 
     ui->dockOutPutWidget->setVisible(false);
     ui->actionAplication_optput->setChecked(false);
@@ -16,15 +17,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     openFile = new QFileDialog(this);
     openFile->setAcceptMode(QFileDialog::AcceptOpen);
 
-    for(int i = 0; i < ui->tabWidget->count(); ++i)
-        ui->tabWidget->removeTab(i);
-
     display = new GLDisplay();
     ui->verticalLayout->addWidget(display);
 
     connect(ui->actionOpen_Shader_Code, SIGNAL(triggered()), this, SLOT(openDialog()));
     connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShader(ShaderLab::Shader)));
-    connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabRequest(int)));
+    connect(tabArea, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabRequest(int)));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(exitApplication()));
     connect(ui->actionRunShaders, SIGNAL(triggered()), this, SLOT(runShadersSelected()));
     connect(ui->menuView, SIGNAL(triggered(QAction*)), this, SLOT(viewMenuClicked(QAction*)));
@@ -44,22 +42,15 @@ void MainWindow::openDialog(void)
     choiceDialog->open();
 }
 
-
-void MainWindow::vertexFileSelected(const QString& vertexCodeFileName)
+void MainWindow::fileSelected(const QString& codeFileName)
 {
     openFile->close();
-    emit selectedFile(vertexCodeFileName, ShaderLab::Vertex);
+    emit selectedFile(codeFileName, tempShader);
 }
-
-void MainWindow::fragmentFileSelected(const QString& fragmentCodeFileName)
-{
-    openFile->close();
-    emit selectedFile(fragmentCodeFileName, ShaderLab::Fragment);
-}
-
 
 void MainWindow::selectedShader(ShaderLab::Shader sh)
 {
+    tempShader = sh;
     switch(sh)
     {
         case ShaderLab::Vertex:
@@ -67,57 +58,46 @@ void MainWindow::selectedShader(ShaderLab::Shader sh)
             openFile->setFileMode(QFileDialog::ExistingFile);
             openFile->setDirectory("..");
             openFile->setFilter("*.vert");
-            openFile->open(this, SLOT(vertexFileSelected(const QString&)));
+            openFile->open(this, SLOT(fileSelected(const QString&)));
             break;
         case ShaderLab::Fragment:
             openFile->setWindowTitle("Open Fragment Shader Code");
             openFile->setFileMode(QFileDialog::ExistingFile);
             openFile->setDirectory("..");
             openFile->setFilter("*.frag");
-            openFile->open(this, SLOT(fragmentFileSelected(const QString&)));
+            openFile->open(this, SLOT(fileSelected(const QString&)));
             break;
     }
 }
 
 void MainWindow::closeTabRequest(int index)
 {
-    QWidget *pt = ui->tabWidget->widget(index);
+    ShaderCodeContainer *pt = (ShaderCodeContainer*)tabArea->widget(index);
 
-    if(pt == ui->vertexTab)
-        emit closeTabRequest(ShaderLab::Vertex);
-    else if(pt == ui->fragmentTab)
-        emit closeTabRequest(ShaderLab::Fragment);
+    emit closeTabRequest(pt->getShaderType());
 }
 
 bool MainWindow::visibleShader(ShaderLab::Shader shader)
 {
-    QWidget *pt;
+    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator;
 
-    if(shader == ShaderLab::Vertex)
-        pt = ui->vertexTab;
-    else if(shader == ShaderLab::Fragment)
-        pt = ui->fragmentTab;
+    it = codeTabs.find(shader);
 
-
-    int ind = ui->tabWidget->indexOf(pt);
-
-    if(ind == -1)
-        return false;
-    else
+    if(it != codeTabs.end())
         return true;
-
+    else
+        return false;
 }
 
 QString MainWindow::shaderCode(ShaderLab::Shader shadertype)
 {
-    switch(shadertype)
+    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator;
+    it = codeTabs.find(shader);
+
+    if(it != codeTabs.end())
     {
-        case ShaderLab::Vertex:
-            return ui->vertexCodeBox->toPlainText();
-            break;
-        case ShaderLab::Fragment:
-            return ui->fragmentCodeBox->toPlainText();
-            break;
+        ShaderCodeContainer * pt = it.value();
+        return pt->getText();
     }
 }
 
@@ -194,4 +174,12 @@ void MainWindow::dockOutputVisibilityChange(bool v)
 void MainWindow::dockRenderVisibilityChange(bool v)
 {
     ui->actionRender_area->setChecked(v);
+}
+
+void MainWindow::addShader(ShaderLab::Shader shadertype)
+{
+    ShaderCodeContainer *codeContainer = new ShaderCodeContainer(shadertype, tabArea);
+    codeTabs.insert(shadertype, codeContainer);
+
+    tabArea->addTab(codeContainer, QIcon(), shaderToStr(shadertype));
 }

@@ -2,6 +2,9 @@
 #define CODECHOICEDIALOG_H
 
 #include <QDialog>
+#include <QMap>
+#include "commandlinkbutton.h"
+
 #include "global.h"
 
 namespace Ui{
@@ -13,16 +16,17 @@ class CodeChoiceDialog : public QDialog
     Q_OBJECT
 public:
     explicit CodeChoiceDialog(QWidget *parent = 0);
+    void addButton(ShaderLab::Shader shadertype);
 
 signals:
     void shader(ShaderLab::Shader);
 
 public slots:
-    void openVertex();
-    void openFragment();
+    void arebaba(ShaderLab::Shader shadertype);
 
 private:
     Ui::Dialog *ui;
+    QMap<ShaderLab::Shader, CommandLinkButton*> buttons;
 
 };
 
