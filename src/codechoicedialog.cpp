@@ -5,9 +5,6 @@ CodeChoiceDialog::CodeChoiceDialog(QWidget *parent) :
         QDialog(parent), ui(new Ui::Dialog)
 {
     ui->setupUi(this);
-
-    connect(ui->openVertex, SIGNAL(clicked()), this, SLOT(openVertex()));
-    connect(ui->openFragment, SIGNAL(clicked()), this, SLOT(openFragment()));
 }
 
 /*void CodeChoiceDialog::openVertex()
@@ -36,5 +33,6 @@ void CodeChoiceDialog::addButton(ShaderLab::Shader shadertype)
 
 void CodeChoiceDialog::arebaba(ShaderLab::Shader shadertype)
 {
+    this->close();
     emit shader(shadertype);
 }
