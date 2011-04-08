@@ -2,7 +2,7 @@
     <qresource prefix="/ico">
         <file alias="open">img/Open-Folder.ico</file>
         <file alias="run">img/System-run-icon.png</file>
-<!--        <file>img/1302039654_buttons_20.png</file>
+        <file>img/1302039654_buttons_20.png</file>
         <file>img/1302039662_misc_22.png</file>
         <file>img/1302039667_misc_55.png</file>
         <file>img/1302039684_buttons_01.png</file>
@@ -36,6 +36,6 @@
         <file>img/1302042512_Flask.ico</file>
         <file>img/1302043859_Log Out.png</file>
         <file>img/1302044079_previewer.png</file>
-        <file>img/1302044102_mail-new.png</file> -->
+        <file>img/1302044102_mail-new.png</file>
     </qresource>
 </RCC>
