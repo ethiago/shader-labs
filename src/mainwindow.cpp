@@ -79,7 +79,7 @@ void MainWindow::closeTabRequest(int index)
 
 bool MainWindow::visibleShader(ShaderLab::Shader shader)
 {
-    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator;
+    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
 
     it = codeTabs.find(shader);
 
@@ -91,14 +91,17 @@ bool MainWindow::visibleShader(ShaderLab::Shader shader)
 
 QString MainWindow::shaderCode(ShaderLab::Shader shadertype)
 {
-    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator;
-    it = codeTabs.find(shader);
+    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
+    it = codeTabs.find(shadertype);
 
     if(it != codeTabs.end())
     {
         ShaderCodeContainer * pt = it.value();
         return pt->getText();
     }
+
+    // Fazer tratamento aqui!!!!
+    return QString();
 }
 
 void MainWindow::setVisibleShader(bool v, ShaderLab::Shader shader)
