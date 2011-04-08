@@ -10,12 +10,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 {
     ui->setupUi(this);
     tabArea = new QTabWidget(ui->centralWidget);
+    tabArea->setTabsClosable(true);
+    ui->horizontalLayout->addWidget(tabArea);
 
     ui->dockOutPutWidget->setVisible(false);
     ui->actionAplication_optput->setChecked(false);
-
-    openFile = new QFileDialog(this);
-    openFile->setAcceptMode(QFileDialog::AcceptOpen);
 
     display = new GLDisplay();
     ui->verticalLayout->addWidget(display);
@@ -33,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete openFile;
     delete choiceDialog;
 }
 
@@ -42,32 +40,22 @@ void MainWindow::openDialog(void)
     choiceDialog->open();
 }
 
-void MainWindow::fileSelected(const QString& codeFileName)
-{
-    openFile->close();
-    emit selectedFile(codeFileName, tempShader);
-}
-
 void MainWindow::selectedShader(ShaderLab::Shader sh)
 {
-    tempShader = sh;
+    QString filename;
+
     switch(sh)
     {
         case ShaderLab::Vertex:
-            openFile->setWindowTitle("Open Vertex Shader Code");
-            openFile->setFileMode(QFileDialog::ExistingFile);
-            openFile->setDirectory("..");
-            openFile->setFilter("*.vert");
-            openFile->open(this, SLOT(fileSelected(const QString&)));
+            filename = QFileDialog::getOpenFileName(this,tr("Open Vertex Shader Code"), "..", "*.vert");
             break;
         case ShaderLab::Fragment:
-            openFile->setWindowTitle("Open Fragment Shader Code");
-            openFile->setFileMode(QFileDialog::ExistingFile);
-            openFile->setDirectory("..");
-            openFile->setFilter("*.frag");
-            openFile->open(this, SLOT(fileSelected(const QString&)));
+            filename = QFileDialog::getOpenFileName(this, tr("Open Fragment Shader Code"), "..", ".frag");
             break;
     }
+
+    if(!filename.isEmpty())
+        emit selectedFile(filename, sh);
 }
 
 void MainWindow::closeTabRequest(int index)
@@ -100,44 +88,38 @@ QString MainWindow::shaderCode(ShaderLab::Shader shadertype)
         return pt->getText();
     }
 
-    // Fazer tratamento aqui!!!!
     return QString();
 }
 
-void MainWindow::setVisibleShader(bool v, ShaderLab::Shader shader)
+void MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
 {
-    QWidget *pt;
-    QString label;
+    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
+    it = codeTabs.find(shadertype);
 
-    if(shader == ShaderLab::Vertex)
-    {
-        pt = ui->vertexTab;
-        label = tr("vertex");
-    }else if(shader == ShaderLab::Fragment)
-    {
-        pt = ui->fragmentTab;
-        label = tr("fragment");
-    }
-
-    int ind = ui->tabWidget->indexOf(pt);
+    int ind = tabArea->indexOf(it.value());
     if(v == true)
     {
         if(ind == -1)
-            ui->tabWidget->insertTab(ui->tabWidget->count(), pt, label);
+            tabArea->insertTab(tabArea->count(), it.value(), tr(shaderToStr(it.key()).toAscii()));
     }else
     {
 
         if(ind != -1)
-            ui->tabWidget->removeTab(ind);
+        {
+            it.value()->setText(QString());
+            tabArea->removeTab(ind);
+        }
     }
 }
 
-void MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shader)
+void MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shadertype)
 {
-    if(shader == ShaderLab::Vertex)
-        ui->vertexCodeBox->setText(code);
-    if(shader == ShaderLab::Fragment)
-        ui->fragmentCodeBox->setText(code);
+    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
+
+    it = codeTabs.find(shadertype);
+
+    if(it != codeTabs.end())
+        it.value()->setText(code);
 }
 
 void MainWindow::exitApplication(void)
@@ -184,5 +166,5 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
     ShaderCodeContainer *codeContainer = new ShaderCodeContainer(shadertype, tabArea);
     codeTabs.insert(shadertype, codeContainer);
 
-    tabArea->addTab(codeContainer, QIcon(), shaderToStr(shadertype));
+    choiceDialog->addButton(shadertype);
 }

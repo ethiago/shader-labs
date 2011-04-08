@@ -25,7 +25,6 @@ public slots:
     void exitApplication(void);
     void openDialog(void);
     void selectedShader(ShaderLab::Shader);
-    void fileSelected(const QString&);
     void closeTabRequest(int index);
     void runShadersSelected(void);
     void viewMenuClicked(QAction*);
@@ -55,14 +54,11 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    QFileDialog *openFile;
     CodeChoiceDialog *choiceDialog;
-
     GLDisplay *display;
     QTabWidget *tabArea;
 
     QMap<ShaderLab::Shader, ShaderCodeContainer*> codeTabs;
-    ShaderLab::Shader tempShader;
 
 };
 
