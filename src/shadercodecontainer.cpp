@@ -11,6 +11,11 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
     ui->shaderCodeBox->setFont(QFont("Courier"));
 }
 
+ShaderCodeContainer::~ShaderCodeContainer()
+{
+    delete ui;
+}
+
 void ShaderCodeContainer::setText(const QString& code)
 {
     ui->shaderCodeBox->setText(code);

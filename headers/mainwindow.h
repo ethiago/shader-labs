@@ -36,6 +36,7 @@ signals:
     void selectedFile(const QString& , ShaderLab::Shader);
     void runShaders(void);
     void closeTabRequest(ShaderLab::Shader);
+    void programClose();
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -59,6 +60,9 @@ private:
     QTabWidget *tabArea;
 
     QMap<ShaderLab::Shader, ShaderCodeContainer*> codeTabs;
+
+protected:
+    void closeEvent(QCloseEvent *event);
 
 };
 

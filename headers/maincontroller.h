@@ -14,6 +14,7 @@ class MainController : public QObject
 Q_OBJECT
 public:
     explicit MainController(QObject *parent = 0);
+    ~MainController();
 
 signals:
 
@@ -21,6 +22,7 @@ public slots:
     void openShaderCode(const QString& filename, ShaderLab::Shader);
     void closeShaderCode(ShaderLab::Shader);
     void runAllActiveShaders(void);
+    void programCloseRequest(void);
 
 private:
     MainWindow *mainWindow;

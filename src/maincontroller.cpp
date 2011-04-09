@@ -15,14 +15,21 @@ MainController::MainController(QObject *parent) : QObject(parent)
     connect(mainWindow, SIGNAL(closeTabRequest(ShaderLab::Shader)),
             this, SLOT(closeShaderCode(ShaderLab::Shader)));
 
-    connect(mainWindow, SIGNAL(runShaders()), this, SLOT(runAllActiveShaders()));
+    connect(mainWindow, SIGNAL(runShaders()),
+            this, SLOT(runAllActiveShaders()));
 
+    connect(mainWindow, SIGNAL(programClose()),
+            this, SLOT(programCloseRequest()));
 
     mainWindow->addShader(ShaderLab::Vertex);
     mainWindow->addShader(ShaderLab::Fragment);
 
 
     mainWindow->show();
+}
+MainController::~MainController()
+{
+    delete mainWindow;
 }
 
 void MainController::openShaderCode(const QString& filepath, ShaderLab::Shader shaderType)
@@ -101,6 +108,12 @@ void MainController::runAllActiveShaders(void)
 
     mainWindow->setOutputText(output);
     mainWindow->updateDisplay();
+}
+
+void MainController::programCloseRequest(void)
+{
+    mainWindow->close();
+    delete this;
 }
 
 
