@@ -17,8 +17,10 @@ MainController::MainController(QObject *parent) : QObject(parent)
 
     connect(mainWindow, SIGNAL(runShaders()), this, SLOT(runAllActiveShaders()));
 
+
     mainWindow->addShader(ShaderLab::Vertex);
     mainWindow->addShader(ShaderLab::Fragment);
+
 
     mainWindow->show();
 }

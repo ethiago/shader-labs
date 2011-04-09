@@ -12,8 +12,12 @@ Q_OBJECT
 public:
     explicit CommandLinkButton(ShaderLab::Shader shadertype, QWidget *parent = 0);
 
+private slots:
+    void clicou(void);
+
+
 protected:
-    void mouseReleaseEvent(QMouseEvent *event);
+   // void mouseReleaseEvent(QMouseEvent *event);
 
 signals:
     void clicked(ShaderLab::Shader shaderType);

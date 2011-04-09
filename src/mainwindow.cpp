@@ -68,11 +68,16 @@ void MainWindow::closeTabRequest(int index)
 bool MainWindow::visibleShader(ShaderLab::Shader shader)
 {
     QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
-
     it = codeTabs.find(shader);
 
     if(it != codeTabs.end())
-        return true;
+    {
+        int ind = tabArea->indexOf(it.value());
+        if(ind == -1)
+            return false;
+        else
+            return true;
+    }
     else
         return false;
 }
@@ -97,7 +102,11 @@ void MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
     if(v == true)
     {
         if(ind == -1)
+        {
             tabArea->insertTab(tabArea->count(), it.value(), tr(shaderToStr(it.key()).toAscii()));
+            tabArea->setCurrentIndex(tabArea->count() -1);
+        }
+
     }else
     {
 
