@@ -50,7 +50,7 @@ void MainWindow::selectedShader(ShaderLab::Shader sh)
             filename = QFileDialog::getOpenFileName(this,tr("Open Vertex Shader Code"), "..", "*.vert");
             break;
         case ShaderLab::Fragment:
-            filename = QFileDialog::getOpenFileName(this, tr("Open Fragment Shader Code"), "..", ".frag");
+            filename = QFileDialog::getOpenFileName(this, tr("Open Fragment Shader Code"), "..", "*.frag");
             break;
     }
 
@@ -83,10 +83,7 @@ QString MainWindow::shaderCode(ShaderLab::Shader shadertype)
     it = codeTabs.find(shadertype);
 
     if(it != codeTabs.end())
-    {
-        ShaderCodeContainer * pt = it.value();
-        return pt->getText();
-    }
+        return it.value()->getText();
 
     return QString();
 }
@@ -163,7 +160,7 @@ void MainWindow::dockRenderVisibilityChange(bool v)
 
 void MainWindow::addShader(ShaderLab::Shader shadertype)
 {
-    ShaderCodeContainer *codeContainer = new ShaderCodeContainer(shadertype, tabArea);
+    ShaderCodeContainer *codeContainer = new ShaderCodeContainer(shadertype);
     codeTabs.insert(shadertype, codeContainer);
 
     choiceDialog->addButton(shadertype);

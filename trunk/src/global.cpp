@@ -7,4 +7,6 @@ QString ShaderLab::shaderToStr(Shader s)
         case Vertex: return "Vertex";
         case Fragment: return "Fragment";
     }
+
+    return QString();
 }

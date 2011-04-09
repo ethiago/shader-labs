@@ -18,7 +18,6 @@ public:
     ~FileController();
 
     QString getFileContent(void);
-    int close(void);
 
     bool compile(const QString& code);
     bool compile(void);

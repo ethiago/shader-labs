@@ -40,11 +40,6 @@ QString FileController::getFileContent(void)
     return QString();
 }
 
-int FileController::close(void)
-{
-    return 1;
-}
-
 bool FileController::compile(const QString& code)
 {
     if(!code.isEmpty())
