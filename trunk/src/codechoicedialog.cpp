@@ -7,17 +7,17 @@ CodeChoiceDialog::CodeChoiceDialog(QWidget *parent) :
     ui->setupUi(this);
 }
 
-/*void CodeChoiceDialog::openVertex()
+CodeChoiceDialog::~CodeChoiceDialog()
 {
-    emit shader(ShaderLab::Vertex);
-    close();
+    QMap<ShaderLab::Shader, CommandLinkButton*>::iterator it;
+    CommandLinkButton* pt;
+    for(it = buttons.begin(); it != buttons.end(); ++it)
+    {
+        pt = it.value();
+        delete pt;
+    }
+    delete ui;
 }
-
-void CodeChoiceDialog::openFragment()
-{
-    emit shader(ShaderLab::Fragment);
-    close();
-}*/
 
 void CodeChoiceDialog::addButton(ShaderLab::Shader shadertype)
 {

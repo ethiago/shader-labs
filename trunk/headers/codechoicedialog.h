@@ -16,6 +16,7 @@ class CodeChoiceDialog : public QDialog
     Q_OBJECT
 public:
     explicit CodeChoiceDialog(QWidget *parent = 0);
+    ~CodeChoiceDialog();
     void addButton(ShaderLab::Shader shadertype);
 
 signals:

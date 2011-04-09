@@ -13,6 +13,7 @@ class ShaderCodeContainer : public QWidget
 Q_OBJECT
 public:
     explicit ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *parent = 0);
+    ~ShaderCodeContainer();
     void setText(const QString&);
     QString getText(void);
     ShaderLab::Shader getShaderType(void);

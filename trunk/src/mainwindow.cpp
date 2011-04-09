@@ -31,8 +31,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
 MainWindow::~MainWindow()
 {
+    QMap<ShaderLab::Shader, ShaderCodeContainer*>::iterator it;
+    ShaderCodeContainer* pt;
+    for(it = codeTabs.begin(); it != codeTabs.end(); ++it)
+    {
+        pt = it.value();
+        delete pt;
+    }
+
     delete ui;
     delete choiceDialog;
+    delete display;
+    delete tabArea;
 }
 
 void MainWindow::openDialog(void)
@@ -130,7 +140,7 @@ void MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shadertype
 
 void MainWindow::exitApplication(void)
 {
-    exit(0);
+    close();
 }
 
 void MainWindow::runShadersSelected(void)
@@ -173,4 +183,9 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
     codeTabs.insert(shadertype, codeContainer);
 
     choiceDialog->addButton(shadertype);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    emit programClose();
 }

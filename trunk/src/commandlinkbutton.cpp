@@ -9,7 +9,6 @@ CommandLinkButton::CommandLinkButton(ShaderLab::Shader shadertype, QWidget *pare
     setText( tr(QString(ShaderLab::shaderToStr(shadertype) + " Code").toAscii()) );
 
     connect(this, SIGNAL(clicked()), this, SLOT(clicou()));
-
 }
 
 void CommandLinkButton::clicou(void)

@@ -15,10 +15,6 @@ public:
 private slots:
     void clicou(void);
 
-
-protected:
-   // void mouseReleaseEvent(QMouseEvent *event);
-
 signals:
     void clicked(ShaderLab::Shader shaderType);
 
