@@ -1,3 +1,5 @@
+#include <QDebug>
+
 #include "commandlinkbutton.h"
 
 CommandLinkButton::CommandLinkButton(ShaderLab::Shader shadertype, QWidget *parent) :
@@ -5,10 +7,12 @@ CommandLinkButton::CommandLinkButton(ShaderLab::Shader shadertype, QWidget *pare
 {
     shaderType = shadertype;
     setText( tr(QString(ShaderLab::shaderToStr(shadertype) + " Code").toAscii()) );
+
+    connect(this, SIGNAL(clicked()), this, SLOT(clicou()));
+
 }
 
-void CommandLinkButton::mouseReleaseEvent(QMouseEvent *event)
+void CommandLinkButton::clicou(void)
 {
-    if(event->button() == Qt::LeftButton)
-        emit clicked(shaderType);
+    emit clicked(shaderType);
 }
