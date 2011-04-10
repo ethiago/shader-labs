@@ -4,7 +4,7 @@
 #include <QCommandLinkButton>
 #include <QMouseEvent>
 
-#include<global.h>
+#include "global.h"
 
 class CommandLinkButton : public QCommandLinkButton
 {
