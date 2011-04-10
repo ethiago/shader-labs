@@ -188,4 +188,5 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     emit programClose();
+    event->accept();
 }
