@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += opengl testlib
+QT       += core opengl testlib
 
 TARGET = tst_filecontrollerteste
 CONFIG   += console
