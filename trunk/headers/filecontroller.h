@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QGLShader>
 
-#include "mainwindow.h"
 #include "global.h"
 
 class FileController : public QObject

@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="OkVert">resources/ok.vert</file>
+        <file alias="ProblemVert">resources/problem.vert</file>
+    </qresource>
+</RCC>
