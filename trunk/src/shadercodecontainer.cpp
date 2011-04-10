@@ -1,3 +1,5 @@
+#include <QFont>
+
 #include "shadercodecontainer.h"
 #include "ui_shadercodecontainer.h"
 
@@ -6,6 +8,7 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
     QWidget(parent), ui(new Ui::ShaderCodeContainer)
 {
     ui->setupUi(this);
+    ui->shaderCodeBox->setFont(QFont("Courier"));
     shaderType = shadertype;
 
     ui->shaderCodeBox->setFont(QFont("Courier"));

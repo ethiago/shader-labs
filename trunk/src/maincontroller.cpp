@@ -4,6 +4,7 @@
 #include "maincontroller.h"
 #include "mainwindow.h"
 #include "filecontroller.h"
+#include "global.h"
 
 MainController::MainController(QObject *parent) : QObject(parent)
 {
@@ -84,27 +85,45 @@ void MainController::runAllActiveShaders(void)
     QString output;
 
     bool atLeastOne = false;
+    bool compOK, thereIsCode = false;
+    ShaderLab::Shader shadertype;
+
+    mainWindow->setOutputText(QString());
 
     for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
     {
-        bool tmp = it.value()->compile(mainWindow->shaderCode(it.key()));
-        output += it.value()->log();
-        atLeastOne = atLeastOne || tmp;
+        thereIsCode = true;
+        shadertype = it.key();
 
-        if(tmp)
-            program.addShader(it.value()->getShader());
+        output += "====================== Compiling " + shaderToStr(shadertype) + " code ======================\n";
+
+        compOK = it.value()->compile(mainWindow->shaderCode(it.key()));
+        if(compOK) program.addShader(it.value()->getShader());
+
+        atLeastOne = atLeastOne || compOK;
+
+        QString log = it.value()->log();
+        if(log == "") output += "Successfull.\n";
+        else output += log;
+
+        output += "\n";
     }
 
+    output += "====================== Linking process ======================\n";
     if(atLeastOne)
     {
         program.link();
         output += program.log();
 
         program.bind();
-    }else
-    {
-        output = tr("No active shader code to compile.");
     }
+    else
+    {
+        output += "Due to problems, linking process could not be performed.";
+    }
+
+    if(!thereIsCode)
+        output = tr("No active shader code to compile.");
 
     mainWindow->setOutputText(output);
     mainWindow->updateDisplay();
