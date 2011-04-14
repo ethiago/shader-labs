@@ -48,8 +48,8 @@ void MainController::openShaderCode(const QString& filepath, ShaderLab::Shader s
 
         fileContent = fc->getFileContent();
 
-        mainWindow->setShaderCode(fileContent, shaderType);
-        mainWindow->setVisibleShader(true, shaderType);
+        qDebug() << "setShader " << mainWindow->setShaderCode(fileContent, shaderType);
+        qDebug() << "setVisible " << mainWindow->setVisibleShader(true, shaderType);
     }
     else
     {

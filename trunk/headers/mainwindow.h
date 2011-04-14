@@ -42,15 +42,16 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void setVisibleShader(bool, ShaderLab::Shader);
-    void setShaderCode(const QString&, ShaderLab::Shader);
+    bool setVisibleShader(bool, ShaderLab::Shader);
+    bool setShaderCode(const QString&, ShaderLab::Shader);
 
     bool visibleShader(ShaderLab::Shader);
     QString shaderCode(ShaderLab::Shader);
 
-    void updateDisplay();
+    bool updateDisplay();
 
-    void setOutputText(const QString& );
+    bool setOutputText(const QString& );
+    QString getOutputText(void);
 
 private:
     Ui::MainWindow *ui;
