@@ -103,10 +103,13 @@ QString MainWindow::shaderCode(ShaderLab::Shader shadertype)
     return QString();
 }
 
-void MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
+bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
 {
     QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
     it = codeTabs.find(shadertype);
+
+    if(it == codeTabs.end())
+        return false;
 
     int ind = tabArea->indexOf(it.value());
     if(v == true)
@@ -126,16 +129,22 @@ void MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
             tabArea->removeTab(ind);
         }
     }
+
+    return true;
 }
 
-void MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shadertype)
+bool MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shadertype)
 {
     QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
 
     it = codeTabs.find(shadertype);
 
     if(it != codeTabs.end())
+    {
         it.value()->setText(code);
+        return true;
+    }else
+        return false;
 }
 
 void MainWindow::exitApplication(void)
@@ -148,9 +157,11 @@ void MainWindow::runShadersSelected(void)
     emit runShaders();
 }
 
-void MainWindow::updateDisplay()
+bool MainWindow::updateDisplay()
 {
     display->updateGL();
+
+    return true;
 }
 
 void MainWindow::viewMenuClicked(QAction* act)
@@ -162,9 +173,11 @@ void MainWindow::viewMenuClicked(QAction* act)
 
 }
 
-void MainWindow::setOutputText(const QString& s)
+bool MainWindow::setOutputText(const QString& s)
 {
     ui->outputTextBox->setPlainText(s);
+
+    return true;
 }
 
 void MainWindow::dockOutputVisibilityChange(bool v)
@@ -183,6 +196,11 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
     codeTabs.insert(shadertype, codeContainer);
 
     choiceDialog->addButton(shadertype);
+}
+
+QString MainWindow::getOutputText(void)
+{
+    return ui->outputTextBox->toPlainText();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core opengl testlib
+QT       += core opengl testlib gui
 
 TARGET = tst_filecontrollerteste
 CONFIG   += console
@@ -18,6 +18,23 @@ TEMPLATE = app
 
 OBJECTS += ../../../ShaderLab-build-desktop/tmp/filecontroller.o
 OBJECTS += ../../../ShaderLab-build-desktop/tmp/moc_filecontroller.o
+
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/mainwindow.o
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/moc_mainwindow.o
+
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/codechoicedialog.o
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/moc_codechoicedialog.o
+
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/shadercodecontainer.o
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/moc_shadercodecontainer.o
+
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/commandlinkbutton.o
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/moc_commandlinkbutton.o
+
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/gldisplay.o
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/moc_gldisplay.o
+
+OBJECTS += ../../../ShaderLab-build-desktop/tmp/global.o
 
 SOURCES += tst_filecontrollerteste.cpp
 
