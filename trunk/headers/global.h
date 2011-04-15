@@ -7,6 +7,8 @@ namespace ShaderLab {
 
 enum Shader{ Vertex, Fragment };
 QString shaderToStr(Shader s);
+int shaderToInt(Shader s);
+Shader intToShader(int v);
 
 }
 

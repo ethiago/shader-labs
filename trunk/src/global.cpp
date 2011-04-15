@@ -10,3 +10,13 @@ QString ShaderLab::shaderToStr(Shader s)
 
     return QString();
 }
+
+int ShaderLab::shaderToInt(Shader s)
+{
+    return static_cast<int>(s);
+}
+
+ShaderLab::Shader ShaderLab::intToShader(int v)
+{
+    return static_cast<ShaderLab::Shader>(v);
+}

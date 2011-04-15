@@ -115,23 +115,38 @@ void FileControllerTeste::fileControllerCompile6()
 
 void FileControllerTeste::mainWindowSetVisibleShader_data()
 {
+    using namespace ShaderLab;
+    QTest::addColumn<int>("habilityShader");
     QTest::addColumn<bool>("visibility");
+    QTest::addColumn<int>("visibilityShader");
     QTest::addColumn<bool>("result");
+    QTest::addColumn<bool>("newVisibility");
 
-    QTest::newRow("bla1") << true << true;
-    QTest::newRow("bla2") << false << true;
+    QTest::newRow("bla1") << shaderToInt(Vertex) <<  true
+                          << shaderToInt(Vertex) << true << true;
+    QTest::newRow("bla2") << shaderToInt(Vertex) <<  false
+                          << shaderToInt(Vertex) << true << false;
+    QTest::newRow("bla3") << shaderToInt(Vertex) << true
+                          << shaderToInt(Fragment) << false << false;
+    QTest::newRow("bla4") << shaderToInt(Vertex) << false
+                          << shaderToInt(Fragment) << false << false;
+
 }
 
 void FileControllerTeste::mainWindowSetVisibleShader()
 {
+    using namespace ShaderLab;
+    QFETCH(int, habilityShader);
     QFETCH(bool, visibility);
+    QFETCH(int, visibilityShader);
     QFETCH(bool, result);
+    QFETCH(bool, newVisibility);
 
     MainWindow w;
-    w.addShader(ShaderLab::Vertex);
+    w.addShader(intToShader(habilityShader));
 
-    QVERIFY(w.setVisibleShader(visibility, ShaderLab::Vertex) == result);
-    QVERIFY(w.visibleShader(ShaderLab::Vertex) == visibility);
+    QVERIFY(w.setVisibleShader(visibility, intToShader(visibilityShader)) == result);
+    QVERIFY(w.visibleShader(intToShader(visibilityShader)) == newVisibility);
 }
 
 void FileControllerTeste::mainWindowSetShaderCode() {}
