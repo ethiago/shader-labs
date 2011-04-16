@@ -17,9 +17,8 @@ public:
 
 private Q_SLOTS:
 
-    void fileControllerGetFileContent1();
-    void fileControllerGetFileContent2();
-    void fileControllerGetFileContent3();
+    void fileControllerGetFileContent_data();
+    void fileControllerGetFileContent();
 
     void fileControllerCompile1();
     void fileControllerCompile2();
@@ -42,28 +41,38 @@ private Q_SLOTS:
 FileControllerTeste::FileControllerTeste()
 {
 
+
 }
-void FileControllerTeste::fileControllerGetFileContent1()
+void FileControllerTeste::fileControllerGetFileContent_data()
 {
-    FileController fc(":/OkVert", ShaderLab::Vertex);
-    QFile f(":/OkVert");
-    f.open(QFile::ReadOnly);
-    QString fileContent = f.readAll();
-    QVERIFY(fileContent == fc.getFileContent());
+    QTest::addColumn<QString>("filename1");
+    QTest::addColumn<QString>("filename2");
+    QTest::addColumn<bool>("result");
+
+    QTest::newRow("equal files") << QString(":/OkVert")
+                                  << QString(":/OkVert") << true;
+    QTest::newRow("diferent files") << QString(":/OkVert")
+                                  << QString(":/ProblemVert") << false;
+    QTest::newRow("diferent files") << QString(":/NotExistFile")
+                                  << QString(":/NotExistFile") << true;
 }
-void FileControllerTeste::fileControllerGetFileContent2()
+void FileControllerTeste::fileControllerGetFileContent()
 {
-    FileController fc(":/OkVert", ShaderLab::Vertex);
-    QFile f(":/ProblemVert");
-    f.open(QFile::ReadOnly);
-    QString fileContent = f.readAll();
-    QVERIFY(fileContent != fc.getFileContent());
+    QFETCH(QString, filename1);
+    QFETCH(QString, filename2);
+    QFETCH(bool, result);
+
+    FileController fc(filename1, ShaderLab::Vertex);
+    QFile f(filename2);
+    if(f.open(QFile::ReadOnly))
+    {
+        QString fileContent = f.readAll();
+        QVERIFY((fileContent == fc.getFileContent()) == result);
+    }
+    else
+        QVERIFY(fc.getFileContent().isEmpty() == result);
 }
-void FileControllerTeste::fileControllerGetFileContent3()
-{
-    FileController fc(":/NotExistFile", ShaderLab::Vertex);
-    QVERIFY(QString() == fc.getFileContent());
-}
+
 void FileControllerTeste::fileControllerCompile1()
 {
     FileController fc(":/OkVert", ShaderLab::Vertex);
