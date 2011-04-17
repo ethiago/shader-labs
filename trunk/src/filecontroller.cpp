@@ -3,8 +3,12 @@
 
 #include "filecontroller.h"
 
-FileController::FileController(QString filepath, ShaderLab::Shader shadertype,
-                               QObject *parent) : QObject(parent)
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */
+
+/* Constructor for a file that already exists */
+FileController::FileController(QString filepath, ShaderLab::Shader shadertype, QObject *parent) : QObject(parent)
 {
     filePath = filepath;
     shaderType = shadertype;
@@ -22,6 +26,7 @@ FileController::FileController(QString filepath, ShaderLab::Shader shadertype,
     }
 }
 
+/* Constructor for a new file, created inside ShaderLab */
 FileController::FileController(ShaderLab::Shader shadertype, QObject *parent) : QObject(parent)
 {
     shaderType = shadertype;
@@ -39,11 +44,17 @@ FileController::FileController(ShaderLab::Shader shadertype, QObject *parent) : 
     }
 }
 
+/* Class destructor */
 FileController::~FileController()
 {
     delete shader;
 }
 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* ++++++++++++++++++++++ Getters and setters ++++++++++++++++++++++ */
+
+/* Returns the content of the file IN THE DISK. */
 QString FileController::getFileContent(void)
 {
     QString content;
@@ -59,6 +70,48 @@ QString FileController::getFileContent(void)
     return QString();
 }
 
+/* Returns the name of the associated file. New files are given a default name. */
+QString FileController::getFileName()
+{
+    if(isNew)
+    {
+        return QString("new_") + ShaderLab::shaderToStr(shaderType);
+    }
+    else
+    {
+        return filePath.fileName();
+    }
+}
+
+/* Getter for the QGLShader attribute. */
+QGLShader *FileController::getShader(void)
+{
+    return shader;
+}
+
+/* Getter for the changed attribute. */
+bool FileController::getChanged(void)
+{
+    return changed;
+}
+
+/* Setter for the changed attribute. */
+void FileController::setChanged(bool val)
+{
+    changed = val;
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* +++++++++++++++++++++++++ Other methods +++++++++++++++++++++++++ */
+
+/* Compiles the source code from a file in the disk, given a path to it. */
+bool FileController::compile(void)
+{
+    return shader->compileSourceFile(filePath.absoluteFilePath());
+}
+
+/* Compiles the code currently in the screen, given the code. */
 bool FileController::compile(const QString& code)
 {
     if(!code.isEmpty())
@@ -69,21 +122,14 @@ bool FileController::compile(const QString& code)
     return false;
 }
 
-bool FileController::compile(void)
-{
-    return shader->compileSourceFile(filePath.absoluteFilePath());
-}
-
+/* Returns the log from the last compilation process. */
 QString FileController::log()
 {
     return shader->log();
 }
 
-QGLShader *FileController::getShader(void)
-{
-    return shader;
-}
-
+/* Saves the given content on the file. */
+/* TO-DO: Save a new file */
 bool FileController::save(const QString& content)
 {
     if(!isNew)
@@ -98,37 +144,11 @@ bool FileController::save(const QString& content)
 
             return true;
         }
-        else
-        {
-            return false;
-        }
+        else return false;
     }
     else
     {
         qDebug() << "New file won't be saved for now.";
         return false;
     }
-
-}
-
-QString FileController::getFileName()
-{
-    if(isNew)
-    {
-        return QString("new_") + ShaderLab::shaderToStr(shaderType);
-    }
-    else
-    {
-        return filePath.fileName();
-    }
-}
-
-void FileController::setChanged(bool val)
-{
-    changed = val;
-}
-
-bool FileController::getChanged(void)
-{
-    return changed;
 }

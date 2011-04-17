@@ -8,7 +8,8 @@
 
 class CommandLinkButton : public QCommandLinkButton
 {
-Q_OBJECT
+    Q_OBJECT
+
 public:
     explicit CommandLinkButton(ShaderLab::Shader shadertype, QWidget *parent = 0);
 
