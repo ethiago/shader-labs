@@ -1,8 +1,7 @@
 #include "codechoicedialog.h"
 #include "ui_codechoicedialog.h"
 
-CodeChoiceDialog::CodeChoiceDialog(QWidget *parent) :
-        QDialog(parent), ui(new Ui::Dialog)
+CodeChoiceDialog::CodeChoiceDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog)
 {
     ui->setupUi(this);
 }
@@ -11,11 +10,13 @@ CodeChoiceDialog::~CodeChoiceDialog()
 {
     QMap<ShaderLab::Shader, CommandLinkButton*>::iterator it;
     CommandLinkButton* pt;
+
     for(it = buttons.begin(); it != buttons.end(); ++it)
     {
         pt = it.value();
         delete pt;
     }
+
     delete ui;
 }
 

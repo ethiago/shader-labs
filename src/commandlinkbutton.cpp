@@ -2,8 +2,8 @@
 
 #include "commandlinkbutton.h"
 
-CommandLinkButton::CommandLinkButton(ShaderLab::Shader shadertype, QWidget *parent) :
-    QCommandLinkButton(parent)
+
+CommandLinkButton::CommandLinkButton(ShaderLab::Shader shadertype, QWidget *parent) : QCommandLinkButton(parent)
 {
     shaderType = shadertype;
     setText( tr(QString(ShaderLab::shaderToStr(shadertype) + " Code").toAscii()) );
@@ -11,6 +11,7 @@ CommandLinkButton::CommandLinkButton(ShaderLab::Shader shadertype, QWidget *pare
     connect(this, SIGNAL(clicked()), this, SLOT(clicou()));
 }
 
+/* Tá em português!!!!! */
 void CommandLinkButton::clicou(void)
 {
     emit clicked(shaderType);
