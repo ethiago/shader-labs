@@ -27,6 +27,9 @@ private Q_SLOTS:
     void fileControllerCompile5();
     void fileControllerCompile6();
 
+    //void fileControllerSave_data();
+    void fileControllerSave();
+
     void mainWindowSetVisibleShader_data();
     void mainWindowSetVisibleShader();
 
@@ -120,6 +123,34 @@ void FileControllerTeste::fileControllerCompile6()
 {
     FileController fc(":/NotExistFile", ShaderLab::Vertex);
     QVERIFY(!fc.compile());
+}
+
+/*void fileControllerSave_data()
+{
+
+}*/
+
+void FileControllerTeste::fileControllerSave()
+{
+    QString before = "A seashell or sea shell, also known simply as a shell, is a hard, \
+protective outer layer created by an animal that lives in the sea. The \
+shell is part of the body of the animal.";
+
+    QFile file(QString("../../ShaderLabUnitTestes/resources/testSave.vert"));
+    file.open(QFile::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+    out << before;
+    file.close();
+
+    QString content = "Test Content";
+    FileController fc("../../ShaderLabUnitTestes/resources/testSave.vert",ShaderLab::Vertex);
+    fc.save(content);
+
+    if(file.open(QFile::ReadOnly))
+        QVERIFY(file.readAll() == content);
+    else
+        qDebug() << "Erro";
+
 }
 
 void FileControllerTeste::mainWindowSetVisibleShader_data()

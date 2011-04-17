@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QGLShader>
+#include <QFileInfo>
 
 #include "global.h"
 
@@ -14,6 +15,8 @@ public:
     explicit FileController(QString filepath, ShaderLab::Shader shadertype,
                             QObject *parent = 0);
 
+    explicit FileController(ShaderLab::Shader shadertype, QObject *parent = 0);
+
     ~FileController();
 
     QString getFileContent(void);
@@ -22,11 +25,18 @@ public:
     bool compile(void);
     QGLShader* getShader(void);
     QString log();
+    bool save(const QString&);
+    QString getFileName();
+    void setChanged(bool val);
+    bool getChanged(void);
+
 
 private:
-    QString filePath;
+    QFileInfo filePath;
     QGLShader *shader;
     ShaderLab::Shader shaderType;
+    bool isNew;
+    bool changed;
 
 };
 

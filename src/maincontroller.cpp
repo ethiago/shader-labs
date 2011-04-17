@@ -22,11 +22,20 @@ MainController::MainController(QObject *parent) : QObject(parent)
     connect(mainWindow, SIGNAL(programClose()),
             this, SLOT(programCloseRequest()));
 
+    connect(mainWindow, SIGNAL(saveFile(ShaderLab::Shader)),
+            this, SLOT(saveFile(ShaderLab::Shader)));
+
+    connect(mainWindow, SIGNAL(newShaderFile(ShaderLab::Shader)),
+            this, SLOT(newShaderCode(ShaderLab::Shader)));
+
+    connect(mainWindow, SIGNAL(shaderCodeChanged(ShaderLab::Shader)),
+            this, SLOT(fileChanged(ShaderLab::Shader)));
+
     mainWindow->addShader(ShaderLab::Vertex);
     mainWindow->addShader(ShaderLab::Fragment);
 
 
-    mainWindow->show();
+    mainWindow->showMaximized();
 }
 MainController::~MainController()
 {
@@ -48,8 +57,13 @@ void MainController::openShaderCode(const QString& filepath, ShaderLab::Shader s
 
         fileContent = fc->getFileContent();
 
-        qDebug() << "setShader " << mainWindow->setShaderCode(fileContent, shaderType);
-        qDebug() << "setVisible " << mainWindow->setVisibleShader(true, shaderType);
+        mainWindow->setVisibleShader(true, shaderType);
+        mainWindow->setShaderCode(fileContent, shaderType);
+        fc->setChanged(false);
+
+        qDebug() << fc->getChanged();
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
+
     }
     else
     {
@@ -118,9 +132,7 @@ void MainController::runAllActiveShaders(void)
         program.bind();
     }
     else
-    {
         output += "Due to problems, linking process could not be performed.";
-    }
 
     if(!thereIsCode)
         output = tr("No active shader code to compile.");
@@ -135,35 +147,55 @@ void MainController::programCloseRequest(void)
     delete this;
 }
 
+void MainController::saveFile(ShaderLab::Shader shadertype)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
 
+    it = fileControllers.find(shadertype);
 
+    if(it == fileControllers.end())
+        return;
 
+    FileController* fc = it.value();
 
+    if(fc->save(mainWindow->shaderCode(shadertype)))
+    {
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+    }
+}
 
+void MainController::newShaderCode(ShaderLab::Shader shadertype)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    FileController *fc;
 
+    it = fileControllers.find(shadertype);
 
+    if(it == fileControllers.end())
+    {
+        fc = new FileController(shadertype);
+        fileControllers.insert(shadertype, fc);
 
+        mainWindow->setVisibleShader(true, shadertype);
+        mainWindow->setShaderCode(QString(),  shadertype);
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+    }
+    else
+    {
+        QMessageBox::warning(mainWindow, QObject::tr("Failed to create file"),
+                             QObject::tr(QString(shaderToStr(shadertype) + " code already opened.").toAscii()));
+    }
+}
 
+void MainController::fileChanged(ShaderLab::Shader shadertype)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    FileController *fc;
 
+    it = fileControllers.find(shadertype);
+    fc = it.value();
 
+    fc->setChanged(true);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+}

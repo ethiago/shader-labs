@@ -20,13 +20,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->verticalLayout->addWidget(display);
 
     connect(ui->actionOpen_Shader_Code, SIGNAL(triggered()), this, SLOT(openDialog()));
-    connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShader(ShaderLab::Shader)));
+    connect(ui->action_New_Shader_Code, SIGNAL(triggered()), this, SLOT(newDialog()));
     connect(tabArea, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabRequest(int)));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(exitApplication()));
     connect(ui->actionRunShaders, SIGNAL(triggered()), this, SLOT(runShadersSelected()));
     connect(ui->menuView, SIGNAL(triggered(QAction*)), this, SLOT(viewMenuClicked(QAction*)));
     connect(ui->dockOutPutWidget, SIGNAL(visibilityChanged(bool)), this, SLOT(dockOutputVisibilityChange(bool)));
     connect(ui->dockRenderWidget, SIGNAL(visibilityChanged(bool)), this, SLOT(dockRenderVisibilityChange(bool)));
+    connect(ui->action_Save_Shader_Code, SIGNAL(triggered()), this, SLOT(saveFile()));
 }
 
 MainWindow::~MainWindow()
@@ -47,10 +48,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::openDialog(void)
 {
+    connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
     choiceDialog->open();
 }
 
-void MainWindow::selectedShader(ShaderLab::Shader sh)
+void MainWindow::selectedShaderOpenDialog(ShaderLab::Shader sh)
 {
     QString filename;
 
@@ -66,7 +68,25 @@ void MainWindow::selectedShader(ShaderLab::Shader sh)
 
     if(!filename.isEmpty())
         emit selectedFile(filename, sh);
+
+    disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
 }
+
+
+void MainWindow::newDialog(void)
+{
+    connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderNewDialog(ShaderLab::Shader)));
+    choiceDialog->open();
+}
+
+void MainWindow::selectedShaderNewDialog(ShaderLab::Shader shadertype)
+{
+    emit newShaderFile(shadertype);
+
+    disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderNewDialog(ShaderLab::Shader)));
+}
+
+
 
 void MainWindow::closeTabRequest(int index)
 {
@@ -116,16 +136,16 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
     {
         if(ind == -1)
         {
-            tabArea->insertTab(tabArea->count(), it.value(), tr(shaderToStr(it.key()).toAscii()));
+            tabArea->insertTab(tabArea->count(), it.value(), QString());
             tabArea->setCurrentIndex(tabArea->count() -1);
         }
 
-    }else
+    }
+    else
     {
-
         if(ind != -1)
         {
-            it.value()->setText(QString());
+            //it.value()->setText(QString());
             tabArea->removeTab(ind);
         }
     }
@@ -142,6 +162,7 @@ bool MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shadertype
     if(it != codeTabs.end())
     {
         it.value()->setText(code);
+        tabArea->setTabText(tabArea->currentIndex(), tr(shaderToStr(shadertype).toAscii()));
         return true;
     }else
         return false;
@@ -195,6 +216,8 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
     ShaderCodeContainer *codeContainer = new ShaderCodeContainer(shadertype);
     codeTabs.insert(shadertype, codeContainer);
 
+    connect(codeContainer, SIGNAL(textChanged(ShaderLab::Shader)), this, SLOT(textChanged(ShaderLab::Shader)));
+
     choiceDialog->addButton(shadertype);
 }
 
@@ -207,4 +230,36 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     emit programClose();
     event->accept();
+}
+
+void MainWindow::saveFile(void)
+{
+    ShaderCodeContainer* shaderTab = ((ShaderCodeContainer*)tabArea->currentWidget());
+    if(shaderTab != NULL)
+    {
+        ShaderLab::Shader shadertype = shaderTab->getShaderType();
+        emit saveFile(shadertype);
+    }
+}
+
+void MainWindow::textChanged(ShaderLab::Shader shadertype)
+{
+    emit shaderCodeChanged(shadertype);
+}
+
+void MainWindow::setFileNameDisplay(QString filename, bool changed, ShaderLab::Shader shadertype)
+{
+    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
+
+    QString display = (changed ? QString("*") : QString()) + filename;
+
+    it = codeTabs.find(shadertype);
+
+    if(it != codeTabs.end())
+    {
+        int ind = tabArea->indexOf(it.value());
+
+        if(ind != -1)
+            tabArea->setTabText(ind, display);
+    }
 }

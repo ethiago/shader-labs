@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>743</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -55,7 +55,9 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="action_New_Shader_Code"/>
     <addaction name="actionOpen_Shader_Code"/>
+    <addaction name="action_Save_Shader_Code"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -90,6 +92,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionOpen_Shader_Code"/>
+   <addaction name="action_New_Shader_Code"/>
+   <addaction name="action_Save_Shader_Code"/>
    <addaction name="separator"/>
    <addaction name="actionRunShaders"/>
   </widget>
@@ -255,6 +259,30 @@
    </property>
    <property name="text">
     <string>R&amp;ender area</string>
+   </property>
+  </action>
+  <action name="action_Save_Shader_Code">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302044102_mail-new.png</normaloff>:/ico/img/1302044102_mail-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save Shader Code</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_New_Shader_Code">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302039837_Empty_document_new.png</normaloff>:/ico/img/1302039837_Empty_document_new.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New Shader Code...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>

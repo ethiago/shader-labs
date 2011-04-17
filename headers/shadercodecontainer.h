@@ -22,6 +22,12 @@ private:
     Ui::ShaderCodeContainer *ui;
     ShaderLab::Shader shaderType;
 
+private slots:
+    void textChanged(void);
+
+signals:
+    void textChanged(ShaderLab::Shader);
+
 };
 
 #endif // SHADERCODECONTAINER_H

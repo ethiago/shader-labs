@@ -22,6 +22,11 @@ void Stories() {
                 
                 "Eu, enquanto usuario, gostaria de poder salvar um arquivo\
                  criado ou editado dentro do programa.";
+                {
+                    "Eu, enquanto usuario, gostaria de poder salvar o arquivo de trabalho, sobrescrevendo-o";
+
+                    "Eu, enquanto usuario, gostaria de poder salvar o arquivo como um novo arquivo";
+                }
             }
             
             "Eu, enquanto usuario, gostaria de poder fazer passagem de parametros\
@@ -63,9 +68,13 @@ void Stories() {
         "Eu, enquanto usuario, gostaria de testar codigo para Fragment Shader\
          assim como faco para o vertex shader.";
         
-         1;
+         0.7;
         "Eu, enquanto usuario, gostaria de escolher quais shaders abertos serao\
          executados.";
+
+         0.3;
+        "Eu, enquanto usuario, gostaria de poer salvar todos os arquivos abertos \
+         e editados de uma so vez."
     }
 
     9;

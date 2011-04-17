@@ -24,19 +24,26 @@ class MainWindow : public QMainWindow
 public slots:
     void exitApplication(void);
     void openDialog(void);
-    void selectedShader(ShaderLab::Shader);
+    void selectedShaderOpenDialog(ShaderLab::Shader);
+    void newDialog(void);
+    void selectedShaderNewDialog(ShaderLab::Shader);
     void closeTabRequest(int index);
     void runShadersSelected(void);
     void viewMenuClicked(QAction*);
     void dockOutputVisibilityChange(bool);
     void dockRenderVisibilityChange(bool);
     void addShader(ShaderLab::Shader shadertype);
+    void saveFile(void);
+    void textChanged(ShaderLab::Shader);
 
 signals:
     void selectedFile(const QString& , ShaderLab::Shader);
+    void newShaderFile(ShaderLab::Shader);
     void runShaders(void);
     void closeTabRequest(ShaderLab::Shader);
     void programClose();
+    void saveFile(ShaderLab::Shader);
+    void shaderCodeChanged(ShaderLab::Shader);
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -52,6 +59,8 @@ public:
 
     bool setOutputText(const QString& );
     QString getOutputText(void);
+
+    void setFileNameDisplay(QString filename, bool changed, ShaderLab::Shader);
 
 private:
     Ui::MainWindow *ui;
