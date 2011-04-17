@@ -12,6 +12,8 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
     shaderType = shadertype;
 
     ui->shaderCodeBox->setFont(QFont("Courier"));
+
+    connect(ui->shaderCodeBox, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
 
 ShaderCodeContainer::~ShaderCodeContainer()
@@ -32,4 +34,9 @@ QString ShaderCodeContainer::getText()
 ShaderLab::Shader ShaderCodeContainer::getShaderType(void)
 {
     return shaderType;
+}
+
+void ShaderCodeContainer::textChanged(void)
+{
+    emit textChanged(shaderType);
 }

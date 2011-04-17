@@ -20,9 +20,12 @@ signals:
 
 public slots:
     void openShaderCode(const QString& filename, ShaderLab::Shader);
+    void newShaderCode(ShaderLab::Shader);
     void closeShaderCode(ShaderLab::Shader);
     void runAllActiveShaders(void);
     void programCloseRequest(void);
+    void saveFile(ShaderLab::Shader shadertype);
+    void fileChanged(ShaderLab::Shader);
 
 private:
     MainWindow *mainWindow;
