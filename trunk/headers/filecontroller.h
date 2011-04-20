@@ -27,13 +27,14 @@ public:
     QString log();
     bool save(const QString&);
 
-private:
-    QFileInfo filePath;
-    QGLShader *shader;
+private: 
+    QFileInfo filePath; /* Path to the file which the current instance is responsible for. */
+    QGLShader *shader;  /* QT resource to compile a shader program. */
 
-    bool changed;
-    bool isNew;
+    bool changed;       /* Indicates that the content of a file has been changed. */
+    bool isNew;         /* Indicates that the current instance has been crated for a new file. */
 
+    /* The kind of shader that the instance will manage. */
     ShaderLab::Shader shaderType;
 
 
