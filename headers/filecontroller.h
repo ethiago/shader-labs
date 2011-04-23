@@ -20,12 +20,16 @@ public:
     QString getFileName();
     QGLShader* getShader(void);
     bool getChanged(void);
+    bool IsNew(void);
+    ShaderLab::Shader getShaderType(void);
+
     void setChanged(bool val);
 
     bool compile(const QString& code);
     bool compile(void);
     QString log();
     bool save(const QString&);
+    bool saveAsNewFile(const QString& filepath, const QString& fileContent);
 
 private: 
     QFileInfo filePath; /* Path to the file which the current instance is responsible for. */

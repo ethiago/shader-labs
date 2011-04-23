@@ -25,11 +25,13 @@ public slots:
     void runAllActiveShaders(void);
     void programCloseRequest(void);
     void saveFile(ShaderLab::Shader shadertype);
+    void saveFileAs(ShaderLab::Shader shadertype, const QString&, const QString&);
     void fileChanged(ShaderLab::Shader);
 
 private:
     MainWindow *mainWindow;
     QMap<ShaderLab::Shader, FileController*> fileControllers;
+    void saveLogic(FileController*);
 
 };
 

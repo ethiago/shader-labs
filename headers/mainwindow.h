@@ -35,6 +35,7 @@ public slots:
     void addShader(ShaderLab::Shader shadertype);
     void saveFile(void);
     void textChanged(ShaderLab::Shader);
+    void saveFileAsDialog(void);
 
 signals:
     void selectedFile(const QString& , ShaderLab::Shader);
@@ -43,6 +44,7 @@ signals:
     void closeTabRequest(ShaderLab::Shader);
     void programClose();
     void saveFile(ShaderLab::Shader);
+    void saveFileAs(ShaderLab::Shader, const QString&, const QString&);
     void shaderCodeChanged(ShaderLab::Shader);
 
 public:
@@ -61,6 +63,9 @@ public:
     QString getOutputText(void);
 
     void setFileNameDisplay(QString filename, bool changed, ShaderLab::Shader);
+
+    bool saveRequest(const QString&);
+    QString saveAsRequest(ShaderLab::Shader);
 
 private:
     Ui::MainWindow *ui;

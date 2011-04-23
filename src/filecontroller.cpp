@@ -152,3 +152,34 @@ bool FileController::save(const QString& content)
         return false;
     }
 }
+
+bool FileController::IsNew(void)
+{
+    return isNew;
+}
+
+bool FileController::saveAsNewFile(const QString& filepath, const QString& fileContent)
+{
+    filePath = filepath;
+
+    QFile file(this->filePath.absoluteFilePath());
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+        out << fileContent;
+        file.close();
+        changed = false;
+        isNew = false;
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+ShaderLab::Shader FileController::getShaderType(void)
+{
+    return shaderType;
+}
