@@ -34,6 +34,9 @@ MainController::MainController(QObject *parent) : QObject(parent)
     connect(mainWindow, SIGNAL(saveFileAs(ShaderLab::Shader,QString,QString)),
             this, SLOT(saveFileAs(ShaderLab::Shader,QString,QString)));
 
+    connect(mainWindow, SIGNAL(saveAll()),
+            this, SLOT(saveAll()));
+
     mainWindow->addShader(ShaderLab::Vertex);
     mainWindow->addShader(ShaderLab::Fragment);
 
@@ -275,4 +278,32 @@ void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& fil
 
     if(fc->saveAsNewFile(filename, filecontent))
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+}
+
+void MainController::saveAll()
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+
+    for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
+    {
+        FileController* fc = it.value();
+
+        if(fc->getChanged())
+        {
+
+            if( fc->IsNew() )
+            {
+                QString filename = mainWindow->saveAsRequest( it.key() );
+                if(filename.isEmpty())
+                    continue;
+
+                fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
+            }else
+            {
+                fc->save(mainWindow->shaderCode(it.key()));
+            }
+
+            mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), it.key() );
+        }
+    }
 }
