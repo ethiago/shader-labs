@@ -11,8 +11,6 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
     ui->shaderCodeBox->setFont(QFont("Courier"));
     shaderType = shadertype;
 
-    ui->shaderCodeBox->setFont(QFont("Courier"));
-
     connect(ui->shaderCodeBox, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
 

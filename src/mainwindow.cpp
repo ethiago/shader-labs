@@ -1,4 +1,3 @@
-
 #include <QFile>
 #include <QVBoxLayout>
 #include <QMessageBox>
@@ -15,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->horizontalLayout->addWidget(tabArea);
 
     ui->dockOutPutWidget->setVisible(false);
-    ui->actionAplication_optput->setChecked(false);
+    ui->actionAplication_output->setChecked(false);
 
     display = new GLDisplay();
     ui->verticalLayout->addWidget(display);
@@ -24,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->action_New_Shader_Code, SIGNAL(triggered()), this, SLOT(newDialog()));
     connect(tabArea, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTabRequest(int)));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(exitApplication()));
-    connect(ui->actionRunShaders, SIGNAL(triggered()), this, SLOT(runShadersSelected()));
+    connect(ui->actionRunShaders, SIGNAL(triggered()), this, SLOT(runSelectedShaders()));
     connect(ui->menuView, SIGNAL(triggered(QAction*)), this, SLOT(viewMenuClicked(QAction*)));
     connect(ui->dockOutPutWidget, SIGNAL(visibilityChanged(bool)), this, SLOT(dockOutputVisibilityChange(bool)));
     connect(ui->dockRenderWidget, SIGNAL(visibilityChanged(bool)), this, SLOT(dockRenderVisibilityChange(bool)));
@@ -61,15 +60,8 @@ void MainWindow::selectedShaderOpenDialog(ShaderLab::Shader sh)
 
     disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
 
-    switch(sh)
-    {
-        case ShaderLab::Vertex:
-            filename = QFileDialog::getOpenFileName(this,tr("Open Vertex Shader Code"), "..", "*.vert");
-            break;
-        case ShaderLab::Fragment:
-            filename = QFileDialog::getOpenFileName(this, tr("Open Fragment Shader Code"), "..", "*.frag");
-            break;
-    }
+    filename = QFileDialog::getOpenFileName(this, "Open " + ShaderLab::shaderToStr(sh) + " shader code", "..",
+                                                "*" + ShaderLab::shaderToExt(sh));
 
     if(!filename.isEmpty())
         emit selectedFile(filename, sh);
@@ -133,6 +125,7 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
         return false;
 
     int ind = tabArea->indexOf(it.value());
+
     if(v == true)
     {
         if(ind == -1)
@@ -140,16 +133,9 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
             tabArea->insertTab(tabArea->count(), it.value(), QString());
             tabArea->setCurrentIndex(tabArea->count() -1);
         }
-
     }
-    else
-    {
-        if(ind != -1)
-        {
-            //it.value()->setText(QString());
-            tabArea->removeTab(ind);
-        }
-    }
+    else if(ind != -1)
+        tabArea->removeTab(ind);
 
     return true;
 }
@@ -163,10 +149,9 @@ bool MainWindow::setShaderCode(const QString& code, ShaderLab::Shader shadertype
     if(it != codeTabs.end())
     {
         it.value()->setText(code);
-        tabArea->setTabText(tabArea->currentIndex(), tr(shaderToStr(shadertype).toAscii()));
         return true;
-    }else
-        return false;
+    }
+    else return false;
 }
 
 void MainWindow::exitApplication(void)
@@ -174,7 +159,7 @@ void MainWindow::exitApplication(void)
     close();
 }
 
-void MainWindow::runShadersSelected(void)
+void MainWindow::runSelectedShaders(void)
 {
     emit runShaders();
 }
@@ -188,7 +173,7 @@ bool MainWindow::updateDisplay()
 
 void MainWindow::viewMenuClicked(QAction* act)
 {
-    if(act == ui->actionAplication_optput)
+    if(act == ui->actionAplication_output)
         ui->dockOutPutWidget->setVisible(act->isChecked());
     else if(act == ui->actionRender_area)
         ui->dockRenderWidget->setVisible(act->isChecked());
@@ -204,7 +189,7 @@ bool MainWindow::setOutputText(const QString& s)
 
 void MainWindow::dockOutputVisibilityChange(bool v)
 {
-    ui->actionAplication_optput->setChecked(v);
+    ui->actionAplication_output->setChecked(v);
 }
 
 void MainWindow::dockRenderVisibilityChange(bool v)
@@ -286,18 +271,8 @@ QString MainWindow::saveAsRequest(ShaderLab::Shader shader)
 {
     QString filename = QFileDialog::getSaveFileName(this, "Save As", "..");
 
-    if(filename.isEmpty())
-        return filename;
-
-    switch(shader)
-    {
-        case ShaderLab::Vertex:
-            filename += ".vert";
-            break;
-        case ShaderLab::Fragment:
-            filename += ".frag";
-            break;
-    }
+    if(!filename.isEmpty())
+        filename += ShaderLab::shaderToExt(shader);
 
     return filename;
 }

@@ -6,6 +6,10 @@
 #include "filecontroller.h"
 #include "global.h"
 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */
+
 MainController::MainController(QObject *parent) : QObject(parent)
 {
     mainWindow = new MainWindow();
@@ -43,11 +47,103 @@ MainController::MainController(QObject *parent) : QObject(parent)
 
     mainWindow->showMaximized();
 }
+
 MainController::~MainController()
 {
     delete mainWindow;
 }
 
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* +++++++++++++++++++++++++++++ Slots +++++++++++++++++++++++++++++ */
+
+/* Associated with the 'closeTabRequest' signal. */
+/* Reponsible for closing the tab of a shader program. Only when the content was changed, */
+/* and giving different treatment for new and old files. */
+void MainController::closeShaderCode(ShaderLab::Shader shaderType)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    it = fileControllers.find(shaderType);
+
+    if(it != fileControllers.end())
+    {
+        FileController* fc = it.value();
+
+        if(fc->getChanged())
+        {
+            if( mainWindow->saveRequest( fc->getFileName() ) )
+            {
+                if( fc->IsNew() )
+                {
+                    QString filename = mainWindow->saveAsRequest( it.key() );
+                    if(filename.isEmpty())
+                        return;
+
+                    fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
+                }
+                else
+                {
+                    fc->save(mainWindow->shaderCode(it.key()));
+                }
+            }
+        }
+
+        fileControllers.erase(it);
+
+        delete fc;
+
+        mainWindow->setVisibleShader(false, shaderType);
+    }
+    else
+    {
+        qDebug() << "Deu pau!";
+    }
+}
+
+/* Associated with the 'shaderCodeChanged' signal. */
+/* Updates both the isChanged property and the displayed name of the file. */
+void MainController::fileChanged(ShaderLab::Shader shadertype)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    it = fileControllers.find(shadertype);
+    if(it == fileControllers.end())
+        return;
+    FileController *fc = it.value();
+
+    fc->setChanged(true);
+
+    mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+}
+
+/* Associated with the 'newShaderFile' signal. */
+/* Creates a new FileController for a yet-non-existing file and displays the new empty file. */
+/* Won't allow 2 opened files for the same shader type. */
+void MainController::newShaderCode(ShaderLab::Shader shadertype)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    FileController *fc;
+
+    it = fileControllers.find(shadertype);
+
+    if(it == fileControllers.end())
+    {
+        fc = new FileController(shadertype);
+        fileControllers.insert(shadertype, fc);
+
+        mainWindow->setVisibleShader(true, shadertype);
+        mainWindow->setShaderCode(QString(),  shadertype);
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+    }
+    else
+    {
+        QMessageBox::warning(mainWindow, QObject::tr("Failed to create file"),
+                             QObject::tr(QString(shaderToStr(shadertype) + " code already opened.").toAscii()));
+    }
+}
+
+/* Associated with the 'selectedFile' signal. */
+/* Creates a new FileController for an existing file and displays its content for edition. */
+/* Won't allow 2 opened files for the same shader type. */
 void MainController::openShaderCode(const QString& filepath, ShaderLab::Shader shaderType)
 {
     QString fileContent;
@@ -73,16 +169,17 @@ void MainController::openShaderCode(const QString& filepath, ShaderLab::Shader s
     else
     {
         QMessageBox::warning(mainWindow, QObject::tr("Failed to open file"),
-                             QObject::tr(QString(shaderToStr(shaderType) + " code already opened.").toAscii()));
+                             QObject::tr(QString(shaderToStrCap(shaderType) + " code already opened.").toAscii()));
     }
 }
 
-void MainController::closeShaderCode(ShaderLab::Shader shaderType)
+/* Associated with the 'programClose' signal. */
+/* Before ending the application, checks and manages all unsaved files. */
+void MainController::programCloseRequest(void)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
-    it = fileControllers.find(shaderType);
 
-    if(it != fileControllers.end())
+    for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
     {
         FileController* fc = it.value();
 
@@ -108,14 +205,16 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
 
         delete fc;
 
-        mainWindow->setVisibleShader(false, shaderType);
+        mainWindow->setVisibleShader(false, it.key());
     }
-    else
-    {
-        qDebug() << "Deu pau!";
-    }
+
+    mainWindow->close();
+    delete this;
 }
 
+/* Associated with the 'runShaders' signal. */
+/* Compiles and runs all opened shader codes that are being edited, not the saved content. Also doesn't requires saving the code. */
+/* Builds a compilation output that will be show to the programmer. */
 void MainController::runAllActiveShaders(void)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
@@ -165,121 +264,8 @@ void MainController::runAllActiveShaders(void)
     mainWindow->updateDisplay();
 }
 
-void MainController::programCloseRequest(void)
-{
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
-
-    for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
-    {
-        FileController* fc = it.value();
-
-        if(fc->getChanged())
-        {
-            if( mainWindow->saveRequest( fc->getFileName() ) )
-            {
-                if( fc->IsNew() )
-                {
-                    QString filename = mainWindow->saveAsRequest( it.key() );
-                    if(filename.isEmpty())
-                        return;
-
-                    fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
-                }else
-                {
-                    fc->save(mainWindow->shaderCode(it.key()));
-                }
-            }
-        }
-
-        fileControllers.erase(it);
-
-        delete fc;
-
-        mainWindow->setVisibleShader(false, it.key());
-    }
-
-    mainWindow->close();
-    delete this;
-}
-
-void MainController::saveFile(ShaderLab::Shader shadertype)
-{
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
-    bool saved = false;
-
-    it = fileControllers.find(shadertype);
-
-    if(it == fileControllers.end())
-        return;
-
-    FileController* fc = it.value();
-
-    if( fc->IsNew() )
-    {
-        QString filename = mainWindow->saveAsRequest( it.key() );
-        if(filename.isEmpty())
-            return;
-
-        saved = fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
-    }else
-    {
-        saved = fc->save(mainWindow->shaderCode(it.key()));
-    }
-
-    if( saved )
-    {
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
-    }
-}
-
-void MainController::newShaderCode(ShaderLab::Shader shadertype)
-{
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
-    FileController *fc;
-
-    it = fileControllers.find(shadertype);
-
-    if(it == fileControllers.end())
-    {
-        fc = new FileController(shadertype);
-        fileControllers.insert(shadertype, fc);
-
-        mainWindow->setVisibleShader(true, shadertype);
-        mainWindow->setShaderCode(QString(),  shadertype);
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
-    }
-    else
-    {
-        QMessageBox::warning(mainWindow, QObject::tr("Failed to create file"),
-                             QObject::tr(QString(shaderToStr(shadertype) + " code already opened.").toAscii()));
-    }
-}
-
-void MainController::fileChanged(ShaderLab::Shader shadertype)
-{
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
-    it = fileControllers.find(shadertype);
-    if(it == fileControllers.end())
-        return;
-    FileController *fc = it.value();
-
-    fc->setChanged(true);
-
-    mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
-}
-
-void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& filename, const QString& filecontent)
-{
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
-    it = fileControllers.find(shadertype);
-    if(it == fileControllers.end())
-        return;
-    FileController *fc = it.value();
-
-    if(fc->saveAsNewFile(filename, filecontent))
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
-}
-
+/* Associated with the 'saveaAll' signal. */
+/* Performs a saving routine for all unsaved files, distinguishin new ando old files. */
 void MainController::saveAll()
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
@@ -307,3 +293,48 @@ void MainController::saveAll()
         }
     }
 }
+
+/* Associated with the 'saveFile' signal. */
+/* Called for a single instance (tab in teh UI. */
+void MainController::saveFile(ShaderLab::Shader shadertype)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    bool saved = false;
+
+    it = fileControllers.find(shadertype);
+
+    if(it == fileControllers.end())
+        return;
+
+    FileController* fc = it.value();
+
+    if( fc->IsNew() )
+    {
+        QString filename = mainWindow->saveAsRequest( it.key() );
+        if(filename.isEmpty()) return;
+
+        saved = fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
+    }
+    else
+    {
+        saved = fc->save(mainWindow->shaderCode(it.key()));
+    }
+
+    if(saved) mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+
+}
+
+/* Associated with the 'saveFileAs' signal. */
+/* Only for existing files, creates a new file with the content of the screen and saves it. */
+void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& filename, const QString& filecontent)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    it = fileControllers.find(shadertype);
+    if(it == fileControllers.end())
+        return;
+    FileController *fc = it.value();
+
+    if(fc->saveAsNewFile(filename, filecontent))
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+}
+

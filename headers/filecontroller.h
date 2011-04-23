@@ -38,9 +38,7 @@ private:
     bool changed;       /* Indicates that the content of a file has been changed. */
     bool isNew;         /* Indicates that the current instance has been crated for a new file. */
 
-    /* The kind of shader that the instance will manage. */
-    ShaderLab::Shader shaderType;
-
+    ShaderLab::Shader shaderType; /* The kind of shader that the instance will manage. */
 
 };
 

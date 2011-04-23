@@ -33,15 +33,7 @@ FileController::FileController(ShaderLab::Shader shadertype, QObject *parent) : 
     isNew = true;
     changed = true;
 
-    switch(shadertype)
-    {
-        case ShaderLab::Vertex:
-            shader = new QGLShader(QGLShader::Vertex, this);
-            break;
-        case ShaderLab::Fragment:
-            shader = new QGLShader(QGLShader::Fragment, this);
-            break;
-    }
+    shader = new QGLShader(ShaderLab::shaderToQGLShader(shadertype));
 }
 
 /* Class destructor */
@@ -95,6 +87,18 @@ bool FileController::getChanged(void)
     return changed;
 }
 
+/* Getter for the shaderType attribute. */
+ShaderLab::Shader FileController::getShaderType(void)
+{
+    return shaderType;
+}
+
+/* Getter for the isNew attribute. */
+bool FileController::IsNew(void)
+{
+    return isNew;
+}
+
 /* Setter for the changed attribute. */
 void FileController::setChanged(bool val)
 {
@@ -128,6 +132,22 @@ QString FileController::log()
     return shader->log();
 }
 
+
+
+
+
+
+
+/***************************************************************
+****************************************************************
+
+                     REDUNDANTEEEEEEEEE!!!!
+
+***************************************************************
+****************************************************************/
+
+
+
 /* Saves the given content on the file. */
 /* TO-DO: Save a new file */
 bool FileController::save(const QString& content)
@@ -153,11 +173,6 @@ bool FileController::save(const QString& content)
     }
 }
 
-bool FileController::IsNew(void)
-{
-    return isNew;
-}
-
 bool FileController::saveAsNewFile(const QString& filepath, const QString& fileContent)
 {
     filePath = filepath;
@@ -177,9 +192,4 @@ bool FileController::saveAsNewFile(const QString& filepath, const QString& fileC
     {
         return false;
     }
-}
-
-ShaderLab::Shader FileController::getShaderType(void)
-{
-    return shaderType;
 }
