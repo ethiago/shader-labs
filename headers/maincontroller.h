@@ -27,6 +27,7 @@ public slots:
     void saveFile(ShaderLab::Shader shadertype);
     void saveFileAs(ShaderLab::Shader shadertype, const QString&, const QString&);
     void fileChanged(ShaderLab::Shader);
+    void saveAll();
 
 private:
     MainWindow *mainWindow;

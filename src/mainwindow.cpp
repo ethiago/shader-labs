@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->dockRenderWidget, SIGNAL(visibilityChanged(bool)), this, SLOT(dockRenderVisibilityChange(bool)));
     connect(ui->action_Save_Shader_Code, SIGNAL(triggered()), this, SLOT(saveFile()));
     connect(ui->actionSave_File_As, SIGNAL(triggered()), this, SLOT(saveFileAsDialog()));
+    connect(ui->actionSave_All_Shaders, SIGNAL(triggered()), this, SIGNAL(saveAll()));
 }
 
 MainWindow::~MainWindow()

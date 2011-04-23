@@ -46,6 +46,7 @@ signals:
     void saveFile(ShaderLab::Shader);
     void saveFileAs(ShaderLab::Shader, const QString&, const QString&);
     void shaderCodeChanged(ShaderLab::Shader);
+    void saveAll(void);
 
 public:
     explicit MainWindow(QWidget *parent = 0);
