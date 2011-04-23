@@ -68,7 +68,7 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="actionAplication_optput"/>
+    <addaction name="actionAplication_output"/>
     <addaction name="actionRender_area"/>
    </widget>
    <widget class="QMenu" name="menu_Build">
@@ -234,7 +234,7 @@
     <bool>true</bool>
    </property>
   </action>
-  <action name="actionAplication_optput">
+  <action name="actionAplication_output">
    <property name="checkable">
     <bool>true</bool>
    </property>

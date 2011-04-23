@@ -10,7 +10,8 @@ namespace Ui {
 
 class ShaderCodeContainer : public QWidget
 {
-Q_OBJECT
+    Q_OBJECT
+
 public:
     explicit ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *parent = 0);
     ~ShaderCodeContainer();

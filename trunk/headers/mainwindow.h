@@ -28,7 +28,7 @@ public slots:
     void newDialog(void);
     void selectedShaderNewDialog(ShaderLab::Shader);
     void closeTabRequest(int index);
-    void runShadersSelected(void);
+    void runSelectedShaders(void);
     void viewMenuClicked(QAction*);
     void dockOutputVisibilityChange(bool);
     void dockRenderVisibilityChange(bool);
