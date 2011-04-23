@@ -1,7 +1,4 @@
-#include <QDebug>
-
 #include "commandlinkbutton.h"
-
 
 CommandLinkButton::CommandLinkButton(ShaderLab::Shader shadertype, QWidget *parent) : QCommandLinkButton(parent)
 {

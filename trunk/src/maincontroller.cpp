@@ -31,6 +31,9 @@ MainController::MainController(QObject *parent) : QObject(parent)
     connect(mainWindow, SIGNAL(shaderCodeChanged(ShaderLab::Shader)),
             this, SLOT(fileChanged(ShaderLab::Shader)));
 
+    connect(mainWindow, SIGNAL(saveFileAs(ShaderLab::Shader,QString,QString)),
+            this, SLOT(saveFileAs(ShaderLab::Shader,QString,QString)));
+
     mainWindow->addShader(ShaderLab::Vertex);
     mainWindow->addShader(ShaderLab::Fragment);
 
@@ -61,7 +64,6 @@ void MainController::openShaderCode(const QString& filepath, ShaderLab::Shader s
         mainWindow->setShaderCode(fileContent, shaderType);
         fc->setChanged(false);
 
-        qDebug() << fc->getChanged();
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
 
     }
@@ -80,6 +82,25 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
     if(it != fileControllers.end())
     {
         FileController* fc = it.value();
+
+        if(fc->getChanged())
+        {
+            if( mainWindow->saveRequest( fc->getFileName() ) )
+            {
+                if( fc->IsNew() )
+                {
+                    QString filename = mainWindow->saveAsRequest( it.key() );
+                    if(filename.isEmpty())
+                        return;
+
+                    fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
+                }else
+                {
+                    fc->save(mainWindow->shaderCode(it.key()));
+                }
+            }
+        }
+
         fileControllers.erase(it);
 
         delete fc;
@@ -143,6 +164,37 @@ void MainController::runAllActiveShaders(void)
 
 void MainController::programCloseRequest(void)
 {
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+
+    for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
+    {
+        FileController* fc = it.value();
+
+        if(fc->getChanged())
+        {
+            if( mainWindow->saveRequest( fc->getFileName() ) )
+            {
+                if( fc->IsNew() )
+                {
+                    QString filename = mainWindow->saveAsRequest( it.key() );
+                    if(filename.isEmpty())
+                        return;
+
+                    fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
+                }else
+                {
+                    fc->save(mainWindow->shaderCode(it.key()));
+                }
+            }
+        }
+
+        fileControllers.erase(it);
+
+        delete fc;
+
+        mainWindow->setVisibleShader(false, it.key());
+    }
+
     mainWindow->close();
     delete this;
 }
@@ -150,6 +202,7 @@ void MainController::programCloseRequest(void)
 void MainController::saveFile(ShaderLab::Shader shadertype)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
+    bool saved = false;
 
     it = fileControllers.find(shadertype);
 
@@ -158,7 +211,19 @@ void MainController::saveFile(ShaderLab::Shader shadertype)
 
     FileController* fc = it.value();
 
-    if(fc->save(mainWindow->shaderCode(shadertype)))
+    if( fc->IsNew() )
+    {
+        QString filename = mainWindow->saveAsRequest( it.key() );
+        if(filename.isEmpty())
+            return;
+
+        saved = fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
+    }else
+    {
+        saved = fc->save(mainWindow->shaderCode(it.key()));
+    }
+
+    if( saved )
     {
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
     }
@@ -190,12 +255,24 @@ void MainController::newShaderCode(ShaderLab::Shader shadertype)
 void MainController::fileChanged(ShaderLab::Shader shadertype)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
-    FileController *fc;
-
     it = fileControllers.find(shadertype);
-    fc = it.value();
+    if(it == fileControllers.end())
+        return;
+    FileController *fc = it.value();
 
     fc->setChanged(true);
 
     mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+}
+
+void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& filename, const QString& filecontent)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    it = fileControllers.find(shadertype);
+    if(it == fileControllers.end())
+        return;
+    FileController *fc = it.value();
+
+    if(fc->saveAsNewFile(filename, filecontent))
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
 }

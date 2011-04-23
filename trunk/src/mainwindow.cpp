@@ -1,6 +1,7 @@
-#include <QDebug>
+
 #include <QFile>
 #include <QVBoxLayout>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->dockOutPutWidget, SIGNAL(visibilityChanged(bool)), this, SLOT(dockOutputVisibilityChange(bool)));
     connect(ui->dockRenderWidget, SIGNAL(visibilityChanged(bool)), this, SLOT(dockRenderVisibilityChange(bool)));
     connect(ui->action_Save_Shader_Code, SIGNAL(triggered()), this, SLOT(saveFile()));
+    connect(ui->actionSave_File_As, SIGNAL(triggered()), this, SLOT(saveFileAsDialog()));
 }
 
 MainWindow::~MainWindow()
@@ -56,6 +58,8 @@ void MainWindow::selectedShaderOpenDialog(ShaderLab::Shader sh)
 {
     QString filename;
 
+    disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
+
     switch(sh)
     {
         case ShaderLab::Vertex:
@@ -68,8 +72,6 @@ void MainWindow::selectedShaderOpenDialog(ShaderLab::Shader sh)
 
     if(!filename.isEmpty())
         emit selectedFile(filename, sh);
-
-    disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
 }
 
 
@@ -81,9 +83,9 @@ void MainWindow::newDialog(void)
 
 void MainWindow::selectedShaderNewDialog(ShaderLab::Shader shadertype)
 {
-    emit newShaderFile(shadertype);
-
     disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderNewDialog(ShaderLab::Shader)));
+
+    emit newShaderFile(shadertype);
 }
 
 
@@ -261,5 +263,53 @@ void MainWindow::setFileNameDisplay(QString filename, bool changed, ShaderLab::S
 
         if(ind != -1)
             tabArea->setTabText(ind, display);
+    }
+}
+
+bool MainWindow::saveRequest(const QString& filename)
+{
+    QMessageBox::StandardButton ok = QMessageBox::Yes;
+    QMessageBox::StandardButton no = QMessageBox::No;
+    QMessageBox::StandardButton bt;
+
+    bt = QMessageBox::question(this, "Save File", "The file " + filename + " has been modified.\n Do you ant to save?",
+                               no | ok,
+                               ok);
+
+
+    if(bt == ok)
+        return true;
+    else
+        return false;
+}
+
+QString MainWindow::saveAsRequest(ShaderLab::Shader shader)
+{
+    QString filename = QFileDialog::getSaveFileName(this, "Save As", "..");
+
+    if(filename.isEmpty())
+        return filename;
+
+    switch(shader)
+    {
+        case ShaderLab::Vertex:
+            filename += ".vert";
+            break;
+        case ShaderLab::Fragment:
+            filename += ".frag";
+            break;
+    }
+
+    return filename;
+}
+
+void MainWindow::saveFileAsDialog(void)
+{
+    ShaderCodeContainer* shaderTab = ((ShaderCodeContainer*)tabArea->currentWidget());
+    if(shaderTab != NULL)
+    {
+        ShaderLab::Shader shadertype = shaderTab->getShaderType();
+
+        emit saveFileAs(shadertype, saveAsRequest(shadertype), shaderCode(shadertype));
     }
 }
