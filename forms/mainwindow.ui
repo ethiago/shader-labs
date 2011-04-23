@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../shaderlab.qrc">
-    <normaloff>:/ico/img/1302041633_Flask.png</normaloff>:/ico/img/1302041633_Flask.png</iconset>
+    <normaloff>:/ico/img/1303588878_laboratory.png</normaloff>:/ico/img/1303588878_laboratory.png</iconset>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -57,6 +57,7 @@
     </property>
     <addaction name="action_New_Shader_Code"/>
     <addaction name="actionOpen_Shader_Code"/>
+    <addaction name="separator"/>
     <addaction name="action_Save_Shader_Code"/>
     <addaction name="actionSave_All_Shaders"/>
     <addaction name="actionSave_File_As"/>
@@ -266,10 +267,10 @@
   <action name="action_Save_Shader_Code">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/img/1302044102_mail-new.png</normaloff>:/ico/img/1302044102_mail-new.png</iconset>
+     <normaloff>:/ico/img/1303587978_3floppy_unmount.png</normaloff>:/ico/img/1303587978_3floppy_unmount.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Save Shader Code</string>
+    <string>&amp;Save</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -278,7 +279,7 @@
   <action name="action_New_Shader_Code">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/img/1302039837_Empty_document_new.png</normaloff>:/ico/img/1302039837_Empty_document_new.png</iconset>
+     <normaloff>:/ico/img/1303588715_document-new.png</normaloff>:/ico/img/1303588715_document-new.png</iconset>
    </property>
    <property name="text">
     <string>&amp;New Shader Code...</string>
@@ -293,8 +294,12 @@
    </property>
   </action>
   <action name="actionSave_All_Shaders">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1303588015_save_all.png</normaloff>:/ico/img/1303588015_save_all.png</iconset>
+   </property>
    <property name="text">
-    <string>Save All Shaders</string>
+    <string>Save All...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>

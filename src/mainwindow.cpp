@@ -85,7 +85,6 @@ void MainWindow::newDialog(void)
 void MainWindow::selectedShaderNewDialog(ShaderLab::Shader shadertype)
 {
     disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderNewDialog(ShaderLab::Shader)));
-
     emit newShaderFile(shadertype);
 }
 
@@ -94,7 +93,6 @@ void MainWindow::selectedShaderNewDialog(ShaderLab::Shader shadertype)
 void MainWindow::closeTabRequest(int index)
 {
     ShaderCodeContainer *pt = (ShaderCodeContainer*)tabArea->widget(index);
-
     emit closeTabRequest(pt->getShaderType());
 }
 
@@ -273,7 +271,7 @@ bool MainWindow::saveRequest(const QString& filename)
     QMessageBox::StandardButton no = QMessageBox::No;
     QMessageBox::StandardButton bt;
 
-    bt = QMessageBox::question(this, "Save File", "The file " + filename + " has been modified.\n Do you ant to save?",
+    bt = QMessageBox::question(this, "Save File", "The file " + filename + " has been modified.\n Do you want to save?",
                                no | ok,
                                ok);
 
