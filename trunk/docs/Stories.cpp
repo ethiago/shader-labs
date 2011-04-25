@@ -1,79 +1,79 @@
 void Stories() {
     17;
-    "Eu, enquanto usuario, gostaria de visualizar os resultados de um codigo GLSL \
+    "Eu, enquanto programador, gostaria de visualizar os resultados de um codigo GLSL \
      com o bjetivo de fazer testes e experimentos com algoritmos de forma simples.";
     {
          3.2;
-        "Eu, enquanto usuario, gostaria de testar codigo para Vertex Shader.";
+        "Eu, enquanto programador, gostaria de testar codigo para Vertex Shader.";
         {
-            "Eu, enquanto usuario, gostaria de abrir um arquivo com codigo GLSL\
+            "Eu, enquanto programador, gostaria de abrir um arquivo com codigo GLSL\
              com o objetivo de testa-lo.";
             {
-                "Eu, enquanto usuario, gostaria de selecionar um arquivo atraves\
+                "Eu, enquanto programador, gostaria de selecionar um arquivo atraves\
                  de uma interface amigavel com o objetivo de encontra-lo mais\
                  facilmente.";
                 
-                "Eu, enquanto usuario, gostaria que o codigo fosse mostrado com\
+                "Eu, enquanto programador, gostaria que o codigo fosse mostrado com\
                  o objetivo de edita-lo.";
 
-                "Eu, enquanto usuario, gostaria de poder criar um novo arquivo\
+                "Eu, enquanto programador, gostaria de poder criar um novo arquivo\
                  para codigo de dentro do programa, com o objetivo de testar\
                  novas ideias.";
                 
-                "Eu, enquanto usuario, gostaria de poder salvar um arquivo\
+                "Eu, enquanto programador, gostaria de poder salvar um arquivo\
                  criado ou editado dentro do programa.";
                 {
-                    "Eu, enquanto usuario, gostaria de poder salvar o arquivo de trabalho, sobrescrevendo-o";
+                    "Eu, enquanto programador, gostaria de poder salvar o arquivo de trabalho, sobrescrevendo-o";
 
-                    "Eu, enquanto usuario, gostaria de poder salvar o arquivo como um novo arquivo";
+                    "Eu, enquanto programador, gostaria de poder salvar o arquivo como um novo arquivo";
                 }
             }
             
-            "Eu, enquanto usuario, gostaria de poder fazer passagem de parametros\
+            "Eu, enquanto programador, gostaria de poder fazer passagem de parametros\
              (temperatura) para o vertex shader, com o objetivo de aumentar a\
              flexibilidade do meu codigo.";
              
-            "Eu, enquanto usuario, gostaria de executar o codigo GLSL sobre um\
+            "Eu, enquanto programador, gostaria de executar o codigo GLSL sobre um\
              modelo carregado com o objetivo de gerar um resultado.";
             
-            "Eu, enquanto usuario, gostaria de visualizar o resultado de um codigo\
+            "Eu, enquanto programador, gostaria de visualizar o resultado de um codigo\
              atuando sobre um modelo com o objetivo de conferir o resultado.";
             {
-                "Eu, enquanto usuario, gostaria de visualizar o resultado na\
+                "Eu, enquanto programador, gostaria de visualizar o resultado na\
                  janela de visualizacao ativa no momento";
                 
-                "Eu, enquanto usuario, gostaria de visualizar o resultado em\
+                "Eu, enquanto programador, gostaria de visualizar o resultado em\
                  uma nova janela de visualizacao";
             }
             
-            "Eu, enquanto usuario, gostaria de receber um feedback da compilacao\
+            "Eu, enquanto programador, gostaria de receber um feedback da compilacao\
              do meu codigo com o objetivo de saber o que potencialmente pode\
              estar errado no programa.";
              
         }
 
          3.2;
-        "Eu, enquanto usuario, gostaria de testar codigo para Hull Shader\
+        "Eu, enquanto programador, gostaria de testar codigo para Hull Shader\
          assim como faco para o vertex shader.";
         
          3.2;
-        "Eu, enquanto usuario, gostaria de testar codigo para Domain Shader\
+        "Eu, enquanto programador, gostaria de testar codigo para Domain Shader\
          assim como faco para o vertex shader.";
         
          3.2;
-        "Eu, enquanto usuario, gostaria de testar codigo para Geometry Shader\
+        "Eu, enquanto programador, gostaria de testar codigo para Geometry Shader\
          assim como faco para o vertex shader.";
         
          3.2;
-        "Eu, enquanto usuario, gostaria de testar codigo para Fragment Shader\
+        "Eu, enquanto programador, gostaria de testar codigo para Fragment Shader\
          assim como faco para o vertex shader.";
         
          0.7;
-        "Eu, enquanto usuario, gostaria de escolher quais shaders abertos serao\
+        "Eu, enquanto programador, gostaria de escolher quais shaders abertos serao\
          executados.";
 
          0.3;
-        "Eu, enquanto usuario, gostaria de poer salvar todos os arquivos abertos \
+        "Eu, enquanto programador, gostaria de poer salvar todos os arquivos abertos \
          e editados de uma so vez."
     }
 
@@ -82,7 +82,7 @@ void Stories() {
      codigo GLSL com o objetivo de levantar dados para pesquisas cientificas.";
 
     12;
-    "Eu, enquanto usuario, gostaria de dispor de um ambiente onde eu pudesse mexer\
+    "Eu, enquanto programador, gostaria de dispor de um ambiente onde eu pudesse mexer\
      nas configuracoes disponi­veis para GLSL e OpenGL com o objetivo de .......";
 
     17;
@@ -114,25 +114,25 @@ void Stories() {
     }
 
     8;
-    "Eu, enquanto usuario, gostaria de carregar um modelo com objetivo de submeter\
+    "Eu, enquanto programador, gostaria de carregar um modelo com objetivo de submeter\
      o meu codigo a uma situacao especi­fica.";
     {
          3.5;
-        "Eu, enquanto usuario, gostaria de carregar um modelo dentre algumas opcoes\
+        "Eu, enquanto programador, gostaria de carregar um modelo dentre algumas opcoes\
          padrao fornecidas pelo programa, com o objetivo de poder testar codigo\
          sem dispor de um modelo proprio e rapidamente.";
 
          4.5;
-        "Eu, enquanto usuario, gostaria de carregar um modelo proprio, com o\
+        "Eu, enquanto programador, gostaria de carregar um modelo proprio, com o\
          objetivo de poder testar cadigo em situacoes especificas.";
     }
     
     8;
-    "Eu, enquanto usuario, gostaria de utilizar texturas junto com meus programas,\
+    "Eu, enquanto programador, gostaria de utilizar texturas junto com meus programas,\
      com o objetivo de ver como fica.";
 
     8;
-    "Eu enquanto usuario, gostaria de poder reposicionar a camera da visualizacao\
+    "Eu enquanto programador, gostaria de poder reposicionar a camera da visualizacao\
      dos resultados, com o objetivos de avalia-los por outros angulos.";
 
     12;
