@@ -22,60 +22,57 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public slots:
-    void exitApplication(void);
-    void openDialog(void);
-    void selectedShaderOpenDialog(ShaderLab::Shader);
-    void newDialog(void);
-    void selectedShaderNewDialog(ShaderLab::Shader);
     void closeTabRequest(int index);
-    void runSelectedShaders(void);
-    void viewMenuClicked(QAction*);
     void dockOutputVisibilityChange(bool);
     void dockRenderVisibilityChange(bool);
-    void addShader(ShaderLab::Shader shadertype);
+    void exitApplication(void);
+    void newDialog(void);
+    void openDialog(void);
+    void runSelectedShaders(void);
     void saveFile(void);
-    void textChanged(ShaderLab::Shader);
     void saveFileAsDialog(void);
+    void selectedShaderNewDialog(ShaderLab::Shader);
+    void selectedShaderOpenDialog(ShaderLab::Shader);
+    void textChanged(ShaderLab::Shader);
+    void viewMenuClicked(QAction*);
 
+/* Created by the UI */
 signals:
-    void selectedFile(const QString& , ShaderLab::Shader);
-    void newShaderFile(ShaderLab::Shader);
-    void runShaders(void);
     void closeTabRequest(ShaderLab::Shader);
+    void newShaderFile(ShaderLab::Shader);
     void programClose();
+    void runShaders(void);
+    void saveAll(void);
     void saveFile(ShaderLab::Shader);
     void saveFileAs(ShaderLab::Shader, const QString&, const QString&);
+    void selectedFile(const QString& , ShaderLab::Shader);
     void shaderCodeChanged(ShaderLab::Shader);
-    void saveAll(void);
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    bool setVisibleShader(bool, ShaderLab::Shader);
+    void addShader(ShaderLab::Shader shadertype);
+    QString getOutputText(void);
+    QString saveAsRequest(ShaderLab::Shader);
+    bool saveRequest(const QString&);
+    void setFileNameDisplay(QString filename, bool changed, ShaderLab::Shader);
+    bool setOutputText(const QString& );
     bool setShaderCode(const QString&, ShaderLab::Shader);
-
-    bool visibleShader(ShaderLab::Shader);
+    bool setVisibleShader(bool, ShaderLab::Shader);
     QString shaderCode(ShaderLab::Shader);
-
+    bool visibleShader(ShaderLab::Shader);
     bool updateDisplay();
 
-    bool setOutputText(const QString& );
-    QString getOutputText(void);
-
-    void setFileNameDisplay(QString filename, bool changed, ShaderLab::Shader);
-
-    bool saveRequest(const QString&);
-    QString saveAsRequest(ShaderLab::Shader);
-
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *ui;   /* The Main window. */
 
-    CodeChoiceDialog *choiceDialog;
-    GLDisplay *display;
-    QTabWidget *tabArea;
+    QMap<ShaderLab::Shader, ShaderCodeContainer*> codeTabs; /* Tab objects for each kind of shader. */
+    QTabWidget *tabArea;  /* UI component for nesting tabs. */
 
-    QMap<ShaderLab::Shader, ShaderCodeContainer*> codeTabs;
+    CodeChoiceDialog *choiceDialog;  /* The choice dialog. */
+    GLDisplay *display;              /* The results display area. */
+
 
 protected:
     void closeEvent(QCloseEvent *event);
