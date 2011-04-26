@@ -18,15 +18,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->horizontalLayout->addWidget(tabArea);
 
     ui->dockOutPutWidget->setVisible(false);
-    ui->actionAplication_output->setChecked(false);
+    ui->actionShowOutput->setChecked(false);
 
     display = new GLDisplay();
     ui->verticalLayout->addWidget(display);
 
-    connect(ui->actionOpen_Shader_Code, SIGNAL(triggered()),
+    connect(ui->actionOpenCode, SIGNAL(triggered()),
             this, SLOT(openDialog()));
 
-    connect(ui->action_New_Shader_Code, SIGNAL(triggered()),
+    connect(ui->actionNewFile, SIGNAL(triggered()),
             this, SLOT(newDialog()));
 
     connect(tabArea, SIGNAL(tabCloseRequested(int)),
@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionExit, SIGNAL(triggered()),
             this, SLOT(exitApplication()));
 
-    connect(ui->actionRunShaders, SIGNAL(triggered()),
+    connect(ui->actionRunAll, SIGNAL(triggered()),
             this, SLOT(runSelectedShaders()));
 
     connect(ui->menuView, SIGNAL(triggered(QAction*)),
@@ -47,13 +47,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->dockRenderWidget, SIGNAL(visibilityChanged(bool)),
             this, SLOT(dockRenderVisibilityChange(bool)));
 
-    connect(ui->action_Save_Shader_Code, SIGNAL(triggered()),
+    connect(ui->actionSaveFile, SIGNAL(triggered()),
             this, SLOT(saveFile()));
 
-    connect(ui->actionSave_File_As, SIGNAL(triggered()),
+    connect(ui->actionSaveAs, SIGNAL(triggered()),
             this, SLOT(saveFileAsDialog()));
 
-    connect(ui->actionSave_All_Shaders, SIGNAL(triggered()),
+    connect(ui->actionSaveAll, SIGNAL(triggered()),
             this, SIGNAL(saveAll()));
 }
 
@@ -153,8 +153,8 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++++++++++++++ Slots +++++++++++++++++++++++++++++ */
 
-/* Associated with the '' signal. */
-/* */
+/* Associated with the 'tabCloseRequested' signal, from QTabWidget. */
+/* Encapsulates the signal comming from the UI and passes itto the MainController, as a 'closeTabRequest' signal. */
 void MainWindow::closeTabRequest(int index)
 {
     ShaderCodeContainer *pt = (ShaderCodeContainer*)tabArea->widget(index);
@@ -165,14 +165,14 @@ void MainWindow::closeTabRequest(int index)
 /* */
 void MainWindow::dockOutputVisibilityChange(bool v)
 {
-    ui->actionAplication_output->setChecked(v);
+    ui->actionShowOutput->setChecked(v);
 }
 
 /* Associated with the '' signal. */
 /* */
 void MainWindow::dockRenderVisibilityChange(bool v)
 {
-    ui->actionRender_area->setChecked(v);
+    ui->actionShowRenderArea->setChecked(v);
 }
 
 /* Associated with the '' signal. */
@@ -264,9 +264,9 @@ void MainWindow::textChanged(ShaderLab::Shader shadertype)
 /* */
 void MainWindow::viewMenuClicked(QAction* act)
 {
-    if(act == ui->actionAplication_output)
+    if(act == ui->actionShowOutput)
         ui->dockOutPutWidget->setVisible(act->isChecked());
-    else if(act == ui->actionRender_area)
+    else if(act == ui->actionShowRenderArea)
         ui->dockRenderWidget->setVisible(act->isChecked());
 
 }

@@ -55,12 +55,12 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="action_New_Shader_Code"/>
-    <addaction name="actionOpen_Shader_Code"/>
+    <addaction name="actionNewFile"/>
+    <addaction name="actionOpenCode"/>
     <addaction name="separator"/>
-    <addaction name="action_Save_Shader_Code"/>
-    <addaction name="actionSave_All_Shaders"/>
-    <addaction name="actionSave_File_As"/>
+    <addaction name="actionSaveFile"/>
+    <addaction name="actionSaveAll"/>
+    <addaction name="actionSaveAs"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -68,14 +68,14 @@
     <property name="title">
      <string>&amp;View</string>
     </property>
-    <addaction name="actionAplication_output"/>
-    <addaction name="actionRender_area"/>
+    <addaction name="actionShowOutput"/>
+    <addaction name="actionShowRenderArea"/>
    </widget>
    <widget class="QMenu" name="menu_Build">
     <property name="title">
      <string>&amp;Build</string>
     </property>
-    <addaction name="actionRunShaders"/>
+    <addaction name="actionRunAll"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -94,11 +94,11 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionOpen_Shader_Code"/>
-   <addaction name="action_New_Shader_Code"/>
-   <addaction name="action_Save_Shader_Code"/>
+   <addaction name="actionOpenCode"/>
+   <addaction name="actionNewFile"/>
+   <addaction name="actionSaveFile"/>
    <addaction name="separator"/>
-   <addaction name="actionRunShaders"/>
+   <addaction name="actionRunAll"/>
   </widget>
   <widget class="QDockWidget" name="dockRenderWidget">
    <property name="minimumSize">
@@ -186,7 +186,7 @@
     </layout>
    </widget>
   </widget>
-  <action name="actionOpen_Shader_Code">
+  <action name="actionOpenCode">
    <property name="enabled">
     <bool>true</bool>
    </property>
@@ -216,7 +216,7 @@
     <string>&amp;Exit</string>
    </property>
   </action>
-  <action name="actionRunShaders">
+  <action name="actionRunAll">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
      <normaloff>:/ico/img/1302039654_buttons_20.png</normaloff>:/ico/img/1302039654_buttons_20.png</iconset>
@@ -234,7 +234,7 @@
     <bool>true</bool>
    </property>
   </action>
-  <action name="actionAplication_output">
+  <action name="actionShowOutput">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -249,7 +249,7 @@
     <string>&amp;Application output</string>
    </property>
   </action>
-  <action name="actionRender_area">
+  <action name="actionShowRenderArea">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -264,7 +264,7 @@
     <string>R&amp;ender area</string>
    </property>
   </action>
-  <action name="action_Save_Shader_Code">
+  <action name="actionSaveFile">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
      <normaloff>:/ico/img/1303587978_3floppy_unmount.png</normaloff>:/ico/img/1303587978_3floppy_unmount.png</iconset>
@@ -276,7 +276,7 @@
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="action_New_Shader_Code">
+  <action name="actionNewFile">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
      <normaloff>:/ico/img/1303588715_document-new.png</normaloff>:/ico/img/1303588715_document-new.png</iconset>
@@ -288,12 +288,12 @@
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="actionSave_File_As">
+  <action name="actionSaveAs">
    <property name="text">
     <string>Save Shader Code &amp;As ...</string>
    </property>
   </action>
-  <action name="actionSave_All_Shaders">
+  <action name="actionSaveAll">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
      <normaloff>:/ico/img/1303588015_save_all.png</normaloff>:/ico/img/1303588015_save_all.png</iconset>
