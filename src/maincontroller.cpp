@@ -232,7 +232,7 @@ void MainController::runAllActiveShaders(void)
         thereIsCode = true;
         shadertype = it.key();
 
-        output += "====================== Compiling " + shaderToStr(shadertype) + " code ======================\n";
+        output += "==================== Compiling " + shaderToStr(shadertype) + " code ====================\n";
 
         compOK = it.value()->compile(mainWindow->shaderCode(it.key()));
         if(compOK) program.addShader(it.value()->getShader());
