@@ -276,9 +276,11 @@ void MainController::saveAll()
 
         if(fc->getChanged())
         {
-
             if( fc->IsNew() )
             {
+                if( !mainWindow->saveRequest( fc->getFileName(), true ) )
+                    continue;
+
                 QString filename = mainWindow->saveAsRequest( it.key() );
                 if(filename.isEmpty())
                     continue;
