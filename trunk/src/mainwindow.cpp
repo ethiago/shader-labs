@@ -296,22 +296,33 @@ void MainWindow::closeEvent(QCloseEvent *event)
 /* */
 QString MainWindow::saveAsRequest(ShaderLab::Shader shader)
 {
-    QString filename = QFileDialog::getSaveFileName(this, "Save As", "..");
+    QString filename = QFileDialog::getSaveFileName(this,
+                                                    "Save " + ShaderLab::shaderToStr(shader) +" As",
+                                                    "..",
+                                                    ShaderLab::shaderToExt(shader));
 
-    if(!filename.isEmpty())
-        filename += ShaderLab::shaderToExt(shader);
+    //if(!filename.isEmpty())
+    //    filename += ShaderLab::shaderToExt(shader);
 
     return filename;
 }
 
 /* */
-bool MainWindow::saveRequest(const QString& filename)
+bool MainWindow::saveRequest(const QString& filename, bool newFile)
 {
     QMessageBox::StandardButton ok = QMessageBox::Yes;
     QMessageBox::StandardButton no = QMessageBox::No;
     QMessageBox::StandardButton bt;
 
-    bt = QMessageBox::question(this, "Save File", "The file " + filename + " has been modified.\n Do you want to save?",
+    QString msg;
+
+    if(newFile)
+        msg = "The file " + filename + " is new.\n Do you want to save?";
+    else
+        msg = "The file " + filename + " has been modified.\n Do you want to save?";
+
+
+     bt = QMessageBox::question(this, "Save File", msg,
                                no | ok,
                                ok);
 
