@@ -185,7 +185,7 @@ void MainController::programCloseRequest(void)
 
         if(fc->getChanged())
         {
-            if( mainWindow->saveRequest( fc->getFileName() ) )
+            if( mainWindow->saveRequest( fc->getFileName(), fc->IsNew() ) )
             {
                 if( fc->IsNew() )
                 {
@@ -194,11 +194,14 @@ void MainController::programCloseRequest(void)
                         return;
 
                     fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
-                }else
+                }
+                else
                 {
                     fc->save(mainWindow->shaderCode(it.key()));
                 }
             }
+            else continue;
+
         }
 
         fileControllers.erase(it);
