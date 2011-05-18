@@ -6,6 +6,7 @@ QString ShaderLab::shaderToStr(Shader s)
     {
         case Vertex: return "vertex";
         case Fragment: return "fragment";
+        case Geometry: return "geometry";
     }
 
     return QString();
@@ -17,6 +18,7 @@ QString ShaderLab::shaderToStrCap(Shader s)
     {
         case Vertex: return "Vertex";
         case Fragment: return "Fragment";
+        case Geometry: return "Geometry";
     }
 
     return QString();
@@ -28,6 +30,7 @@ QString ShaderLab::shaderToExt(Shader s)
     {
         case Vertex: return ".vert";
         case Fragment: return ".frag";
+        case Geometry: return ".geom";
     }
 
     return QString();
@@ -40,6 +43,7 @@ QGLShader::ShaderTypeBit ShaderLab::shaderToQGLShader(Shader s)
     {
         case Vertex: return QGLShader::Vertex;
         case Fragment: return QGLShader::Fragment;
+        case Geometry: return QGLShader::Fragment;//QGLShader::Geometry;
     }
 }
 

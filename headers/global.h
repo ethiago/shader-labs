@@ -6,7 +6,7 @@
 
 namespace ShaderLab {
 
-enum Shader{ Vertex, Fragment };
+enum Shader{ Vertex, Fragment, Geometry };
 
 QString shaderToStrCap(Shader s);
 QString shaderToStr(Shader s);
