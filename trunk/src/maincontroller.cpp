@@ -43,7 +43,7 @@ MainController::MainController(QObject *parent) : QObject(parent)
 
     mainWindow->addShader(ShaderLab::Vertex);
     mainWindow->addShader(ShaderLab::Fragment);
-
+    mainWindow->addShader(ShaderLab::Geometry);
 
     mainWindow->showMaximized();
 }
