@@ -43,7 +43,7 @@ QGLShader::ShaderTypeBit ShaderLab::shaderToQGLShader(Shader s)
     {
         case Vertex: return QGLShader::Vertex;
         case Fragment: return QGLShader::Fragment;
-        case Geometry: return QGLShader::Fragment;//QGLShader::Geometry;
+        case Geometry: return QGLShader::Geometry;
     }
 }
 
