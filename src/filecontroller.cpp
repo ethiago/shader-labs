@@ -24,7 +24,7 @@ FileController::FileController(QString filepath, ShaderLab::Shader shadertype, Q
             shader = new QGLShader(QGLShader::Fragment, this);
             break;
         case ShaderLab::Geometry:
-            shader = new QGLShader(QGLShader::Fragment/*Geometry*/, this);
+            shader = new QGLShader(QGLShader::Geometry, this);
     }
 }
 
