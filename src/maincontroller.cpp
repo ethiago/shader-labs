@@ -252,6 +252,8 @@ void MainController::runAllActiveShaders(void)
     output += "====================== Linking process ======================\n";
     if(atLeastOne)
     {
+        program.setGeometryInputType(GL_TRIANGLES);
+        program.setGeometryOutputType(GL_TRIANGLES);
         program.link();
         output += program.log();
 
