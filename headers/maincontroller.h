@@ -8,6 +8,7 @@
 
 class MainWindow;
 class FileController;
+class Object3D;
 
 class MainController : public QObject
 {
@@ -27,10 +28,12 @@ public slots:
     void saveAll(void);
     void saveFile(ShaderLab::Shader shadertype);
     void saveFileAs(ShaderLab::Shader shadertype, const QString&, const QString&);
+    void drawModel(void);
 
 private:
     MainWindow *mainWindow;
     QMap<ShaderLab::Shader, FileController*> fileControllers;
+    Object3D *model;
 
 };
 

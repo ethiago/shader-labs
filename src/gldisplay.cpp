@@ -36,13 +36,9 @@ void GLDisplay::paintGL()
     glColor3f(1.0, 1.0, 1.0);
 
     // Liga o modo Wire Frame
-    glPolygonMode(GL_FRONT, GL_LINE);
-    glPolygonMode(GL_BACK, GL_LINE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    GLUquadric *quad = gluNewQuadric();
-
-    glColor3f(255,255,255);
-    gluSphere(quad, 1.0, 10, 10);
+    emit drawModel();
 
     glFlush();
 }

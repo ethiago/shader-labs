@@ -17,6 +17,8 @@ namespace Ui {
 
 using namespace ShaderLab;
 
+//class GLDisplay;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -47,6 +49,7 @@ signals:
     void saveFileAs(ShaderLab::Shader, const QString&, const QString&);
     void selectedFile(const QString& , ShaderLab::Shader);
     void shaderCodeChanged(ShaderLab::Shader);
+    void drawModel(void);
 
 public:
     explicit MainWindow(QWidget *parent = 0);
