@@ -5,13 +5,16 @@
 #include "mainwindow.h"
 #include "filecontroller.h"
 #include "global.h"
+#include "sphere.h"
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */
 
-MainController::MainController(QObject *parent) : QObject(parent)
+MainController::MainController(QObject *parent)
+    : QObject(parent)
 {
+    model = new Sphere(0.5);
     mainWindow = new MainWindow();
 
     connect(mainWindow, SIGNAL(selectedFile(QString,ShaderLab::Shader)),
@@ -41,6 +44,9 @@ MainController::MainController(QObject *parent) : QObject(parent)
     connect(mainWindow, SIGNAL(saveAll()),
             this, SLOT(saveAll()));
 
+    connect(mainWindow, SIGNAL(drawModel()),
+            this, SLOT(drawModel()));
+
     mainWindow->addShader(ShaderLab::Vertex);
     mainWindow->addShader(ShaderLab::Fragment);
     mainWindow->addShader(ShaderLab::Geometry);
@@ -51,6 +57,7 @@ MainController::MainController(QObject *parent) : QObject(parent)
 MainController::~MainController()
 {
     delete mainWindow;
+    delete model;
 }
 
 
@@ -252,8 +259,8 @@ void MainController::runAllActiveShaders(void)
     output += "====================== Linking process ======================\n";
     if(atLeastOne)
     {
-        program.setGeometryInputType(GL_TRIANGLES);
-        program.setGeometryOutputType(GL_TRIANGLES);
+        program.setGeometryInputType(GL_TRIANGLE_STRIP);
+        program.setGeometryOutputType(GL_TRIANGLE_STRIP);
         program.link();
         output += program.log();
 
@@ -345,3 +352,7 @@ void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& fil
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
 }
 
+void MainController::drawModel(void)
+{
+    model->draw();
+}

@@ -4,6 +4,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+//#include "gldisplay.h"
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -55,6 +56,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(ui->actionSaveAll, SIGNAL(triggered()),
             this, SIGNAL(saveAll()));
+
+    connect(display, SIGNAL(drawModel()), this ,SIGNAL(drawModel()));
 }
 
 MainWindow::~MainWindow()

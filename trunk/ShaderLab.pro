@@ -21,7 +21,10 @@ SOURCES += src/main.cpp \
     src/maincontroller.cpp \
     src/global.cpp \
     src/shadercodecontainer.cpp \
-    src/commandlinkbutton.cpp
+    src/commandlinkbutton.cpp \
+    src/object3d.cpp \
+    src/sphere.cpp \
+    src/rendercontroller.cpp
 HEADERS += headers/mainwindow.h \
     headers/codechoicedialog.h \
     headers/global.h \
@@ -29,7 +32,10 @@ HEADERS += headers/mainwindow.h \
     headers/gldisplay.h \
     headers/maincontroller.h \
     headers/shadercodecontainer.h \
-    headers/commandlinkbutton.h
+    headers/commandlinkbutton.h \
+    headers/object3d.h \
+    headers/sphere.h \
+    headers/rendercontroller.h
 FORMS += forms/mainwindow.ui \
     forms/codechoicedialog.ui \
     forms/shadercodecontainer.ui
