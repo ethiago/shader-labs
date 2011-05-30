@@ -9,15 +9,17 @@
 
 #include "shadercodecontainer.h"
 #include "codechoicedialog.h"
-#include "gldisplay.h"
 
 namespace Ui {
     class MainWindow;
 }
 
-using namespace ShaderLab;
+namespace ShaderLab
+{
+    class GLDisplay;
+}
 
-//class GLDisplay;
+using namespace ShaderLab;
 
 class MainWindow : public QMainWindow
 {
@@ -65,7 +67,7 @@ public:
     bool setVisibleShader(bool, ShaderLab::Shader);
     QString shaderCode(ShaderLab::Shader);
     bool visibleShader(ShaderLab::Shader);
-    bool updateDisplay();
+    void setGLDisplay(GLDisplay *);
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */
@@ -74,8 +76,6 @@ private:
     QTabWidget *tabArea;  /* UI component for nesting tabs. */
 
     CodeChoiceDialog *choiceDialog;  /* The choice dialog. */
-    GLDisplay *display;              /* The results display area. */
-
 
 protected:
     void closeEvent(QCloseEvent *event);

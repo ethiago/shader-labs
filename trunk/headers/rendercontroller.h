@@ -2,24 +2,38 @@
 #define RENDERCONTROLLER_H
 
 #include <QObject>
+#include <QPoint>
 
-//class GLDisplay;
 class MainWindow;
+class Object3D;
+
+namespace ShaderLab
+{
+    class GLDisplay;
+}
+
+using namespace ShaderLab;
 
 class RenderController : public QObject
 {
     Q_OBJECT
 
-    //GLDisplay *display;
+    GLDisplay *display;
+    Object3D * model;
 
 public:
-    explicit RenderController(const MainWindow* mainWindow,
+    explicit RenderController(MainWindow *mainWindow,
                               QObject *parent = 0);
-
-signals:
-    void drawModel(void);
+    ~RenderController();
 
 public slots:
+    void updateGL(void);
+    void drawModel(void);
+    void mouseRigthMove(QPoint ini, QPoint curr);
+    void mouseRigthFinish(QPoint ini, QPoint curr);
+    void mouseLeftMove(QPoint ini, QPoint curr);
+    void mouseLefthFinish(QPoint ini, QPoint curr);
+    void mouseCancel();
 
 };
 

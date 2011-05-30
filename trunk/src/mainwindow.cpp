@@ -4,7 +4,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-//#include "gldisplay.h"
+#include "gldisplay.h"
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -20,9 +20,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     ui->dockOutPutWidget->setVisible(false);
     ui->actionShowOutput->setChecked(false);
-
-    display = new GLDisplay();
-    ui->verticalLayout->addWidget(display);
 
     connect(ui->actionOpenCode, SIGNAL(triggered()),
             this, SLOT(openDialog()));
@@ -56,8 +53,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(ui->actionSaveAll, SIGNAL(triggered()),
             this, SIGNAL(saveAll()));
-
-    connect(display, SIGNAL(drawModel()), this ,SIGNAL(drawModel()));
 }
 
 MainWindow::~MainWindow()
@@ -72,7 +67,6 @@ MainWindow::~MainWindow()
 
     delete ui;
     delete choiceDialog;
-    delete display;
     delete tabArea;
 }
 
@@ -299,13 +293,11 @@ void MainWindow::closeEvent(QCloseEvent *event)
 /* */
 QString MainWindow::saveAsRequest(ShaderLab::Shader shader)
 {
-    QString filename = QFileDialog::getSaveFileName(this,
-                                                    "Save " + ShaderLab::shaderToStr(shader) +" As",
-                                                    "..",
-                                                    ShaderLab::shaderToExt(shader));
-
-    //if(!filename.isEmpty())
-    //    filename += ShaderLab::shaderToExt(shader);
+    QString filename = QFileDialog::getSaveFileName(
+                       this,
+                       "Save " + ShaderLab::shaderToStr(shader) +" As",
+                       "..",
+                       ShaderLab::shaderToExt(shader));
 
     return filename;
 }
@@ -365,10 +357,7 @@ bool MainWindow::visibleShader(ShaderLab::Shader shader)
         return false;
 }
 
-/* */
-bool MainWindow::updateDisplay()
+void MainWindow::setGLDisplay(GLDisplay * display)
 {
-    display->updateGL();
-
-    return true;
+    ui->verticalLayout->addWidget(display);
 }

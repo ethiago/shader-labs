@@ -1,8 +1,16 @@
+#include <QDebug>
+#include <QToolTip>
 #include "gldisplay.h"
 
 using namespace ShaderLab;
 
-GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent)
+GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
+    rigthPressedPoint(QPoint(-1,-1)),
+    leftPressedPoint(QPoint(-1,-1))
+{
+}
+
+GLDisplay::~GLDisplay()
 {
 }
 
@@ -41,4 +49,78 @@ void GLDisplay::paintGL()
     emit drawModel();
 
     glFlush();
+}
+
+void GLDisplay::mousePressEvent ( QMouseEvent * event )
+{
+    // Garante que somente 1 botao estara' pressionado e
+    //   cancela a operacao anterior caso o outro seja
+    //   pressionado
+    if(event->button() == Qt::RightButton)
+    {
+        if(leftPressedPoint != NULLPOINT)
+        {
+            leftPressedPoint = NULLPOINT;
+            rigthPressedPoint = NULLPOINT;
+            emit mouseCancel();
+        }else
+        {
+            rigthPressedPoint = event->pos();
+        }
+        event->accept();
+    }else if(event->button() == Qt::LeftButton)
+    {
+        if(rigthPressedPoint != NULLPOINT)
+        {
+            leftPressedPoint = NULLPOINT;
+            rigthPressedPoint = NULLPOINT;
+            emit mouseCancel();
+        }else
+        {
+            leftPressedPoint = event->pos();
+        }
+        event->accept();
+    }else
+        event->ignore();
+}
+
+void GLDisplay::mouseReleaseEvent ( QMouseEvent * event )
+{
+    if(event->button() == Qt::RightButton)
+    {
+        if(rigthPressedPoint != NULLPOINT)
+        {
+            emit mouseRigthFinish(rigthPressedPoint, event->pos());
+            rigthPressedPoint = NULLPOINT;
+        }
+        event->accept();
+    }else if(event->button() == Qt::LeftButton)
+    {
+        if(leftPressedPoint != NULLPOINT)
+        {
+            emit mouseLefthFinish(leftPressedPoint, event->pos());
+            leftPressedPoint = NULLPOINT;
+        }
+    }else
+        event->ignore();
+}
+
+void GLDisplay::mouseMoveEvent(QMouseEvent *event)
+{
+    if(event->buttons() == Qt::RightButton)
+    {
+        if(rigthPressedPoint != NULLPOINT)
+        {
+            emit mouseRigthMove(rigthPressedPoint, event->pos());
+        }
+        event->accept();
+    }else if(event->buttons() == Qt::LeftButton)
+    {
+        if(leftPressedPoint != NULLPOINT)
+        {
+            emit mouseLeftMove(leftPressedPoint, event->pos());
+        }
+        event->accept();
+    }else
+        event->ignore();
 }
