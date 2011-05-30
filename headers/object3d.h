@@ -10,6 +10,7 @@ class Object3D : public QObject
     Q_OBJECT
 
     QVector3D m_center;
+    QVector3D m_translation;
     QQuaternion m_quaternion;
 
     //for glu objects
@@ -32,6 +33,9 @@ public:
 
     void setStacks(int stacks);
     int stacks(void)const;
+
+    void setTraslation(const QVector3D& translation);
+    const QVector3D& translation(void)const;
 
     virtual void draw(void)const = 0;
 

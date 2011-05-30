@@ -15,7 +15,7 @@ class MainController : public QObject
     Q_OBJECT
 
 public:
-    explicit MainController(QObject *parent = 0);
+    explicit MainController(MainWindow *mw, QObject *parent = 0);
     ~MainController();
 
 public slots:
@@ -28,12 +28,13 @@ public slots:
     void saveAll(void);
     void saveFile(ShaderLab::Shader shadertype);
     void saveFileAs(ShaderLab::Shader shadertype, const QString&, const QString&);
-    void drawModel(void);
+
+signals:
+    void updateGL(void);
 
 private:
     MainWindow *mainWindow;
     QMap<ShaderLab::Shader, FileController*> fileControllers;
-    Object3D *model;
 
 };
 

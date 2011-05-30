@@ -11,11 +11,10 @@
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */
 
-MainController::MainController(QObject *parent)
+MainController::MainController(MainWindow *mw, QObject *parent)
     : QObject(parent)
 {
-    model = new Sphere(0.5);
-    mainWindow = new MainWindow();
+    mainWindow = mw;
 
     connect(mainWindow, SIGNAL(selectedFile(QString,ShaderLab::Shader)),
             this, SLOT(openShaderCode(QString,ShaderLab::Shader)));
@@ -27,7 +26,7 @@ MainController::MainController(QObject *parent)
             this, SLOT(runAllActiveShaders()));
 
     connect(mainWindow, SIGNAL(programClose()),
-            this, SLOT(programCloseRequest()));
+            this, SLOT(programCloseRequest()), Qt::QueuedConnection);
 
     connect(mainWindow, SIGNAL(saveFile(ShaderLab::Shader)),
             this, SLOT(saveFile(ShaderLab::Shader)));
@@ -44,20 +43,15 @@ MainController::MainController(QObject *parent)
     connect(mainWindow, SIGNAL(saveAll()),
             this, SLOT(saveAll()));
 
-    connect(mainWindow, SIGNAL(drawModel()),
-            this, SLOT(drawModel()));
-
     mainWindow->addShader(ShaderLab::Vertex);
-    mainWindow->addShader(ShaderLab::Fragment);
     mainWindow->addShader(ShaderLab::Geometry);
+    mainWindow->addShader(ShaderLab::Fragment);
 
     mainWindow->showMaximized();
 }
 
 MainController::~MainController()
 {
-    delete mainWindow;
-    delete model;
 }
 
 
@@ -217,9 +211,6 @@ void MainController::programCloseRequest(void)
 
         mainWindow->setVisibleShader(false, it.key());
     }
-
-    mainWindow->close();
-    delete this;
 }
 
 /* Associated with the 'runShaders' signal. */
@@ -273,7 +264,7 @@ void MainController::runAllActiveShaders(void)
         output = tr("No active shader code to compile.");
 
     mainWindow->setOutputText(output);
-    mainWindow->updateDisplay();
+    emit updateGL();
 }
 
 /* Associated with the 'saveaAll' signal. */
@@ -350,9 +341,4 @@ void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& fil
 
     if(fc->saveAsNewFile(filename, filecontent))
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
-}
-
-void MainController::drawModel(void)
-{
-    model->draw();
 }

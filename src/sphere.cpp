@@ -25,6 +25,7 @@ void Sphere::draw(void)const
     GLUquadric *quad = gluNewQuadric();
 
     glPushMatrix();
+    glTranslatef(translation().x(), translation().y(), translation().z());
     glTranslatef(center().x(), center().y(), center().z());
     gluSphere(quad, radius(), slices(), stacks());
     glPopMatrix();
