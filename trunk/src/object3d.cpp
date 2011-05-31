@@ -2,13 +2,16 @@
 
 Object3D::Object3D(const QVector3D& center, QObject *parent)
     : QObject(parent), m_center(center), m_translation(QVector3D()),
-      m_quaternion(QQuaternion()) , m_slices(10), m_stacks (10)
+      m_quaternion(QQuaternion()) ,
+      m_interactiveQuartenion(QQuaternion()),
+      m_slices(10), m_stacks (10)
 {
 }
 
 Object3D::Object3D(const Object3D& obj)
     : QObject(obj.parent()), m_center(obj.center()),
       m_translation(obj.translation()), m_quaternion(obj.quaternion()),
+      m_interactiveQuartenion(obj.interactiveQuartenion()),
       m_slices(obj.slices()), m_stacks(obj.stacks())
 
 {
@@ -22,6 +25,16 @@ void Object3D::setQuaternion(const QQuaternion& quaternion)
 const QQuaternion& Object3D::quaternion(void)const
 {
     return m_quaternion;
+}
+
+void Object3D::setInteractiveQuartenion(const QQuaternion& quaternion)
+{
+    m_interactiveQuartenion = quaternion;
+}
+
+const QQuaternion& Object3D::interactiveQuartenion(void)const
+{
+    return m_interactiveQuartenion;
 }
 
 void Object3D::setCenter(const QVector3D& center)

@@ -1,11 +1,14 @@
 #include <QToolTip>
 #include <QDebug>
+#include <QtOpenGL>
+#include <QPoint>
 
 #include "rendercontroller.h"
 #include "gldisplay.h"
 #include "mainwindow.h"
 #include "object3d.h"
 #include "sphere.h"
+#include "arcball.h"
 
 RenderController::RenderController(MainWindow *mainWindow,
                                             QObject *parent):
@@ -13,6 +16,8 @@ RenderController::RenderController(MainWindow *mainWindow,
 {
     display = new GLDisplay();
     model = new Sphere();
+    arcBall = new ArcBall();
+
     mainWindow->setGLDisplay(display);
 
     connect(display, SIGNAL(drawModel()), this ,SLOT(drawModel()));
@@ -47,9 +52,9 @@ void RenderController::drawModel(void)
     model->draw();
 }
 
-void RenderController::mouseRigthMove(QPoint ini, QPoint curr)
+void RenderController::mouseRigthMove(QPoint begin, QPoint curr)
 {
-    QVector3D v(curr.x() - ini.x(), ini.y() - curr.y(), 0);
+    QVector3D v(curr.x() - begin.x(), begin.y() - curr.y(), 0);
     model->setTraslation(v/40.0);
     display->updateGL();
 }
@@ -58,22 +63,29 @@ void RenderController::mouseRigthFinish(QPoint ini, QPoint curr)
 {
     QVector3D v(curr.x() - ini.x(), ini.y() - curr.y(), 0);
     model->setTraslation(QVector3D());
-    model->setCenter(v/40.0);
+    model->setCenter(model->center() + (v/40.0));
     display->updateGL();
 }
 
 void RenderController::mouseLeftMove(QPoint ini, QPoint curr)
 {
-    QToolTip::showText(ini, "ArcBall");
+    QPoint center(display->width()/2, display->height()/2);
+    model->setInteractiveQuartenion(arcBall->rotationForPoints(center,ini,curr));
+    display->updateGL();
 }
 
 void RenderController::mouseLefthFinish(QPoint ini, QPoint curr)
 {
-    QToolTip::showText(ini, "ArcBall_FIM");
+    QPoint center(display->width()/2, display->height()/2);
+    QQuaternion t = arcBall->rotationForPoints(center, ini,curr);
+    model->setInteractiveQuartenion(QQuaternion());
+    model->setQuaternion(t*model->quaternion());
+    display->updateGL();
 }
 
 void RenderController::mouseCancel()
 {
     model->setTraslation(QVector3D());
+    model->setInteractiveQuartenion(QQuaternion());
     display->updateGL();
 }

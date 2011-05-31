@@ -6,6 +6,7 @@
 
 class MainWindow;
 class Object3D;
+class ArcBall;
 
 namespace ShaderLab
 {
@@ -20,6 +21,7 @@ class RenderController : public QObject
 
     GLDisplay *display;
     Object3D * model;
+    ArcBall *arcBall;
 
 public:
     explicit RenderController(MainWindow *mainWindow,
