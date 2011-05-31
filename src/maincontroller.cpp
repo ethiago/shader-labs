@@ -26,7 +26,7 @@ MainController::MainController(MainWindow *mw, QObject *parent)
             this, SLOT(runAllActiveShaders()));
 
     connect(mainWindow, SIGNAL(programClose()),
-            this, SLOT(programCloseRequest()), Qt::QueuedConnection);
+            this, SLOT(programCloseRequest()));
 
     connect(mainWindow, SIGNAL(saveFile(ShaderLab::Shader)),
             this, SLOT(saveFile(ShaderLab::Shader)));

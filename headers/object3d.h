@@ -12,6 +12,7 @@ class Object3D : public QObject
     QVector3D m_center;
     QVector3D m_translation;
     QQuaternion m_quaternion;
+    QQuaternion m_interactiveQuartenion;
 
     //for glu objects
     int m_slices;
@@ -24,6 +25,9 @@ public:
 
     void setQuaternion(const QQuaternion& quaternion);
     const QQuaternion& quaternion(void)const;
+
+    void setInteractiveQuartenion(const QQuaternion& quaternion);
+    const QQuaternion& interactiveQuartenion(void)const;
 
     void setCenter(const QVector3D& center);
     const QVector3D& center(void)const;

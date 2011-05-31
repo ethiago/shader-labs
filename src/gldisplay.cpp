@@ -20,7 +20,9 @@ void GLDisplay::initializeGL()
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+    //glOrtho(-1.5, 1.5, -1.5, 1.5, -0.5, 5.0);
+    gluPerspective(45, 1.0, -1.0, 50.0);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void GLDisplay::resizeGL(int width, int height)
@@ -31,7 +33,9 @@ void GLDisplay::resizeGL(int width, int height)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-1.5, 1.5, -1.5, 1.5, -0.5, 5.0);
+    //glTranslatef(0,0,-5.0);
+    glOrtho(-1.5, 1.5, -1.5, 1.5, -0.5, 10.0);
+    //gluPerspective(90, 1.0, -0.5, 5.0);
 
     glMatrixMode(GL_MODELVIEW);
 }
@@ -44,6 +48,7 @@ void GLDisplay::paintGL()
     glColor3f(1.0, 1.0, 1.0);
 
     // Liga o modo Wire Frame
+    glDisable(GL_CULL_FACE);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     emit drawModel();

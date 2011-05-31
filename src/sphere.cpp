@@ -24,7 +24,10 @@ void Sphere::draw(void)const
 {
     GLUquadric *quad = gluNewQuadric();
 
+    QQuaternion t = interactiveQuartenion()*quaternion();
+
     glPushMatrix();
+    glRotatef(t.scalar(), t.vector().x(), t.vector().y(), t.vector().z());
     glTranslatef(translation().x(), translation().y(), translation().z());
     glTranslatef(center().x(), center().y(), center().z());
     gluSphere(quad, radius(), slices(), stacks());
