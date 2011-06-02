@@ -18,6 +18,8 @@ class Object3D : public QObject
     int m_slices;
     int m_stacks;
 
+    int m_texture;
+
 public:
     explicit Object3D(const QVector3D& center = QVector3D(0.0,0.0,0.0),
                       QObject *parent = 0);
@@ -40,6 +42,10 @@ public:
 
     void setTraslation(const QVector3D& translation);
     const QVector3D& translation(void)const;
+
+    void setTexture(int texture);
+    int texture(void)const;
+
 
     virtual void draw(void)const = 0;
 

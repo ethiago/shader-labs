@@ -36,6 +36,7 @@ public slots:
     void mouseLeftMove(QPoint ini, QPoint curr);
     void mouseLefthFinish(QPoint ini, QPoint curr);
     void mouseCancel();
+    void textureFileName(const QString&);
 
 };
 

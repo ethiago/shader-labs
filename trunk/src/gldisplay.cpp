@@ -16,6 +16,16 @@ GLDisplay::~GLDisplay()
 
 void GLDisplay::initializeGL()
 {
+    glEnable(GL_TEXTURE_2D);
+    glEnable( GL_LIGHT0 );
+    glEnable(GL_LIGHTING);
+    glShadeModel( GL_SMOOTH );
+
+    GLfloat amb_light[4] = { 1, 1, 1, 1.0 };
+    GLfloat ligthPosition[4] = { 0.0, 20.0, -3.0, 1.0 };
+
+    glLightfv( GL_LIGHT0, GL_AMBIENT, amb_light);
+    glLightfv( GL_LIGHT0, GL_POSITION, ligthPosition);
 }
 
 void GLDisplay::resizeGL(int width, int height)
@@ -25,20 +35,20 @@ void GLDisplay::resizeGL(int width, int height)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45, 1.0, 2.0, 500);
+    gluPerspective(45, 1.0, 2.5, 500);
     glMatrixMode(GL_MODELVIEW);
 }
 
 void GLDisplay::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     glColor3f(1.0, 1.0, 1.0);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(0,0,-3, 0,0,0, 0,-1,0);
+    gluLookAt(0,0,-4, 0,0,0, 0,-1,0);
 
     emit drawModel();
 
