@@ -36,6 +36,9 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     connect(display, SIGNAL(mouseCancel()),
             this, SLOT(mouseCancel()));
+
+    connect(mainWindow, SIGNAL(textureFileName(QString)),
+            this, SLOT(textureFileName(QString)));
 }
 
 RenderController::~RenderController()
@@ -88,5 +91,23 @@ void RenderController::mouseCancel()
 {
     model->setTraslation(QVector3D());
     model->setInteractiveQuartenion(QQuaternion());
+    display->updateGL();
+}
+
+void RenderController::textureFileName(const QString& tex)
+{
+    QImage img(tex);
+    if(img.isNull())
+    {
+        qDebug() << "Nao eh uma imagem valida";
+        return;
+    }
+
+    if(model->texture() >= 0)
+    {
+        display->deleteTexture(model->texture());
+    }
+
+    model->setTexture(display->bindTexture(tex, GL_TEXTURE_2D));
     display->updateGL();
 }

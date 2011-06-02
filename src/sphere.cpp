@@ -36,6 +36,10 @@ void Sphere::draw(void)const
     glRotatef(ShaderLab::degreeFromCos(t.scalar()),
               t.vector().x(), t.vector().y(), t.vector().z());
 
+    gluQuadricDrawStyle(quad, GLU_FILL);
+    gluQuadricNormals(quad, GLU_SMOOTH);
+    if(texture() >= 0)
+        gluQuadricTexture(quad, texture());
     gluSphere(quad, radius(), slices(), stacks());
 
     glPopMatrix();

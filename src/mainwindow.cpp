@@ -53,6 +53,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(ui->actionSaveAll, SIGNAL(triggered()),
             this, SIGNAL(saveAll()));
+
+    connect(ui->action_Load_Texture, SIGNAL(triggered()),
+            this, SLOT(loadTextureClick()));
 }
 
 MainWindow::~MainWindow()
@@ -360,4 +363,12 @@ bool MainWindow::visibleShader(ShaderLab::Shader shader)
 void MainWindow::setGLDisplay(GLDisplay * display)
 {
     ui->verticalLayout->addWidget(display);
+}
+
+void MainWindow::loadTextureClick(void)
+{
+
+    QString filename = QFileDialog::getOpenFileName(this, "Load Texture", "../..");
+
+    emit textureFileName(filename);
 }
