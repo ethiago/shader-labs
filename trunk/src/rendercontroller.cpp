@@ -54,14 +54,14 @@ void RenderController::drawModel(void)
 
 void RenderController::mouseRigthMove(QPoint begin, QPoint curr)
 {
-    QVector3D v(curr.x() - begin.x(), begin.y() - curr.y(), 0);
+    QVector3D v(curr-begin);
     model->setTraslation(v/40.0);
     display->updateGL();
 }
 
 void RenderController::mouseRigthFinish(QPoint ini, QPoint curr)
 {
-    QVector3D v(curr.x() - ini.x(), ini.y() - curr.y(), 0);
+    QVector3D v(curr-ini);
     model->setTraslation(QVector3D());
     model->setCenter(model->center() + (v/40.0));
     display->updateGL();
@@ -70,14 +70,15 @@ void RenderController::mouseRigthFinish(QPoint ini, QPoint curr)
 void RenderController::mouseLeftMove(QPoint ini, QPoint curr)
 {
     QPoint center(display->width()/2, display->height()/2);
-    model->setInteractiveQuartenion(arcBall->rotationForPoints(center,ini,curr));
+    model->setInteractiveQuartenion(
+                arcBall->rotationForPoints(center,curr, ini));
     display->updateGL();
 }
 
 void RenderController::mouseLefthFinish(QPoint ini, QPoint curr)
 {
     QPoint center(display->width()/2, display->height()/2);
-    QQuaternion t = arcBall->rotationForPoints(center, ini,curr);
+    QQuaternion t = arcBall->rotationForPoints(center, curr, ini);
     model->setInteractiveQuartenion(QQuaternion());
     model->setQuaternion(t*model->quaternion());
     display->updateGL();

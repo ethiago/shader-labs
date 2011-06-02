@@ -1,5 +1,6 @@
 #include <QtOpenGL>
 #include "sphere.h"
+#include "global.h"
 
 Sphere::Sphere(float radius, const QVector3D& center, QObject *parent):
     Object3D(center, parent), m_radius(radius)
@@ -8,6 +9,7 @@ Sphere::Sphere(float radius, const QVector3D& center, QObject *parent):
 
 Sphere::Sphere(const Sphere& sph): Object3D(sph), m_radius(sph.radius())
 {
+
 }
 
 void Sphere::setRadius(float radius)
@@ -27,9 +29,14 @@ void Sphere::draw(void)const
     QQuaternion t = interactiveQuartenion()*quaternion();
 
     glPushMatrix();
-    glRotatef(t.scalar(), t.vector().x(), t.vector().y(), t.vector().z());
+
     glTranslatef(translation().x(), translation().y(), translation().z());
     glTranslatef(center().x(), center().y(), center().z());
+
+    glRotatef(ShaderLab::degreeFromCos(t.scalar()),
+              t.vector().x(), t.vector().y(), t.vector().z());
+
     gluSphere(quad, radius(), slices(), stacks());
+
     glPopMatrix();
 }
