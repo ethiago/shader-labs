@@ -17,6 +17,8 @@ QGLShader::ShaderTypeBit shaderToQGLShader(Shader s);
 int shaderToInt(Shader s);
 Shader intToShader(int v);
 
+double degreeFromCos(double);
+
 }
 
 #endif // GLOBAL_H

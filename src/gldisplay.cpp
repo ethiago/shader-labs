@@ -5,8 +5,8 @@
 using namespace ShaderLab;
 
 GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
-    rigthPressedPoint(QPoint(-1,-1)),
-    leftPressedPoint(QPoint(-1,-1))
+    rigthPressedPoint(NULLPOINT),
+    leftPressedPoint(NULLPOINT)
 {
 }
 
@@ -16,40 +16,29 @@ GLDisplay::~GLDisplay()
 
 void GLDisplay::initializeGL()
 {
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    //glOrtho(-1.5, 1.5, -1.5, 1.5, -0.5, 5.0);
-    gluPerspective(45, 1.0, -1.0, 50.0);
-    glMatrixMode(GL_MODELVIEW);
 }
 
 void GLDisplay::resizeGL(int width, int height)
 {
-
     int side = qMin(width, height);
     glViewport((width - side) / 2, (height - side) / 2, side, side);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    //glTranslatef(0,0,-5.0);
-    glOrtho(-1.5, 1.5, -1.5, 1.5, -0.5, 10.0);
-    //gluPerspective(90, 1.0, -0.5, 5.0);
-
+    gluPerspective(45, 1.0, 2.0, 500);
     glMatrixMode(GL_MODELVIEW);
 }
 
 void GLDisplay::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
-
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glColor3f(1.0, 1.0, 1.0);
 
-    // Liga o modo Wire Frame
-    glDisable(GL_CULL_FACE);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    gluLookAt(0,0,-3, 0,0,0, 0,-1,0);
 
     emit drawModel();
 

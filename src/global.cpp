@@ -1,4 +1,5 @@
 #include "global.h"
+#include "cmath"
 
 QString ShaderLab::shaderToStr(Shader s)
 {
@@ -57,4 +58,9 @@ int ShaderLab::shaderToInt(Shader s)
 ShaderLab::Shader ShaderLab::intToShader(int v)
 {
     return static_cast<ShaderLab::Shader>(v);
+}
+
+double ShaderLab::degreeFromCos(double _cos)
+{
+    return (acos(_cos)*180.0)/M_PI;
 }
