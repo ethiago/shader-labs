@@ -81,9 +81,9 @@ void RenderController::mouseLeftMove(QPoint ini, QPoint curr)
 void RenderController::mouseLefthFinish(QPoint ini, QPoint curr)
 {
     QPoint center(display->width()/2, display->height()/2);
-    QQuaternion t = arcBall->rotationForPoints(center, curr, ini);
+    QQuaternion t = arcBall->rotationForPoints(center,curr, ini);
+    model->addRotacao(t);
     model->setInteractiveQuartenion(QQuaternion());
-    model->setQuaternion(t*model->quaternion());
     display->updateGL();
 }
 

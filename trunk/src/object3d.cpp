@@ -1,8 +1,9 @@
 #include "object3d.h"
+#include "global.h"
 
 Object3D::Object3D(const QVector3D& center, QObject *parent)
     : QObject(parent), m_center(center), m_translation(QVector3D()),
-      m_quaternion(QQuaternion()) ,
+      m_rotacoes(QMatrix4x4()) ,
       m_interactiveQuartenion(QQuaternion()),
       m_slices(10), m_stacks (10), m_texture(-1)
 {
@@ -10,21 +11,21 @@ Object3D::Object3D(const QVector3D& center, QObject *parent)
 
 Object3D::Object3D(const Object3D& obj)
     : QObject(obj.parent()), m_center(obj.center()),
-      m_translation(obj.translation()), m_quaternion(obj.quaternion()),
+      m_translation(obj.translation()), m_rotacoes(obj.rotacoes()),
       m_interactiveQuartenion(obj.interactiveQuartenion()),
       m_slices(obj.slices()), m_stacks(obj.stacks()), m_texture(obj.texture())
 
 {
 }
 
-void Object3D::setQuaternion(const QQuaternion& quaternion)
+void Object3D::setRotacoes(const QMatrix4x4& rotacoes)
 {
-    m_quaternion = quaternion;
+    m_rotacoes = rotacoes;
 }
 
-const QQuaternion& Object3D::quaternion(void)const
+const QMatrix4x4& Object3D::rotacoes(void)const
 {
-    return m_quaternion;
+    return m_rotacoes;
 }
 
 void Object3D::setInteractiveQuartenion(const QQuaternion& quaternion)
@@ -84,4 +85,11 @@ void Object3D::setTexture(int texture)
 int Object3D::texture(void)const
 {
     return m_texture;
+}
+
+void Object3D::addRotacao(const QQuaternion& rotacao)
+{
+    QMatrix4x4 m;
+    m.rotate(ShaderLab::degreeFromCos(rotacao.scalar()), rotacao.x(), rotacao.y(), rotacao.z());
+    m_rotacoes = m*m_rotacoes;
 }
