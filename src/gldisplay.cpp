@@ -16,10 +16,13 @@ GLDisplay::~GLDisplay()
 
 void GLDisplay::initializeGL()
 {
+    glEnable(GL_CULL_FACE);
     glEnable(GL_TEXTURE_2D);
     glEnable( GL_LIGHT0 );
     glEnable(GL_LIGHTING);
     glShadeModel( GL_SMOOTH );
+
+    glCullFace(GL_BACK);
 
     GLfloat amb_light[4] = { 1, 1, 1, 1.0 };
     GLfloat ligthPosition[4] = { 0.0, 20.0, -3.0, 1.0 };

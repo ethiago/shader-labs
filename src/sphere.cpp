@@ -26,7 +26,7 @@ void Sphere::draw(void)const
 {
     GLUquadric *quad = gluNewQuadric();
 
-    QQuaternion t = interactiveQuartenion()*quaternion();
+    QQuaternion t = interactiveQuartenion();
 
     glPushMatrix();
 
@@ -34,7 +34,9 @@ void Sphere::draw(void)const
     glTranslatef(center().x(), center().y(), center().z());
 
     glRotatef(ShaderLab::degreeFromCos(t.scalar()),
-              t.vector().x(), t.vector().y(), t.vector().z());
+              t.x(), t.y(), t.z());
+
+    glMultMatrixd(rotacoes().constData());
 
     gluQuadricDrawStyle(quad, GLU_FILL);
     gluQuadricNormals(quad, GLU_SMOOTH);
