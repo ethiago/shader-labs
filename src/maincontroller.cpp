@@ -250,8 +250,10 @@ void MainController::runAllActiveShaders(void)
     output += "====================== Linking process ======================\n";
     if(atLeastOne)
     {
+#ifdef QT47_CAPABLE
         program.setGeometryInputType(GL_TRIANGLE_STRIP);
         program.setGeometryOutputType(GL_TRIANGLE_STRIP);
+#endif
         program.link();
         output += program.log();
 

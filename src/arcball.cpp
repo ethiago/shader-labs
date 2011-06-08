@@ -31,14 +31,6 @@ QQuaternion ArcBall::rotationForPoints(const QPoint& center,
     return QQuaternion(QVector3D::dotProduct(v0,v1),vc);
 }
 
-QQuaternion ArcBall::rotationForPoints(float radius,
-                                     const QPoint& center,
-                                     const QPoint& begin,
-                                     const QPoint& end)
-{
-    return QQuaternion();
-}
-
 QVector3D ArcBall::mouseToSphere(const QPoint& center, const QPoint& point)
 {
     QVector3D v;

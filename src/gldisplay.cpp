@@ -93,7 +93,7 @@ void GLDisplay::mousePressEvent ( QMouseEvent * event )
 
 void GLDisplay::mouseReleaseEvent ( QMouseEvent * event )
 {
-    if(event->button() == Qt::RightButton)
+    /*if(event->button() == Qt::RightButton)
     {
         if(rigthPressedPoint != NULLPOINT)
         {
@@ -101,7 +101,7 @@ void GLDisplay::mouseReleaseEvent ( QMouseEvent * event )
             rigthPressedPoint = NULLPOINT;
         }
         event->accept();
-    }else if(event->button() == Qt::LeftButton)
+    }else*/ if(event->button() == Qt::LeftButton)
     {
         if(leftPressedPoint != NULLPOINT)
         {
@@ -114,14 +114,14 @@ void GLDisplay::mouseReleaseEvent ( QMouseEvent * event )
 
 void GLDisplay::mouseMoveEvent(QMouseEvent *event)
 {
-    if(event->buttons() == Qt::RightButton)
+    /*if(event->buttons() == Qt::RightButton)
     {
         if(rigthPressedPoint != NULLPOINT)
         {
             emit mouseRigthMove(rigthPressedPoint, event->pos());
         }
         event->accept();
-    }else if(event->buttons() == Qt::LeftButton)
+    }else*/ if(event->buttons() == Qt::LeftButton)
     {
         if(leftPressedPoint != NULLPOINT)
         {

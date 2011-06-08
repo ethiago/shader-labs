@@ -44,7 +44,9 @@ QGLShader::ShaderTypeBit ShaderLab::shaderToQGLShader(Shader s)
     {
         case Vertex: return QGLShader::Vertex;
         case Fragment: return QGLShader::Fragment;
+#ifdef QT47_CAPABLE
         case Geometry: return QGLShader::Geometry;
+#endif
     }
 
     return QGLShader::Vertex;

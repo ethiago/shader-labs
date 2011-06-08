@@ -4,6 +4,8 @@
 #include <QGLShader>
 #include <QString>
 
+// #define QT47_CAPABLE
+
 namespace ShaderLab {
 
 enum Shader{ Vertex, Fragment, Geometry };
