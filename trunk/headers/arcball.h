@@ -22,10 +22,6 @@ public:
                                   const QPoint& begin,
                                   const QPoint& end);
 
-    static QQuaternion rotationForPoints(float radius,
-                                         const QPoint& center,
-                                         const QPoint& begin,
-                                         const QPoint& end);
 
 private:
     QVector3D mouseToSphere(const QPoint& center, const QPoint& point);

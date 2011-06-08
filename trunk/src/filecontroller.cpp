@@ -3,7 +3,6 @@
 
 #include "filecontroller.h"
 
-
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */
 
@@ -23,9 +22,14 @@ FileController::FileController(QString filepath, ShaderLab::Shader shadertype, Q
         case ShaderLab::Fragment:
             shader = new QGLShader(QGLShader::Fragment, this);
             break;
+
+#ifdef QT47_CAPABLE
         case ShaderLab::Geometry:
             shader = new QGLShader(QGLShader::Geometry, this);
+            break;
+#endif
     }
+
 }
 
 /* Constructor for a new file, created inside ShaderLab */

@@ -40,6 +40,7 @@ void Sphere::draw(void)const
 
     gluQuadricDrawStyle(quad, GLU_FILL);
     gluQuadricNormals(quad, GLU_SMOOTH);
+
     if(texture() >= 0)
         gluQuadricTexture(quad, texture());
     gluSphere(quad, radius(), slices(), stacks());
