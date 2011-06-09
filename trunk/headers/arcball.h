@@ -13,7 +13,7 @@ class ArcBall : public QObject
     float m_radius;
     QPoint m_center;
 public:
-    explicit ArcBall(float radius = 300.0, QObject *parent = 0);
+    explicit ArcBall(float radius = 500.0, QObject *parent = 0);
 
     void setRadius(float radius);
     float radius(void)const;

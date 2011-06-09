@@ -16,7 +16,7 @@ RenderController::RenderController(MainWindow *mainWindow,
 {
     display = new GLDisplay();
     model = new Sphere();
-    arcBall = new ArcBall();
+    arcBall = new ArcBall(500);
 
     mainWindow->setGLDisplay(display);
 

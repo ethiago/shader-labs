@@ -1,5 +1,8 @@
 #include <cmath>
 #include "arcball.h"
+#include <QVector2D>
+#include <QDebug>
+#include <QToolTip>
 
 ArcBall::ArcBall(float radius, QObject *parent) :
     QObject(parent), m_radius(radius)
@@ -33,22 +36,38 @@ QQuaternion ArcBall::rotationForPoints(const QPoint& center,
 
 QVector3D ArcBall::mouseToSphere(const QPoint& center, const QPoint& point)
 {
-    QVector3D v;
+    QVector2D v;
+    QVector2D v2d;
+    float z;
+    int quad;
 
-    v.setX((point.x() - center.x())/m_radius);
-    v.setY((point.y() - center.y())/m_radius);
+    v2d.setX((point - center).x()/radius());
+    v2d.setY((point - center).y()/radius());
 
-    float r = v.x()*v.x() + v.y()*v.y();
-    if(r > 1.0)
-    {
-        float s = 1.0/sqrt(r);
-        v.setX( v.x()*s );
-        v.setY( v.y()*s );
-        v.setZ(0.0);
-    }else
-    {
-        v.setZ(sqrt(1.0 - r));
+    quad = ((int)(v2d.length()))%4;
+
+    QVector2D v2Norm = v2d.normalized();
+    v = (v2d - v2Norm*quad);
+
+    switch(quad){
+        case 0:
+            z = sqrt(1.0 - v.lengthSquared());
+            break;
+        case 1:
+            v = v2Norm - v;
+            z = -sqrt(1.0 - v.lengthSquared());;
+            break;
+        case 2:
+            v = -v;
+            z = -sqrt(1.0 - v.lengthSquared());;
+            break;
+        case 3:
+            v = -(v2Norm - v);
+            z = sqrt(1.0 - v.lengthSquared());
+            break;
+        default:
+            qDebug() << "Quad out of range";
     }
 
-    return v;
+    return QVector3D(v, z);
 }
