@@ -56,6 +56,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(ui->action_Load_Texture, SIGNAL(triggered()),
             this, SLOT(loadTextureClick()));
+
+    connect(ui->actionWireframe, SIGNAL(toggled(bool)),
+            this, SIGNAL(wireframeClicked(bool)));
+
 }
 
 MainWindow::~MainWindow()

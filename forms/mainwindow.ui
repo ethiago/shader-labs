@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>743</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -72,6 +72,8 @@
     </property>
     <addaction name="actionShowOutput"/>
     <addaction name="actionShowRenderArea"/>
+    <addaction name="separator"/>
+    <addaction name="actionWireframe"/>
    </widget>
    <widget class="QMenu" name="menu_Build">
     <property name="title">
@@ -219,6 +221,9 @@
    <property name="text">
     <string>&amp;Exit</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionRunAll">
    <property name="icon">
@@ -319,6 +324,21 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionWireframe">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/wireframe_icon.jpg</normaloff>:/ico/img/wireframe_icon.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Wireframe</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
    </property>
   </action>
  </widget>
