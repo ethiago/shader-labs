@@ -72,6 +72,8 @@ void RenderController::mouseRigthFinish(QPoint ini, QPoint curr)
 
 void RenderController::mouseLeftMove(QPoint ini, QPoint curr)
 {
+    if(ini == curr)
+        return;
     QPoint center(display->width()/2, display->height()/2);
     model->setInteractiveQuartenion(
                 arcBall->rotationForPoints(center,curr, ini));
@@ -80,6 +82,8 @@ void RenderController::mouseLeftMove(QPoint ini, QPoint curr)
 
 void RenderController::mouseLefthFinish(QPoint ini, QPoint curr)
 {
+    if(ini == curr)
+        return;
     QPoint center(display->width()/2, display->height()/2);
     QQuaternion t = arcBall->rotationForPoints(center,curr, ini);
     model->addRotacao(t);

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QGLShaderProgram>
 
 #include "global.h"
 
@@ -28,6 +29,7 @@ public slots:
     void saveAll(void);
     void saveFile(ShaderLab::Shader shadertype);
     void saveFileAs(ShaderLab::Shader shadertype, const QString&, const QString&);
+    void shaderCodeToggle(Qt::MouseButton, ShaderLab::Shader);
 
 signals:
     void updateGL(void);
@@ -35,6 +37,7 @@ signals:
 private:
     MainWindow *mainWindow;
     QMap<ShaderLab::Shader, FileController*> fileControllers;
+    QGLShaderProgram program;
 
 };
 

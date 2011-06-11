@@ -43,6 +43,9 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     connect(mainWindow, SIGNAL(saveAll()),
             this, SLOT(saveAll()));
 
+    connect(mainWindow, SIGNAL(shaderTabClicked(Qt::MouseButton,ShaderLab::Shader)),
+            this, SLOT(shaderCodeToggle(Qt::MouseButton,ShaderLab::Shader)));
+
     mainWindow->addShader(ShaderLab::Vertex);
     mainWindow->addShader(ShaderLab::Geometry);
     mainWindow->addShader(ShaderLab::Fragment);
@@ -219,8 +222,10 @@ void MainController::programCloseRequest(void)
 void MainController::runAllActiveShaders(void)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
-    QGLShaderProgram program;
     QString output;
+
+    program.removeAllShaders();
+    program.release();
 
     bool atLeastOne = false;
     bool compOK, thereIsCode = false;
@@ -233,10 +238,15 @@ void MainController::runAllActiveShaders(void)
         thereIsCode = true;
         shadertype = it.key();
 
+        if(!it.value()->isActive())
+            continue;
+
         output += "==================== Compiling " + shaderToStr(shadertype) + " code ====================\n";
 
         compOK = it.value()->compile(mainWindow->shaderCode(it.key()));
-        if(compOK) program.addShader(it.value()->getShader());
+        if(compOK)
+            program.addShaderFromSourceCode(it.value()->getQtShaderType(),
+                                                   mainWindow->shaderCode(it.key()));
 
         atLeastOne = atLeastOne || compOK;
 
@@ -343,4 +353,19 @@ void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& fil
 
     if(fc->saveAsNewFile(filename, filecontent))
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+}
+
+void MainController::shaderCodeToggle(Qt::MouseButton button, ShaderLab::Shader shadertype)
+{
+    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    it = fileControllers.find(shadertype);
+    if(it == fileControllers.end())
+        return;
+    FileController *fc = it.value();
+
+    if(button == Qt::RightButton)
+    {
+        fc->setActive(!fc->isActive());
+        mainWindow->setEnableShaderCode(shadertype, fc->isActive());
+    }
 }

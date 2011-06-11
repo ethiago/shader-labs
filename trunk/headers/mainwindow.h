@@ -54,6 +54,7 @@ signals:
     void shaderCodeChanged(ShaderLab::Shader);
     void drawModel(void);
     void textureFileName(const QString& textureFileName);
+    void shaderTabClicked(Qt::MouseButton, ShaderLab::Shader);
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -70,6 +71,7 @@ public:
     QString shaderCode(ShaderLab::Shader);
     bool visibleShader(ShaderLab::Shader);
     void setGLDisplay(GLDisplay *);
+    void setEnableShaderCode(ShaderLab::Shader, bool);
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */

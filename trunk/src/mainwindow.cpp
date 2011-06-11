@@ -246,8 +246,8 @@ void MainWindow::selectedShaderOpenDialog(ShaderLab::Shader sh)
 
     disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
 
-    filename = QFileDialog::getOpenFileName(this, "Open " + ShaderLab::shaderToStr(sh) + " shader code", "..",
-                                                "*" + ShaderLab::shaderToExt(sh));
+    filename = QFileDialog::getOpenFileName(this, "Open " + ShaderLab::shaderToStr(sh) + " shader code",
+                                            "../..", "*" + ShaderLab::shaderToExt(sh));
 
     if(!filename.isEmpty())
         emit selectedFile(filename, sh);
@@ -281,8 +281,10 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
     ShaderCodeContainer *codeContainer = new ShaderCodeContainer(shadertype);
     codeTabs.insert(shadertype, codeContainer);
 
-    connect(codeContainer, SIGNAL(textChanged(ShaderLab::Shader)), this, SLOT(textChanged(ShaderLab::Shader)));
-
+    connect(codeContainer, SIGNAL(textChanged(ShaderLab::Shader)),
+            this, SLOT(textChanged(ShaderLab::Shader)));
+    connect(codeContainer, SIGNAL(clicked(Qt::MouseButton,ShaderLab::Shader)),
+            this, SIGNAL(shaderTabClicked(Qt::MouseButton,ShaderLab::Shader)));
     choiceDialog->addButton(shadertype);
 }
 
@@ -299,7 +301,7 @@ QString MainWindow::saveAsRequest(ShaderLab::Shader shader)
     QString filename = QFileDialog::getSaveFileName(
                        this,
                        "Save " + ShaderLab::shaderToStr(shader) +" As",
-                       "..",
+                       "../..",
                        ShaderLab::shaderToExt(shader));
 
     return filename;
@@ -371,4 +373,16 @@ void MainWindow::loadTextureClick(void)
     QString filename = QFileDialog::getOpenFileName(this, "Load Texture", "../..");
 
     emit textureFileName(filename);
+}
+
+void MainWindow::setEnableShaderCode(ShaderLab::Shader shadertype, bool active)
+{
+    QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
+    it = codeTabs.find(shadertype);
+    if(it == codeTabs.end())
+        return;
+
+    ShaderCodeContainer * sc = it.value();
+
+    sc->setActiveCode(active);
 }

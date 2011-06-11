@@ -18,6 +18,7 @@ public:
     void setText(const QString&);
     QString getText(void);
     ShaderLab::Shader getShaderType(void);
+    void setActiveCode(bool);
 
 private:
     Ui::ShaderCodeContainer *ui;
@@ -28,6 +29,10 @@ private slots:
 
 signals:
     void textChanged(ShaderLab::Shader);
+    void clicked(Qt::MouseButton, ShaderLab::Shader);
+
+protected:
+    void mouseReleaseEvent(QMouseEvent *);
 
 };
 

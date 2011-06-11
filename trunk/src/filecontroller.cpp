@@ -13,6 +13,7 @@ FileController::FileController(QString filepath, ShaderLab::Shader shadertype, Q
     shaderType = shadertype;
     isNew = false;
     changed = false;
+    active = true;
 
     switch(shadertype)
     {
@@ -38,6 +39,7 @@ FileController::FileController(ShaderLab::Shader shadertype, QObject *parent) : 
     shaderType = shadertype;
     isNew = true;
     changed = true;
+    active = true;
 
     shader = new QGLShader(ShaderLab::shaderToQGLShader(shadertype));
 }
@@ -93,10 +95,15 @@ bool FileController::getChanged(void)
     return changed;
 }
 
-/* Getter for the shaderType attribute. */
-ShaderLab::Shader FileController::getShaderType(void)
+/* Getter for the shaderLabType attribute. */
+ShaderLab::Shader FileController::getShaderLabType(void)
 {
     return shaderType;
+}
+
+QGLShader::ShaderType FileController::getQtShaderType(void)
+{
+    return ShaderLab::shaderToQGLShader(shaderType);
 }
 
 /* Getter for the isNew attribute. */
@@ -138,6 +145,15 @@ QString FileController::log()
     return shader->log();
 }
 
+bool FileController::isActive(void)
+{
+    return active;
+}
+
+void FileController::setActive(bool a)
+{
+    active = a;
+}
 
 
 
