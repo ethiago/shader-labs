@@ -18,6 +18,7 @@ RenderController::RenderController(MainWindow *mainWindow,
     model = new Sphere();
     arcBall = new ArcBall(500);
 
+
     mainWindow->setGLDisplay(display);
 
     connect(display, SIGNAL(drawModel()), this ,SLOT(drawModel()));
@@ -39,6 +40,9 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     connect(mainWindow, SIGNAL(textureFileName(QString)),
             this, SLOT(textureFileName(QString)));
+
+    connect(mainWindow, SIGNAL(wireframeClicked(bool)),
+            this, SLOT(wireFrameToggle(bool)));
 }
 
 RenderController::~RenderController()
@@ -113,5 +117,11 @@ void RenderController::textureFileName(const QString& tex)
     }
 
     model->setTexture(display->bindTexture(tex, GL_TEXTURE_2D));
+    display->updateGL();
+}
+
+void RenderController::wireFrameToggle(bool wireframe)
+{
+    display->setWireframe(wireframe);
     display->updateGL();
 }

@@ -16,6 +16,7 @@ class GLDisplay : public QGLWidget
 
     QPoint rigthPressedPoint;
     QPoint leftPressedPoint;
+    bool wireFrame;
 
 signals:
     void drawModel(void);
@@ -32,6 +33,8 @@ public:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
+
+    void setWireframe(bool);
 
 private:
     void mousePressEvent ( QMouseEvent * event );

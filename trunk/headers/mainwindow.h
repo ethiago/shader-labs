@@ -55,6 +55,7 @@ signals:
     void drawModel(void);
     void textureFileName(const QString& textureFileName);
     void shaderTabClicked(Qt::MouseButton, ShaderLab::Shader);
+    void wireframeClicked(bool);
 
 public:
     explicit MainWindow(QWidget *parent = 0);

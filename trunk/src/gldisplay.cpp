@@ -6,7 +6,7 @@ using namespace ShaderLab;
 
 GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
     rigthPressedPoint(NULLPOINT),
-    leftPressedPoint(NULLPOINT)
+    leftPressedPoint(NULLPOINT), wireFrame(false)
 {
 }
 
@@ -53,9 +53,19 @@ void GLDisplay::paintGL()
 
     gluLookAt(0,0,-4, 0,0,0, 0,-1,0);
 
+    if(wireFrame)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    else
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     emit drawModel();
 
     glFlush();
+}
+
+void GLDisplay::setWireframe(bool wireframe)
+{
+    wireFrame = wireframe;
 }
 
 void GLDisplay::mousePressEvent ( QMouseEvent * event )

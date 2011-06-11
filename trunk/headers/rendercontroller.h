@@ -37,6 +37,7 @@ public slots:
     void mouseLefthFinish(QPoint ini, QPoint curr);
     void mouseCancel();
     void textureFileName(const QString&);
+    void wireFrameToggle(bool);
 
 };
 
