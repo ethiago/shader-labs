@@ -1,5 +1,5 @@
 #include <QFont>
-
+#include <QMouseEvent>
 #include "shadercodecontainer.h"
 #include "ui_shadercodecontainer.h"
 
@@ -37,4 +37,14 @@ ShaderLab::Shader ShaderCodeContainer::getShaderType(void)
 void ShaderCodeContainer::textChanged(void)
 {
     emit textChanged(shaderType);
+}
+
+void ShaderCodeContainer::mouseReleaseEvent(QMouseEvent *e)
+{
+    emit clicked(e->button(), shaderType);
+}
+
+void ShaderCodeContainer::setActiveCode(bool active)
+{
+    ui->shaderCodeBox->setEnabled(active);
 }
