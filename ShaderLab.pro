@@ -4,7 +4,14 @@
 QT += core \
     gui \
     opengl
-TARGET = ShaderLab
+
+win32 {
+     TARGET = ShaderLab-win32
+ }
+ unix {
+     TARGET = ShaderLab
+ }
+
 TEMPLATE = app
 DEPENDPATH += src
 INCLUDEPATH += headers
@@ -13,6 +20,7 @@ MOC_DIR = tmp
 RCC_DIR = tmp
 UI_DIR = tmp
 DESTDIR = bin
+
 SOURCES += src/main.cpp \
     src/mainwindow.cpp \
     src/codechoicedialog.cpp \
