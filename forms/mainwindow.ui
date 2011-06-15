@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>743</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -105,6 +105,7 @@
    <addaction name="action_Load_Texture"/>
    <addaction name="separator"/>
    <addaction name="actionRunAll"/>
+   <addaction name="actionEnable_Disable"/>
   </widget>
   <widget class="QDockWidget" name="dockRenderWidget">
    <property name="minimumSize">
@@ -339,6 +340,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionEnable_Disable">
+   <property name="text">
+    <string>Enable/Disable</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>

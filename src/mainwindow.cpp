@@ -60,6 +60,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionWireframe, SIGNAL(toggled(bool)),
             this, SIGNAL(wireframeClicked(bool)));
 
+    connect(ui->actionEnable_Disable, SIGNAL(triggered()),
+            this, SLOT(changeActivationStatus()));
+
 }
 
 MainWindow::~MainWindow()
@@ -109,7 +112,9 @@ void MainWindow::setFileNameDisplay(QString filename, bool changed, ShaderLab::S
         int ind = tabArea->indexOf(it.value());
 
         if(ind != -1)
+        {
             tabArea->setTabText(ind, display);
+        }
     }
 }
 
@@ -145,6 +150,7 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
         {
             tabArea->insertTab(tabArea->count(), it.value(), QString());
             tabArea->setCurrentIndex(tabArea->count() -1);
+            tabArea->setTabIcon(tabArea->count() - 1, QIcon(":/ico/running"));
         }
     }
     else if(ind != -1)
@@ -376,7 +382,8 @@ void MainWindow::loadTextureClick(void)
 
     QString filename = QFileDialog::getOpenFileName(this, "Load Texture", "../..");
 
-    emit textureFileName(filename);
+    if(!filename.isEmpty())
+        emit textureFileName(filename);
 }
 
 void MainWindow::setEnableShaderCode(ShaderLab::Shader shadertype, bool active)
@@ -388,5 +395,21 @@ void MainWindow::setEnableShaderCode(ShaderLab::Shader shadertype, bool active)
 
     ShaderCodeContainer * sc = it.value();
 
-    sc->setActiveCode(active);
+    int ind = tabArea->indexOf(sc);
+
+    if(ind != -1)
+    {
+        if(active) tabArea->setTabIcon(ind, QIcon(":/ico/running"));
+        else tabArea->setTabIcon(ind, QIcon(":/ico/stopped"));
+    }
+
+    //sc->setActiveCode(active);
+}
+
+void MainWindow::changeActivationStatus(void)
+{
+    ShaderCodeContainer *scc = (ShaderCodeContainer*) tabArea->currentWidget();
+
+    if(scc != NULL)
+        emit changeActivationStatusClicked(scc->getShaderType());
 }

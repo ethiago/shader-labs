@@ -10,10 +10,10 @@
         <file>img/1302039702_buttons_16.png</file>
         <file>img/1302039733_books_07.png</file>
         <file>img/1302039812_Network_radar.png</file>
-        <file>img/1302039817_Badge-cancel.png</file>
+        <file alias="stopped">img/1302039817_Badge-cancel.png</file>
         <file>img/1302039820_Signal_stop.png</file>
         <file>img/1302039824_player_play.png</file>
-        <file>img/1302039830_Badge-tick.png</file>
+        <file alias="running">img/1302039830_Badge-tick.png</file>
         <file>img/1302039833_Signal_attention.png</file>
         <file>img/1302039837_Empty_document_new.png</file>
         <file>img/1302039864_Empty_document_delete.png</file>
