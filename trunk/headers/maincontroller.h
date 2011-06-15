@@ -30,6 +30,7 @@ public slots:
     void saveFile(ShaderLab::Shader shadertype);
     void saveFileAs(ShaderLab::Shader shadertype, const QString&, const QString&);
     void shaderCodeToggle(Qt::MouseButton, ShaderLab::Shader);
+    void changeTabActivationStatus(ShaderLab::Shader);
 
 signals:
     void updateGL(void);

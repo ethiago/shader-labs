@@ -40,6 +40,7 @@ public slots:
     void textChanged(ShaderLab::Shader);
     void viewMenuClicked(QAction*);
     void loadTextureClick(void);
+    void changeActivationStatus(void);
 
 /* Created by the UI */
 signals:
@@ -56,6 +57,7 @@ signals:
     void textureFileName(const QString& textureFileName);
     void shaderTabClicked(Qt::MouseButton, ShaderLab::Shader);
     void wireframeClicked(bool);
+    void changeActivationStatusClicked(ShaderLab::Shader);
 
 public:
     explicit MainWindow(QWidget *parent = 0);
