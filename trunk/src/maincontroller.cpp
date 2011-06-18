@@ -97,6 +97,7 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
 
         fileControllers.erase(it);
 
+        program.removeShader(fc->getShader());
         delete fc;
 
         mainWindow->setVisibleShader(false, shaderType);
@@ -238,26 +239,37 @@ void MainController::runAllActiveShaders(void)
 
     for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
     {
+        FileController * fc = it.value();
+        if(!fc->isActive())
+            continue;
+
         thereIsCode = true;
         shadertype = it.key();
 
-        if(!it.value()->isActive())
-            continue;
-
         output += "==================== Compiling " + shaderToStr(shadertype) + " code ====================\n";
 
-        compOK = it.value()->compile(mainWindow->shaderCode(it.key()));
+        //QGLShader* shader = new QGLShader(ShaderLab::shaderToQGLShader(fc->getShaderType()));
+
+        //compOK = shader->compileSourceCode(mainWindow->shaderCode(it.key()));
+        compOK = fc->compile(mainWindow->shaderCode( shadertype ) );
+
         if(compOK)
-            program.addShaderFromSourceCode(it.value()->getQtShaderType(),
-                                                   mainWindow->shaderCode(it.key()));
+        {
+            //program.addShader(shader);
 
-        atLeastOne = atLeastOne || compOK;
+            program.addShader(fc->getShader());
 
-        QString log = it.value()->log();
+            atLeastOne = true;
+        }
+
+        //QString log = shader->log();
+        QString log = fc->log();
+
         if(log == "") output += "Successfull.\n";
         else output += log;
 
         output += "\n";
+
     }
 
     output += "====================== Linking process ======================\n";

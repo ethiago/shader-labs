@@ -15,21 +15,7 @@ FileController::FileController(QString filepath, ShaderLab::Shader shadertype, Q
     changed = false;
     active = true;
 
-    switch(shadertype)
-    {
-        case ShaderLab::Vertex:
-            shader = new QGLShader(QGLShader::Vertex, this);
-            break;
-        case ShaderLab::Fragment:
-            shader = new QGLShader(QGLShader::Fragment, this);
-            break;
-
-#ifdef QT47_CAPABLE
-        case ShaderLab::Geometry:
-            shader = new QGLShader(QGLShader::Geometry, this);
-            break;
-#endif
-    }
+    shader = new QGLShader(ShaderLab::shaderToQGLShader(shaderType), this);
 
 }
 
@@ -96,14 +82,9 @@ bool FileController::getChanged(void)
 }
 
 /* Getter for the shaderLabType attribute. */
-ShaderLab::Shader FileController::getShaderLabType(void)
+ShaderLab::Shader FileController::getShaderType(void)
 {
     return shaderType;
-}
-
-QGLShader::ShaderType FileController::getQtShaderType(void)
-{
-    return ShaderLab::shaderToQGLShader(shaderType);
 }
 
 /* Getter for the isNew attribute. */
@@ -131,12 +112,11 @@ bool FileController::compile(void)
 /* Compiles the code currently in the screen, given the code. */
 bool FileController::compile(const QString& code)
 {
-    if(!code.isEmpty())
-    {
-        return shader->compileSourceCode(code);
-    }
 
-    return false;
+    delete shader;
+    shader = new QGLShader(ShaderLab::shaderToQGLShader(shaderType), this);
+    return shader->compileSourceCode(code);
+
 }
 
 /* Returns the log from the last compilation process. */

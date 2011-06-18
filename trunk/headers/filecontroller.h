@@ -21,8 +21,7 @@ public:
     QGLShader* getShader(void);
     bool getChanged(void);
     bool IsNew(void);
-    ShaderLab::Shader getShaderLabType(void);
-    QGLShader::ShaderType getQtShaderType(void);
+    ShaderLab::Shader getShaderType(void);
 
     void setChanged(bool val);
 

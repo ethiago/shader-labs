@@ -18,8 +18,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabArea->setTabsClosable(true);
     ui->horizontalLayout->addWidget(tabArea);
 
-    ui->dockOutPutWidget->setVisible(false);
-    ui->actionShowOutput->setChecked(false);
+    ui->dockOutPutWidget->setVisible(true);
+    ui->actionShowOutput->setChecked(true);
 
     connect(ui->actionOpenCode, SIGNAL(triggered()),
             this, SLOT(openDialog()));
@@ -87,6 +87,7 @@ MainWindow::~MainWindow()
 /* Setter for the output text on the screen. */
 bool MainWindow::setOutputText(const QString& s)
 {
+    ui->outputTextBox->clear();
     ui->outputTextBox->setPlainText(s);
 
     return true;
