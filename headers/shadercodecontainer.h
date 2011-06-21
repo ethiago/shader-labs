@@ -18,7 +18,7 @@ public:
     void setText(const QString&);
     QString getText(void);
     ShaderLab::Shader getShaderType(void);
-    void setActiveCode(bool);
+    void setActivatedCode(bool);
 
 private:
     Ui::ShaderCodeContainer *ui;

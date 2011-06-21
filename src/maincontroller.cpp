@@ -50,7 +50,7 @@ MainController::MainController(MainWindow *mw, QObject *parent)
             this, SLOT(changeTabActivationStatus(ShaderLab::Shader)));
 
     mainWindow->addShader(ShaderLab::Vertex);
-    mainWindow->addShader(ShaderLab::Geometry);
+    /*mainWindow->addShader(ShaderLab::Geometry);*/
     mainWindow->addShader(ShaderLab::Fragment);
 
     mainWindow->showMaximized();

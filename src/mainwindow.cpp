@@ -15,7 +15,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 {
     ui->setupUi(this);
     tabArea = new QTabWidget(ui->centralWidget);
+
     tabArea->setTabsClosable(true);
+    tabArea->setMovable(true);
+
     ui->horizontalLayout->addWidget(tabArea);
 
     ui->dockOutPutWidget->setVisible(true);
