@@ -38,7 +38,7 @@ QVector3D ArcBall::mouseToSphere(const QPoint& center, const QPoint& point)
 {
     QVector2D v;
     QVector2D v2d;
-    float z;
+    float z = 0.0;
     int quad;
 
     v2d.setX((point - center).x()/radius());
