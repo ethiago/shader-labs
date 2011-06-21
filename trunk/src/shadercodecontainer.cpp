@@ -9,6 +9,8 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
 {
     ui->setupUi(this);
     ui->shaderCodeBox->setFont(QFont("Courier"));
+    ui->shaderCodeBox->setAcceptRichText(false);
+
     shaderType = shadertype;
 
     connect(ui->shaderCodeBox, SIGNAL(textChanged()), this, SLOT(textChanged()));
@@ -44,7 +46,7 @@ void ShaderCodeContainer::mouseReleaseEvent(QMouseEvent *e)
     emit clicked(e->button(), shaderType);
 }
 
-void ShaderCodeContainer::setActiveCode(bool active)
+void ShaderCodeContainer::setActivatedCode(bool active)
 {
     ui->shaderCodeBox->setEnabled(active);
 }
