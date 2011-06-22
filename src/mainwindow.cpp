@@ -74,6 +74,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(tabArea->getTabBar(), SIGNAL(signal_TabClicked()),
             this, SLOT(changeActivationStatus()));
 
+    connect(choiceDialogNew, SIGNAL(shader(ShaderLab::Shader)),
+            this, SLOT(selectedShaderNewDialog(ShaderLab::Shader)));
+
+    connect(choiceDialogOpen, SIGNAL(shader(ShaderLab::Shader)),
+            this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
+
 }
 
 MainWindow::~MainWindow()
@@ -209,16 +215,15 @@ void MainWindow::exitApplication(void)
 /* */
 void MainWindow::newDialog(void)
 {
-    connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderNewDialog(ShaderLab::Shader)));
-    choiceDialog->open();
+
+    choiceDialogNew->open();
 }
 
 /* Associated with the '' signal. */
 /* */
 void MainWindow::openDialog(void)
 {
-    connect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
-    choiceDialog->open();
+    choiceDialogOpen->open();
 }
 
 /* Associated with the '' signal. */
@@ -257,7 +262,6 @@ void MainWindow::saveFileAsDialog(void)
 /* */
 void MainWindow::selectedShaderNewDialog(ShaderLab::Shader shadertype)
 {
-    disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderNewDialog(ShaderLab::Shader)));
     emit newShaderFile(shadertype);
 }
 
@@ -266,8 +270,6 @@ void MainWindow::selectedShaderNewDialog(ShaderLab::Shader shadertype)
 void MainWindow::selectedShaderOpenDialog(ShaderLab::Shader sh)
 {
     QString filename;
-
-    disconnect(choiceDialog, SIGNAL(shader(ShaderLab::Shader)), this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
 
     filename = QFileDialog::getOpenFileName(this, "Open " + ShaderLab::shaderToStr(sh) + " shader code",
                                             "../..", "*" + ShaderLab::shaderToExt(sh));
@@ -308,7 +310,8 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
             this, SLOT(textChanged(ShaderLab::Shader)));
     connect(codeContainer, SIGNAL(clicked(Qt::MouseButton,ShaderLab::Shader)),
             this, SIGNAL(shaderTabClicked(Qt::MouseButton,ShaderLab::Shader)));
-    choiceDialog->addButton(shadertype);
+    choiceDialogNew->addButton(shadertype);
+    choiceDialogOpen->addButton(shadertype);
 }
 
 /* */
