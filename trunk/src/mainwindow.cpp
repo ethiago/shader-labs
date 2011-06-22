@@ -5,16 +5,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "gldisplay.h"
+#include "sltabwidget.h"
+#include "SLTabBar.h"
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
-    ui(new Ui::MainWindow),  choiceDialog(new CodeChoiceDialog(this))
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    tabArea = new QTabWidget(ui->centralWidget);
+    tabArea = new SLTabWidget(ui->centralWidget);
+
+    choiceDialogNew = new CodeChoiceDialog(this);
+    choiceDialogOpen = new CodeChoiceDialog(this);
 
     tabArea->setTabsClosable(true);
     tabArea->setMovable(true);
@@ -66,6 +71,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionEnable_Disable, SIGNAL(triggered()),
             this, SLOT(changeActivationStatus()));
 
+    connect(tabArea->getTabBar(), SIGNAL(signal_TabClicked()),
+            this, SLOT(changeActivationStatus()));
+
 }
 
 MainWindow::~MainWindow()
@@ -79,7 +87,8 @@ MainWindow::~MainWindow()
     }
 
     delete ui;
-    delete choiceDialog;
+    delete choiceDialogNew;
+    delete choiceDialogOpen;
     delete tabArea;
 }
 
@@ -314,7 +323,7 @@ QString MainWindow::saveAsRequest(ShaderLab::Shader shader)
 {
     QString filename = QFileDialog::getSaveFileName(
                        this,
-                       "Save " + ShaderLab::shaderToStr(shader) +" As",
+                       "Save " + ShaderLab::shaderToStr(shader) +" shader as...",
                        "../..",
                        ShaderLab::shaderToExt(shader));
 

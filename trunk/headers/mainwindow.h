@@ -19,6 +19,8 @@ namespace ShaderLab
     class GLDisplay;
 }
 
+class SLTabWidget;
+
 using namespace ShaderLab;
 
 class MainWindow : public QMainWindow
@@ -80,9 +82,10 @@ private:
     Ui::MainWindow *ui;   /* The Main window. */
 
     QMap<ShaderLab::Shader, ShaderCodeContainer*> codeTabs; /* Tab objects for each kind of shader. */
-    QTabWidget *tabArea;  /* UI component for nesting tabs. */
+    SLTabWidget *tabArea;  /* UI component for nesting tabs. */
 
-    CodeChoiceDialog *choiceDialog;  /* The choice dialog. */
+    CodeChoiceDialog *choiceDialogNew;  /* The choice dialog for new files. */
+    CodeChoiceDialog *choiceDialogOpen; /* The choice dialog for existing files. */
 
 protected:
     void closeEvent(QCloseEvent *event);

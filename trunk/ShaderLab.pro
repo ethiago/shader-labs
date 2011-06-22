@@ -33,7 +33,9 @@ SOURCES += src/main.cpp \
     src/object3d.cpp \
     src/sphere.cpp \
     src/rendercontroller.cpp \
-    src/arcball.cpp
+    src/arcball.cpp \
+    src/sltabwidget.cpp \
+    src/SLTabBar.cpp
 HEADERS += headers/mainwindow.h \
     headers/codechoicedialog.h \
     headers/global.h \
@@ -45,7 +47,9 @@ HEADERS += headers/mainwindow.h \
     headers/object3d.h \
     headers/sphere.h \
     headers/rendercontroller.h \
-    headers/arcball.h
+    headers/arcball.h \
+    headers/sltabwidget.h \
+    headers/SLTabBar.h
 FORMS += forms/mainwindow.ui \
     forms/codechoicedialog.ui \
     forms/shadercodecontainer.ui

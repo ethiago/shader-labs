@@ -75,6 +75,7 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
     if(it != fileControllers.end())
     {
         FileController* fc = it.value();
+        ShaderLab::Shader shadertype = it.key();
 
         if(fc->getChanged())
         {
@@ -82,15 +83,16 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
             {
                 if( fc->IsNew() )
                 {
-                    QString filename = mainWindow->saveAsRequest( it.key() );
-                    if(filename.isEmpty())
-                        return;
+                    QString filepath = mainWindow->saveAsRequest(shadertype);
+                    QString ext = ShaderLab::shaderToExt(shadertype);
 
-                    fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
+                    if(filepath.isEmpty()) return;
+
+                    fc->saveAsNewFile( filepath + ext, mainWindow->shaderCode(shadertype) );
                 }
                 else
                 {
-                    fc->save(mainWindow->shaderCode(it.key()));
+                    fc->save(mainWindow->shaderCode(shadertype));
                 }
             }
         }
@@ -190,6 +192,7 @@ void MainController::programCloseRequest(void)
     for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
     {
         FileController* fc = it.value();
+        ShaderLab::Shader shadertype = it.key();
 
         if(fc->getChanged())
         {
@@ -197,15 +200,16 @@ void MainController::programCloseRequest(void)
             {
                 if( fc->IsNew() )
                 {
-                    QString filename = mainWindow->saveAsRequest( it.key() );
-                    if(filename.isEmpty())
-                        return;
+                    QString filepath = mainWindow->saveAsRequest(shadertype);
+                    QString ext = ShaderLab::shaderToExt(shadertype);
 
-                    fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
+                    if(filepath.isEmpty()) return;
+
+                    fc->saveAsNewFile( filepath + ext, mainWindow->shaderCode(shadertype) );
                 }
                 else
                 {
-                    fc->save(mainWindow->shaderCode(it.key()));
+                    fc->save(mainWindow->shaderCode(shadertype));
                 }
             }
             else continue;
@@ -303,6 +307,7 @@ void MainController::saveAll()
     for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
     {
         FileController* fc = it.value();
+        ShaderLab::Shader shadertype = it.key();
 
         if(fc->getChanged())
         {
@@ -311,17 +316,19 @@ void MainController::saveAll()
                 if( !mainWindow->saveRequest( fc->getFileName(), true ) )
                     continue;
 
-                QString filename = mainWindow->saveAsRequest( it.key() );
-                if(filename.isEmpty())
-                    continue;
+                QString filepath = mainWindow->saveAsRequest(shadertype);
+                QString ext = ShaderLab::shaderToExt(shadertype);
 
-                fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
-            }else
+                if(filepath.isEmpty()) return;
+
+                fc->saveAsNewFile( filepath + ext, mainWindow->shaderCode(shadertype) );
+            }
+            else
             {
-                fc->save(mainWindow->shaderCode(it.key()));
+                fc->save(mainWindow->shaderCode(shadertype));
             }
 
-            mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), it.key() );
+            mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
         }
     }
 }
@@ -342,10 +349,12 @@ void MainController::saveFile(ShaderLab::Shader shadertype)
 
     if( fc->IsNew() )
     {
-        QString filename = mainWindow->saveAsRequest( it.key() ) + ShaderLab::shaderToExt(shadertype);
-        if(filename.isEmpty()) return;
+        QString filepath = mainWindow->saveAsRequest( it.key() );
+        QString ext = ShaderLab::shaderToExt(shadertype);
 
-        saved = fc->saveAsNewFile( filename, mainWindow->shaderCode( it.key() ) );
+        if(filepath.isEmpty()) return;
+
+        saved = fc->saveAsNewFile( filepath + ext, mainWindow->shaderCode( it.key() ) );
     }
     else
     {
