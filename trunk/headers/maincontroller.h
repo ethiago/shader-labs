@@ -5,7 +5,7 @@
 #include <QMap>
 #include <QGLShaderProgram>
 
-#include "global.h"
+#include "Global.h"
 
 class MainWindow;
 class FileController;

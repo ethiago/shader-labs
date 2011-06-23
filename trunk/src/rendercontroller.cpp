@@ -4,11 +4,11 @@
 #include <QPoint>
 
 #include "rendercontroller.h"
-#include "gldisplay.h"
+#include "GLDisplay.h"
 #include "mainwindow.h"
 #include "object3d.h"
 #include "sphere.h"
-#include "arcball.h"
+#include "Arcball.h"
 
 RenderController::RenderController(MainWindow *mainWindow,
                                             QObject *parent):

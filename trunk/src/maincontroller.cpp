@@ -3,8 +3,8 @@
 
 #include "maincontroller.h"
 #include "mainwindow.h"
-#include "filecontroller.h"
-#include "global.h"
+#include "FileController.h"
+#include "Global.h"
 #include "sphere.h"
 
 

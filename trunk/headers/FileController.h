@@ -5,7 +5,7 @@
 #include <QGLShader>
 #include <QFileInfo>
 
-#include "global.h"
+#include "Global.h"
 
 class FileController : public QObject
 {
@@ -34,7 +34,7 @@ public:
     bool isActive(void);
     void setActive(bool);
 
-private: 
+private:
     QFileInfo filePath; /* Path to the file which the current instance is responsible for. */
     QGLShader *shader;  /* QT resource to compile a shader program. */
 

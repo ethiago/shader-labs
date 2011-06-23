@@ -1,4 +1,4 @@
-#include "global.h"
+#include "Global.h"
 #include "cmath"
 
 QString ShaderLab::shaderToStr(Shader s)

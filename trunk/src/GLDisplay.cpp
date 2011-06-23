@@ -1,6 +1,6 @@
 #include <QDebug>
 #include <QToolTip>
-#include "gldisplay.h"
+#include "GLDisplay.h"
 
 using namespace ShaderLab;
 

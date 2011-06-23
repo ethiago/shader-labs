@@ -7,8 +7,10 @@
 #include <QTabWidget>
 #include <QMap>
 
+#include <QTabBar>
+
 #include "shadercodecontainer.h"
-#include "codechoicedialog.h"
+#include "ChooseShaderDialog.h"
 
 namespace Ui {
     class MainWindow;
@@ -84,8 +86,8 @@ private:
     QMap<ShaderLab::Shader, ShaderCodeContainer*> codeTabs; /* Tab objects for each kind of shader. */
     SLTabWidget *tabArea;  /* UI component for nesting tabs. */
 
-    CodeChoiceDialog *choiceDialogNew;  /* The choice dialog for new files. */
-    CodeChoiceDialog *choiceDialogOpen; /* The choice dialog for existing files. */
+    ChooseShaderDialog *choiceDialogNew;  /* The choice dialog for new files. */
+    ChooseShaderDialog *choiceDialogOpen; /* The choice dialog for existing files. */
 
 protected:
     void closeEvent(QCloseEvent *event);
