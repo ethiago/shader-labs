@@ -1,5 +1,5 @@
 #include "object3d.h"
-#include "global.h"
+#include "Global.h"
 
 Object3D::Object3D(const QVector3D& center, QObject *parent)
     : QObject(parent), m_center(center), m_translation(QVector3D()),

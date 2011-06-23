@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Choose Shader type</string>
+   <string>Choose Shader</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>

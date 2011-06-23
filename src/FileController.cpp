@@ -1,7 +1,7 @@
 #include <QString>
 #include <QFile>
 
-#include "filecontroller.h"
+#include "FileController.h"
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */

@@ -4,7 +4,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "gldisplay.h"
+#include "GLDisplay.h"
 #include "sltabwidget.h"
 #include "SLTabBar.h"
 
@@ -18,8 +18,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->setupUi(this);
     tabArea = new SLTabWidget(ui->centralWidget);
 
-    choiceDialogNew = new CodeChoiceDialog(this);
-    choiceDialogOpen = new CodeChoiceDialog(this);
+    choiceDialogNew = new ChooseShaderDialog(this);
+    choiceDialogOpen = new ChooseShaderDialog(this);
 
     tabArea->setTabsClosable(true);
     tabArea->setMovable(true);
@@ -70,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(ui->actionEnable_Disable, SIGNAL(triggered()),
             this, SLOT(changeActivationStatus()));
-
     connect(tabArea->getTabBar(), SIGNAL(signal_TabClicked()),
             this, SLOT(changeActivationStatus()));
 

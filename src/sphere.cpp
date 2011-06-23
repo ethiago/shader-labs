@@ -1,6 +1,6 @@
 #include <QtOpenGL>
 #include "sphere.h"
-#include "global.h"
+#include "Global.h"
 
 Sphere::Sphere(float radius, const QVector3D& center, QObject *parent):
     Object3D(center, parent), m_radius(radius)

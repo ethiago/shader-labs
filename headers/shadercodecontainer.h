@@ -2,7 +2,7 @@
 #define SHADERCODECONTAINER_H
 
 #include <QWidget>
-#include "global.h"
+#include "Global.h"
 
 namespace Ui {
     class ShaderCodeContainer;
