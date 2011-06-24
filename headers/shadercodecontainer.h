@@ -30,9 +30,11 @@ private slots:
 signals:
     void textChanged(ShaderLab::Shader);
     void clicked(Qt::MouseButton, ShaderLab::Shader);
+    void doubleClicked();
 
 protected:
     void mouseReleaseEvent(QMouseEvent *);
+    void mouseDoubleClickEvent(QMouseEvent *);
 
 };
 
