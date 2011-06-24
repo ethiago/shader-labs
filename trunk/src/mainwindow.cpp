@@ -70,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(ui->actionEnable_Disable, SIGNAL(triggered()),
             this, SLOT(changeActivationStatus()));
+
     connect(tabArea->getTabBar(), SIGNAL(signal_TabClicked()),
             this, SLOT(changeActivationStatus()));
 
@@ -309,6 +310,8 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
             this, SLOT(textChanged(ShaderLab::Shader)));
     connect(codeContainer, SIGNAL(clicked(Qt::MouseButton,ShaderLab::Shader)),
             this, SIGNAL(shaderTabClicked(Qt::MouseButton,ShaderLab::Shader)));
+    connect(codeContainer, SIGNAL(doubleClicked()),
+            this, SLOT(changeActivationStatus()));
     choiceDialogNew->addButton(shadertype);
     choiceDialogOpen->addButton(shadertype);
 }
