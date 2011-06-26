@@ -16,15 +16,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    tabArea = new SLTabWidget(ui->centralWidget);
 
     choiceDialogNew = new ChooseShaderDialog(this);
     choiceDialogOpen = new ChooseShaderDialog(this);
 
+    tabArea = new SLTabWidget();
     tabArea->setTabsClosable(true);
     tabArea->setMovable(true);
-
-    ui->horizontalLayout->addWidget(tabArea);
 
     ui->dockOutPutWidget->setVisible(true);
     ui->actionShowOutput->setChecked(true);
@@ -165,6 +163,11 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
 
     if(v == true)
     {
+        if(tabArea->count() == 0)
+        {
+            tabArea->setParent(ui->centralWidget);
+            ui->horizontalLayout->addWidget(tabArea);
+        }
         if(ind == -1)
         {
             tabArea->insertTab(tabArea->count(), it.value(), QString());
@@ -172,8 +175,16 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
             tabArea->setTabIcon(tabArea->count() - 1, QIcon(":/ico/running"));
         }
     }
-    else if(ind != -1)
-        tabArea->removeTab(ind);
+    else
+    {
+        if(ind != -1)
+            tabArea->removeTab(ind);
+        if(tabArea->count() == 0)
+        {
+            ui->horizontalLayout->removeWidget(tabArea);
+            tabArea->setParent(0);
+        }
+    }
 
     return true;
 }
