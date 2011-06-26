@@ -51,5 +51,8 @@
         <file>img/1303590202_StepForwardHot.png</file>
         <file>img/1303590217_StepForwardNormal.png</file>
         <file>img/wireframe_icon.jpg</file>
+        <file>img/RemoveIcon.jpg</file>
+        <file>img/AddIcon.jpg</file>
+        <file>img/1303587978_3floppy_unmountImage.png</file>
     </qresource>
 </RCC>

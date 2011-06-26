@@ -62,6 +62,8 @@ signals:
     void shaderTabClicked(Qt::MouseButton, ShaderLab::Shader);
     void wireframeClicked(bool);
     void changeActivationStatusClicked(ShaderLab::Shader);
+    void removeTexture(void);
+    void saveResultAsImage();
 
 public:
     explicit MainWindow(QWidget *parent = 0);

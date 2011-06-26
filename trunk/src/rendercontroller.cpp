@@ -43,6 +43,12 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     connect(mainWindow, SIGNAL(wireframeClicked(bool)),
             this, SLOT(wireFrameToggle(bool)));
+
+    connect(mainWindow, SIGNAL(removeTexture()),
+            this, SLOT(removeTexture()));
+
+    connect(mainWindow, SIGNAL(saveResultAsImage()),
+            this, SLOT(saveResultAsImage()));
 }
 
 RenderController::~RenderController()
@@ -124,4 +130,26 @@ void RenderController::wireFrameToggle(bool wireframe)
 {
     display->setWireframe(wireframe);
     display->updateGL();
+}
+
+void RenderController::removeTexture(void)
+{
+    if(model->texture() >= 0)
+    {
+        display->deleteTexture(model->texture());
+        model->setTexture(-1);
+    }
+    display->updateGL();
+}
+
+void RenderController::saveResultAsImage()
+{
+    QString filePath = QFileDialog::getSaveFileName(display, "Save Result As ...", "", "*.png");
+
+    if(filePath.isEmpty())
+        return;
+
+    filePath += ".png";
+
+    display->grabFrameBuffer().save(filePath);
 }

@@ -78,6 +78,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(choiceDialogOpen, SIGNAL(shader(ShaderLab::Shader)),
             this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
 
+    connect(ui->actionRemove_Texture, SIGNAL(triggered()),
+            this, SIGNAL(removeTexture()));
+
+    connect(ui->actionSave_Result_as_Image, SIGNAL(triggered()),
+            this, SIGNAL(saveResultAsImage()));
+
 }
 
 MainWindow::~MainWindow()

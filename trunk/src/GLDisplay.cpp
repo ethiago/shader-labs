@@ -21,6 +21,8 @@ void GLDisplay::initializeGL()
     glEnable(GL_LIGHTING);
     glShadeModel( GL_SMOOTH );
 
+    glClearColor( 0.0, 0.0, 0.5, 1.0);
+
     GLfloat amb_light[4] = { 1, 1, 1, 1.0 };
     GLfloat ligthPosition[4] = { 0.0, 20.0, -3.0, 1.0 };
 
