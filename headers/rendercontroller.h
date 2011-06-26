@@ -38,6 +38,8 @@ public slots:
     void mouseCancel();
     void textureFileName(const QString&);
     void wireFrameToggle(bool);
+    void removeTexture(void);
+    void saveResultAsImage();
 
 };
 
