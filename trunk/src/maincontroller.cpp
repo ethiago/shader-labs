@@ -84,11 +84,10 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
                 if( fc->IsNew() )
                 {
                     QString filepath = mainWindow->saveAsRequest(shadertype);
-                    QString ext = ShaderLab::shaderToExt(shadertype);
 
                     if(filepath.isEmpty()) return;
 
-                    fc->saveAsNewFile( filepath + ext, mainWindow->shaderCode(shadertype) );
+                    fc->saveAsNewFile( filepath , mainWindow->shaderCode(shadertype) );
                 }
                 else
                 {
@@ -201,11 +200,10 @@ void MainController::programCloseRequest(void)
                 if( fc->IsNew() )
                 {
                     QString filepath = mainWindow->saveAsRequest(shadertype);
-                    QString ext = ShaderLab::shaderToExt(shadertype);
 
                     if(filepath.isEmpty()) return;
 
-                    fc->saveAsNewFile( filepath + ext, mainWindow->shaderCode(shadertype) );
+                    fc->saveAsNewFile( filepath , mainWindow->shaderCode(shadertype) );
                 }
                 else
                 {
@@ -317,11 +315,10 @@ void MainController::saveAll()
                     continue;
 
                 QString filepath = mainWindow->saveAsRequest(shadertype);
-                QString ext = ShaderLab::shaderToExt(shadertype);
 
                 if(filepath.isEmpty()) return;
 
-                fc->saveAsNewFile( filepath + ext, mainWindow->shaderCode(shadertype) );
+                fc->saveAsNewFile( filepath , mainWindow->shaderCode(shadertype) );
             }
             else
             {
@@ -350,11 +347,10 @@ void MainController::saveFile(ShaderLab::Shader shadertype)
     if( fc->IsNew() )
     {
         QString filepath = mainWindow->saveAsRequest( it.key() );
-        QString ext = ShaderLab::shaderToExt(shadertype);
 
         if(filepath.isEmpty()) return;
 
-        saved = fc->saveAsNewFile( filepath + ext, mainWindow->shaderCode( it.key() ) );
+        saved = fc->saveAsNewFile( filepath , mainWindow->shaderCode( it.key() ) );
     }
     else
     {
@@ -375,8 +371,9 @@ void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& fil
         return;
     FileController *fc = it.value();
 
-    QString fullName = filename + ShaderLab::shaderToExt(shadertype);
-    qDebug() << fullName;
+    QString fullName = filename;
+
+    if(filename.isEmpty()) return;
 
     if(fc->saveAsNewFile(fullName, filecontent))
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);

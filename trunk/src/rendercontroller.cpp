@@ -149,7 +149,6 @@ void RenderController::saveResultAsImage()
     if(filePath.isEmpty())
         return;
 
-    filePath += ".png";
-
+    display->updateGL();
     display->grabFrameBuffer().save(filePath);
 }
