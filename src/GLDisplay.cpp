@@ -32,12 +32,11 @@ void GLDisplay::initializeGL()
 
 void GLDisplay::resizeGL(int width, int height)
 {
-    int side = qMin(width, height);
-    glViewport((width - side) / 2, (height - side) / 2, side, side);
+    glViewport(0, 0, width, height);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45, 1.0, 2.5, 500);
+    gluPerspective(45, width*1.0/height, 2.5, 500);
     glMatrixMode(GL_MODELVIEW);
 }
 

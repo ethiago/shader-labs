@@ -349,6 +349,9 @@ QString MainWindow::saveAsRequest(ShaderLab::Shader shader)
                        "../..",
                        ShaderLab::shaderToExt(shader));
 
+    if(filename == ShaderLab::shaderToExt(shader))
+        return QString();
+
     return filename;
 }
 
