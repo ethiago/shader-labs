@@ -87,6 +87,12 @@ ShaderLab::Shader FileController::getShaderType(void)
     return shaderType;
 }
 
+/* Getter for the active attribute. */
+bool FileController::isActive(void)
+{
+    return active;
+}
+
 /* Getter for the isNew attribute. */
 bool FileController::IsNew(void)
 {
@@ -99,6 +105,17 @@ void FileController::setChanged(bool val)
     changed = val;
 }
 
+/* Setter for the filePath attribute. */
+void FileController::setFilePath(const QString &filepath)
+{
+    filePath = QFileInfo(filepath);
+}
+
+/* Setter for the active attribute. */
+void FileController::setActive(bool a)
+{
+    active = a;
+}
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++++++++++ Other methods +++++++++++++++++++++++++ */
@@ -125,73 +142,21 @@ QString FileController::log()
     return shader->log();
 }
 
-bool FileController::isActive(void)
-{
-    return active;
-}
-
-void FileController::setActive(bool a)
-{
-    active = a;
-}
-
-
-
-
-
-
-/***************************************************************
-****************************************************************
-
-                     REDUNDANTEEEEEEEEE!!!!
-
-***************************************************************
-****************************************************************/
-
-
-
 /* Saves the given content on the file. */
-/* TO-DO: Save a new file */
+/* Assumes that filepath has been set for all cases (new or old files) */
 bool FileController::save(const QString& content)
 {
-    if(!isNew)
-    {
-        QFile file(this->filePath.absoluteFilePath());
-        if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-        {
-            QTextStream out(&file);
-            out << content;
-            file.close();
-            changed = false;
-
-            return true;
-        }
-        else return false;
-    }
-    else
-    {
-        qDebug() << "New file won't be saved for now.";
-        return false;
-    }
-}
-
-bool FileController::saveAsNewFile(const QString& filepath, const QString& fileContent)
-{
-    filePath = filepath;
-
     QFile file(this->filePath.absoluteFilePath());
+
     if(file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         QTextStream out(&file);
-        out << fileContent;
+        out << content;
         file.close();
         changed = false;
-        isNew = false;
 
         return true;
     }
-    else
-    {
-        return false;
-    }
+    else return false;
 }
+

@@ -24,12 +24,12 @@ public:
     ShaderLab::Shader getShaderType(void);
 
     void setChanged(bool val);
+    void setFilePath(const QString &filepath);
 
     bool compile(const QString& code);
     bool compile(void);
     QString log();
-    bool save(const QString&);
-    bool saveAsNewFile(const QString& filepath, const QString& fileContent);
+    bool save(const QString& content);
 
     bool isActive(void);
     void setActive(bool);

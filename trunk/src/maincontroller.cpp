@@ -72,7 +72,7 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
     QMap<ShaderLab::Shader, FileController*>::iterator it;
     it = fileControllers.find(shaderType);
 
-    if(it != fileControllers.end())
+    if(it != fileControllers.end()) /* Precisamos confiar mais no nosso código!!! =P */
     {
         FileController* fc = it.value();
         ShaderLab::Shader shadertype = it.key();
@@ -86,13 +86,10 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
                     QString filepath = mainWindow->saveAsRequest(shadertype);
 
                     if(filepath.isEmpty()) return;
+                    fc->setFilePath(filepath);
+                }
 
-                    fc->saveAsNewFile( filepath , mainWindow->shaderCode(shadertype) );
-                }
-                else
-                {
-                    fc->save(mainWindow->shaderCode(shadertype));
-                }
+                fc->save(mainWindow->shaderCode(shadertype));
             }
         }
 
@@ -202,16 +199,12 @@ void MainController::programCloseRequest(void)
                     QString filepath = mainWindow->saveAsRequest(shadertype);
 
                     if(filepath.isEmpty()) return;
+                    fc->setFilePath(filepath);
+                }
 
-                    fc->saveAsNewFile( filepath , mainWindow->shaderCode(shadertype) );
-                }
-                else
-                {
-                    fc->save(mainWindow->shaderCode(shadertype));
-                }
+                fc->save(mainWindow->shaderCode(shadertype));
             }
             else continue;
-
         }
 
         fileControllers.erase(it);
@@ -317,13 +310,10 @@ void MainController::saveAll()
                 QString filepath = mainWindow->saveAsRequest(shadertype);
 
                 if(filepath.isEmpty()) return;
+                fc->setFilePath(filepath);
+            }
 
-                fc->saveAsNewFile( filepath , mainWindow->shaderCode(shadertype) );
-            }
-            else
-            {
-                fc->save(mainWindow->shaderCode(shadertype));
-            }
+            fc->save(mainWindow->shaderCode(shadertype));
 
             mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
         }
@@ -349,11 +339,8 @@ void MainController::saveFile(ShaderLab::Shader shadertype)
         QString filepath = mainWindow->saveAsRequest( it.key() );
 
         if(filepath.isEmpty()) return;
+        fc->setFilePath(filepath);
 
-        saved = fc->saveAsNewFile( filepath , mainWindow->shaderCode( it.key() ) );
-    }
-    else
-    {
         saved = fc->save(mainWindow->shaderCode(it.key()));
     }
 
@@ -363,7 +350,7 @@ void MainController::saveFile(ShaderLab::Shader shadertype)
 
 /* Associated with the 'saveFileAs' signal. */
 /* Only for existing files, creates a new file with the content of the screen and saves it. */
-void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& filename, const QString& filecontent)
+void  MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& filename, const QString& filecontent)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
     it = fileControllers.find(shadertype);
@@ -374,8 +361,9 @@ void MainController::saveFileAs(ShaderLab::Shader shadertype, const QString& fil
     QString fullName = filename;
 
     if(filename.isEmpty()) return;
+    fc->setFilePath(fullName);
 
-    if(fc->saveAsNewFile(fullName, filecontent))
+    if(fc->save(filecontent))
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
 }
 
