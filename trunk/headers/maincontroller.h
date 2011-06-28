@@ -40,6 +40,8 @@ private:
     QMap<ShaderLab::Shader, FileController*> fileControllers;
     QGLShaderProgram program;
 
+    FileController* getFileControllerByShaderType(ShaderLab::Shader shadertype);
+
 };
 
 #endif // MAINCONTROLLER_H
