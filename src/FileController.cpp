@@ -154,6 +154,7 @@ bool FileController::save(const QString& content)
         out << content;
         file.close();
         changed = false;
+        isNew = false;
 
         return true;
     }
