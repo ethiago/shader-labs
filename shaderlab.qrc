@@ -54,5 +54,7 @@
         <file>img/RemoveIcon.jpg</file>
         <file>img/AddIcon.jpg</file>
         <file>img/1303587978_3floppy_unmountImage.png</file>
+        <file>img/removetexture.png</file>
+        <file>img/loadtexture.png</file>
     </qresource>
 </RCC>
