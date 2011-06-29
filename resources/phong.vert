@@ -20,4 +20,5 @@ void main()
 	vert.z *= scale;
 	//play here
  	gl_Position = gl_ModelViewProjectionMatrix * vert;
+
 }
