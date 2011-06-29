@@ -43,9 +43,6 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     connect(mainWindow, SIGNAL(saveAll()),
             this, SLOT(saveAll()));
 
-    connect(mainWindow, SIGNAL(shaderTabClicked(Qt::MouseButton,ShaderLab::Shader)),
-            this, SLOT(shaderCodeToggle(Qt::MouseButton,ShaderLab::Shader)));
-
     connect(mainWindow, SIGNAL(changeActivationStatusClicked(ShaderLab::Shader)),
             this, SLOT(changeTabActivationStatus(ShaderLab::Shader)));
 
@@ -250,7 +247,7 @@ void MainController::saveAll()
 void MainController::saveFile(ShaderLab::Shader shaderType)
 {
     FileController *fc = getFileControllerByShaderType(shaderType);
-,
+
     if( fc->IsNew() )
     {
         QString filepath = mainWindow->saveAsRequest( shaderType );
@@ -277,17 +274,6 @@ void  MainController::saveFileAs(ShaderLab::Shader shaderType, const QString& fi
 
     if(fc->save(filecontent))
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-}
-
-void MainController::shaderCodeToggle(Qt::MouseButton button, ShaderLab::Shader shaderType)
-{
-    FileController *fc = getFileControllerByShaderType(shaderType);
-
-    if(button == Qt::RightButton)
-    {
-        fc->setActive(!fc->isActive());
-        mainWindow->setEnableShaderCode(shaderType, fc->isActive());
-    }
 }
 
 void MainController::changeTabActivationStatus(ShaderLab::Shader shaderType)

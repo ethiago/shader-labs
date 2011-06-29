@@ -6,7 +6,8 @@
 #include <QMoveEvent>
 #include <QPoint>
 
-#define NULLPOINT    QPoint(-1,-1)
+#define NULLPOINT   QPoint(-1,-1)
+#define EPSILON     0.001
 
 namespace ShaderLab{
 
@@ -17,6 +18,7 @@ class GLDisplay : public QGLWidget
     QPoint rigthPressedPoint;
     QPoint leftPressedPoint;
     bool wireFrame;
+    float zoom;
 
 signals:
     void drawModel(void);
@@ -36,10 +38,15 @@ public:
 
     void setWireframe(bool);
 
+    void setZoom(float z);
+    float getZoom(void)const;
+
 private:
     void mousePressEvent ( QMouseEvent * event );
     void mouseReleaseEvent ( QMouseEvent * event );
     void mouseMoveEvent(QMouseEvent *);
+    float xDist(float aspect);
+    float yDist(float aspect);
 
 };
 

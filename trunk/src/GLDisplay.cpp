@@ -1,17 +1,29 @@
 #include <QDebug>
 #include <QToolTip>
 #include "GLDisplay.h"
+#include <QMatrix4x4>
 
+#define MINI(a,b) ((a) < (b) ? (a) : (b))
 using namespace ShaderLab;
 
 GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
     rigthPressedPoint(NULLPOINT),
-    leftPressedPoint(NULLPOINT), wireFrame(false)
+    leftPressedPoint(NULLPOINT), wireFrame(false), zoom(1.0)
 {
 }
 
 GLDisplay::~GLDisplay()
 {
+}
+
+void GLDisplay::setZoom(float z)
+{
+    zoom = z;
+}
+
+float GLDisplay::getZoom(void)const
+{
+    return zoom;
 }
 
 void GLDisplay::initializeGL()
@@ -33,23 +45,44 @@ void GLDisplay::initializeGL()
 void GLDisplay::resizeGL(int width, int height)
 {
     glViewport(0, 0, width, height);
+}
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(45, width*1.0/height, 2.5, 500);
-    glMatrixMode(GL_MODELVIEW);
+float GLDisplay::xDist(float aspect)
+{
+    if(aspect < 1)
+        return (1.0)*zoom;
+    else
+        return (1.0*aspect)*zoom;
+}
+
+float GLDisplay::yDist(float aspect)
+{
+    if(aspect > 1)
+        return (1.0)*zoom;
+    else
+        return (1.0*(1/aspect))*zoom;
 }
 
 void GLDisplay::paintGL()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    float aspect = width()*1.0/height();
 
-    glColor3f(1.0, 1.0, 1.0);
+    float xdist = xDist(aspect);
+    float ydist = yDist(aspect);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glFrustum(-xdist, xdist, -ydist, +ydist, 5.0, 100);
+
+    glMatrixMode(GL_MODELVIEW);
+
+    glClear(GL_COLOR_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(0,0,-4, 0,0,0, 0,-1,0);
+    gluLookAt(0,0,-15.0, 0,0,0, 0,-1,0);
 
     if(wireFrame)
     {
@@ -62,6 +95,8 @@ void GLDisplay::paintGL()
         glCullFace(GL_BACK);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
+
+    glColor3f(1.0, 1.0, 1.0);
 
     emit drawModel();
 
@@ -146,3 +181,4 @@ void GLDisplay::mouseMoveEvent(QMouseEvent *event)
     }else
         event->ignore();
 }
+

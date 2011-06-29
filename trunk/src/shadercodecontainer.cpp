@@ -11,7 +11,18 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
     ui->shaderCodeBox->setFont(QFont("Courier"));
     ui->shaderCodeBox->setAcceptRichText(false);
 
+    activePalette = ui->shaderCodeBox->palette();
+    inactivePalette = ui->shaderCodeBox->palette();
+
     shaderType = shadertype;
+
+    QBrush brush(QColor(128, 128, 128, 255));
+    brush.setStyle(Qt::SolidPattern);
+    inactivePalette.setBrush(QPalette::Active, QPalette::Text, brush);
+    inactivePalette.setBrush(QPalette::Inactive, QPalette::Text, brush);
+    QBrush brush1(QColor(159, 158, 158, 255));
+    brush1.setStyle(Qt::SolidPattern);
+    inactivePalette.setBrush(QPalette::Disabled, QPalette::Text, brush1);
 
     connect(ui->shaderCodeBox, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
@@ -54,5 +65,11 @@ void ShaderCodeContainer::mouseDoubleClickEvent(QMouseEvent *e)
 
 void ShaderCodeContainer::setActivatedCode(bool active)
 {
-    ui->shaderCodeBox->setEnabled(active);
+    if(active)
+    {
+        ui->shaderCodeBox->setPalette(activePalette);
+    }else
+    {
+        ui->shaderCodeBox->setPalette(inactivePalette);
+    }
 }
