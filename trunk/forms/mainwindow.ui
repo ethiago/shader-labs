@@ -45,7 +45,7 @@
      <x>0</x>
      <y>0</y>
      <width>743</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -321,7 +321,7 @@
   <action name="action_Load_Texture">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/img/AddIcon.jpg</normaloff>:/ico/img/AddIcon.jpg</iconset>
+     <normaloff>:/ico/img/loadtexture.png</normaloff>:/ico/img/loadtexture.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Load Texture ...</string>
@@ -356,7 +356,7 @@
   <action name="actionRemove_Texture">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/img/RemoveIcon.jpg</normaloff>:/ico/img/RemoveIcon.jpg</iconset>
+     <normaloff>:/ico/img/removetexture.png</normaloff>:/ico/img/removetexture.png</iconset>
    </property>
    <property name="text">
     <string>Remove Texture</string>
