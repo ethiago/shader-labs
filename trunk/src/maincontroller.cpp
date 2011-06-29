@@ -250,7 +250,7 @@ void MainController::saveAll()
 void MainController::saveFile(ShaderLab::Shader shaderType)
 {
     FileController *fc = getFileControllerByShaderType(shaderType);
-
+,
     if( fc->IsNew() )
     {
         QString filepath = mainWindow->saveAsRequest( shaderType );
