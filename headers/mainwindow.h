@@ -59,7 +59,6 @@ signals:
     void shaderCodeChanged(ShaderLab::Shader);
     void drawModel(void);
     void textureFileName(const QString& textureFileName);
-    void shaderTabClicked(Qt::MouseButton, ShaderLab::Shader);
     void wireframeClicked(bool);
     void changeActivationStatusClicked(ShaderLab::Shader);
     void removeTexture(void);

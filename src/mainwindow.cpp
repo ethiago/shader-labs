@@ -325,8 +325,6 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
 
     connect(codeContainer, SIGNAL(textChanged(ShaderLab::Shader)),
             this, SLOT(textChanged(ShaderLab::Shader)));
-    connect(codeContainer, SIGNAL(clicked(Qt::MouseButton,ShaderLab::Shader)),
-            this, SIGNAL(shaderTabClicked(Qt::MouseButton,ShaderLab::Shader)));
     connect(codeContainer, SIGNAL(doubleClicked()),
             this, SLOT(changeActivationStatus()));
     choiceDialogNew->addButton(shadertype);
@@ -437,11 +435,14 @@ void MainWindow::setEnableShaderCode(ShaderLab::Shader shadertype, bool active)
 
     if(ind != -1)
     {
-        if(active) tabArea->setTabIcon(ind, QIcon(":/ico/running"));
-        else tabArea->setTabIcon(ind, QIcon(":/ico/stopped"));
+        sc->setActivatedCode(active);
+        if(active)
+            tabArea->setTabIcon(ind, QIcon(":/ico/running"));
+        else
+            tabArea->setTabIcon(ind, QIcon(":/ico/stopped"));
     }
 
-    //sc->setActiveCode(active);
+
 }
 
 void MainWindow::changeActivationStatus(void)

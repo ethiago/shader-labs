@@ -22,6 +22,8 @@ public:
 
 private:
     Ui::ShaderCodeContainer *ui;
+    QPalette activePalette;
+    QPalette inactivePalette;
     ShaderLab::Shader shaderType;
 
 private slots:
