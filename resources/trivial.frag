@@ -1,4 +1,4 @@
-varying vec4 cor;
+varying vec4 cor
 
 void main(void)
 {
