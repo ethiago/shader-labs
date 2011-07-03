@@ -225,7 +225,7 @@ void MainWindow::dockRenderVisibilityChange(bool v)
 /* */
 void MainWindow::exitApplication(void)
 {
-    close();
+    close(); //closeEvent
 }
 
 /* Associated with the '' signal. */
@@ -334,8 +334,7 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
 /* */
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    emit programClose();
-    event->accept();
+    emit programClose(event);
 }
 
 /* */
@@ -354,10 +353,11 @@ QString MainWindow::saveAsRequest(ShaderLab::Shader shader)
 }
 
 /* */
-bool MainWindow::saveRequest(const QString& filename, bool newFile)
+ShaderLab::OperationState MainWindow::saveRequest(const QString& filename, bool newFile)
 {
     QMessageBox::StandardButton ok = QMessageBox::Yes;
     QMessageBox::StandardButton no = QMessageBox::No;
+    QMessageBox::StandardButton cancel = QMessageBox::Cancel;
     QMessageBox::StandardButton bt;
 
     QString msg;
@@ -369,13 +369,15 @@ bool MainWindow::saveRequest(const QString& filename, bool newFile)
 
 
      bt = QMessageBox::question(this, "Save File", msg,
-                               no | ok,
+                               no | ok | cancel,
                                ok);
 
     if(bt == ok)
-        return true;
+        return ShaderLab::Yes;
+    else if(bt == no)
+        return ShaderLab::No;
     else
-        return false;
+        return ShaderLab::Cancel;
 }
 
 /* */

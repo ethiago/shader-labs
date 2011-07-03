@@ -50,7 +50,7 @@ public slots:
 signals:
     void closeTabRequest(ShaderLab::Shader);
     void newShaderFile(ShaderLab::Shader);
-    void programClose();
+    void programClose(QCloseEvent *event);
     void runShaders(void);
     void saveAll(void);
     void saveFile(ShaderLab::Shader);
@@ -71,7 +71,7 @@ public:
     void addShader(ShaderLab::Shader shadertype);
     QString getOutputText(void);
     QString saveAsRequest(ShaderLab::Shader);
-    bool saveRequest(const QString&, bool newFile = false);
+    ShaderLab::OperationState saveRequest(const QString&, bool newFile = false);
     void setFileNameDisplay(QString filename, bool changed, ShaderLab::Shader);
     bool setOutputText(const QString& );
     bool setShaderCode(const QString&, ShaderLab::Shader);

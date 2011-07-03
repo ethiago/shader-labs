@@ -20,13 +20,13 @@ MainController::MainController(MainWindow *mw, QObject *parent)
             this, SLOT(openShaderCode(QString,ShaderLab::Shader)));
 
     connect(mainWindow, SIGNAL(closeTabRequest(ShaderLab::Shader)),
-            this, SLOT(closeShaderCode(ShaderLab::Shader)));
+            this, SLOT(slot_closeShaderCode(ShaderLab::Shader)));
 
     connect(mainWindow, SIGNAL(runShaders()),
             this, SLOT(runAllActiveShaders()));
 
-    connect(mainWindow, SIGNAL(programClose()),
-            this, SLOT(programCloseRequest()));
+    connect(mainWindow, SIGNAL(programClose(QCloseEvent*)),
+            this, SLOT(programCloseRequest(QCloseEvent*)));
 
     connect(mainWindow, SIGNAL(saveFile(ShaderLab::Shader)),
             this, SLOT(saveFile(ShaderLab::Shader)));
@@ -64,7 +64,12 @@ MainController::~MainController()
 /* Associated with the 'closeTabRequest' signal. */
 /* Reponsible for closing the tab of a shader program. Only when the content was changed, */
 /* and giving different treatment for new and old files. */
-void MainController::closeShaderCode(ShaderLab::Shader shaderType)
+void MainController::slot_closeShaderCode(ShaderLab::Shader shadertype)
+{
+    closeShaderCode(shadertype);
+}
+
+bool MainController::closeShaderCode(ShaderLab::Shader shaderType)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
     it = fileControllers.find(shaderType);
@@ -72,8 +77,13 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
     FileController* fc = it.value();
 
     if( (fc->IsNew() || fc->getChanged()) )
-        if( mainWindow->saveRequest(fc->getFileName(), fc->IsNew()) )
+    {
+        ShaderLab::OperationState st = mainWindow->saveRequest(fc->getFileName(), fc->IsNew());
+        if(st == ShaderLab::Yes)
             saveFile(shaderType);
+        else if(st == ShaderLab::Cancel)
+            return false;
+    }
 
     fileControllers.erase(it);
     program.removeShader(fc->getShader());
@@ -81,6 +91,8 @@ void MainController::closeShaderCode(ShaderLab::Shader shaderType)
     delete fc;
 
     mainWindow->setVisibleShader(false, shaderType);
+
+    return true;
 }
 
 /* Associated with the 'shaderCodeChanged' signal. */
@@ -99,6 +111,9 @@ void MainController::fileChanged(ShaderLab::Shader shaderType)
 /* Won't allow 2 opened files for the same shader type. */
 void MainController::newShaderCode(ShaderLab::Shader shaderType)
 {
+
+    codeAlreadyOpenProcessor(shaderType);
+
     FileController *fc = getFileControllerByShaderType(shaderType);
 
     if(!fc)
@@ -110,11 +125,6 @@ void MainController::newShaderCode(ShaderLab::Shader shaderType)
         mainWindow->setShaderCode(QString(),  shaderType);
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
     }
-    else
-    {
-        QMessageBox::warning(mainWindow, QObject::tr("Failed to create file"),
-                             QObject::tr(QString(shaderToStr(shaderType) + " code already opened.").toAscii()));
-    }
 }
 
 /* Associated with the 'selectedFile' signal. */
@@ -123,6 +133,9 @@ void MainController::newShaderCode(ShaderLab::Shader shaderType)
 void MainController::openShaderCode(const QString& filepath, ShaderLab::Shader shaderType)
 {
     QString fileContent;
+
+    codeAlreadyOpenProcessor(shaderType);
+
     FileController *fc = getFileControllerByShaderType(shaderType);
 
     if(!fc)
@@ -139,21 +152,22 @@ void MainController::openShaderCode(const QString& filepath, ShaderLab::Shader s
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
 
     }
-    else
-    {
-        QMessageBox::warning(mainWindow, QObject::tr("Failed to open file"),
-                             QObject::tr(QString(shaderToStrCap(shaderType) + " code already opened.").toAscii()));
-    }
 }
 
 /* Associated with the 'programClose' signal. */
 /* Before ending the application, checks and manages all unsaved files. */
-void MainController::programCloseRequest(void)
+void MainController::programCloseRequest(QCloseEvent* event)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
 
     for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
-        closeShaderCode(it.key());
+    {
+        if(!closeShaderCode(it.key()))
+        {
+            event->ignore();
+            return;
+        }
+    }
 
 }
 
@@ -292,4 +306,14 @@ FileController* MainController::getFileControllerByShaderType(ShaderLab::Shader 
     if( it != fileControllers.end() )
         return it.value();
     else return NULL;
+}
+
+void MainController::codeAlreadyOpenProcessor(ShaderLab::Shader shadertype)
+{
+    FileController *fc = getFileControllerByShaderType(shadertype);
+
+    if(fc != NULL)
+    {
+        closeShaderCode(shadertype);
+    }
 }
