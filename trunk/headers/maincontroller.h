@@ -20,11 +20,11 @@ public:
     ~MainController();
 
 public slots:
-    void closeShaderCode(ShaderLab::Shader);
+    void slot_closeShaderCode(ShaderLab::Shader);
     void fileChanged(ShaderLab::Shader);
     void newShaderCode(ShaderLab::Shader);
     void openShaderCode(const QString& filename, ShaderLab::Shader);
-    void programCloseRequest(void);
+    void programCloseRequest(QCloseEvent* event);
     void runAllActiveShaders(void);
     void saveAll(void);
     void saveFile(ShaderLab::Shader shadertype);
@@ -40,6 +40,8 @@ private:
     QGLShaderProgram program;
 
     FileController* getFileControllerByShaderType(ShaderLab::Shader shadertype);
+    void codeAlreadyOpenProcessor(ShaderLab::Shader shadertype);
+    bool closeShaderCode(ShaderLab::Shader);
 
 };
 

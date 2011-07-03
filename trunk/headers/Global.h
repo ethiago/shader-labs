@@ -21,6 +21,8 @@ Shader intToShader(int v);
 
 double degreeFromCos(double);
 
+enum OperationState{ Yes, No, Cancel};
+
 }
 
 #endif // GLOBAL_H

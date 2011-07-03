@@ -50,17 +50,17 @@ void GLDisplay::resizeGL(int width, int height)
 float GLDisplay::xDist(float aspect)
 {
     if(aspect < 1)
-        return (1.0)*zoom;
+        return (0.5)*zoom;
     else
-        return (1.0*aspect)*zoom;
+        return (0.5*aspect)*zoom;
 }
 
 float GLDisplay::yDist(float aspect)
 {
     if(aspect > 1)
-        return (1.0)*zoom;
+        return (0.5)*zoom;
     else
-        return (1.0*(1/aspect))*zoom;
+        return (0.5*(1/aspect))*zoom;
 }
 
 void GLDisplay::paintGL()
