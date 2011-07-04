@@ -35,6 +35,7 @@ ShaderCodeContainer::~ShaderCodeContainer()
 void ShaderCodeContainer::setText(const QString& code)
 {
     ui->shaderCodeBox->setText(code);
+    setActivatedCode(true);
 }
 
 QString ShaderCodeContainer::getText()
