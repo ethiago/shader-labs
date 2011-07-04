@@ -56,5 +56,6 @@
         <file>img/1303587978_3floppy_unmountImage.png</file>
         <file>img/removetexture.png</file>
         <file>img/loadtexture.png</file>
+        <file alias="noImage">img/noImage.jpg</file>
     </qresource>
 </RCC>

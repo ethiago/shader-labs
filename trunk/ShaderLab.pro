@@ -35,7 +35,10 @@ SOURCES += src/main.cpp \
     src/SLCommandLinkButton.cpp \
     src/FileController.cpp \
     src/GLDisplay.cpp \
-    src/Global.cpp
+    src/Global.cpp \
+    src/TextureController.cpp \
+    src/Texture.cpp \
+    src/TexturePropertiesView.cpp
 HEADERS += headers/mainwindow.h \
     headers/maincontroller.h \
     headers/shadercodecontainer.h \
@@ -49,10 +52,14 @@ HEADERS += headers/mainwindow.h \
     headers/SLCommandLinkButton.h \
     headers/FileController.h \
     headers/GLDisplay.h \
-    headers/Global.h
+    headers/Global.h \
+    headers/TextureController.h \
+    headers/Texture.h \
+    headers/TexturePropertiesView.h
 FORMS += forms/mainwindow.ui \
     forms/shadercodecontainer.ui \
-    forms/ChooseShaderDialog.ui
+    forms/ChooseShaderDialog.ui \
+    forms/TexturePropertiesView.ui
 RESOURCES += shaderlab.qrc
 
 OTHER_FILES +=

@@ -38,14 +38,8 @@ RenderController::RenderController(MainWindow *mainWindow,
     connect(display, SIGNAL(mouseCancel()),
             this, SLOT(mouseCancel()));
 
-    connect(mainWindow, SIGNAL(textureFileName(QString)),
-            this, SLOT(textureFileName(QString)));
-
     connect(mainWindow, SIGNAL(wireframeClicked(bool)),
             this, SLOT(wireFrameToggle(bool)));
-
-    connect(mainWindow, SIGNAL(removeTexture()),
-            this, SLOT(removeTexture()));
 
     connect(mainWindow, SIGNAL(saveResultAsImage()),
             this, SLOT(saveResultAsImage()));
@@ -108,37 +102,9 @@ void RenderController::mouseCancel()
     display->updateGL();
 }
 
-void RenderController::textureFileName(const QString& tex)
-{
-    QImage img(tex);
-    if(img.isNull())
-    {
-        qDebug() << "Nao eh uma imagem valida";
-        return;
-    }
-
-    if(model->texture() >= 0)
-    {
-        display->deleteTexture(model->texture());
-    }
-
-    model->setTexture(display->bindTexture(tex, GL_TEXTURE_2D));
-    display->updateGL();
-}
-
 void RenderController::wireFrameToggle(bool wireframe)
 {
     display->setWireframe(wireframe);
-    display->updateGL();
-}
-
-void RenderController::removeTexture(void)
-{
-    if(model->texture() >= 0)
-    {
-        display->deleteTexture(model->texture());
-        model->setTexture(-1);
-    }
     display->updateGL();
 }
 
@@ -151,4 +117,14 @@ void RenderController::saveResultAsImage()
 
     display->updateGL();
     display->grabFrameBuffer().save(filePath);
+}
+
+QGLWidget* RenderController::getGLContext(void)
+{
+    return display;
+}
+
+void RenderController::updateTexture(int texName)
+{
+    model->setTexture(texName);
 }

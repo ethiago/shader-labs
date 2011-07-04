@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QPoint>
+#include <QGLContext>
 
 class MainWindow;
 class Object3D;
@@ -27,6 +28,7 @@ public:
     explicit RenderController(MainWindow *mainWindow,
                               QObject *parent = 0);
     ~RenderController();
+    QGLWidget* getGLContext(void);
 
 public slots:
     void updateGL(void);
@@ -36,10 +38,11 @@ public slots:
     void mouseLeftMove(QPoint ini, QPoint curr);
     void mouseLefthFinish(QPoint ini, QPoint curr);
     void mouseCancel();
-    void textureFileName(const QString&);
     void wireFrameToggle(bool);
-    void removeTexture(void);
     void saveResultAsImage();
+    void updateTexture(int);
+
+
 
 };
 
