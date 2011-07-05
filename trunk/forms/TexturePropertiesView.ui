@@ -22,6 +22,17 @@
      <widget class="QWidget" name="widget" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
+        <widget class="QToolButton" name="addButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../shaderlab.qrc">
+           <normaloff>:/ico/img/Add-icon.png</normaloff>:/ico/img/Add-icon.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QToolButton" name="loadButton">
          <property name="text">
           <string>...</string>
@@ -62,6 +73,9 @@
     <item>
      <widget class="QWidget" name="widget_2" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QComboBox" name="textureList"/>
+       </item>
        <item>
         <widget class="QLabel" name="imageContainer">
          <property name="text">

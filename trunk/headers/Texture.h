@@ -14,6 +14,7 @@ class Texture : public QObject
 
 public:
     explicit Texture(QObject *parent = 0);
+    explicit Texture(const Texture&);
 
     void setImage(const QImage& image);
     const QImage& image(void) const;
@@ -22,6 +23,8 @@ public:
     void setGLTextureName(int);
 
     void clean(void);
+
+    const Texture& operator=(const Texture&);
 
 signals:
 

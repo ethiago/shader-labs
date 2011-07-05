@@ -42,7 +42,11 @@ void Sphere::draw(void)const
     gluQuadricNormals(quad, GLU_SMOOTH);
 
     if(texture() >= 0)
-        gluQuadricTexture(quad, texture());
+    {
+        gluQuadricTexture(quad, true);
+        glBindTexture(GL_TEXTURE_2D, texture());
+    }
+
     gluSphere(quad, radius(), slices(), stacks());
 
     glPopMatrix();

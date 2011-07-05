@@ -4,27 +4,40 @@
 #include "mainwindow.h"
 #include <QImage>
 #include <QFileDialog>
+#include <QAction>
 
 TextureController::TextureController(MainWindow* mw, QGLWidget* context,QObject *parent) :
-    QObject(parent), m_texture(NULL), m_context(context)
+    QObject(parent)
 {
-   m_texture = new Texture(this);
+    m_textureList.append(Texture());
+
+   m_context = context;
    m_textureView = new TexturePropertiesView(mw);
+   m_viewAction = mw->actionTexturePropertiesView();
+   mw->addDockWidget(Qt::RightDockWidgetArea, m_textureView);
+   m_viewAction->setChecked(true);
 
-   m_textureView->show();
-
-
-   connect(mw, SIGNAL(textureFileName(QString)),
-           this, SLOT(textureFileName(QString)));
-
-   connect(mw, SIGNAL(removeTexture()),
-           this, SLOT(removeTexture()));
+   connect(m_viewAction, SIGNAL(triggered(bool)),
+           this, SLOT(viewToogle(bool)));
 
    connect(m_textureView, SIGNAL(loadTextureClicked()),
            this, SLOT(loadTexture()));
 
    connect(m_textureView, SIGNAL(removeTextureClicked()),
            this, SLOT(removeTexture()));
+
+   connect(m_textureView, SIGNAL(addTextureClicked()),
+           this, SLOT(addTexture()));
+
+   connect(m_textureView, SIGNAL(s_closeEvent()),
+           this, SLOT(viewCloseEvent()));
+
+   connect(m_textureView, SIGNAL(textureCurrentChange(int)),
+           this,SLOT(textureCurrentChange(int)));
+
+   textureCurrentChange(0);
+   viewUpdateList();
+
 }
 
 void TextureController::loadTexture(void)
@@ -33,6 +46,16 @@ void TextureController::loadTexture(void)
 
     if(!filename.isEmpty())
         textureFileName(filename);
+}
+
+void TextureController::addTexture(void)
+{
+    if(m_textureList[0].glTextureName() >= 0)
+    {
+        m_textureList.push_back(Texture());
+        textureContext = m_textureList.size() - 1;
+    }
+    loadTexture();
 }
 
 void TextureController::textureFileName(const QString& imageFileName)
@@ -44,23 +67,78 @@ void TextureController::textureFileName(const QString& imageFileName)
         return;
     }
 
-    removeTexture();
+    clearTexture();
 
-    m_texture->setImage(img);
-    m_texture->setGLTextureName(m_context->bindTexture(imageFileName, GL_TEXTURE_2D));
-    emit updateTexture(m_texture->glTextureName());
-    m_textureView->setTexture(*m_texture);
+    m_textureList[textureContext].setImage(img);
+    m_textureList[textureContext].setGLTextureName(m_context->bindTexture(imageFileName, GL_TEXTURE_2D));
+    emit updateTexture(m_textureList[textureContext].glTextureName());
+    viewUpdateList();
+    m_context->updateGL();
+}
+void TextureController::clearTexture(void)
+{
+    if(m_textureList[textureContext].glTextureName() >= 0)
+    {
+        m_context->deleteTexture(m_textureList[textureContext].glTextureName());
+        m_textureList[textureContext].clean();
+    }
+}
+void TextureController::removeTexture(void)
+{
+
+    clearTexture();
+
+    if(m_textureList.size() > 1)
+    {
+        m_textureList.removeAt(textureContext);
+        if(textureContext == m_textureList.size())
+            textureCurrentChange(textureContext-1);
+        else
+            textureCurrentChange(textureContext);
+    }else
+    {
+        textureCurrentChange(textureContext);
+    }
+
+    viewUpdateList();
+    emit updateTexture(m_textureList[textureContext].glTextureName());
     m_context->updateGL();
 }
 
-void TextureController::removeTexture(void)
+void TextureController::viewToogle(bool b)
 {
-    if(m_texture->glTextureName() >= 0)
-    {
-        m_context->deleteTexture(m_texture->glTextureName());
-        m_texture->setGLTextureName(-1);
-    }
-    emit updateTexture(m_texture->glTextureName());
-    m_textureView->setTexture(*m_texture);
+    if(b)
+        m_textureView->show();
+    else
+        m_textureView->hide();
+}
+
+void TextureController::viewCloseEvent()
+{
+    m_viewAction->setChecked(false);
+}
+
+void TextureController::textureCurrentChange(int index)
+{
+    if(index < 0)
+        return;
+
+    textureContext = index;
+    m_textureView->setTexture(m_textureList[textureContext]);
+    emit updateTexture(m_textureList[textureContext].glTextureName());
     m_context->updateGL();
+}
+
+void TextureController::viewUpdateList(void)
+{
+    QList<QPair<QIcon, QString> > list;
+    for(int i = 0; i < m_textureList.size(); ++i)
+    {
+        QPair<QIcon, QString> pair;
+        pair.first = QIcon(QPixmap::fromImage(m_textureList[i].image()));
+        pair.second = QString() + SAMPLEPREFIX + QString::number(i);
+        list.push_back(pair);
+    }
+
+    m_textureView->setTextureList(list, textureContext);
 }
