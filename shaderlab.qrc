@@ -57,5 +57,6 @@
         <file>img/removetexture.png</file>
         <file>img/loadtexture.png</file>
         <file alias="noImage">img/noImage.jpg</file>
+        <file>img/Add-icon.png</file>
     </qresource>
 </RCC>

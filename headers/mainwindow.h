@@ -43,7 +43,6 @@ public slots:
     void selectedShaderOpenDialog(ShaderLab::Shader);
     void textChanged(ShaderLab::Shader);
     void viewMenuClicked(QAction*);
-    void loadTextureClick(void);
     void changeActivationStatus(void);
 
 /* Created by the UI */
@@ -58,10 +57,8 @@ signals:
     void selectedFile(const QString& , ShaderLab::Shader);
     void shaderCodeChanged(ShaderLab::Shader);
     void drawModel(void);
-    void textureFileName(const QString& textureFileName);
     void wireframeClicked(bool);
     void changeActivationStatusClicked(ShaderLab::Shader);
-    void removeTexture(void);
     void saveResultAsImage();
 
 public:
@@ -80,6 +77,7 @@ public:
     bool visibleShader(ShaderLab::Shader);
     void setGLDisplay(GLDisplay *);
     void setEnableShaderCode(ShaderLab::Shader, bool);
+    QAction* actionTexturePropertiesView(void);
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */

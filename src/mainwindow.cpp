@@ -60,14 +60,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionSaveAll, SIGNAL(triggered()),
             this, SIGNAL(saveAll()));
 
-    connect(ui->action_Load_Texture, SIGNAL(triggered()),
-            this, SLOT(loadTextureClick()));
-
     connect(ui->actionWireframe, SIGNAL(toggled(bool)),
             this, SIGNAL(wireframeClicked(bool)));
-
-    connect(ui->actionEnable_Disable, SIGNAL(triggered()),
-            this, SLOT(changeActivationStatus()));
 
     connect(tabArea->getTabBar(), SIGNAL(signal_TabClicked()),
             this, SLOT(changeActivationStatus()));
@@ -77,9 +71,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(choiceDialogOpen, SIGNAL(shader(ShaderLab::Shader)),
             this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
-
-    connect(ui->actionRemove_Texture, SIGNAL(triggered()),
-            this, SIGNAL(removeTexture()));
 
     connect(ui->actionSave_Result_as_Image, SIGNAL(triggered()),
             this, SIGNAL(saveResultAsImage()));
@@ -415,15 +406,6 @@ void MainWindow::setGLDisplay(GLDisplay * display)
     ui->verticalLayout->addWidget(display);
 }
 
-void MainWindow::loadTextureClick(void)
-{
-
-    QString filename = QFileDialog::getOpenFileName(this, "Load Texture", "../..");
-
-    if(!filename.isEmpty())
-        emit textureFileName(filename);
-}
-
 void MainWindow::setEnableShaderCode(ShaderLab::Shader shadertype, bool active)
 {
     QMap<ShaderLab::Shader, ShaderCodeContainer *>::iterator it;
@@ -453,4 +435,9 @@ void MainWindow::changeActivationStatus(void)
 
     if(scc != NULL)
         emit changeActivationStatusClicked(scc->getShaderType());
+}
+
+QAction* MainWindow::actionTexturePropertiesView(void)
+{
+    return ui->actionTexture_Properties;
 }

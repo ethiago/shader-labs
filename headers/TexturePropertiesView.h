@@ -2,6 +2,7 @@
 #define TEXTUREPROPERTIESVIEW_H
 
 #include <QDockWidget>
+#include <Qlist>
 
 namespace Ui {
     class TexturePropertiesView;
@@ -16,6 +17,9 @@ class TexturePropertiesView : public QDockWidget
 signals:
     void loadTextureClicked(void);
     void removeTextureClicked(void);
+    void addTextureClicked(void);
+    void s_closeEvent();
+    void textureCurrentChange(int);
 
 public:
     explicit TexturePropertiesView(QWidget *parent = 0);
@@ -23,8 +27,12 @@ public:
 
     void setTexture(const Texture& texture);
 
+    void setTextureList(const QList<QPair<QIcon, QString> >&, int);
+
 private:
     Ui::TexturePropertiesView *ui;
+
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // TEXTUREPROPERTIESVIEW_H
