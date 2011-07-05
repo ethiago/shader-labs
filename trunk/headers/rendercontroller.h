@@ -16,6 +16,8 @@ namespace ShaderLab
 
 using namespace ShaderLab;
 
+class TextureController;
+
 class RenderController : public QObject
 {
     Q_OBJECT
@@ -41,7 +43,6 @@ public slots:
     void wireFrameToggle(bool);
     void saveResultAsImage();
     void updateTexture(int);
-
 
 
 };

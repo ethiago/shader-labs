@@ -17,7 +17,8 @@ public:
     void setRadius(float radius);
     float radius(void)const;
 
-    virtual void draw(void)const;
+private:
+    virtual void drawGeometry(void) const;
 
 signals:
 

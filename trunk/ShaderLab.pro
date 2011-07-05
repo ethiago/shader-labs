@@ -38,7 +38,8 @@ SOURCES += src/main.cpp \
     src/Global.cpp \
     src/TextureController.cpp \
     src/Texture.cpp \
-    src/TexturePropertiesView.cpp
+    src/TexturePropertiesView.cpp \
+    src/Plane.cpp
 HEADERS += headers/mainwindow.h \
     headers/maincontroller.h \
     headers/shadercodecontainer.h \
@@ -55,7 +56,8 @@ HEADERS += headers/mainwindow.h \
     headers/Global.h \
     headers/TextureController.h \
     headers/Texture.h \
-    headers/TexturePropertiesView.h
+    headers/TexturePropertiesView.h \
+    headers/Plane.h
 FORMS += forms/mainwindow.ui \
     forms/shadercodecontainer.ui \
     forms/ChooseShaderDialog.ui \

@@ -13,6 +13,9 @@ int main(int argc, char *argv[])
     MainController mc(&mw);
     RenderController rc(&mw, &mc);
     TextureController tc(&mw, rc.getGLContext(), &mc);
+
+    mc.setTextureController(&tc);
+
     QObject::connect(&mc, SIGNAL(updateGL()), &rc, SLOT(updateGL()));
     QObject::connect(&tc, SIGNAL(updateTexture(int)), &rc,SLOT(updateTexture(int)));
 

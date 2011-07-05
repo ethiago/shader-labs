@@ -86,13 +86,13 @@ void GLDisplay::paintGL()
 
     if(wireFrame)
     {
-        glDisable(GL_CULL_FACE);
+        //glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
     else
     {
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
+        //glEnable(GL_CULL_FACE);
+        //glCullFace(GL_BACK);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
