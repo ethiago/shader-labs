@@ -4,6 +4,7 @@
 #include "maincontroller.h"
 #include "mainwindow.h"
 #include "FileController.h"
+#include "TextureController.h"
 #include "Global.h"
 #include "sphere.h"
 
@@ -15,6 +16,7 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     : QObject(parent)
 {
     mainWindow = mw;
+    textureController = NULL;
 
     connect(mainWindow, SIGNAL(selectedFile(QString,ShaderLab::Shader)),
             this, SLOT(openShaderCode(QString,ShaderLab::Shader)));
@@ -235,6 +237,11 @@ void MainController::runAllActiveShaders(void)
         output += program.log();
 
         program.bind();
+
+        if(textureController != NULL)
+        {
+            textureController->applyTextures(&program);
+        }
     }
     else
         output += "Due to problems, linking process could not be performed.";
@@ -317,4 +324,9 @@ void MainController::codeAlreadyOpenProcessor(ShaderLab::Shader shadertype)
     {
         closeShaderCode(shadertype);
     }
+}
+
+void MainController::setTextureController(TextureController *textureController)
+{
+    this->textureController = textureController;
 }

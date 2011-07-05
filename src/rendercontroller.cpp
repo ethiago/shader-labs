@@ -8,6 +8,7 @@
 #include "mainwindow.h"
 #include "object3d.h"
 #include "sphere.h"
+#include "Plane.h"
 #include "Arcball.h"
 
 RenderController::RenderController(MainWindow *mainWindow,
@@ -15,7 +16,8 @@ RenderController::RenderController(MainWindow *mainWindow,
     QObject(parent)
 {
     display = new GLDisplay();
-    model = new Sphere();
+    //model = new Sphere();
+    model = new Plane();
     arcBall = new ArcBall(500);
 
 

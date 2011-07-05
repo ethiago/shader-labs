@@ -14,7 +14,7 @@ TextureController::TextureController(MainWindow* mw, QGLWidget* context,QObject 
    m_context = context;
    m_textureView = new TexturePropertiesView(mw);
    m_viewAction = mw->actionTexturePropertiesView();
-   mw->addDockWidget(Qt::RightDockWidgetArea, m_textureView);
+   mw->addDockWidget(Qt::LeftDockWidgetArea, m_textureView);
    m_viewAction->setChecked(true);
 
    connect(m_viewAction, SIGNAL(triggered(bool)),
@@ -72,6 +72,7 @@ void TextureController::textureFileName(const QString& imageFileName)
     m_textureList[textureContext].setImage(img);
     m_textureList[textureContext].setGLTextureName(m_context->bindTexture(imageFileName, GL_TEXTURE_2D));
     emit updateTexture(m_textureList[textureContext].glTextureName());
+    activateTexture();
     viewUpdateList();
     m_context->updateGL();
 }
@@ -102,6 +103,7 @@ void TextureController::removeTexture(void)
 
     viewUpdateList();
     emit updateTexture(m_textureList[textureContext].glTextureName());
+    activateTexture();
     m_context->updateGL();
 }
 
@@ -126,6 +128,7 @@ void TextureController::textureCurrentChange(int index)
     textureContext = index;
     m_textureView->setTexture(m_textureList[textureContext]);
     emit updateTexture(m_textureList[textureContext].glTextureName());
+    activateTexture();
     m_context->updateGL();
 }
 
@@ -141,4 +144,22 @@ void TextureController::viewUpdateList(void)
     }
 
     m_textureView->setTextureList(list, textureContext);
+}
+
+void TextureController::applyTextures(QGLShaderProgram* program)
+{
+    for(int i = 0; i < m_textureList.size(); ++i)
+    {
+        const char * n = QString(SAMPLEPREFIX + QString::number(i)).toAscii();
+        program->setUniformValue(n, (GLint)i );
+    }
+}
+
+void TextureController::activateTexture(void)
+{
+    for(int i = 0; i < m_textureList.size(); ++i)
+    {
+        glActiveTexture(GL_TEXTURE0 + i);
+        glBindTexture(GL_TEXTURE_2D, m_textureList[i].glTextureName());
+    }
 }

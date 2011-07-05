@@ -1,3 +1,5 @@
+uniform sampler2D sampler2d0;
+
 void main()
 {
 	vec4 vert = gl_Vertex;
@@ -6,6 +8,8 @@ void main()
 	vert.y *= scale;
 	vert.z *= scale;
 	
+	vert.z = vec3(texture2D(sampler2d0, gl_MultiTexCoord0.st)).r * 2.0;
+
  	gl_Position = gl_ModelViewProjectionMatrix * vert;
 
 

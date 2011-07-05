@@ -22,6 +22,8 @@ class Object3D : public QObject
 
     int m_texture;
 
+    virtual void drawGeometry(void) const = 0;
+
 public:
     explicit Object3D(const QVector3D& center = QVector3D(0.0,0.0,0.0),
                       QObject *parent = 0);
@@ -49,7 +51,7 @@ public:
     void setTexture(int texture);
     int texture(void)const;
 
-    virtual void draw(void)const = 0;
+    void draw(void) const;
 
 };
 

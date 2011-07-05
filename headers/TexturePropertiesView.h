@@ -2,7 +2,7 @@
 #define TEXTUREPROPERTIESVIEW_H
 
 #include <QDockWidget>
-#include <Qlist>
+#include <QList>
 
 namespace Ui {
     class TexturePropertiesView;

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGLContext>
 #include <QList>
+#include <QGLShaderProgram>
 #include "Texture.h"
 
 #define SAMPLEPREFIX "sampler2d"
@@ -24,6 +25,10 @@ class TextureController : public QObject
 
 public:
     explicit TextureController(MainWindow* mw, QGLWidget*, QObject *parent = 0);
+
+    void applyTextures(QGLShaderProgram* program);
+    void activateTexture(void);
+
 
 signals:
     void updateTexture(int);

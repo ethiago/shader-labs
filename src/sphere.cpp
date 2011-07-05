@@ -22,32 +22,13 @@ float Sphere::radius(void)const
     return m_radius;
 }
 
-void Sphere::draw(void)const
+void Sphere::drawGeometry(void)const
 {
     GLUquadric *quad = gluNewQuadric();
-
-    QQuaternion t = interactiveQuartenion();
-
-    glPushMatrix();
-
-    glTranslatef(translation().x(), translation().y(), translation().z());
-    glTranslatef(center().x(), center().y(), center().z());
-
-    glRotatef(ShaderLab::degreeFromCos(t.scalar()),
-              t.x(), t.y(), t.z());
-
-    glMultMatrixd(rotacoes().constData());
 
     gluQuadricDrawStyle(quad, GLU_FILL);
     gluQuadricNormals(quad, GLU_SMOOTH);
 
-    if(texture() >= 0)
-    {
-        gluQuadricTexture(quad, true);
-        glBindTexture(GL_TEXTURE_2D, texture());
-    }
-
+    gluQuadricTexture(quad, true);
     gluSphere(quad, radius(), slices(), stacks());
-
-    glPopMatrix();
 }

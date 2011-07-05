@@ -10,6 +10,7 @@
 class MainWindow;
 class FileController;
 class Object3D;
+class TextureController;
 
 class MainController : public QObject
 {
@@ -18,6 +19,7 @@ class MainController : public QObject
 public:
     explicit MainController(MainWindow *mw, QObject *parent = 0);
     ~MainController();
+    void setTextureController(TextureController *textureController);
 
 public slots:
     void slot_closeShaderCode(ShaderLab::Shader);
@@ -38,6 +40,7 @@ private:
     MainWindow *mainWindow;
     QMap<ShaderLab::Shader, FileController*> fileControllers;
     QGLShaderProgram program;
+    TextureController *textureController;
 
     FileController* getFileControllerByShaderType(ShaderLab::Shader shadertype);
     void codeAlreadyOpenProcessor(ShaderLab::Shader shadertype);
