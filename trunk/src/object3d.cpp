@@ -5,7 +5,7 @@ Object3D::Object3D(const QVector3D& center, QObject *parent)
     : QObject(parent), m_center(center), m_translation(QVector3D()),
       m_rotacoes(QMatrix4x4()) ,
       m_interactiveQuartenion(QQuaternion()),
-      m_slices(200), m_stacks (200), m_texture(-1)
+      m_slices(50), m_stacks (50), m_texture(-1)
 {
 }
 

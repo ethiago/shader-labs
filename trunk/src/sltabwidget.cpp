@@ -8,9 +8,7 @@
 SLTabWidget::SLTabWidget(QWidget *parent) :
     QTabWidget(parent)
 {
-
     setTabBar(new SLTabBar());
-
 }
 
 

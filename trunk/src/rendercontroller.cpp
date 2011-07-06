@@ -16,8 +16,8 @@ RenderController::RenderController(MainWindow *mainWindow,
     QObject(parent)
 {
     display = new GLDisplay();
-    //model = new Sphere();
-    model = new Plane();
+    model = new Sphere();
+    //model = new Plane();
     arcBall = new ArcBall(500);
 
 
@@ -112,7 +112,7 @@ void RenderController::wireFrameToggle(bool wireframe)
 
 void RenderController::saveResultAsImage()
 {
-    QString filePath = QFileDialog::getSaveFileName(display, "Save Result As ...", "", "*.png");
+    QString filePath = QFileDialog::getSaveFileName(display, "Save Result As ...", "/home", "*.png");
 
     if(filePath.isEmpty())
         return;

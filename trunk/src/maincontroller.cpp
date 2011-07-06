@@ -53,6 +53,7 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     mainWindow->addShader(ShaderLab::Fragment);
 
     mainWindow->showMaximized();
+
 }
 
 MainController::~MainController()
