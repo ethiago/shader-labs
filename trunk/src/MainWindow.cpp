@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <QSize>
 
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
 #include "GLDisplay.h"
 #include "sltabwidget.h"

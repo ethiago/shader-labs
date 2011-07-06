@@ -1,7 +1,7 @@
 #include <QDebug>
 #include <QMessageBox>
 
-#include "maincontroller.h"
+#include "MainController.h"
 #include "mainwindow.h"
 #include "FileController.h"
 #include "TextureController.h"

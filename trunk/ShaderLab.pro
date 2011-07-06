@@ -22,8 +22,6 @@ UI_DIR = tmp
 DESTDIR = bin
 
 SOURCES += src/main.cpp \
-    src/mainwindow.cpp \
-    src/maincontroller.cpp \
     src/shadercodecontainer.cpp \
     src/object3d.cpp \
     src/sphere.cpp \
@@ -39,9 +37,10 @@ SOURCES += src/main.cpp \
     src/TextureController.cpp \
     src/Texture.cpp \
     src/TexturePropertiesView.cpp \
-    src/Plane.cpp
-HEADERS += headers/mainwindow.h \
-    headers/maincontroller.h \
+    src/Plane.cpp \
+    src/MainController.cpp \
+    src/MainWindow.cpp
+HEADERS += \
     headers/shadercodecontainer.h \
     headers/object3d.h \
     headers/sphere.h \
@@ -57,7 +56,9 @@ HEADERS += headers/mainwindow.h \
     headers/TextureController.h \
     headers/Texture.h \
     headers/TexturePropertiesView.h \
-    headers/Plane.h
+    headers/Plane.h \
+    headers/MainController.h \
+    headers/MainWindow.h
 FORMS += forms/mainwindow.ui \
     forms/shadercodecontainer.ui \
     forms/ChooseShaderDialog.ui \
