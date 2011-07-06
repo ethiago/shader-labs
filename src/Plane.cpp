@@ -5,15 +5,16 @@ Plane::Plane()
 {
     indexList = glGenLists(1);
 
-    storeList();
+    //storeList();
 }
 
 void Plane::drawGeometry(void) const
 {
-    glCallList(indexList);
+    //glCallList(indexList);
+    storeList();
 }
 
-void Plane::storeList()
+void Plane::storeList() const
 {
     float stepX = 2.0/slices();
     float stepY = 2.0/stacks();
@@ -23,7 +24,7 @@ void Plane::storeList()
 
     float norm[3] = { 0.0, 0.0, 1.0 };
 
-    glNewList(indexList, GL_COMPILE);
+    //glNewList(indexList, GL_COMPILE);
 
     glNormal3fv(norm);
     float cx = 0.0;
@@ -54,6 +55,6 @@ void Plane::storeList()
         }
     }
 
-    glEndList();
+    //glEndList();
 
 }

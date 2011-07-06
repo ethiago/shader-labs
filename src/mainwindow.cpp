@@ -1,6 +1,7 @@
 #include <QFile>
 #include <QVBoxLayout>
 #include <QMessageBox>
+#include <QSize>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -74,6 +75,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(ui->actionSave_Result_as_Image, SIGNAL(triggered()),
             this, SIGNAL(saveResultAsImage()));
+
+    /*qDebug() << this->width();
+    const QSize &size = QSize(800, ui->dockRenderWidget->height());
+    qDebug() << size.width() << " ....." << size.height();
+    ui->dockRenderWidget->resize( size );*/
 
 }
 
@@ -318,6 +324,7 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
             this, SLOT(textChanged(ShaderLab::Shader)));
     connect(codeContainer, SIGNAL(doubleClicked()),
             this, SLOT(changeActivationStatus()));
+
     choiceDialogNew->addButton(shadertype);
     choiceDialogOpen->addButton(shadertype);
 }

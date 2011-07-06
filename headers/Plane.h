@@ -13,7 +13,7 @@ public:
 private:
     void drawGeometry(void) const;
 
-    void storeList();
+    void storeList() const;
 };
 
 #endif // PLANE_H

@@ -20,6 +20,9 @@
   <property name="windowOpacity">
    <double>1.000000000000000</double>
   </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
@@ -45,7 +48,7 @@
      <x>0</x>
      <y>0</y>
      <width>743</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -108,15 +111,21 @@
   <widget class="QDockWidget" name="dockRenderWidget">
    <property name="minimumSize">
     <size>
-     <width>150</width>
-     <height>150</height>
+     <width>300</width>
+     <height>300</height>
     </size>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
    <property name="windowTitle">
-    <string>Render Area</string>
+    <string>   Render Area</string>
    </property>
    <attribute name="dockWidgetArea">
-    <number>2</number>
+    <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockRenderWidgetContents">
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -134,14 +143,8 @@
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
+       <property name="margin">
+        <number>9</number>
        </property>
       </layout>
      </item>

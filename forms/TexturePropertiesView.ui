@@ -6,20 +6,36 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>261</width>
-    <height>452</height>
+    <width>263</width>
+    <height>375</height>
    </rect>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#QDockWidget {
+   margin: 10px;
+   border: 10px solid black;
+padding: 20px;
+}</string>
   </property>
   <property name="allowedAreas">
    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
   </property>
   <property name="windowTitle">
-   <string>Texture Properties</string>
+   <string>   Texture Properties</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QWidget" name="widget" native="true">
+      <property name="styleSheet">
+       <string notr="true">#widget{
+border: 2px solid rgb(135, 177, 255);
+background: rgb(194, 203, 255);
+}</string>
+      </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QToolButton" name="addButton">
@@ -72,12 +88,25 @@
     </item>
     <item>
      <widget class="QWidget" name="widget_2" native="true">
+      <property name="styleSheet">
+       <string notr="true">#widget_2{
+border: 2px solid rgb(135, 177, 255);
+background: rgb(194, 203, 255);
+border-radius: 10px;
+
+}</string>
+      </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QComboBox" name="textureList"/>
        </item>
        <item>
         <widget class="QLabel" name="imageContainer">
+         <property name="styleSheet">
+          <string notr="true">#imageContainer{
+border: 1px solid black;
+}</string>
+         </property>
          <property name="text">
           <string/>
          </property>
