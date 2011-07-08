@@ -5,7 +5,7 @@
 
 #include "rendercontroller.h"
 #include "GLDisplay.h"
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "object3d.h"
 #include "sphere.h"
 #include "Plane.h"
@@ -15,9 +15,26 @@ RenderController::RenderController(MainWindow *mainWindow,
                                             QObject *parent):
     QObject(parent)
 {
+
+    QMenu* menu = mainWindow->modelsMenu();
+
+    actionSphere = menu->addAction(tr("&Sphere"));
+    actionPlane = menu->addAction(tr("&Plane"));
+
+    actionSphere->setCheckable(true);
+    actionPlane->setCheckable(true);
+
     display = new GLDisplay();
-    model = new Sphere();
-    //model = new Plane();
+    /*{
+        model = new Sphere();
+        actionSphere->setChecked(true);
+        actionPlane->setChecked(false);
+    }*/
+    {
+        model = new Plane();
+        actionSphere->setChecked(false);
+        actionPlane->setChecked(true);
+    }
     arcBall = new ArcBall(500);
 
 
@@ -45,6 +62,9 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     connect(mainWindow, SIGNAL(saveResultAsImage()),
             this, SLOT(saveResultAsImage()));
+
+    connect(menu, SIGNAL(triggered(QAction*)),
+            this, SLOT(modelChanged(QAction*)));
 }
 
 RenderController::~RenderController()
@@ -129,4 +149,24 @@ QGLWidget* RenderController::getGLContext(void)
 void RenderController::updateTexture(int texName)
 {
     model->setTexture(texName);
+}
+
+void RenderController::modelChanged(QAction* action)
+{
+    if(action != actionSphere && action != actionPlane)
+        return;
+
+    delete model;
+    if(action == actionSphere)
+    {
+        actionSphere->setChecked(true);
+        actionPlane->setChecked(false);
+        model = new Sphere();
+    }else
+    {
+        actionSphere->setChecked(false);
+        actionPlane->setChecked(true);
+        model = new Plane();
+    }
+    display->updateGL();
 }

@@ -82,17 +82,17 @@ void GLDisplay::paintGL()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(0,0,-15.0, 0,0,0, 0,-1,0);
+    gluLookAt(0,0,-15, 0,0,0, 0,-1,0);
 
     if(wireFrame)
     {
-        //glDisable(GL_CULL_FACE);
+        glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
     else
     {
-        //glEnable(GL_CULL_FACE);
-        //glCullFace(GL_BACK);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 

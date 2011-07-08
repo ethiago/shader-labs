@@ -2,7 +2,7 @@
 #include <QMessageBox>
 
 #include "MainController.h"
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "FileController.h"
 #include "TextureController.h"
 #include "Global.h"

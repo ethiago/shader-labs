@@ -16,6 +16,6 @@ void main()
 	//vec3 lightVec  = normalize(lPosition - ePosition);
 	float diffuse  = dot(lightVec,tnorm);
 	vec4 color =   gl_LightSource[0].diffuse * gl_Color * diffuse;
-	gl_FrontColor = color;
-	gl_BackColor = color;
+	//gl_FrontColor = color;
+	//gl_BackColor = color;
 }

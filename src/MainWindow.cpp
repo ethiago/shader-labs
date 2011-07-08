@@ -448,3 +448,8 @@ QAction* MainWindow::actionTexturePropertiesView(void)
 {
     return ui->actionTexture_Properties;
 }
+
+ QMenu* MainWindow::modelsMenu(void)
+ {
+    return ui->menu_Models;
+ }

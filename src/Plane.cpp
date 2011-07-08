@@ -22,7 +22,7 @@ void Plane::storeList() const
     float stepCX = 1.0/slices();
     float stepCY = 1.0/stacks();
 
-    float norm[3] = { 0.0, 0.0, 1.0 };
+    float norm[3] = { 0.0, 0.0, -1.0 };
 
     //glNewList(indexList, GL_COMPILE);
 
@@ -35,21 +35,22 @@ void Plane::storeList() const
         {
             glBegin(GL_QUADS);
 
-            //Vert1
-            glTexCoord2f(cx, cy);
-            glVertex3f(x, y, 0.0);
 
-            //Vert2
-            glTexCoord2f(cx + stepCX, cy);
-            glVertex3f(x + stepX, y, 0.0);
+            //Vert4
+            glTexCoord2f(cx, cy + stepCY);
+            glVertex3f(x,y + stepY,0.0);
 
             //Vert3
             glTexCoord2f(cx + stepCX, cy + stepCY);
             glVertex3f(x + stepX, y + stepY, 0.0);
 
-            //Vert4
-            glTexCoord2f(cx, cy + stepCY);
-            glVertex3f(x,y + stepY,0.0);
+            //Vert2
+            glTexCoord2f(cx + stepCX, cy);
+            glVertex3f(x + stepX, y, 0.0);
+
+            //Vert1
+            glTexCoord2f(cx, cy);
+            glVertex3f(x, y, 0.0);
 
             glEnd();
         }

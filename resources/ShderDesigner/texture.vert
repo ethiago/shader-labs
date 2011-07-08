@@ -13,7 +13,16 @@ varying vec2 TexCoord;
 const float specularContribution = 0.1;
 const float diffuseContribution  = (1.0 - specularContribution);
 
+uniform sampler2D sampler2d0;
+uniform sampler2D sampler2d1;
+
 void main(void) {
+    vec4 vert = gl_Vertex;
+
+    vec3 coor = texture2D(sampler2d0, gl_MultiTexCoord0.xy).rgb;
+
+    vert *= coor.r;
+
     vec3 LightPosition = gl_LightSource[0].position.xyz;
     vec4 pos        = gl_ModelViewMatrix * gl_Vertex;
     vec3 tnorm      = normalize(gl_NormalMatrix * gl_Normal);
@@ -28,5 +37,5 @@ void main(void) {
                      specularContribution * spec;
 
     TexCoord = gl_MultiTexCoord0.xy;
-    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+    gl_Position = gl_ModelViewProjectionMatrix * vert;
 }

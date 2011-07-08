@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QPoint>
 #include <QGLContext>
+#include <QAction>
 
 class MainWindow;
 class Object3D;
@@ -24,7 +25,10 @@ class RenderController : public QObject
 
     GLDisplay *display;
     Object3D * model;
-    ArcBall *arcBall;
+    ArcBall* arcBall;
+    QAction* actionSphere;
+    QAction* actionPlane;
+
 
 public:
     explicit RenderController(MainWindow *mainWindow,
@@ -43,6 +47,7 @@ public slots:
     void wireFrameToggle(bool);
     void saveResultAsImage();
     void updateTexture(int);
+    void modelChanged(QAction*);
 
 
 };
