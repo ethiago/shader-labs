@@ -1,7 +1,7 @@
 #include "TextureController.h"
 #include "TexturePropertiesView.h"
 #include "Texture.h"
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include <QImage>
 #include <QFileDialog>
 #include <QAction>

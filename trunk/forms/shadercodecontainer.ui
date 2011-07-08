@@ -53,7 +53,7 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QTextEdit" name="shaderCodeBox">
      <property name="palette">
@@ -92,6 +92,22 @@
         </colorrole>
        </disabled>
       </palette>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="cursorPositionLabel">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
    </item>

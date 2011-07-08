@@ -1,9 +1,9 @@
 #include <QtGui/QApplication>
 
-#include "maincontroller.h"
+#include "MainController.h"
 #include "rendercontroller.h"
 #include "TextureController.h"
-#include "mainwindow.h"
+#include "MainWindow.h"
 
 int main(int argc, char *argv[])
 {

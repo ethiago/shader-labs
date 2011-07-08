@@ -4,6 +4,7 @@
 #include "ui_shadercodecontainer.h"
 
 
+
 ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *parent) :
     QWidget(parent), ui(new Ui::ShaderCodeContainer)
 {
@@ -24,7 +25,11 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
     brush1.setStyle(Qt::SolidPattern);
     inactivePalette.setBrush(QPalette::Disabled, QPalette::Text, brush1);
 
+    ui->shaderCodeBox->setFocus();
+
     connect(ui->shaderCodeBox, SIGNAL(textChanged()), this, SLOT(textChanged()));
+
+    connect(ui->shaderCodeBox, SIGNAL(cursorPositionChanged()), this, SLOT(timeout()));
 }
 
 ShaderCodeContainer::~ShaderCodeContainer()
@@ -73,4 +78,11 @@ void ShaderCodeContainer::setActivatedCode(bool active)
     {
         ui->shaderCodeBox->setPalette(inactivePalette);
     }
+}
+
+void ShaderCodeContainer::timeout(void)
+{
+    QTextCursor tc = ui->shaderCodeBox->textCursor();
+    int p = tc.position();
+    ui->cursorPositionLabel->setText(QString::number(p));
 }

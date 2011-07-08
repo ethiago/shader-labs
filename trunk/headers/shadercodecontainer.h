@@ -2,6 +2,7 @@
 #define SHADERCODECONTAINER_H
 
 #include <QWidget>
+#include <QTimer>
 #include "Global.h"
 
 namespace Ui {
@@ -28,6 +29,7 @@ private:
 
 private slots:
     void textChanged(void);
+    void timeout(void);
 
 signals:
     void textChanged(ShaderLab::Shader);

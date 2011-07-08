@@ -6,7 +6,7 @@
 #include <QVBoxLayout>
 #include <QTabWidget>
 #include <QMap>
-
+#include <QMenu>
 #include <QTabBar>
 
 #include "shadercodecontainer.h"
@@ -78,6 +78,7 @@ public:
     void setGLDisplay(GLDisplay *);
     void setEnableShaderCode(ShaderLab::Shader, bool);
     QAction* actionTexturePropertiesView(void);
+    QMenu* modelsMenu(void);
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */
