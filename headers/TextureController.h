@@ -1,7 +1,9 @@
 #ifndef TEXTURECONTROLLER_H
 #define TEXTURECONTROLLER_H
 
-#include <GLee.h>
+#if defined(__WIN__)
+    #include <GLee.h>
+#endif
 #include <QObject>
 #include <QGLContext>
 #include <QList>
