@@ -7,9 +7,11 @@ QT += core \
 
 win32 {
      TARGET = ShaderLab-win32
+     INCLUDEPATH += lib/GLee5_4
+     SOURCES += lib/GLee5_4/GLee.c
  }
  unix {
-     TARGET = ShaderLab
+     TARGET = ShaderLab-unix32
  }
 
 TEMPLATE = app

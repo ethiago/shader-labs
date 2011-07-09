@@ -1,8 +1,8 @@
 #include <QtGui/QApplication>
 
+#include "TextureController.h"
 #include "MainController.h"
 #include "rendercontroller.h"
-#include "TextureController.h"
 #include "MainWindow.h"
 
 int main(int argc, char *argv[])

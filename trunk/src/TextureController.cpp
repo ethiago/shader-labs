@@ -71,6 +71,7 @@ void TextureController::textureFileName(const QString& imageFileName)
 
     m_textureList[textureContext].setImage(img);
     m_textureList[textureContext].setGLTextureName(m_context->bindTexture(imageFileName, GL_TEXTURE_2D));
+    m_textureList[textureContext].setVarName(SAMPLEPREFIX + QString::number(textureContext));
     emit updateTexture(m_textureList[textureContext].glTextureName());
     activateTexture();
     viewUpdateList();
@@ -139,7 +140,7 @@ void TextureController::viewUpdateList(void)
     {
         QPair<QIcon, QString> pair;
         pair.first = QIcon(QPixmap::fromImage(m_textureList[i].image()));
-        pair.second = QString() + SAMPLEPREFIX + QString::number(i);
+        pair.second = m_textureList[i].varName();
         list.push_back(pair);
     }
 
@@ -150,7 +151,7 @@ void TextureController::applyTextures(QGLShaderProgram* program)
 {
     for(int i = 0; i < m_textureList.size(); ++i)
     {
-        const char * n = QString(SAMPLEPREFIX + QString::number(i)).toAscii();
+        const char * n = m_textureList[i].varName().toAscii();
         program->setUniformValue(n, (GLint)i );
     }
 }

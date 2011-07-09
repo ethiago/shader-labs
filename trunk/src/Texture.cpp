@@ -1,13 +1,14 @@
 #include "Texture.h"
 
 Texture::Texture(QObject *parent) :
-    QObject(parent), m_image(QImage(":/ico/noImage")), m_glTextureName(-1)
+    QObject(parent), m_image(QImage(":/ico/noImage")),
+    m_glTextureName(-1), m_varName(QString())
 {
 }
 
 Texture::Texture(const Texture& tex) :
-    QObject(tex.parent()),
-    m_image(tex.image()), m_glTextureName(tex.glTextureName())
+    QObject(tex.parent()), m_image(tex.image()),
+    m_glTextureName(tex.glTextureName()), m_varName(tex.varName())
 {
 
 }
@@ -36,6 +37,17 @@ void Texture::clean(void)
 {
     m_image = QImage(":/ico/noImage");
     m_glTextureName = -1;
+    m_varName = QString();
+}
+
+const QString& Texture::varName(void) const
+{
+    return m_varName;
+}
+
+void Texture::setVarName(const QString& varName)
+{
+    m_varName = varName;
 }
 
 const Texture& Texture::operator=(const Texture& tex)
@@ -43,5 +55,6 @@ const Texture& Texture::operator=(const Texture& tex)
     setParent(tex.parent());
     m_image = tex.image();
     m_glTextureName = tex.glTextureName();
+    m_varName = tex.varName();
     return *this;
 }

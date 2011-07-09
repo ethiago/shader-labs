@@ -25,7 +25,7 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
     brush1.setStyle(Qt::SolidPattern);
     inactivePalette.setBrush(QPalette::Disabled, QPalette::Text, brush1);
 
-    ui->shaderCodeBox->setFocus();
+    ui->shaderCodeBox->setTabStopWidth(7*4);
 
     connect(ui->shaderCodeBox, SIGNAL(textChanged()), this, SLOT(textChanged()));
 

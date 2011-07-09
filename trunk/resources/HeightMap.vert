@@ -1,4 +1,7 @@
+varying vec2 texCoord;
+
 uniform sampler2D sampler2d0;
+uniform sampler2D sampler2d1;
 
 void main()
 {
@@ -7,8 +10,12 @@ void main()
 	vert.x *= scale;
 	vert.y *= scale;
 	vert.z *= scale;
+
+	texCoord = gl_MultiTexCoord0.st;
 	
-	vert.z = vec3(texture2D(sampler2d0, gl_MultiTexCoord0.st)).r * 2.0;
+	//vert.x *=- vec3(texture2D(sampler2d0, texCoord)).r * 1.0;
+	//vert.y *=- vec3(texture2D(sampler2d0, texCoord)).r * 1.0;
+	vert.z =- vec3(texture2D(sampler2d0, texCoord)).r * 1.0;
 
  	gl_Position = gl_ModelViewProjectionMatrix * vert;
 
@@ -18,8 +25,11 @@ void main()
 	vec3 tnorm     = normalize(gl_NormalMatrix * gl_Normal);
 	vec3 lightVec  = normalize(gl_LightSource[0].position.xyz - ePosition);
 	//vec3 lightVec  = normalize(lPosition - ePosition);
+
+	vec4 color = texture2D(sampler2d1, gl_MultiTexCoord0.st);
 	float diffuse  = dot(lightVec,tnorm);
-	vec4 color =   gl_LightSource[0].diffuse * gl_Color * diffuse;
+
+	color =   gl_LightSource[0].diffuse * color * diffuse;
 	gl_FrontColor = color;
 	gl_BackColor = color;
 }
