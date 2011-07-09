@@ -27,6 +27,8 @@ private:
     QPalette inactivePalette;
     ShaderLab::Shader shaderType;
 
+    QPoint getCursorPosition(const QString& text, int pos);
+
 private slots:
     void textChanged(void);
     void timeout(void);
