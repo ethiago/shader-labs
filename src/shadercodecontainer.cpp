@@ -80,9 +80,27 @@ void ShaderCodeContainer::setActivatedCode(bool active)
     }
 }
 
+QPoint ShaderCodeContainer::getCursorPosition(const QString& text, int pos)
+{
+    int lineCount = 0;
+    int columnCount = 0;
+
+    for(int i = 0; i < pos; ++i)
+    {
+        if(text[i] == '\n')
+        {
+            lineCount++;
+            columnCount = 0;
+        }else
+            columnCount++;
+    }
+
+    return QPoint(columnCount, lineCount);
+}
+
 void ShaderCodeContainer::timeout(void)
 {
     QTextCursor tc = ui->shaderCodeBox->textCursor();
-    int p = tc.position();
-    ui->cursorPositionLabel->setText(QString::number(p));
+    QPoint p = getCursorPosition(ui->shaderCodeBox->toPlainText(), tc.position());
+    ui->cursorPositionLabel->setText(QString::number(p.x()) + ":" + QString::number(p.y()));
 }
