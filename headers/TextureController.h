@@ -1,6 +1,7 @@
 #ifndef TEXTURECONTROLLER_H
 #define TEXTURECONTROLLER_H
 
+#include <GLee.h>
 #include <QObject>
 #include <QGLContext>
 #include <QList>

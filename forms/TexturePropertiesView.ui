@@ -30,12 +30,6 @@ padding: 20px;
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QWidget" name="widget" native="true">
-      <property name="styleSheet">
-       <string notr="true">#widget{
-border: 2px solid rgb(135, 177, 255);
-background: rgb(194, 203, 255);
-}</string>
-      </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QToolButton" name="addButton">
@@ -88,14 +82,6 @@ background: rgb(194, 203, 255);
     </item>
     <item>
      <widget class="QWidget" name="widget_2" native="true">
-      <property name="styleSheet">
-       <string notr="true">#widget_2{
-border: 2px solid rgb(135, 177, 255);
-background: rgb(194, 203, 255);
-border-radius: 10px;
-
-}</string>
-      </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QComboBox" name="textureList"/>

@@ -1,10 +1,10 @@
 #include <QDebug>
 #include <QMessageBox>
 
+#include "TextureController.h"
 #include "MainController.h"
 #include "MainWindow.h"
 #include "FileController.h"
-#include "TextureController.h"
 #include "Global.h"
 #include "sphere.h"
 

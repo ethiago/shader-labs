@@ -10,6 +10,7 @@ Plane::Plane()
 
 void Plane::drawGeometry(void) const
 {
+
     //glCallList(indexList);
     storeList();
 }
