@@ -28,6 +28,7 @@ float GLDisplay::getZoom(void)const
 
 void GLDisplay::initializeGL()
 {
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
     glEnable( GL_LIGHT0 );
     glEnable(GL_LIGHTING);
@@ -35,11 +36,15 @@ void GLDisplay::initializeGL()
 
     glClearColor( 0.0, 0.0, 0.5, 1.0);
 
-    GLfloat amb_light[4] = { 1, 1, 1, 1.0 };
     GLfloat ligthPosition[4] = { 0.0, 20.0, -3.0, 1.0 };
 
-    glLightfv( GL_LIGHT0, GL_AMBIENT, amb_light);
     glLightfv( GL_LIGHT0, GL_POSITION, ligthPosition);
+
+    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );	// specify implementation-specific hints
+
+    glClearDepth( 1.0 );					// specify the clear value for the depth buffer
+    glDepthFunc( GL_LEQUAL );
+    glDisable(GL_CULL_FACE);
 }
 
 void GLDisplay::resizeGL(int width, int height)
@@ -77,7 +82,7 @@ void GLDisplay::paintGL()
 
     glMatrixMode(GL_MODELVIEW);
 
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -86,13 +91,10 @@ void GLDisplay::paintGL()
 
     if(wireFrame)
     {
-        glDisable(GL_CULL_FACE);
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
     else
     {
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 
