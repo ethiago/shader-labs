@@ -95,7 +95,7 @@ QPoint ShaderCodeContainer::getCursorPosition(const QString& text, int pos)
             columnCount++;
     }
 
-    return QPoint(columnCount, lineCount);
+    return QPoint(columnCount+1, lineCount+1);
 }
 
 void ShaderCodeContainer::timeout(void)
