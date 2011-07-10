@@ -1,8 +1,8 @@
-uniform vec3  SurfaceColor; // (0.75, 0.75, 0.75)
-uniform vec3  WarmColor;    // (0.6, 0.6, 0.0)
-uniform vec3  CoolColor;    // (0.0, 0.0, 0.6)
-uniform float DiffuseWarm;  // 0.45
-uniform float DiffuseCool;  // 0.45
+const vec3  SurfaceColor = vec3(0.75, 0.75, 0.75);
+const vec3  WarmColor = vec3(0.6, 0.6, 0.0);
+const vec3  CoolColor = vec3(0.0, 0.0, 0.6);
+const float DiffuseWarm = 0.45; 
+const float DiffuseCool = 0.45; 
 
 varying float NdotL;
 varying vec3  ReflectVec;

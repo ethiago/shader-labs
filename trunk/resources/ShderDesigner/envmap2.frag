@@ -11,10 +11,10 @@
 //       angle has a negative z value are properly computed.
 //
 uniform sampler2D sampler2d; // value of sampler2d = 4
-uniform vec3 Xunitvec;
-uniform vec3 Yunitvec;
-uniform vec3 BaseColor;
-uniform float MixRatio;
+const vec3 Xunitvec = vec3(1.0, 0.0, 0.0);
+const vec3 Yunitvec = vec3(0.0, 1.0, 0.0);
+const vec3 BaseColor = vec3(0.4, 0.4, 1.0);
+const float MixRatio = 0.8;
 
 varying vec3 Normal;
 varying vec3 EyeDir;

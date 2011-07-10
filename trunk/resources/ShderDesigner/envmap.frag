@@ -5,9 +5,9 @@
 //
 // Copyright (c) 2002: 3Dlabs, Inc.
 //
-uniform sampler2D sampler2d; // value of sampler2d = 4
-uniform vec3 Xunitvec;
-uniform vec3 Yunitvec;
+uniform sampler2D sampler2d0; // value of sampler2d = 4
+const vec3 Xunitvec = vec3(1.0, 0.0, 0.0);
+uniform vec3 Yunitvec = vec3(0.0, 1.0, 0.0);
 
 varying vec3 Normal;
 varying vec3 EyeDir;
@@ -45,7 +45,7 @@ void main (void)
     
     // Do a lookup into the environment map.
 
-    vec3 envColor = vec3(texture2D(sampler2d, index));
+    vec3 envColor = vec3(texture2D(sampler2d0, index));
 
     gl_FragColor = vec4(envColor, 1.0);
 }

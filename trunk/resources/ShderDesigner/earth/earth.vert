@@ -4,13 +4,14 @@ varying float Diffuse;
 varying vec3  Specular;
 varying vec2  TexCoord;
 
-uniform vec3 LightPosition;
+const vec4 LightPosition = vec4(0.0, 10.0, 4.0, 1.0);
 
 void main(void)
 {
     vec4 ecPosition = gl_ModelViewMatrix * gl_Vertex;
     vec3 tnorm      = normalize(gl_NormalMatrix * gl_Normal);
-    vec3 lightVec   = normalize(LightPosition - vec3 (ecPosition));
+    //vec3 lightVec   = normalize(LightPosition - vec3 (ecPosition));
+    vec3 lightVec   = normalize((gl_ModelViewMatrix*LightPosition).xyz - vec3 (ecPosition));
     vec3 reflectVec = reflect(-lightVec, tnorm);
     vec3 viewVec    = normalize(vec3 (-ecPosition));
 

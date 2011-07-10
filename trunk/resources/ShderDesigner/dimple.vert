@@ -11,8 +11,8 @@ varying vec3 LightDir;
 varying vec3 EyeDir;
 varying vec3 Normal;
 
-uniform vec3 LightPosition;
-uniform float Scale;
+const vec3 LightPosition = vec3(0.0, 0.0, 5.0);
+const float Scale = 1.0;
 
 void main(void) 
 {

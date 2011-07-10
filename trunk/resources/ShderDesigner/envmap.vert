@@ -10,9 +10,9 @@
 varying vec3 Normal;
 varying vec3 EyeDir;
 
-uniform vec3 LightPosition;
-uniform float Scale;
-uniform float Time;
+const vec3 LightPosition = vec3(0.0, 10.0, 4.0);
+const float Scale = 1.0;
+const float Time = 0.5;
 
 const float InvRootThreeMinusOne = 1.3660254;
 
