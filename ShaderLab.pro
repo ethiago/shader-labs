@@ -24,11 +24,8 @@ UI_DIR = tmp
 DESTDIR = bin
 
 SOURCES += src/main.cpp \
-    src/shadercodecontainer.cpp \
-    src/object3d.cpp \
-    src/sphere.cpp \
-    src/rendercontroller.cpp \
-    src/sltabwidget.cpp \
+    src/Sphere.cpp \
+    src/SLTabWidget.cpp \
     src/SLTabBar.cpp \
     src/Arcball.cpp \
     src/ChooseShaderDialog.cpp \
@@ -41,13 +38,13 @@ SOURCES += src/main.cpp \
     src/TexturePropertiesView.cpp \
     src/Plane.cpp \
     src/MainController.cpp \
-    src/MainWindow.cpp
+    src/MainWindow.cpp \
+    src/Object3D.cpp \
+    src/RenderController.cpp \
+    src/ShaderCodeContainer.cpp
 HEADERS += \
-    headers/shadercodecontainer.h \
-    headers/object3d.h \
-    headers/sphere.h \
-    headers/rendercontroller.h \
-    headers/sltabwidget.h \
+    headers/Sphere.h \
+    headers/SLTabWidget.h \
     headers/SLTabBar.h \
     headers/Arcball.h \
     headers/ChooseShaderDialog.h \
@@ -60,9 +57,12 @@ HEADERS += \
     headers/TexturePropertiesView.h \
     headers/Plane.h \
     headers/MainController.h \
-    headers/MainWindow.h
-FORMS += forms/mainwindow.ui \
-    forms/shadercodecontainer.ui \
+    headers/MainWindow.h \
+    headers/Object3D.h \
+    headers/RenderController.h \
+    headers/ShaderCodeContainer.h
+FORMS += forms/MainWindow.ui \
+    forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
     forms/TexturePropertiesView.ui
 RESOURCES += shaderlab.qrc
