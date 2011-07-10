@@ -4,9 +4,9 @@
 #include <QSize>
 
 #include "MainWindow.h"
-#include "ui_mainwindow.h"
+#include "ui_MainWindow.h"
 #include "GLDisplay.h"
-#include "sltabwidget.h"
+#include "SLTabWidget.h"
 #include "SLTabBar.h"
 
 

@@ -6,7 +6,7 @@
 #include "MainWindow.h"
 #include "FileController.h"
 #include "Global.h"
-#include "sphere.h"
+#include "Sphere.h"
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */

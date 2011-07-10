@@ -9,7 +9,7 @@
 #include <QMenu>
 #include <QTabBar>
 
-#include "shadercodecontainer.h"
+#include "ShaderCodeContainer.h"
 #include "ChooseShaderDialog.h"
 
 namespace Ui {

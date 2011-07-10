@@ -1,7 +1,7 @@
 #include <QFont>
 #include <QMouseEvent>
-#include "shadercodecontainer.h"
-#include "ui_shadercodecontainer.h"
+#include "ShaderCodeContainer.h"
+#include "ui_ShaderCodeContainer.h"
 
 
 

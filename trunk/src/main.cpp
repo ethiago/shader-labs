@@ -2,7 +2,7 @@
 
 #include "TextureController.h"
 #include "MainController.h"
-#include "rendercontroller.h"
+#include "RenderController.h"
 #include "MainWindow.h"
 
 int main(int argc, char *argv[])

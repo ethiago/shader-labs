@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>743</width>
+    <height>526</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Shader Lab</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../shaderlab.qrc">
+    <normaloff>:/ico/img/1303588878_laboratory.png</normaloff>:/ico/img/1303588878_laboratory.png</iconset>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LeftToRight</enum>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>6</number>
+    </property>
+    <property name="leftMargin">
+     <number>3</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>743</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionNewFile"/>
+    <addaction name="actionOpenCode"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveFile"/>
+    <addaction name="actionSaveAll"/>
+    <addaction name="actionSaveAs"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="menu_Models">
+     <property name="title">
+      <string>&amp;Models</string>
+     </property>
+    </widget>
+    <addaction name="actionShowOutput"/>
+    <addaction name="actionShowRenderArea"/>
+    <addaction name="actionTexture_Properties"/>
+    <addaction name="separator"/>
+    <addaction name="actionWireframe"/>
+    <addaction name="menu_Models"/>
+   </widget>
+   <widget class="QMenu" name="menu_Build">
+    <property name="title">
+     <string>&amp;Build</string>
+    </property>
+    <addaction name="actionRunAll"/>
+    <addaction name="actionSave_Result_as_Image"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+   <addaction name="menu_Build"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpenCode"/>
+   <addaction name="actionNewFile"/>
+   <addaction name="actionSaveFile"/>
+   <addaction name="separator"/>
+   <addaction name="actionRunAll"/>
+   <addaction name="actionSave_Result_as_Image"/>
+  </widget>
+  <widget class="QDockWidget" name="dockRenderWidget">
+   <property name="minimumSize">
+    <size>
+     <width>79</width>
+     <height>52</height>
+    </size>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>   Render Area</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockRenderWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>8</number>
+     </property>
+     <property name="rightMargin">
+      <number>4</number>
+     </property>
+     <property name="bottomMargin">
+      <number>1</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <property name="margin">
+        <number>9</number>
+       </property>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockOutPutWidget">
+   <property name="minimumSize">
+    <size>
+     <width>97</width>
+     <height>121</height>
+    </size>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::BottomDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Application Output</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="dockOutPutWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <property name="leftMargin">
+      <number>4</number>
+     </property>
+     <property name="topMargin">
+      <number>3</number>
+     </property>
+     <property name="rightMargin">
+      <number>4</number>
+     </property>
+     <property name="bottomMargin">
+      <number>3</number>
+     </property>
+     <item>
+      <widget class="QPlainTextEdit" name="outputTextBox">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <action name="actionOpenCode">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302039979_Folder.png</normaloff>:/ico/img/1302039979_Folder.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open Shader Code...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302043859_Log Out.png</normaloff>:/ico/img/1302043859_Log Out.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionRunAll">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302039654_buttons_20.png</normaloff>:/ico/img/1302039654_buttons_20.png</iconset>
+   </property>
+   <property name="text">
+    <string>Run</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionShowOutput">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302044102_mail-new.png</normaloff>:/ico/img/1302044102_mail-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Application output</string>
+   </property>
+  </action>
+  <action name="actionShowRenderArea">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1302044079_previewer.png</normaloff>:/ico/img/1302044079_previewer.png</iconset>
+   </property>
+   <property name="text">
+    <string>R&amp;ender area</string>
+   </property>
+  </action>
+  <action name="actionSaveFile">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1303587978_3floppy_unmount.png</normaloff>:/ico/img/1303587978_3floppy_unmount.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionNewFile">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1303588715_document-new.png</normaloff>:/ico/img/1303588715_document-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New Shader Code...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>Save Shader Code &amp;As ...</string>
+   </property>
+  </action>
+  <action name="actionSaveAll">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1303588015_save_all.png</normaloff>:/ico/img/1303588015_save_all.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save All...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="action_Load_Texture">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/loadtexture.png</normaloff>:/ico/img/loadtexture.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Load Texture ...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionWireframe">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/wireframe_icon.jpg</normaloff>:/ico/img/wireframe_icon.jpg</iconset>
+   </property>
+   <property name="text">
+    <string>Wireframe</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionSave_Result_as_Image">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/1303587978_3floppy_unmountImage.png</normaloff>:/ico/img/1303587978_3floppy_unmountImage.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Result As ...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionTexture_Properties">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Texture Properties</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="../shaderlab.qrc"/>
+ </resources>
+ <connections/>
+</ui>

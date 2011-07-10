@@ -1,4 +1,4 @@
-#include "sltabwidget.h"
+#include "SLTabWidget.h"
 #include <QToolTip>
 #include <QMouseEvent>
 #include <QDebug>
