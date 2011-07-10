@@ -1,7 +1,7 @@
 #ifndef TEXTURECONTROLLER_H
 #define TEXTURECONTROLLER_H
 
-#if defined(__WIN__)
+#if defined(__WIN32__)
     #include <GLee.h>
 #endif
 #include <QObject>
