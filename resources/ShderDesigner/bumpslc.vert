@@ -10,7 +10,7 @@
 varying vec3 lightDir; 	  // interpolated surface local coordinate light direction 
 varying vec3 viewDir;     // interpolated surface local coordinate view direction
 
-uniform vec3 LightPosition;  // eye space position of light
+const vec3 LightPosition = vec3(0.0, 4.0, 4.0);  // eye space position of light
 
 void main(void)
 {

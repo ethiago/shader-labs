@@ -5,14 +5,13 @@
 //
 // Copyright (c) 2002: 3Dlabs, Inc.
 //
-uniform sampler2D sampler2d; // value of sampler2d = 3
+uniform sampler2D sampler2d0; // value of sampler2d = 3
 varying vec3 lightDir; 	  // interpolated surface  local coordinate light direction 
 varying vec3 viewDir;     // interpolated surface local coordinate view direction
 
 const float diffuseFactor  = 0.7;
 const float specularFactor = 0.7;
-//vec3 basecolor = vec3 (0.8, 0.7, 0.3);
-uniform vec3 basecolor;
+const vec3 basecolor = vec3 (0.8, 0.7, 0.3);
 
 float patatin();
 void main (void)
@@ -26,7 +25,7 @@ void main (void)
 
     // Fetch normal from normal map
 
-    norm = vec3(texture2D(sampler2d, vec2 (gl_TexCoord[0])));
+    norm = vec3(texture2D(sampler2d0, vec2 (gl_TexCoord[0])));
     norm = (norm - 0.5) * 2.0;
    // norm.y = -norm.y;
 

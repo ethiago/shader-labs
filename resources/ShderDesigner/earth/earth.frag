@@ -1,8 +1,8 @@
 // earth.frag
 
-uniform sampler2D EarthDay;
-uniform sampler2D EarthNight;
-uniform sampler2D EarthCloudGloss;
+uniform sampler2D sampler2d0; //EarthDay;
+uniform sampler2D sampler2d1; //EarthNight;
+uniform sampler2D sampler2d2; //EarthCloudGloss;
 
 varying float Diffuse;
 varying vec3  Specular;
@@ -16,14 +16,14 @@ void main (void)
     // separate maps are packed into the color components of this texture
     // clouds.r = cloud opacity
     // clouds.g = water glossiness
-    vec2 clouds    = texture2D(EarthCloudGloss, TexCoord).rg;
+    vec2 clouds    = texture2D(sampler2d2, TexCoord).rg;
 
-    vec3 daytime   = mix(texture2D(EarthDay, TexCoord).rgb * Diffuse + Specular * clouds.g,
+    vec3 daytime   = mix(texture2D(sampler2d0, TexCoord).rgb * Diffuse + Specular * clouds.g,
                          vec3(abs(Diffuse)), 
                          clouds.r);
 
     // the night image, modulated by cloud opacity
-    vec3 nighttime = texture2D(EarthNight, TexCoord).rgb * (1.0 - clouds.r);
+    vec3 nighttime = texture2D(sampler2d1, TexCoord).rgb * (1.0 - clouds.r);
 
     vec3 color = daytime;
 

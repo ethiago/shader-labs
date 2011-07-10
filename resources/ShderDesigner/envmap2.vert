@@ -11,7 +11,7 @@ varying vec3 Normal;
 varying vec3 EyeDir;
 varying float LightIntensity;
 
-uniform vec3 LightPosition;
+const vec3 LightPosition = vec3(0.0, 10.0, 4.0);
 
 void main(void) 
 {

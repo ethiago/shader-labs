@@ -11,11 +11,11 @@ varying vec3 LightDir;
 varying vec3 EyeDir;
 varying vec3 Normal;
 
-uniform vec4 GlassColor;
-uniform vec4 SpecularColor1;
-uniform vec4 SpecularColor2;
-uniform float SpecularFactor1;
-uniform float SpecularFactor2;
+const vec4 GlassColor = vec4(0.5, 0.5, 0.6, 0.15);
+const vec4 SpecularColor1 = vec4(0.1, 0.08, 0.05, 1.0);
+const vec4 SpecularColor2 = vec4(0.1, 0.1, 0.05, 1.0);
+const float SpecularFactor1 = 2.0;
+const float SpecularFactor2 = 2.0;
 
 void main (void)
 {
