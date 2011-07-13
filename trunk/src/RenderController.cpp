@@ -20,20 +20,19 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     actionSphere = menu->addAction(tr("&Sphere"));
     actionPlane = menu->addAction(tr("&Plane"));
+    actionSphereST = menu->addAction(tr("ST Sp&here"));
+    actionPlaneST = menu->addAction(tr("ST P&lane"));
 
     actionSphere->setCheckable(true);
     actionPlane->setCheckable(true);
 
     display = new GLDisplay();
-    /*{
+    {
         model = new Sphere();
         actionSphere->setChecked(true);
         actionPlane->setChecked(false);
-    }*/
-    {
-        model = new Plane();
-        actionSphere->setChecked(false);
-        actionPlane->setChecked(true);
+        actionSphereST->setChecked(false);
+        actionPlaneST->setChecked(false);
     }
     arcBall = new ArcBall(500);
 
@@ -153,7 +152,7 @@ void RenderController::updateTexture(int texName)
 
 void RenderController::modelChanged(QAction* action)
 {
-    if(action != actionSphere && action != actionPlane)
+    if(action != actionSphere && action != actionPlane && action != actionSphereST && action != actionPlaneST)
         return;
 
     delete model;
@@ -161,12 +160,34 @@ void RenderController::modelChanged(QAction* action)
     {
         actionSphere->setChecked(true);
         actionPlane->setChecked(false);
+        actionSphereST->setChecked(false);
+        actionPlaneST->setChecked(false);
         model = new Sphere();
-    }else
+    }else if(action == actionPlane)
     {
         actionSphere->setChecked(false);
         actionPlane->setChecked(true);
+        actionSphereST->setChecked(false);
+        actionPlaneST->setChecked(false);
         model = new Plane();
+    }else if(action == actionSphereST)
+    {
+        actionSphere->setChecked(false);
+        actionPlane->setChecked(false);
+        actionSphereST->setChecked(true);
+        actionPlaneST->setChecked(false);
+        model = new Sphere();
+        model->setSlices(500);
+        model->setStacks(500);
+    }else if(action == actionPlaneST)
+    {
+        actionSphere->setChecked(false);
+        actionPlane->setChecked(false);
+        actionSphereST->setChecked(false);
+        actionPlaneST->setChecked(true);
+        model = new Plane();
+        model->setSlices(500);
+        model->setStacks(500);
     }
     display->updateGL();
 }

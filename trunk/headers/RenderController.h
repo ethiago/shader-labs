@@ -28,6 +28,8 @@ class RenderController : public QObject
     ArcBall* arcBall;
     QAction* actionSphere;
     QAction* actionPlane;
+    QAction* actionSphereST;
+    QAction* actionPlaneST;
 
 
 public:
