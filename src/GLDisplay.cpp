@@ -10,6 +10,7 @@ GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
     rigthPressedPoint(NULLPOINT),
     leftPressedPoint(NULLPOINT), wireFrame(false), zoom(1.0)
 {
+    setStyleSheet("border: 2px solid black;");
 }
 
 GLDisplay::~GLDisplay()

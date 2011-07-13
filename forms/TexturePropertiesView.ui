@@ -10,15 +10,17 @@
     <height>375</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>174</width>
+    <height>285</height>
+   </size>
+  </property>
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
   <property name="styleSheet">
-   <string notr="true">#QDockWidget {
-   margin: 10px;
-   border: 10px solid black;
-padding: 20px;
-}</string>
+   <string notr="true"/>
   </property>
   <property name="allowedAreas">
    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
