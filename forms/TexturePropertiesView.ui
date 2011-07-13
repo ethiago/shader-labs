@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>263</width>
+    <width>196</width>
     <height>375</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>174</width>
-    <height>285</height>
+    <width>196</width>
+    <height>308</height>
    </size>
   </property>
   <property name="autoFillBackground">
@@ -90,6 +90,12 @@
        </item>
        <item>
         <widget class="QLabel" name="imageContainer">
+         <property name="minimumSize">
+          <size>
+           <width>160</width>
+           <height>160</height>
+          </size>
+         </property>
          <property name="styleSheet">
           <string notr="true">#imageContainer{
 border: 1px solid black;
@@ -100,6 +106,9 @@ border: 1px solid black;
          </property>
          <property name="pixmap">
           <pixmap resource="../shaderlab.qrc">:/ico/noImage</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

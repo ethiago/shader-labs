@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
     MainWindow mw;
     MainController mc(&mw);
@@ -19,5 +19,5 @@ int main(int argc, char *argv[])
     QObject::connect(&mc, SIGNAL(updateGL()), &rc, SLOT(updateGL()));
     QObject::connect(&tc, SIGNAL(updateTexture(int)), &rc,SLOT(updateTexture(int)));
 
-    return a.exec();
+    return app.exec();
 }

@@ -30,7 +30,7 @@ TexturePropertiesView::~TexturePropertiesView()
 void TexturePropertiesView::setTexture(const Texture& texture)
 {
     QImage img = texture.image();
-    img = img.scaled(ui->imageContainer->pixmap()->size());
+    img = img.scaled(ui->imageContainer->size());
 
     ui->imageContainer->setPixmap(QPixmap::fromImage(img));
 }

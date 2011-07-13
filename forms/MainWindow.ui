@@ -23,6 +23,17 @@
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow::separator {
+     background:  rgb(220, 220, 220);
+     width: 2px; /* when vertical */
+     height: 2px; /* when horizontal */
+ }
+
+ QMainWindow::separator:hover {
+     background:  rgb(170, 170, 170);
+ }</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="spacing">
@@ -125,7 +136,7 @@
     <enum>Qt::LeftToRight</enum>
    </property>
    <property name="styleSheet">
-    <string notr="true">background: rgb(220,220,220)</string>
+    <string notr="true"/>
    </property>
    <property name="floating">
     <bool>false</bool>
@@ -166,6 +177,9 @@
      <width>97</width>
      <height>121</height>
     </size>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
    </property>
    <property name="features">
     <set>QDockWidget::DockWidgetClosable</set>
