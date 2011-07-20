@@ -42,7 +42,7 @@ TextureController::TextureController(MainWindow* mw, QGLWidget* context,QObject 
 
 void TextureController::loadTexture(void)
 {
-    QString filename = QFileDialog::getOpenFileName(m_textureView, "Open Image", ".");
+    QString filename = QFileDialog::getOpenFileName(m_textureView, "Open Image", ".", tr("Images (*.png *.jpg *.tiff *.svg)"));
 
     if(!filename.isEmpty())
         textureFileName(filename);
@@ -77,6 +77,7 @@ void TextureController::textureFileName(const QString& imageFileName)
     viewUpdateList();
     m_context->updateGL();
 }
+
 void TextureController::clearTexture(void)
 {
     if(m_textureList[textureContext].glTextureName() >= 0)
