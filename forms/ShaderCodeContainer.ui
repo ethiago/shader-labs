@@ -93,6 +93,9 @@
        </disabled>
       </palette>
      </property>
+     <property name="acceptRichText">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
    <item>
