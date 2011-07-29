@@ -4,16 +4,12 @@
 QT += core \
     gui \
     opengl
-
-win32 {
-     TARGET = ShaderLab-win32
-     INCLUDEPATH += lib/GLee5_4
-     SOURCES += lib/GLee5_4/GLee.c
- }
- unix {
-     TARGET = ShaderLab-unix32
- }
-
+win32 { 
+    TARGET = ShaderLab-win32
+    INCLUDEPATH += lib/GLee5_4
+    SOURCES += lib/GLee5_4/GLee.c
+}
+unix:TARGET = ShaderLab-unix32
 TEMPLATE = app
 DEPENDPATH += src
 INCLUDEPATH += headers
@@ -22,7 +18,6 @@ MOC_DIR = tmp
 RCC_DIR = tmp
 UI_DIR = tmp
 DESTDIR = bin
-
 SOURCES += src/main.cpp \
     src/Sphere.cpp \
     src/SLTabWidget.cpp \
@@ -41,9 +36,9 @@ SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/Object3D.cpp \
     src/RenderController.cpp \
-    src/ShaderCodeContainer.cpp
-HEADERS += \
-    headers/Sphere.h \
+    src/ShaderCodeContainer.cpp \
+    src/InterfaceRequests.cpp
+HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
     headers/Arcball.h \
@@ -60,11 +55,11 @@ HEADERS += \
     headers/MainWindow.h \
     headers/Object3D.h \
     headers/RenderController.h \
-    headers/ShaderCodeContainer.h
+    headers/ShaderCodeContainer.h \
+    headers/InterfaceRequests.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
     forms/TexturePropertiesView.ui
 RESOURCES += shaderlab.qrc
-
-OTHER_FILES +=
+OTHER_FILES += 

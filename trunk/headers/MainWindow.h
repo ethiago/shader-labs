@@ -53,13 +53,15 @@ signals:
     void runShaders(void);
     void saveAll(void);
     void saveFile(ShaderLab::Shader);
-    void saveFileAs(ShaderLab::Shader, const QString&, const QString&);
-    void selectedFile(const QString& , ShaderLab::Shader);
+    void saveFileAs(ShaderLab::Shader);
+    void selectedFile(ShaderLab::Shader);
     void shaderCodeChanged(ShaderLab::Shader);
     void drawModel(void);
     void wireframeClicked(bool);
     void changeActivationStatusClicked(ShaderLab::Shader);
     void saveResultAsImage();
+    void newShaderActionClicked();
+    void openShaderActionClicked();
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -68,7 +70,6 @@ public:
     void addShader(ShaderLab::Shader shadertype);
     QString getOutputText(void);
     QString saveAsRequest(ShaderLab::Shader);
-    ShaderLab::OperationState saveRequest(const QString&, bool newFile = false);
     void setFileNameDisplay(QString filename, bool changed, ShaderLab::Shader);
     bool setOutputText(const QString& );
     bool setShaderCode(const QString&, ShaderLab::Shader);
@@ -85,9 +86,6 @@ private:
 
     QMap<ShaderLab::Shader, ShaderCodeContainer*> codeTabs; /* Tab objects for each kind of shader. */
     SLTabWidget *tabArea;  /* UI component for nesting tabs. */
-
-    ChooseShaderDialog *choiceDialogNew;  /* The choice dialog for new files. */
-    ChooseShaderDialog *choiceDialogOpen; /* The choice dialog for existing files. */
 
 protected:
     void closeEvent(QCloseEvent *event);

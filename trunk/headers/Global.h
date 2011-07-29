@@ -4,7 +4,7 @@
 #include <QGLShader>
 #include <QString>
 
-#define QT47_CAPABLE
+//#define QT47_CAPABLE
 
 namespace ShaderLab {
 
@@ -20,8 +20,6 @@ int shaderToInt(Shader s);
 Shader intToShader(int v);
 
 double degreeFromCos(double);
-
-enum OperationState{ Yes, No, Cancel};
 
 }
 

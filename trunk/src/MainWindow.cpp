@@ -18,9 +18,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 {
     ui->setupUi(this);
 
-    choiceDialogNew = new ChooseShaderDialog(this);
-    choiceDialogOpen = new ChooseShaderDialog(this);
-
     tabArea = new SLTabWidget();
     tabArea->setTabsClosable(true);
     tabArea->setMovable(true);
@@ -67,19 +64,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(tabArea->getTabBar(), SIGNAL(signal_TabClicked()),
             this, SLOT(changeActivationStatus()));
 
-    connect(choiceDialogNew, SIGNAL(shader(ShaderLab::Shader)),
-            this, SLOT(selectedShaderNewDialog(ShaderLab::Shader)));
-
-    connect(choiceDialogOpen, SIGNAL(shader(ShaderLab::Shader)),
-            this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
-
     connect(ui->actionSave_Result_as_Image, SIGNAL(triggered()),
             this, SIGNAL(saveResultAsImage()));
 
-    /*qDebug() << this->width();
-    const QSize &size = QSize(800, ui->dockRenderWidget->height());
-    qDebug() << size.width() << " ....." << size.height();
-    ui->dockRenderWidget->resize( size );*/
+    connect(ui->actionNewFile, SIGNAL(triggered()),
+            this, SIGNAL(newShaderActionClicked()));
+
+    connect(ui->actionOpenCode, SIGNAL(triggered()),
+            this, SIGNAL(openShaderActionClicked()));
 
 }
 
@@ -94,8 +86,6 @@ MainWindow::~MainWindow()
     }
 
     delete ui;
-    delete choiceDialogNew;
-    delete choiceDialogOpen;
     delete tabArea;
 }
 
@@ -227,21 +217,6 @@ void MainWindow::exitApplication(void)
 
 /* Associated with the '' signal. */
 /* */
-void MainWindow::newDialog(void)
-{
-
-    choiceDialogNew->open();
-}
-
-/* Associated with the '' signal. */
-/* */
-void MainWindow::openDialog(void)
-{
-    choiceDialogOpen->open();
-}
-
-/* Associated with the '' signal. */
-/* */
 void MainWindow::runSelectedShaders(void)
 {
     emit runShaders();
@@ -268,7 +243,7 @@ void MainWindow::saveFileAsDialog(void)
     {
         ShaderLab::Shader shadertype = shaderTab->getShaderType();
 
-        emit saveFileAs(shadertype, saveAsRequest(shadertype), shaderCode(shadertype));
+        emit saveFileAs(shadertype);
     }
 }
 
@@ -283,13 +258,7 @@ void MainWindow::selectedShaderNewDialog(ShaderLab::Shader shadertype)
 /* */
 void MainWindow::selectedShaderOpenDialog(ShaderLab::Shader sh)
 {
-    QString filename;
-
-    filename = QFileDialog::getOpenFileName(this, "Open " + ShaderLab::shaderToStr(sh) + " shader code",
-                                            "../..", "*" + ShaderLab::shaderToExt(sh));
-
-    if(!filename.isEmpty())
-        emit selectedFile(filename, sh);
+    emit selectedFile(sh);
 }
 
 /* Associated with the '' signal. */
@@ -325,57 +294,12 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
     connect(codeContainer, SIGNAL(doubleClicked()),
             this, SLOT(changeActivationStatus()));
 
-    choiceDialogNew->addButton(shadertype);
-    choiceDialogOpen->addButton(shadertype);
 }
 
 /* */
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     emit programClose(event);
-}
-
-/* */
-QString MainWindow::saveAsRequest(ShaderLab::Shader shader)
-{
-    QString filename = QFileDialog::getSaveFileName(
-                       this,
-                       "Save " + ShaderLab::shaderToStr(shader) +" shader as...",
-                       "../..",
-                       ShaderLab::shaderToExt(shader));
-
-    if(filename == ShaderLab::shaderToExt(shader))
-        return QString();
-
-    return filename;
-}
-
-/* */
-ShaderLab::OperationState MainWindow::saveRequest(const QString& filename, bool newFile)
-{
-    QMessageBox::StandardButton ok = QMessageBox::Yes;
-    QMessageBox::StandardButton no = QMessageBox::No;
-    QMessageBox::StandardButton cancel = QMessageBox::Cancel;
-    QMessageBox::StandardButton bt;
-
-    QString msg;
-
-    if(newFile)
-        msg = "The file " + filename + " is new.\n Do you want to save?";
-    else
-        msg = "The file " + filename + " has been modified.\n Do you want to save?";
-
-
-     bt = QMessageBox::question(this, "Save File", msg,
-                               no | ok | cancel,
-                               ok);
-
-    if(bt == ok)
-        return ShaderLab::Yes;
-    else if(bt == no)
-        return ShaderLab::No;
-    else
-        return ShaderLab::Cancel;
 }
 
 /* */
