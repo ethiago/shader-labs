@@ -33,8 +33,6 @@ public slots:
     void changeTabActivationStatus(ShaderLab::Shader);
     void newShaderActionClicked(void);
     void openShaderActionClicked(void);
-    void selectedShaderOpenDialog(ShaderLab::Shader);
-    void selectedShaderNewDialog(ShaderLab::Shader);
 
 signals:
     void updateGL(void);
@@ -45,14 +43,11 @@ private:
     QGLShaderProgram program;
     TextureController *textureController;
 
-    ChooseShaderDialog *choiceDialogNew;  /* The choice dialog for new files. */
-    ChooseShaderDialog *choiceDialogOpen; /* The choice dialog for existing files. */
+    ChooseShaderDialog *chooseShaderDialog;
 
     FileController* getFileControllerByShaderType(ShaderLab::Shader shadertype);
     void codeAlreadyOpenProcessor(ShaderLab::Shader shadertype);
     bool closeShaderCode(ShaderLab::Shader);
-    void openShaderCode(ShaderLab::Shader);
-    void newShaderCode(ShaderLab::Shader);
 
 };
 

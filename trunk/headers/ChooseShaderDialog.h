@@ -18,16 +18,15 @@ public:
     explicit ChooseShaderDialog(QWidget *parent = 0);
     ~ChooseShaderDialog();
     void addButton(ShaderLab::Shader shadertype);
-
-signals:
-    void shader(ShaderLab::Shader);
+    ShaderLab::Shader lastChosenShader();
 
 public slots:
-    void arebaba(ShaderLab::Shader shadertype);
+    void chosenShader(ShaderLab::Shader shadertype);
 
 private:
     Ui::Dialog *ui;
     QMap<ShaderLab::Shader, SLCommandLinkButton*> buttons;
+    ShaderLab::Shader m_lastChosenShader;
 
 };
 

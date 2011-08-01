@@ -34,13 +34,9 @@ public slots:
     void dockOutputVisibilityChange(bool);
     void dockRenderVisibilityChange(bool);
     void exitApplication(void);
-    void newDialog(void);
-    void openDialog(void);
     void runSelectedShaders(void);
     void saveFile(void);
     void saveFileAsDialog(void);
-    void selectedShaderNewDialog(ShaderLab::Shader);
-    void selectedShaderOpenDialog(ShaderLab::Shader);
     void textChanged(ShaderLab::Shader);
     void viewMenuClicked(QAction*);
     void changeActivationStatus(void);
@@ -48,7 +44,6 @@ public slots:
 /* Created by the UI */
 signals:
     void closeTabRequest(ShaderLab::Shader);
-    void newShaderFile(ShaderLab::Shader);
     void programClose(QCloseEvent *event);
     void runShaders(void);
     void saveAll(void);
@@ -67,9 +62,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    //QString getOutputText(void);
     void addShader(ShaderLab::Shader shadertype);
-    QString getOutputText(void);
-    QString saveAsRequest(ShaderLab::Shader);
     void setFileNameDisplay(QString filename, bool changed, ShaderLab::Shader);
     bool setOutputText(const QString& );
     bool setShaderCode(const QString&, ShaderLab::Shader);

@@ -2,8 +2,8 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
+#include "TextureController.h" // Deve ser a primeira declaracao das classes proprias
 #include "ChooseShaderDialog.h"
-#include "TextureController.h"
 #include "InterfaceRequests.h"
 #include "MainController.h"
 #include "MainWindow.h"
@@ -21,8 +21,8 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     mainWindow = mw;
     textureController = NULL;
 
-    choiceDialogNew = new ChooseShaderDialog(mainWindow);
-    choiceDialogOpen = new ChooseShaderDialog(mainWindow);
+    chooseShaderDialog = new ChooseShaderDialog(mainWindow);
+    chooseShaderDialog->setModal(true);
 
     //connect(mainWindow, SIGNAL(selectedFile(ShaderLab::Shader)),
     //        this, SLOT(openShaderCode(ShaderLab::Shader)));
@@ -38,9 +38,6 @@ MainController::MainController(MainWindow *mw, QObject *parent)
 
     connect(mainWindow, SIGNAL(saveFile(ShaderLab::Shader)),
             this, SLOT(saveFile(ShaderLab::Shader)));
-
-    connect(mainWindow, SIGNAL(newShaderFile(ShaderLab::Shader)),
-            this, SLOT(newShaderCode(ShaderLab::Shader)));
 
     connect(mainWindow, SIGNAL(shaderCodeChanged(ShaderLab::Shader)),
             this, SLOT(fileChanged(ShaderLab::Shader)));
@@ -60,22 +57,13 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     connect(mainWindow, SIGNAL(openShaderActionClicked()),
             this, SLOT(openShaderActionClicked()));
 
-    connect(choiceDialogNew, SIGNAL(shader(ShaderLab::Shader)),
-            this, SLOT(selectedShaderNewDialog(ShaderLab::Shader)));
-
-    connect(choiceDialogOpen, SIGNAL(shader(ShaderLab::Shader)),
-            this, SLOT(selectedShaderOpenDialog(ShaderLab::Shader)));
-
     mainWindow->addShader(ShaderLab::Vertex);
-    choiceDialogNew->addButton(ShaderLab::Vertex);
-    choiceDialogOpen->addButton(ShaderLab::Vertex);
+    chooseShaderDialog->addButton(ShaderLab::Vertex);
     /*mainWindow->addShader(ShaderLab::Geometry);
-    choiceDialogNew->addButton(ShaderLab::Geometry);
-    choiceDialogOpen->addButton(ShaderLab::Geometry);
+    chooseShaderDialog->addButton(ShaderLab::Geometry);
     */
     mainWindow->addShader(ShaderLab::Fragment);
-    choiceDialogNew->addButton(ShaderLab::Fragment);
-    choiceDialogOpen->addButton(ShaderLab::Fragment);
+    chooseShaderDialog->addButton(ShaderLab::Fragment);
 
     mainWindow->showMaximized();
 
@@ -83,8 +71,7 @@ MainController::MainController(MainWindow *mw, QObject *parent)
 
 MainController::~MainController()
 {
-    delete choiceDialogNew;
-    delete choiceDialogOpen;
+    delete chooseShaderDialog;
 }
 
 
@@ -136,60 +123,6 @@ void MainController::fileChanged(ShaderLab::Shader shaderType)
     mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
 }
 
-/* Associated with the 'newShaderFile' signal. */
-/* Creates a new FileController for a yet-non-existing file and displays the new empty file. */
-/* Won't allow 2 opened files for the same shader type. */
-void MainController::newShaderCode(ShaderLab::Shader shaderType)
-{
-
-    codeAlreadyOpenProcessor(shaderType);
-
-    FileController *fc = getFileControllerByShaderType(shaderType);
-
-    if(!fc)
-    {
-        fc = new FileController(shaderType);
-        fileControllers.insert(shaderType, fc);
-
-        mainWindow->setVisibleShader(true, shaderType);
-        mainWindow->setShaderCode(QString(),  shaderType);
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-    }
-}
-
-/* Associated with the 'selectedFile' signal. */
-/* Creates a new FileController for an existing file and displays its content for edition. */
-/* Won't allow 2 opened files for the same shader type. */
-void MainController::openShaderCode(ShaderLab::Shader shaderType)
-{
-    QString fileContent;
-
-    codeAlreadyOpenProcessor(shaderType);
-
-    FileController *fc = getFileControllerByShaderType(shaderType);
-
-    if(!fc)
-    {
-        QString filepath = QFileDialog::getOpenFileName(mainWindow,
-                                  "Open " + ShaderLab::shaderToStr(shaderType) + " shader",
-                                  "../..",
-                                  "*" + ShaderLab::shaderToExt(shaderType));
-
-        if(filepath.isEmpty()) return;
-
-        fc = new FileController(filepath, shaderType);
-        fileControllers.insert(shaderType, fc);
-
-        fileContent = fc->getFileContent();
-
-        mainWindow->setVisibleShader(true, shaderType);
-        mainWindow->setShaderCode(fileContent, shaderType);
-        fc->setChanged(false);
-
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-
-    }
-}
 
 /* Associated with the 'programClose' signal. */
 /* Before ending the application, checks and manages all unsaved files. */
@@ -370,20 +303,60 @@ void MainController::setTextureController(TextureController *textureController)
 
 void MainController::newShaderActionClicked()
 {
-    choiceDialogNew->open();
+    int ret = chooseShaderDialog->exec();
+    if(ret != QDialog::Accepted)
+        return;
+
+    ShaderLab::Shader shaderType = chooseShaderDialog->lastChosenShader();
+
+    codeAlreadyOpenProcessor(shaderType);
+
+    FileController *fc = getFileControllerByShaderType(shaderType);
+
+    if(!fc)
+    {
+        fc = new FileController(shaderType);
+        fileControllers.insert(shaderType, fc);
+
+        mainWindow->setVisibleShader(true, shaderType);
+        mainWindow->setShaderCode(QString(),  shaderType);
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
+    }
+
 }
 
 void MainController::openShaderActionClicked()
 {
-    choiceDialogOpen->open();
-}
+    int ret = chooseShaderDialog->exec();
+    if(ret != QDialog::Accepted)
+        return;
 
-void MainController::selectedShaderOpenDialog(ShaderLab::Shader shadertype)
-{
-    openShaderCode(shadertype);
-}
+    ShaderLab::Shader shaderType = chooseShaderDialog->lastChosenShader();
+    QString fileContent;
 
-void MainController::selectedShaderNewDialog(ShaderLab::Shader shadertype)
-{
-    newShaderCode(shadertype);
+    codeAlreadyOpenProcessor(shaderType);
+
+    FileController *fc = getFileControllerByShaderType(shaderType);
+
+    if(!fc)
+    {
+        QString filepath = QFileDialog::getOpenFileName(mainWindow,
+                                  "Open " + ShaderLab::shaderToStr(shaderType) + " shader",
+                                  "../..",
+                                  "*" + ShaderLab::shaderToExt(shaderType));
+
+        if(filepath.isEmpty()) return;
+
+        fc = new FileController(filepath, shaderType);
+        fileControllers.insert(shaderType, fc);
+
+        fileContent = fc->getFileContent();
+
+        mainWindow->setVisibleShader(true, shaderType);
+        mainWindow->setShaderCode(fileContent, shaderType);
+        fc->setChanged(false);
+
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
+
+    }
 }

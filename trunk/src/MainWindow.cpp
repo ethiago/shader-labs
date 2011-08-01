@@ -25,12 +25,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui->dockOutPutWidget->setVisible(true);
     ui->actionShowOutput->setChecked(true);
 
-    connect(ui->actionOpenCode, SIGNAL(triggered()),
-            this, SLOT(openDialog()));
-
-    connect(ui->actionNewFile, SIGNAL(triggered()),
-            this, SLOT(newDialog()));
-
     connect(tabArea, SIGNAL(tabCloseRequested(int)),
             this, SLOT(closeTabRequest(int)));
 
@@ -102,11 +96,12 @@ bool MainWindow::setOutputText(const QString& s)
     return true;
 }
 
-/* Getter for the output text on the screen. */
+/* Getter for the output text on the screen.
 QString MainWindow::getOutputText(void)
 {
     return ui->outputTextBox->toPlainText();
 }
+*/
 
 /* Sets the name displayed for a file, depending if the content has changed. */
 /* (Displays a '*' when it is.) */
@@ -245,20 +240,6 @@ void MainWindow::saveFileAsDialog(void)
 
         emit saveFileAs(shadertype);
     }
-}
-
-/* Associated with the '' signal. */
-/* */
-void MainWindow::selectedShaderNewDialog(ShaderLab::Shader shadertype)
-{
-    emit newShaderFile(shadertype);
-}
-
-/* Associated with the '' signal. */
-/* */
-void MainWindow::selectedShaderOpenDialog(ShaderLab::Shader sh)
-{
-    emit selectedFile(sh);
 }
 
 /* Associated with the '' signal. */
