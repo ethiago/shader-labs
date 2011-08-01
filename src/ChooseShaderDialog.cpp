@@ -1,7 +1,9 @@
 #include "ChooseShaderDialog.h"
 #include "ui_ChooseShaderDialog.h"
 
-ChooseShaderDialog::ChooseShaderDialog(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog)
+ChooseShaderDialog::ChooseShaderDialog(QWidget *parent) :
+    QDialog(parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
+    ui(new Ui::Dialog)
 {
     ui->setupUi(this);
 }
@@ -28,12 +30,17 @@ void ChooseShaderDialog::addButton(ShaderLab::Shader shadertype)
     ui->verticalLayout->addWidget(button);
 
     connect(button, SIGNAL(clicked(ShaderLab::Shader)),
-            this, SLOT(arebaba(ShaderLab::Shader)));
+            this, SLOT(chosenShader(ShaderLab::Shader)));
 
 }
 
-void ChooseShaderDialog::arebaba(ShaderLab::Shader shadertype)
+ShaderLab::Shader ChooseShaderDialog::lastChosenShader()
 {
-    this->close();
-    emit shader(shadertype);
+    return m_lastChosenShader;
+}
+
+void ChooseShaderDialog::chosenShader(ShaderLab::Shader shadertype)
+{
+    this->accept();
+    m_lastChosenShader = shadertype;
 }

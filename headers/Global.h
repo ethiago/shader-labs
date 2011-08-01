@@ -4,7 +4,7 @@
 #include <QGLShader>
 #include <QString>
 
-//#define QT47_CAPABLE
+#define QT47_CAPABLE
 
 namespace ShaderLab {
 
