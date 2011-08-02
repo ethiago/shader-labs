@@ -20,7 +20,6 @@ void Plane::drawGeometry(void) const
 {
 
     glCallList(indexList);
-    //storeList();
 }
 
 void Plane::storeList() const

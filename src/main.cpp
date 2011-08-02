@@ -4,6 +4,7 @@
 #include "MainController.h"
 #include "RenderController.h"
 #include "MainWindow.h"
+#include "GLDisplay.h"
 
 int main(int argc, char *argv[])
 {

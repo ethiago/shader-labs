@@ -12,7 +12,7 @@
 #include "Arcball.h"
 
 RenderController::RenderController(MainWindow *mainWindow,
-                                            QObject *parent):
+                                   QObject *parent):
     QObject(parent)
 {
 
@@ -28,18 +28,18 @@ RenderController::RenderController(MainWindow *mainWindow,
     actionSphereST->setCheckable(true);
     actionPlaneST->setCheckable(true);
 
-    display = new GLDisplay();
-    {
-        model = new Sphere();
-        actionSphere->setChecked(true);
-        actionPlane->setChecked(false);
-        actionSphereST->setChecked(false);
-        actionPlaneST->setChecked(false);
-    }
     arcBall = new ArcBall(500);
 
-
+    this->display = new GLDisplay();
     mainWindow->setGLDisplay(display);
+
+    display->updateGL(); // cria o contexto openGL
+
+    model = new Sphere();
+    actionSphere->setChecked(true);
+    actionPlane->setChecked(false);
+    actionSphereST->setChecked(false);
+    actionPlaneST->setChecked(false);
 
     connect(display, SIGNAL(drawModel()), this ,SLOT(drawModel()));
 
@@ -70,6 +70,9 @@ RenderController::RenderController(MainWindow *mainWindow,
 
 RenderController::~RenderController()
 {
+    delete display;
+    delete arcBall;
+    delete model;
 }
 
 void RenderController::updateGL(void)
