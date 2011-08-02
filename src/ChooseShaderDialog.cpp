@@ -29,7 +29,7 @@ void ChooseShaderDialog::addButton(ShaderLab::Shader shadertype)
 
     ui->verticalLayout->addWidget(button);
 
-    connect(button, SIGNAL(clicked(ShaderLab::Shader)),
+    connect(button,  SIGNAL(clicked(ShaderLab::Shader)),
             this, SLOT(chosenShader(ShaderLab::Shader)));
 
 }

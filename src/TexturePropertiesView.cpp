@@ -35,12 +35,6 @@ void TexturePropertiesView::setTexture(const Texture& texture)
     ui->imageContainer->setPixmap(QPixmap::fromImage(img));
 }
 
-void TexturePropertiesView::closeEvent(QCloseEvent *event)
-{
-    emit s_closeEvent();
-    event->accept();
-}
-
 void TexturePropertiesView::setTextureList(const QList<QPair<QIcon, QString> >& textureList,
                                            int currInd)
 {

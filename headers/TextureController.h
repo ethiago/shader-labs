@@ -23,7 +23,6 @@ class TextureController : public QObject
     int textureContext;
     QGLWidget* m_context;
     TexturePropertiesView* m_textureView;
-    QAction* m_viewAction;
 
 
 public:
@@ -41,8 +40,6 @@ public slots:
     void removeTexture(void);
     void loadTexture(void);
     void addTexture(void);
-    void viewToogle(bool);
-    void viewCloseEvent();
     void textureCurrentChange(int);
 
 private:

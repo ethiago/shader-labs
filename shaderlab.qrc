@@ -35,8 +35,8 @@
         <file>img/1302041633_Flask.png</file>
         <file>img/1302042512_Flask.ico</file>
         <file>img/1302043859_Log Out.png</file>
-        <file>img/1302044079_previewer.png</file>
-        <file>img/1302044102_mail-new.png</file>
+        <file alias="renderAreaIcon">img/1302044079_previewer.png</file>
+        <file alias="applicationOutputIcon">img/1302044102_mail-new.png</file>
         <file>img/1303587978_3floppy_unmount.png</file>
         <file>img/1303588015_save_all.png</file>
         <file>img/1303588715_document-new.png</file>

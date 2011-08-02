@@ -31,14 +31,11 @@ class MainWindow : public QMainWindow
 
 public slots:
     void closeTabRequest(int index);
-    void dockOutputVisibilityChange(bool);
-    void dockRenderVisibilityChange(bool);
     void exitApplication(void);
     void runSelectedShaders(void);
     void saveFile(void);
     void saveFileAsDialog(void);
     void textChanged(ShaderLab::Shader);
-    void viewMenuClicked(QAction*);
     void changeActivationStatus(void);
 
 /* Created by the UI */
@@ -72,8 +69,8 @@ public:
     bool visibleShader(ShaderLab::Shader);
     void setGLDisplay(GLDisplay *);
     void setEnableShaderCode(ShaderLab::Shader, bool);
-    QAction* actionTexturePropertiesView(void);
     QMenu* modelsMenu(void);
+    void menuViewInsertAction(QAction* act);
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */

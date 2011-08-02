@@ -18,7 +18,6 @@ signals:
     void loadTextureClicked(void);
     void removeTextureClicked(void);
     void addTextureClicked(void);
-    void s_closeEvent();
     void textureCurrentChange(int);
 
 public:
@@ -31,8 +30,6 @@ public:
 
 private:
     Ui::TexturePropertiesView *ui;
-
-    void closeEvent(QCloseEvent *event);
 };
 
 #endif // TEXTUREPROPERTIESVIEW_H
