@@ -1,18 +1,26 @@
 #include "Plane.h"
 #include <QtOpenGL>
 
-Plane::Plane()
+Plane::Plane(int stacks, int slices) : Object3D()
 {
+    setStacks(stacks);
+    setSlices(slices);
+
     indexList = glGenLists(1);
 
-    //storeList();
+    storeList();
+}
+
+Plane::~Plane()
+{
+    glDeleteLists(indexList, 1);
 }
 
 void Plane::drawGeometry(void) const
 {
 
-    //glCallList(indexList);
-    storeList();
+    glCallList(indexList);
+    //storeList();
 }
 
 void Plane::storeList() const
@@ -25,7 +33,7 @@ void Plane::storeList() const
 
     float norm[3] = { 0.0, 0.0, -1.0 };
 
-    //glNewList(indexList, GL_COMPILE);
+    glNewList(indexList, GL_COMPILE);
 
     glNormal3fv(norm);
     float cx = 0.0;
@@ -57,6 +65,6 @@ void Plane::storeList() const
         }
     }
 
-    //glEndList();
+   glEndList();
 
 }

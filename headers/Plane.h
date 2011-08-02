@@ -8,7 +8,8 @@ class Plane : public Object3D
     int indexList;
 
 public:
-    explicit Plane();
+    explicit Plane(int staks, int slices);
+    ~Plane();
 
 private:
     void drawGeometry(void) const;

@@ -14,6 +14,8 @@ public:
                     QObject *parent = 0);
     explicit Sphere(const Sphere& sph);
 
+    explicit Sphere(int stacks, int slices);
+
     void setRadius(float radius);
     float radius(void)const;
 

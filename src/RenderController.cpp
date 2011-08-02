@@ -25,6 +25,8 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     actionSphere->setCheckable(true);
     actionPlane->setCheckable(true);
+    actionSphereST->setCheckable(true);
+    actionPlaneST->setCheckable(true);
 
     display = new GLDisplay();
     {
@@ -169,7 +171,7 @@ void RenderController::modelChanged(QAction* action)
         actionPlane->setChecked(true);
         actionSphereST->setChecked(false);
         actionPlaneST->setChecked(false);
-        model = new Plane();
+        model = new Plane(50, 50);
     }else if(action == actionSphereST)
     {
         actionSphere->setChecked(false);
@@ -185,9 +187,7 @@ void RenderController::modelChanged(QAction* action)
         actionPlane->setChecked(false);
         actionSphereST->setChecked(false);
         actionPlaneST->setChecked(true);
-        model = new Plane();
-        model->setSlices(500);
-        model->setStacks(500);
+        model = new Plane(500, 500);
     }
     display->updateGL();
 }
