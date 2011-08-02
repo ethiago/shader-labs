@@ -59,7 +59,7 @@
      <x>0</x>
      <y>0</y>
      <width>743</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -87,12 +87,9 @@
       <string>&amp;Models</string>
      </property>
     </widget>
-    <addaction name="actionShowOutput"/>
-    <addaction name="actionShowRenderArea"/>
-    <addaction name="actionTexture_Properties"/>
-    <addaction name="separator"/>
     <addaction name="actionWireframe"/>
     <addaction name="menu_Models"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_Build">
     <property name="title">
@@ -271,36 +268,6 @@
     <bool>true</bool>
    </property>
   </action>
-  <action name="actionShowOutput">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/img/1302044102_mail-new.png</normaloff>:/ico/img/1302044102_mail-new.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Application output</string>
-   </property>
-  </action>
-  <action name="actionShowRenderArea">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/img/1302044079_previewer.png</normaloff>:/ico/img/1302044079_previewer.png</iconset>
-   </property>
-   <property name="text">
-    <string>R&amp;ender area</string>
-   </property>
-  </action>
   <action name="actionSaveFile">
    <property name="icon">
     <iconset resource="../shaderlab.qrc">
@@ -342,18 +309,6 @@
     <string>Ctrl+Shift+S</string>
    </property>
   </action>
-  <action name="action_Load_Texture">
-   <property name="icon">
-    <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/img/loadtexture.png</normaloff>:/ico/img/loadtexture.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Load Texture ...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+L</string>
-   </property>
-  </action>
   <action name="actionWireframe">
    <property name="checkable">
     <bool>true</bool>
@@ -379,17 +334,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
-   </property>
-  </action>
-  <action name="actionTexture_Properties">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Texture Properties</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+T</string>
    </property>
   </action>
  </widget>

@@ -13,12 +13,14 @@ TextureController::TextureController(MainWindow* mw, QGLWidget* context,QObject 
 
    m_context = context;
    m_textureView = new TexturePropertiesView(mw);
-   m_viewAction = mw->actionTexturePropertiesView();
    mw->addDockWidget(Qt::LeftDockWidgetArea, m_textureView);
-   m_viewAction->setChecked(true);
 
-   connect(m_viewAction, SIGNAL(triggered(bool)),
-           this, SLOT(viewToogle(bool)));
+   {
+   QAction *act = m_textureView->toggleViewAction();
+   act->setText("Texture properties");
+   act->setShortcut(QKeySequence::fromString("Ctrl+T"));
+   mw->menuViewInsertAction(act);
+   }
 
    connect(m_textureView, SIGNAL(loadTextureClicked()),
            this, SLOT(loadTexture()));
@@ -28,9 +30,6 @@ TextureController::TextureController(MainWindow* mw, QGLWidget* context,QObject 
 
    connect(m_textureView, SIGNAL(addTextureClicked()),
            this, SLOT(addTexture()));
-
-   connect(m_textureView, SIGNAL(s_closeEvent()),
-           this, SLOT(viewCloseEvent()));
 
    connect(m_textureView, SIGNAL(textureCurrentChange(int)),
            this,SLOT(textureCurrentChange(int)));
@@ -107,19 +106,6 @@ void TextureController::removeTexture(void)
     emit updateTexture(m_textureList[textureContext].glTextureName());
     activateTexture();
     m_context->updateGL();
-}
-
-void TextureController::viewToogle(bool b)
-{
-    if(b)
-        m_textureView->show();
-    else
-        m_textureView->hide();
-}
-
-void TextureController::viewCloseEvent()
-{
-    m_viewAction->setChecked(false);
 }
 
 void TextureController::textureCurrentChange(int index)

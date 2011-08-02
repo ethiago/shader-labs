@@ -8,7 +8,7 @@ SLCommandLinkButton::SLCommandLinkButton(ShaderLab::Shader shadertype, QWidget *
     connect(this, SIGNAL(clicked()), this, SLOT(clicou()));
 }
 
-/* Tá em português!!!!! */
+/* Ta em portugues!!!!! */
 void SLCommandLinkButton::clicou(void)
 {
     emit clicked(shaderType);

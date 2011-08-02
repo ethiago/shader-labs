@@ -22,8 +22,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     tabArea->setTabsClosable(true);
     tabArea->setMovable(true);
 
+    {
+    QAction* act = ui->dockOutPutWidget->toggleViewAction();
+    act->setText("Application output");
+    act->setIcon(QIcon(":/ico/applicationOutputIcon"));
+    ui->menuView->insertAction(0,act);
+    }
+
+    {
+    QAction* act = ui->dockRenderWidget->toggleViewAction();
+    act->setText("Render area");
+    act->setIcon(QIcon(":/ico/renderAreaIcon"));
+    ui->menuView->insertAction(0,act);
+    }
+
     ui->dockOutPutWidget->setVisible(true);
-    ui->actionShowOutput->setChecked(true);
 
     connect(tabArea, SIGNAL(tabCloseRequested(int)),
             this, SLOT(closeTabRequest(int)));
@@ -33,15 +46,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(ui->actionRunAll, SIGNAL(triggered()),
             this, SLOT(runSelectedShaders()));
-
-    connect(ui->menuView, SIGNAL(triggered(QAction*)),
-            this, SLOT(viewMenuClicked(QAction*)));
-
-    connect(ui->dockOutPutWidget, SIGNAL(visibilityChanged(bool)),
-            this, SLOT(dockOutputVisibilityChange(bool)));
-
-    connect(ui->dockRenderWidget, SIGNAL(visibilityChanged(bool)),
-            this, SLOT(dockRenderVisibilityChange(bool)));
 
     connect(ui->actionSaveFile, SIGNAL(triggered()),
             this, SLOT(saveFile()));
@@ -191,20 +195,6 @@ void MainWindow::closeTabRequest(int index)
 
 /* Associated with the '' signal. */
 /* */
-void MainWindow::dockOutputVisibilityChange(bool v)
-{
-    ui->actionShowOutput->setChecked(v);
-}
-
-/* Associated with the '' signal. */
-/* */
-void MainWindow::dockRenderVisibilityChange(bool v)
-{
-    ui->actionShowRenderArea->setChecked(v);
-}
-
-/* Associated with the '' signal. */
-/* */
 void MainWindow::exitApplication(void)
 {
     close(); //closeEvent
@@ -247,17 +237,6 @@ void MainWindow::saveFileAsDialog(void)
 void MainWindow::textChanged(ShaderLab::Shader shadertype)
 {
     emit shaderCodeChanged(shadertype);
-}
-
-/* Associated with the '' signal. */
-/* */
-void MainWindow::viewMenuClicked(QAction* act)
-{
-    if(act == ui->actionShowOutput)
-        ui->dockOutPutWidget->setVisible(act->isChecked());
-    else if(act == ui->actionShowRenderArea)
-        ui->dockRenderWidget->setVisible(act->isChecked());
-
 }
 
 
@@ -349,12 +328,12 @@ void MainWindow::changeActivationStatus(void)
         emit changeActivationStatusClicked(scc->getShaderType());
 }
 
-QAction* MainWindow::actionTexturePropertiesView(void)
-{
-    return ui->actionTexture_Properties;
-}
-
  QMenu* MainWindow::modelsMenu(void)
  {
     return ui->menu_Models;
+ }
+
+ void MainWindow::menuViewInsertAction( QAction* act)
+ {
+     ui->menuView->insertAction(0, act);
  }
