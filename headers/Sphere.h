@@ -9,12 +9,10 @@ class Sphere : public Object3D
 
     float m_radius;
 public:
-    explicit Sphere(float radius = 1.0,
+    explicit Sphere(int stacks = 50, int slices = 50, float radius = 1.0,
                     const QVector3D& center = QVector3D(),
                     QObject *parent = 0);
     explicit Sphere(const Sphere& sph);
-
-    explicit Sphere(int stacks, int slices);
 
     void setRadius(float radius);
     float radius(void)const;
