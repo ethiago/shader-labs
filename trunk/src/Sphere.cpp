@@ -2,20 +2,16 @@
 #include "Sphere.h"
 #include "Global.h"
 
-Sphere::Sphere(float radius, const QVector3D& center, QObject *parent):
+Sphere::Sphere(int stacks, int slices, float radius, const QVector3D& center, QObject *parent):
     Object3D(center, parent), m_radius(radius)
 {
+    setStacks(stacks);
+    setSlices(slices);
 }
 
 Sphere::Sphere(const Sphere& sph): Object3D(sph), m_radius(sph.radius())
 {
 
-}
-
-Sphere::Sphere(int stacks, int slices) : Object3D()
-{
-    setStacks(stacks);
-    setSlices(slices);
 }
 
 void Sphere::setRadius(float radius)

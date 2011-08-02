@@ -178,9 +178,7 @@ void RenderController::modelChanged(QAction* action)
         actionPlane->setChecked(false);
         actionSphereST->setChecked(true);
         actionPlaneST->setChecked(false);
-        model = new Sphere();
-        model->setSlices(500);
-        model->setStacks(500);
+        model = new Sphere(500,500);
     }else if(action == actionPlaneST)
     {
         actionSphere->setChecked(false);
