@@ -12,6 +12,12 @@ Sphere::Sphere(const Sphere& sph): Object3D(sph), m_radius(sph.radius())
 
 }
 
+Sphere::Sphere(int stacks, int slices) : Object3D()
+{
+    setStacks(stacks);
+    setSlices(slices);
+}
+
 void Sphere::setRadius(float radius)
 {
     m_radius = radius;

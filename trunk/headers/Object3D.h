@@ -29,6 +29,11 @@ public:
                       QObject *parent = 0);
     explicit Object3D(const Object3D& obj);
 
+
+    int slices(void)const;
+    int stacks(void)const;
+
+    //Esta em portugues
     void setRotacoes(const QMatrix4x4&);
     const QMatrix4x4& rotacoes(void)const;
      void addRotacao(const QQuaternion&);
@@ -39,12 +44,6 @@ public:
     void setCenter(const QVector3D& center);
     const QVector3D& center(void)const;
 
-    void setSlices(int slices);
-    int slices(void)const;
-
-    void setStacks(int stacks);
-    int stacks(void)const;
-
     void setTraslation(const QVector3D& translation);
     const QVector3D& translation(void)const;
 
@@ -52,6 +51,11 @@ public:
     int texture(void)const;
 
     void draw(void) const;
+
+protected:
+
+    void setStacks(int stacks);
+    void setSlices(int slices);
 
 };
 
