@@ -17,7 +17,6 @@ class GLDisplay : public QGLWidget
 
     QPoint rigthPressedPoint;
     QPoint leftPressedPoint;
-    bool wireFrame;
     float zoom;
 
 signals:
@@ -35,8 +34,6 @@ public:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
-
-    void setWireframe(bool);
 
     void setZoom(float z);
     float getZoom(void)const;

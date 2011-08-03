@@ -12,13 +12,12 @@ int main(int argc, char *argv[])
 
     MainWindow mw;
     MainController mc(&mw);
-    RenderController rc(&mw, &mc);
-    TextureController tc(&mw, rc.getGLContext(), &mc);
+    RenderController rc(&mw);
+    TextureController tc(&mw, rc.getGLContext());
 
     mc.setTextureController(&tc);
 
     QObject::connect(&mc, SIGNAL(updateGL()), &rc, SLOT(updateGL()));
-    QObject::connect(&tc, SIGNAL(updateTexture(int)), &rc,SLOT(updateTexture(int)));
 
     return app.exec();
 }

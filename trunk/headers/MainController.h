@@ -10,12 +10,20 @@
 class MainWindow;
 class FileController;
 class Object3D;
-class TextureController;
 class ChooseShaderDialog;
+class RenderController;
+class TextureController;
 
 class MainController : public QObject
 {
     Q_OBJECT
+
+    MainWindow *mainWindow;
+    QMap<ShaderLab::Shader, FileController*> fileControllers;
+    QGLShaderProgram program;
+    TextureController *textureController;
+
+    ChooseShaderDialog *chooseShaderDialog;
 
 public:
     explicit MainController(MainWindow *mw, QObject *parent = 0);
@@ -38,12 +46,6 @@ signals:
     void updateGL(void);
 
 private:
-    MainWindow *mainWindow;
-    QMap<ShaderLab::Shader, FileController*> fileControllers;
-    QGLShaderProgram program;
-    TextureController *textureController;
-
-    ChooseShaderDialog *chooseShaderDialog;
 
     FileController* getFileControllerByShaderType(ShaderLab::Shader shadertype);
     void codeAlreadyOpenProcessor(ShaderLab::Shader shadertype);

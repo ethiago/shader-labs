@@ -111,3 +111,12 @@ void Object3D::draw(void) const
 
     glPopMatrix();
 }
+
+void Object3D::cleanTransformations()
+{
+    setTraslation(QVector3D());
+    setCenter(QVector3D());
+
+    setInteractiveQuartenion(QQuaternion());
+    setRotacoes(QMatrix4x4());
+}
