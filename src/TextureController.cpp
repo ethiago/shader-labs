@@ -71,7 +71,6 @@ void TextureController::textureFileName(const QString& imageFileName)
     m_textureList[textureContext].setImage(img);
     m_textureList[textureContext].setGLTextureName(m_context->bindTexture(imageFileName, GL_TEXTURE_2D));
     m_textureList[textureContext].setVarName(SAMPLEPREFIX + QString::number(textureContext));
-    emit updateTexture(m_textureList[textureContext].glTextureName());
     activateTexture();
     viewUpdateList();
     m_context->updateGL();
@@ -103,7 +102,6 @@ void TextureController::removeTexture(void)
     }
 
     viewUpdateList();
-    emit updateTexture(m_textureList[textureContext].glTextureName());
     activateTexture();
     m_context->updateGL();
 }
@@ -115,7 +113,6 @@ void TextureController::textureCurrentChange(int index)
 
     textureContext = index;
     m_textureView->setTexture(m_textureList[textureContext]);
-    emit updateTexture(m_textureList[textureContext].glTextureName());
     activateTexture();
     m_context->updateGL();
 }

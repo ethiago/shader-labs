@@ -5,6 +5,7 @@
 #include <QPoint>
 #include <QGLContext>
 #include <QAction>
+#include <QMap>
 
 class MainWindow;
 class Object3D;
@@ -26,10 +27,10 @@ class RenderController : public QObject
     GLDisplay *display;
     Object3D * model;
     ArcBall* arcBall;
-    QAction* actionSphere;
-    QAction* actionPlane;
-    QAction* actionSphereST;
-    QAction* actionPlaneST;
+    bool wireframe;
+
+    QMap<QAction*, Object3D*> models;
+    typedef QMap<QAction*, Object3D*> MMap;
 
 
 public:
@@ -48,9 +49,10 @@ public slots:
     void mouseCancel();
     void wireFrameToggle(bool);
     void saveResultAsImage();
-    void updateTexture(int);
     void modelChanged(QAction*);
 
+private:
+    void configureModelsAndActions(QMenu*);
 
 };
 

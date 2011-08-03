@@ -36,7 +36,7 @@ public:
     //Esta em portugues
     void setRotacoes(const QMatrix4x4&);
     const QMatrix4x4& rotacoes(void)const;
-     void addRotacao(const QQuaternion&);
+    void addRotacao(const QQuaternion&);
 
     void setInteractiveQuartenion(const QQuaternion& quaternion);
     const QQuaternion& interactiveQuartenion(void)const;
@@ -51,6 +51,8 @@ public:
     int texture(void)const;
 
     void draw(void) const;
+
+    void cleanTransformations();
 
 protected:
 

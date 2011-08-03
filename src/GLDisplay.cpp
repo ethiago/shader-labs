@@ -8,7 +8,7 @@ using namespace ShaderLab;
 
 GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
     rigthPressedPoint(NULLPOINT),
-    leftPressedPoint(NULLPOINT), wireFrame(false), zoom(1.0)
+    leftPressedPoint(NULLPOINT), zoom(1.0)
 {
     setStyleSheet("border: 2px solid black;");
 }
@@ -90,25 +90,11 @@ void GLDisplay::paintGL()
 
     gluLookAt(0,0,-15, 0,0,0, 0,-1,0);
 
-    if(wireFrame)
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    }
-    else
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    }
-
     glColor3f(1.0, 1.0, 1.0);
 
     emit drawModel();
 
     glFlush();
-}
-
-void GLDisplay::setWireframe(bool wireframe)
-{
-    wireFrame = wireframe;
 }
 
 void GLDisplay::mousePressEvent ( QMouseEvent * event )

@@ -15,33 +15,19 @@ RenderController::RenderController(MainWindow *mainWindow,
                                    QObject *parent):
     QObject(parent)
 {
-
-    QMenu* menu = mainWindow->modelsMenu();
-
-    actionSphere = menu->addAction(tr("&Sphere"));
-    actionPlane = menu->addAction(tr("&Plane"));
-    actionSphereST = menu->addAction(tr("ST Sp&here"));
-    actionPlaneST = menu->addAction(tr("ST P&lane"));
-
-    actionSphere->setCheckable(true);
-    actionPlane->setCheckable(true);
-    actionSphereST->setCheckable(true);
-    actionPlaneST->setCheckable(true);
-
     arcBall = new ArcBall(500);
+    wireframe = false;
 
     this->display = new GLDisplay();
     mainWindow->setGLDisplay(display);
 
-    display->updateGL(); // cria o contexto openGL
+    {  // esta ordem deve ser mantida
+    display->updateGL();
 
-    model = new Sphere();
-    actionSphere->setChecked(true);
-    actionPlane->setChecked(false);
-    actionSphereST->setChecked(false);
-    actionPlaneST->setChecked(false);
+    configureModelsAndActions(mainWindow->modelsMenu());
 
     connect(display, SIGNAL(drawModel()), this ,SLOT(drawModel()));
+    }
 
     connect(display, SIGNAL(mouseLefthFinish(QPoint,QPoint)),
             this, SLOT(mouseLefthFinish(QPoint,QPoint)));
@@ -63,16 +49,20 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     connect(mainWindow, SIGNAL(saveResultAsImage()),
             this, SLOT(saveResultAsImage()));
-
-    connect(menu, SIGNAL(triggered(QAction*)),
-            this, SLOT(modelChanged(QAction*)));
 }
 
 RenderController::~RenderController()
 {
+    for(MMap::iterator it = models.begin(); it!= models.end(); ++it)
+    {
+        Object3D* obj = it.value();
+        delete obj;
+        obj = NULL;
+    }
+    models.clear();
+
     delete display;
     delete arcBall;
-    delete model;
 }
 
 void RenderController::updateGL(void)
@@ -82,6 +72,11 @@ void RenderController::updateGL(void)
 
 void RenderController::drawModel(void)
 {
+    if(wireframe)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    else
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     model->draw();
 }
 
@@ -130,7 +125,7 @@ void RenderController::mouseCancel()
 
 void RenderController::wireFrameToggle(bool wireframe)
 {
-    display->setWireframe(wireframe);
+    this->wireframe = wireframe;
     display->updateGL();
 }
 
@@ -150,45 +145,55 @@ QGLWidget* RenderController::getGLContext(void)
     return display;
 }
 
-void RenderController::updateTexture(int texName)
-{
-    model->setTexture(texName);
-}
-
 void RenderController::modelChanged(QAction* action)
 {
-    if(action != actionSphere && action != actionPlane && action != actionSphereST && action != actionPlaneST)
+    MMap::iterator entry;
+    for(entry = models.begin(); entry != models.end(); ++entry)
+    {
+        if(entry.key() == action)
+            break;
+    }
+    if(entry == models.end())
         return;
 
-    delete model;
-    if(action == actionSphere)
+    for(MMap::iterator it = models.begin(); it != models.end(); ++it)
     {
-        actionSphere->setChecked(true);
-        actionPlane->setChecked(false);
-        actionSphereST->setChecked(false);
-        actionPlaneST->setChecked(false);
-        model = new Sphere();
-    }else if(action == actionPlane)
-    {
-        actionSphere->setChecked(false);
-        actionPlane->setChecked(true);
-        actionSphereST->setChecked(false);
-        actionPlaneST->setChecked(false);
-        model = new Plane(50, 50);
-    }else if(action == actionSphereST)
-    {
-        actionSphere->setChecked(false);
-        actionPlane->setChecked(false);
-        actionSphereST->setChecked(true);
-        actionPlaneST->setChecked(false);
-        model = new Sphere(500,500);
-    }else if(action == actionPlaneST)
-    {
-        actionSphere->setChecked(false);
-        actionPlane->setChecked(false);
-        actionSphereST->setChecked(false);
-        actionPlaneST->setChecked(true);
-        model = new Plane(500, 500);
+        it.key()->setChecked(false);
     }
+
+    entry.key()->setChecked(true);
+    model = entry.value();
+    model->cleanTransformations();
+
     display->updateGL();
+}
+
+void RenderController::configureModelsAndActions(QMenu* menu)
+{
+    QAction* act;
+
+    act = menu->addAction(tr("&Sphere"));
+    act->setCheckable(true);
+    models[act] = new Sphere(50,50);
+    act->setChecked(true);          // comeca pela esfera
+    model = models[act];            // comeca pela esfera
+
+
+    act = menu->addAction(tr("&Plane"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    models[act] = new Plane(50,50);
+
+    act = menu->addAction(tr("ST Sp&here"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    models[act] = new Sphere(500,500);
+
+    act = menu->addAction(tr("ST P&lane"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    models[act] = new Plane(500,500);
+
+    connect(menu, SIGNAL(triggered(QAction*)),
+            this, SLOT(modelChanged(QAction*)));
 }

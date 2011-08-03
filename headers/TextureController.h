@@ -31,10 +31,6 @@ public:
     void applyTextures(QGLShaderProgram* program);
     void activateTexture(void);
 
-
-signals:
-    void updateTexture(int);
-
 public slots:
     void textureFileName(const QString&);
     void removeTexture(void);
