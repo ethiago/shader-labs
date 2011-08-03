@@ -22,13 +22,13 @@ class MainController : public QObject
     QMap<ShaderLab::Shader, FileController*> fileControllers;
     QGLShaderProgram program;
     TextureController *textureController;
+    RenderController *renderController;
 
     ChooseShaderDialog *chooseShaderDialog;
 
 public:
     explicit MainController(MainWindow *mw, QObject *parent = 0);
     ~MainController();
-    void setTextureController(TextureController *textureController);
 
 public slots:
     void slot_closeShaderCode(ShaderLab::Shader);
@@ -41,9 +41,6 @@ public slots:
     void changeTabActivationStatus(ShaderLab::Shader);
     void newShaderActionClicked(void);
     void openShaderActionClicked(void);
-
-signals:
-    void updateGL(void);
 
 private:
 

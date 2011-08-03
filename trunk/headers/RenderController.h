@@ -38,9 +38,9 @@ public:
                               QObject *parent = 0);
     ~RenderController();
     QGLWidget* getGLContext(void);
+    void updateGL(void);
 
 public slots:
-    void updateGL(void);
     void drawModel(void);
     void mouseRigthMove(QPoint ini, QPoint curr);
     void mouseRigthFinish(QPoint ini, QPoint curr);
