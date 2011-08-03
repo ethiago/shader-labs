@@ -3,6 +3,7 @@
 #include <QFileDialog>
 
 #include "TextureController.h" // Deve ser a primeira declaracao das classes proprias
+#include "RenderController.h"
 #include "ChooseShaderDialog.h"
 #include "InterfaceRequests.h"
 #include "MainController.h"
@@ -19,13 +20,9 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     : QObject(parent)
 {
     mainWindow = mw;
-    textureController = NULL;
 
     chooseShaderDialog = new ChooseShaderDialog(mainWindow);
     chooseShaderDialog->setModal(true);
-
-    //connect(mainWindow, SIGNAL(selectedFile(ShaderLab::Shader)),
-    //        this, SLOT(openShaderCode(ShaderLab::Shader)));
 
     connect(mainWindow, SIGNAL(closeTabRequest(ShaderLab::Shader)),
             this, SLOT(slot_closeShaderCode(ShaderLab::Shader)));
@@ -59,19 +56,21 @@ MainController::MainController(MainWindow *mw, QObject *parent)
 
     mainWindow->addShader(ShaderLab::Vertex);
     chooseShaderDialog->addButton(ShaderLab::Vertex);
-    /*mainWindow->addShader(ShaderLab::Geometry);
-    chooseShaderDialog->addButton(ShaderLab::Geometry);
-    */
+
     mainWindow->addShader(ShaderLab::Fragment);
     chooseShaderDialog->addButton(ShaderLab::Fragment);
 
     mainWindow->showMaximized();
 
+    renderController = new RenderController(mainWindow);
+    textureController = new TextureController(mainWindow, renderController->getGLContext());
 }
 
 MainController::~MainController()
 {
     delete chooseShaderDialog;
+    delete textureController;
+    delete renderController;
 }
 
 
@@ -206,10 +205,7 @@ void MainController::runAllActiveShaders(void)
 
         program.bind();
 
-        if(textureController != NULL)
-        {
-            textureController->applyTextures(&program);
-        }
+        textureController->applyTextures(&program);
     }
     else
         output += "Due to problems, linking process could not be performed.";
@@ -218,7 +214,7 @@ void MainController::runAllActiveShaders(void)
         output = tr("No active shader code to compile.");
 
     mainWindow->setOutputText(output);
-    emit updateGL();
+    renderController->updateGL();
 }
 
 /* Associated with the 'saveAll' signal. */
@@ -294,11 +290,6 @@ void MainController::codeAlreadyOpenProcessor(ShaderLab::Shader shadertype)
     {
         closeShaderCode(shadertype);
     }
-}
-
-void MainController::setTextureController(TextureController *textureController)
-{
-    this->textureController = textureController;
 }
 
 void MainController::newShaderActionClicked()
