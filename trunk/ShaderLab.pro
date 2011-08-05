@@ -37,7 +37,8 @@ SOURCES += src/main.cpp \
     src/Object3D.cpp \
     src/RenderController.cpp \
     src/ShaderCodeContainer.cpp \
-    src/InterfaceRequests.cpp
+    src/InterfaceRequests.cpp \
+    src/ShaderController.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -56,7 +57,8 @@ HEADERS += headers/Sphere.h \
     headers/Object3D.h \
     headers/RenderController.h \
     headers/ShaderCodeContainer.h \
-    headers/InterfaceRequests.h
+    headers/InterfaceRequests.h \
+    headers/ShaderController.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \

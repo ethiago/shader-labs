@@ -66,7 +66,7 @@ void ShaderCodeContainer::mouseReleaseEvent(QMouseEvent *e)
 void ShaderCodeContainer::mouseDoubleClickEvent(QMouseEvent *e)
 {
     if(e->button() == Qt::LeftButton)
-        emit doubleClicked();
+        emit doubleClicked(shaderType);
 }
 
 void ShaderCodeContainer::setActivatedCode(bool active)

@@ -148,11 +148,7 @@ QGLWidget* RenderController::getGLContext(void)
 void RenderController::modelChanged(QAction* action)
 {
     MMap::iterator entry;
-    for(entry = models.begin(); entry != models.end(); ++entry)
-    {
-        if(entry.key() == action)
-            break;
-    }
+    entry = models.find(action);
     if(entry == models.end())
         return;
 
