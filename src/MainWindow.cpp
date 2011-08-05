@@ -38,14 +38,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     ui->dockOutPutWidget->setVisible(true);
 
-    connect(tabArea, SIGNAL(tabCloseRequested(int)),
-            this, SLOT(closeTabRequest(int)));
-
     connect(ui->actionExit, SIGNAL(triggered()),
             this, SLOT(exitApplication()));
 
     connect(ui->actionRunAll, SIGNAL(triggered()),
-            this, SLOT(runSelectedShaders()));
+            this, SIGNAL(runShaders()));
 
     connect(ui->actionSaveFile, SIGNAL(triggered()),
             this, SLOT(saveFile()));
@@ -59,9 +56,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionWireframe, SIGNAL(toggled(bool)),
             this, SIGNAL(wireframeClicked(bool)));
 
-    connect(tabArea->getTabBar(), SIGNAL(signal_TabClicked()),
-            this, SLOT(changeActivationStatus()));
-
     connect(ui->actionSave_Result_as_Image, SIGNAL(triggered()),
             this, SIGNAL(saveResultAsImage()));
 
@@ -70,6 +64,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 
     connect(ui->actionOpenCode, SIGNAL(triggered()),
             this, SIGNAL(openShaderActionClicked()));
+
+    connect(tabArea, SIGNAL(tabCloseRequested(ShaderLab::Shader)),
+            this, SIGNAL(closeTabRequest(ShaderLab::Shader)));
+
+    connect(tabArea, SIGNAL(changeActivationStatus(ShaderLab::Shader)),
+            this, SIGNAL(changeActivationStatusClicked(ShaderLab::Shader)));
 
 }
 
@@ -185,26 +185,11 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++++++++++++++ Slots +++++++++++++++++++++++++++++ */
 
-/* Associated with the 'tabCloseRequested' signal, from QTabWidget. */
-/* Encapsulates the signal comming from the UI and passes itto the MainController, as a 'closeTabRequest' signal. */
-void MainWindow::closeTabRequest(int index)
-{
-    ShaderCodeContainer *pt = (ShaderCodeContainer*)tabArea->widget(index);
-    emit closeTabRequest(pt->getShaderType());
-}
-
 /* Associated with the '' signal. */
 /* */
 void MainWindow::exitApplication(void)
 {
     close(); //closeEvent
-}
-
-/* Associated with the '' signal. */
-/* */
-void MainWindow::runSelectedShaders(void)
-{
-    emit runShaders();
 }
 
 /* Associated with the '' signal. */
@@ -232,13 +217,6 @@ void MainWindow::saveFileAsDialog(void)
     }
 }
 
-/* Associated with the '' signal. */
-/* */
-void MainWindow::textChanged(ShaderLab::Shader shadertype)
-{
-    emit shaderCodeChanged(shadertype);
-}
-
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++++++++++ Other methods +++++++++++++++++++++++++ */
@@ -250,10 +228,10 @@ void MainWindow::addShader(ShaderLab::Shader shadertype)
     codeTabs.insert(shadertype, codeContainer);
 
     connect(codeContainer, SIGNAL(textChanged(ShaderLab::Shader)),
-            this, SLOT(textChanged(ShaderLab::Shader)));
-    connect(codeContainer, SIGNAL(doubleClicked()),
-            this, SLOT(changeActivationStatus()));
+            this, SIGNAL(shaderCodeChanged(ShaderLab::Shader)));
 
+    connect(codeContainer, SIGNAL(doubleClicked(ShaderLab::Shader)),
+            this, SIGNAL(changeActivationStatusClicked(ShaderLab::Shader)));
 }
 
 /* */
@@ -316,16 +294,6 @@ void MainWindow::setEnableShaderCode(ShaderLab::Shader shadertype, bool active)
         else
             tabArea->setTabIcon(ind, QIcon(":/ico/stopped"));
     }
-
-
-}
-
-void MainWindow::changeActivationStatus(void)
-{
-    ShaderCodeContainer *scc = (ShaderCodeContainer*) tabArea->currentWidget();
-
-    if(scc != NULL)
-        emit changeActivationStatusClicked(scc->getShaderType());
 }
 
  QMenu* MainWindow::modelsMenu(void)

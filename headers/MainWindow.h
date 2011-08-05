@@ -30,13 +30,9 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public slots:
-    void closeTabRequest(int index);
     void exitApplication(void);
-    void runSelectedShaders(void);
     void saveFile(void);
     void saveFileAsDialog(void);
-    void textChanged(ShaderLab::Shader);
-    void changeActivationStatus(void);
 
 /* Created by the UI */
 signals:

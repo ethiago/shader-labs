@@ -9,7 +9,7 @@
 TextureController::TextureController(MainWindow* mw, QGLWidget* context,QObject *parent) :
     QObject(parent)
 {
-    m_textureList.append(Texture());
+   m_textureList.append(Texture());
 
    m_context = context;
    m_textureView = new TexturePropertiesView(mw);
