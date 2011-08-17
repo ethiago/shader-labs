@@ -1,0 +1,44 @@
+#ifndef FIND_H
+#define FIND_H
+
+#include <QFrame>
+
+namespace Ui{
+    class Find;
+}
+
+class Find : public QFrame
+{
+    Q_OBJECT
+
+    Ui::Find *ui;
+    QAction* m_toggleViewAction;
+    bool okVisible;
+
+public:
+    explicit Find(QWidget *parent = 0);
+
+    QAction* toggleViewAction(void);
+
+    void setVisibility(bool);
+
+    void setOkVisible(bool);
+
+signals:
+    void findNext(const QString&);
+    void findBack(const QString&);
+    void replaceNext(const QString&, const QString&);
+    void replaceAll(const QString&, const QString&);
+
+public slots:
+    void toggle(bool);
+    void findNext();
+    void findBack();
+    void replaceNext();
+    void replaceAll();
+
+
+
+};
+
+#endif // FIND_H

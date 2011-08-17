@@ -21,6 +21,11 @@ public:
     ShaderLab::Shader getShaderType(void);
     void setActivatedCode(bool);
 
+    void findNext(const QString&);
+    void findBack(const QString&);
+    void replaceNext(const QString&, const QString&);
+    void replaceAll(const QString&, const QString&);
+
 private:
     Ui::ShaderCodeContainer *ui;
     QPalette activePalette;
@@ -31,7 +36,7 @@ private:
 
 private slots:
     void textChanged(void);
-    void timeout(void);
+    void cursorPositionChanged(void);
 
 signals:
     void textChanged(ShaderLab::Shader);

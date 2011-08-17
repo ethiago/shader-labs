@@ -18,9 +18,26 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
 {
     ui->setupUi(this);
 
-    tabArea = new SLTabWidget();
+    tabArea = new SLTabWidget(this);
     tabArea->setTabsClosable(true);
     tabArea->setMovable(true);
+    tabArea->setVisible(false);
+    ui->centralLayout->addWidget(tabArea);
+
+
+    find = new Find(this);
+    find->setVisibility(false);
+    find->setOkVisible(false);
+    ui->centralLayout->addWidget(find);
+
+
+    {
+    QAction* act = find->toggleViewAction();
+    act->setText("Find/Replace");
+    act->setIcon(QIcon(":/ico/search.png"));
+    act->setShortcut(QKeySequence::fromString("Ctrl+F"));
+    ui->menuView->insertAction(0, act);
+    }
 
     {
     QAction* act = ui->dockOutPutWidget->toggleViewAction();
@@ -71,6 +88,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(tabArea, SIGNAL(changeActivationStatus(ShaderLab::Shader)),
             this, SIGNAL(changeActivationStatusClicked(ShaderLab::Shader)));
 
+    connect(find, SIGNAL(findNext(QString)),
+            tabArea, SLOT(findNext(QString)));
+
+    connect(find, SIGNAL(findBack(QString)),
+            tabArea, SLOT(findBack(QString)));
+
+    connect(find, SIGNAL(replaceNext(QString,QString)),
+            tabArea, SLOT(replaceNext(QString,QString)));
+
+    connect(find, SIGNAL(replaceAll(QString,QString)),
+            tabArea, SLOT(replaceAll(QString,QString)));
+
 }
 
 MainWindow::~MainWindow()
@@ -100,12 +129,6 @@ bool MainWindow::setOutputText(const QString& s)
     return true;
 }
 
-/* Getter for the output text on the screen.
-QString MainWindow::getOutputText(void)
-{
-    return ui->outputTextBox->toPlainText();
-}
-*/
 
 /* Sets the name displayed for a file, depending if the content has changed. */
 /* (Displays a '*' when it is.) */
@@ -157,8 +180,8 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
     {
         if(tabArea->count() == 0)
         {
-            tabArea->setParent(ui->centralWidget);
-            ui->horizontalLayout->addWidget(tabArea);
+           tabArea->setVisible(true);
+           find->setOkVisible(true);
         }
         if(ind == -1)
         {
@@ -173,8 +196,9 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
             tabArea->removeTab(ind);
         if(tabArea->count() == 0)
         {
-            ui->horizontalLayout->removeWidget(tabArea);
-            tabArea->setParent(0);
+            tabArea->setVisible(false);
+            find->setVisibility(false);
+            find->setOkVisible(false);
         }
     }
 
