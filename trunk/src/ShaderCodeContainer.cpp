@@ -29,7 +29,7 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
 
     connect(ui->shaderCodeBox, SIGNAL(textChanged()), this, SLOT(textChanged()));
 
-    connect(ui->shaderCodeBox, SIGNAL(cursorPositionChanged()), this, SLOT(timeout()));
+    connect(ui->shaderCodeBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 }
 
 ShaderCodeContainer::~ShaderCodeContainer()
@@ -98,9 +98,28 @@ QPoint ShaderCodeContainer::getCursorPosition(const QString& text, int pos)
     return QPoint(lineCount+1, columnCount+1);
 }
 
-void ShaderCodeContainer::timeout(void)
+void ShaderCodeContainer::cursorPositionChanged(void)
 {
     QTextCursor tc = ui->shaderCodeBox->textCursor();
     QPoint p = getCursorPosition(ui->shaderCodeBox->toPlainText(), tc.position());
     ui->cursorPositionLabel->setText(QString::number(p.x()) + ":" + QString::number(p.y()));
+}
+
+void ShaderCodeContainer::findNext(const QString& s)
+{
+    ui->shaderCodeBox->find(s);
+}
+
+void ShaderCodeContainer::findBack(const QString& s)
+{
+    ui->shaderCodeBox->find(s, QTextDocument::FindBackward);
+}
+
+void ShaderCodeContainer::replaceNext(const QString&, const QString&)
+{
+}
+
+void ShaderCodeContainer::replaceAll(const QString&, const QString&)
+{
+
 }

@@ -10,7 +10,8 @@
 #include <QTabBar>
 
 #include "ShaderCodeContainer.h"
-#include "ChooseShaderDialog.h"
+//#include "ChooseShaderDialog.h"
+#include "Find.h"
 
 namespace Ui {
     class MainWindow;
@@ -70,6 +71,7 @@ public:
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */
+    Find* find;
 
     QMap<ShaderLab::Shader, ShaderCodeContainer*> codeTabs; /* Tab objects for each kind of shader. */
     SLTabWidget *tabArea;  /* UI component for nesting tabs. */

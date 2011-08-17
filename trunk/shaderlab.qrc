@@ -58,5 +58,8 @@
         <file>img/loadtexture.png</file>
         <file alias="noImage">img/noImage.jpg</file>
         <file>img/Add-icon.png</file>
+        <file>img/arrow-left.png</file>
+        <file>img/arrow-right.png</file>
+        <file>img/search.png</file>
     </qresource>
 </RCC>
