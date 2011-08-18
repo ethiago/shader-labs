@@ -39,7 +39,8 @@ SOURCES += src/main.cpp \
     src/ShaderCodeContainer.cpp \
     src/InterfaceRequests.cpp \
     src/ShaderController.cpp \
-    src/Find.cpp
+    src/Find.cpp \
+    src/HighLighter.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -60,7 +61,8 @@ HEADERS += headers/Sphere.h \
     headers/ShaderCodeContainer.h \
     headers/InterfaceRequests.h \
     headers/ShaderController.h \
-    headers/Find.h
+    headers/Find.h \
+    headers/HighLighter.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
