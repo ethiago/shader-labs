@@ -117,9 +117,12 @@ void MainController::fileChanged(ShaderLab::Shader shaderType)
 {
     FileController *fc = getFileControllerByShaderType(shaderType);
 
-    fc->setChanged(true);
+    if(fc != NULL)
+    {
+        fc->setChanged(true);
 
-    mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
+    }
 }
 
 

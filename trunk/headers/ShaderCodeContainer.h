@@ -9,6 +9,8 @@ namespace Ui {
     class ShaderCodeContainer;
 }
 
+class Highlighter;
+
 class ShaderCodeContainer : public QWidget
 {
     Q_OBJECT
@@ -31,6 +33,7 @@ private:
     QPalette activePalette;
     QPalette inactivePalette;
     ShaderLab::Shader shaderType;
+    Highlighter * highLighter;
 
     QPoint getCursorPosition(const QString& text, int pos);
 

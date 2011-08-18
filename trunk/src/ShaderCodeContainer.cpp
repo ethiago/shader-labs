@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 #include "ShaderCodeContainer.h"
 #include "ui_ShaderCodeContainer.h"
+#include "HighLighter.h"
 
 
 
@@ -11,6 +12,7 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
     ui->setupUi(this);
     ui->shaderCodeBox->setFont(QFont("Courier"));
     ui->shaderCodeBox->setAcceptRichText(false);
+    highLighter = new Highlighter(ui->shaderCodeBox->document());
 
     activePalette = ui->shaderCodeBox->palette();
     inactivePalette = ui->shaderCodeBox->palette();
