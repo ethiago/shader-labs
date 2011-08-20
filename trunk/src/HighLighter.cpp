@@ -9,17 +9,18 @@ Highlighter::Highlighter(QTextDocument *parent)
     precompiler.setFontWeight(QFont::Bold);
     QStringList precompilerPatterns;
     precompilerPatterns << "^#define\\b" << "^#undef\\b"
-            << "^#if\\b" << "^#ifdef\\b" << "^#else\\b"
-            << "^#elif\\b" << "^#endif\\b" << "^#error\\b"
-            << "^#pragma\\b" << "^#extension\\b" << "^#version\\b"
-            << "^#line\\b";
+            << "^#if\\b" << "^#ifdef\\b" << "^#else\\b" << "^#elif\\b"
+            << "^#endif\\b" << "^#error\\b" << "^#pragma\\b"
+            << "^#extension\\b" << "^#version\\b" << "^#line\\b"
+            << "\\b__LINE__\\b" << "\\b__FILE__\\b" << "\\b__VERSION__\\b";
+
     foreach (const QString &pattern, precompilerPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = precompiler;
         highlightingRules.append(rule);
     }
 
-    varTypes.setForeground(Qt::darkGreen);
+    varTypes.setForeground(Qt::darkCyan);
     QStringList varTypePatterns;
     varTypePatterns << "\\bvoid\\b" << "\\bbool\\b" << "\\bint\\b"
             << "\\buint\\b" << "\\bfloat\\b" << "\\bdouble\\b" << "\\bstruct\\b"
@@ -61,6 +62,7 @@ Highlighter::Highlighter(QTextDocument *parent)
     }
 
     statement.setForeground(Qt::darkYellow);
+    statement.setFontWeight(QFont::Bold);
     QStringList statementPatterns;
     statementPatterns << "\\bif\\b" << "\\belse\\b"
             << "\\bswitch\\b" << "\\bcase\\b" << "\\bdefault\\b"
@@ -72,38 +74,116 @@ Highlighter::Highlighter(QTextDocument *parent)
         highlightingRules.append(rule);
     }
 
-    modifier.setForeground(Qt::magenta);
+    modifier.setForeground(Qt::darkMagenta);
     QStringList modifierPatterns;
     modifierPatterns << "\\bconst\\b" << "\\bin\\b" << "\\bcentroid\\b"
             << "\\bsample\\b" << "\\bout\\b" << "\\battribute\\b" << "\\binout\\b"
             << "\\buniform\\b" << "\\bvarying\\b" << "\\bpatch\\b"
             << "\\bsmooth\\b" << "\\bflat\\b" << "\\bnoperspective\\b"
             << "\\bhighp\\b" << "\\bmediump\\b" << "\\blowp\\b"
-            << "\\bprecisio\\b" << "\\binvariant\\b" ;
+            << "\\bprecision\\b" << "\\binvariant\\b" ;
     foreach (const QString &pattern, modifierPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = modifier;
         highlightingRules.append(rule);
     }
 
-    globalVarFormat.setForeground(Qt::blue);
-    globalVarFormat.setFontItalic(true);
+    globalConstant.setForeground(Qt::darkBlue);
+    QStringList globalConstantPatterns;
+    globalConstantPatterns << "\\bgl_MaxClipPlanes\\b"
+            << "\\bgl_MaxCombinedTextureImageUnits\\b" << "\\bgl_MaxDrawBuffers\\b"
+            << "\\bgl_MaxFragmentUniformComponents\\b" << "\\bgl_Max\\b"
+            << "\\bgl_MaxLights\\b" << "\\bgl_MaxTextureCoords\\b"
+            << "\\bgl_MaxTextureImageUnits\\b" << "\\bgl_MaxTextureUnits\\b"
+            << "\\bgl_MaxVaryingFloats\\b" << "\\bgl_MaxVertexAttribs\\b"
+            << "\\bgl_MaxVertexTextureImageUnits\\b"
+            << "\\bgl_MaxVertexUniformComponents\\b";
+    foreach (const QString &pattern, globalConstantPatterns) {
+        rule.pattern = QRegExp(pattern);
+        rule.format = globalConstant;
+        highlightingRules.append(rule);
+    }
+
+
+    globalVarFormat.setForeground(Qt::red);
     QStringList globalVarPatterns;
-    globalVarPatterns << "\\bgl_Vertex\\b" << "\\bgl_Normal\\b" << "\\bgl_Position\\b"
-        << "\\bgl_Color\\b" << "\\bgl_FrontColor\\b" << "\\bgl_BackColor\\b";
-        // continuar
+    globalVarPatterns
+            << "\\bgl_ModelViewMatrix\\b" << "\\bgl_ModelViewProjectionMatrix\\b"
+            << "\\bgl_ProjectionMatrix\\b" << "\\bgl_TextureMatrix\\b" << "\\bgl_NormalMatrix\\b"
+            << "\\bgl_ModelViewMatrixInverse\\b" << "\\bgl_ModelViewProjectionMatrixInverse\\b"
+            << "\\bgl_ProjectionMatrixInverse\\b" << "\\bgl_TextureMatrixInverse\\b"
+            << "\\bgl_ModelViewMatrixTranspose\\b" << "\\bgl_ModelViewProjectionMatrixTranspose\\b"
+            << "\\bgl_ProjectionMatrixTranspose\\b" << "\\bgl_TextureMatrixTranspose\\b"
+            << "\\bgl_ModelViewMatrixInverseTranspose\\b"
+            << "\\bgl_ModelViewProjectionMatrixInverseTranspose\\b"
+            << "\\bgl_ProjectionMatrixInverseTranspose\\b"
+            << "\\bgl_TextureMatrixInverseTranspose\\b"
+            << "\\bgl_DepthRange\\b" << "\\bgl_Fog\\b" << "\\bgl_LightSource\\b"
+            << "\\bgl_LightModel\\b"
+            << "\\bgl_FrontLightModelProduct\\b" << "\\bgl_BackLightModelProduct\\b"
+            << "\\bgl_FrontLightProduct\\b" << "\\bgl_BackLightProduct\\b"
+            << "\\bgl_FrontMaterial\\b" << "\\bgl_BackMaterial\\b" << "\\bgl_Point\\b"
+            << "\\bgl_NormalScale\\b" << "\\bgl_ClipPlane\\b" << "\\bgl_TextureEnvColor\\b"
+            << "\\bgl_EyePlaneS\\b" << "\\bgl_EyePlaneT\\b"
+            << "\\bgl_EyePlaneR\\b" << "\\bgl_EyePlaneQ\\b"
+            << "\\bgl_ObjectPlaneS\\b" << "\\bgl_ObjectPlaneT\\b"
+            << "\\bgl_ObjectPlaneR\\b" << "\\bgl_ObjectPlaneQ\\b"
+            << "\\bgl_Vertex\\b" << "\\bgl_Normal\\b" << "\\bgl_Color\\b"
+            << "\\bgl_SecondaryColor\\b" << "\\bgl_FogCoord\\b"
+            << "\\bgl_FrontColor\\b" << "\\bgl_BackColor\\b"
+            << "\\bgl_FrontSecondaryColor\\b" << "\\bgl_BackSecondaryColor\\b"
+            << "\\bgl_TexCoord\\b" << "\\bgl_FogFragCoord\\b" << "\\bgl_Position\\b"
+            << "\\bgl_PointSize\\b" << "\\bgl_ClipVertex\\b"
+            << "\\bgl_FragColor\\b" << "\\bgl_FrontFacing\\b"
+            << "\\bgl_FragData\\b" << "\\bgl_FragDepth\\b";
     foreach (const QString &pattern, globalVarPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = globalVarFormat;
         highlightingRules.append(rule);
     }
 
-    singleLineCommentFormat.setForeground(Qt::red);
+    globalFunctionFormat.setForeground(Qt::darkRed);
+    QStringList globalFunctionsPatterns;
+    globalFunctionsPatterns << "\\bsin\\b" << "\\bcos\\b" << "\\btan\\b"
+            << "\\basin\\b" << "\\bacos\\b" << "\\batan\\b"
+            << "\\bradians\\b" << "\\bdegrees\\b" << "\\bpow\\b"
+            << "\\bexp\\b" << "\\blog\\b" << "\\bexp2\\b" << "\\blog2\\b"
+            << "\\bsqrt\\b" << "\\binversesqrt\\b"
+            << "\\babs\\b" << "\\bceil\\b" << "\\bclamp\\b" << "\\bfloor\\b"
+            << "\\bfract\\b" << "\\bmax\\b" << "\\bmin\\b"
+            << "\\bmix\\b" << "\\bmod\\b" << "\\bsign\\b"
+            << "\\bsmoothstep\\b" << "\\bstep\\b"
+            << "\\bftransform\\b" << "\\bcross\\b" << "\\bdistance\\b" << "\\bdot\\b"
+            << "\\bfaceforward\\b" << "\\blength\\b"
+            << "\\bnormalize\\b" << "\\breflect\\b"
+            << "\\bdFdx\\b" << "\\bdFdy\\b" << "\\bfwidth\\b"
+            << "\\matrixCompMult\\b"
+            << "\\ball\\b" << "\\bany\\b" << "\\bequal\\b" << "\\bgreaterThan\\b"
+            << "\\bgraterThenEqual\\b" << "\\blessThen\\b" << "\\blessThenEqual\\b"
+            << "\\bnot\\b" << "\\bnotEqual\\b"
+            << "\\btexture1D\\b" << "\\btexture1DProj\\b" << "\\btexture2D\\b" << "\\btexture2DProj\\b"
+            << "\\btexture3D\\b" << "\\btexture3DProj\\b" << "\\btextureCube\\b"
+            << "\\bshadow1D\\b" << "\\bshadow2D\\b" << "\\bshadow1DProj\\b" << "\\bshadow2DProj\\b"
+            << "\\btexture1DLod\\b" << "\\btexture1DProjLod\\b"
+            << "\\btexture2DLod\\b" << "\\btexture2DProjLod\\b"
+            << "\\btexture3DProjLod\\b" << "\\btextureCubeLod\\b"
+            << "\\bshadow1DLod\\b" << "\\bshadow2DLod\\b"
+            << "\\bshadow1DProjLod\\b" << "\\bshadow2DProjLod\\b"
+            << "\\bnoise1\\b" << "\\bnoise2\\b" << "\\bnoise3\\b" << "\\bnoise4\\b";
+    foreach (const QString &pattern, globalFunctionsPatterns) {
+        rule.pattern = QRegExp(pattern);
+        rule.format = globalFunctionFormat;
+        highlightingRules.append(rule);
+    }
+
+
+
+    singleLineCommentFormat.setForeground(Qt::darkGreen);
     rule.pattern = QRegExp("//[^\n]*");
     rule.format = singleLineCommentFormat;
     highlightingRules.append(rule);
 
-    multiLineCommentFormat.setForeground(Qt::red);
+    multiLineCommentFormat.setForeground(Qt::darkGreen);
 
     quotationFormat.setForeground(Qt::darkGreen);
     rule.pattern = QRegExp("\".*\"");
