@@ -60,6 +60,9 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     mainWindow->addShader(ShaderLab::Fragment);
     chooseShaderDialog->addButton(ShaderLab::Fragment);
 
+    mainWindow->addShader(ShaderLab::Geometry);
+    chooseShaderDialog->addButton(ShaderLab::Geometry);
+
     mainWindow->showMaximized();
 
     renderController = new RenderController(mainWindow);
@@ -200,8 +203,8 @@ void MainController::runAllActiveShaders(void)
     {
 
 #ifdef QT47_CAPABLE
-        program.setGeometryInputType(GL_TRIANGLE_STRIP);
-        program.setGeometryOutputType(GL_TRIANGLE_STRIP);
+        program.setGeometryInputType(renderController->getCurrentInputPrimitive());
+        program.setGeometryOutputType(renderController->getCurrentOutputPrimitive());
 #endif
         program.link();
         output += program.log();

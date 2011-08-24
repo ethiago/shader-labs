@@ -320,12 +320,17 @@ void MainWindow::setEnableShaderCode(ShaderLab::Shader shadertype, bool active)
     }
 }
 
- QMenu* MainWindow::modelsMenu(void)
- {
+QMenu* MainWindow::modelsMenu(void)
+{
     return ui->menu_Models;
- }
+}
 
- void MainWindow::menuViewInsertAction( QAction* act)
- {
-     ui->menuView->insertAction(0, act);
- }
+void MainWindow::menuViewInsertAction( QAction* act)
+{
+    ui->menuView->insertAction(0, act);
+}
+
+QAction* MainWindow::menuChangeOutputPrimitive(void)
+{
+    return ui->actionChange_output_primitive;
+}

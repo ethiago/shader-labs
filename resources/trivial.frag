@@ -1,7 +1,5 @@
-varying vec4 cor
-
 void main(void)
 {
-    gl_FragColor = cor;
+    gl_FragColor = gl_Color;
 }
 

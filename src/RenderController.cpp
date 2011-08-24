@@ -29,6 +29,8 @@ RenderController::RenderController(MainWindow *mainWindow,
     connect(display, SIGNAL(drawModel()), this ,SLOT(drawModel()));
     }
 
+    this->primitivesDialog = new PrimitivesDialog(primitiveSetup(), mainWindow);
+
     connect(display, SIGNAL(mouseLefthFinish(QPoint,QPoint)),
             this, SLOT(mouseLefthFinish(QPoint,QPoint)));
 
@@ -49,6 +51,9 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     connect(mainWindow, SIGNAL(saveResultAsImage()),
             this, SLOT(saveResultAsImage()));
+
+    connect(mainWindow->menuChangeOutputPrimitive(), SIGNAL(triggered()),
+            this, SLOT(showPrimitiveSelector()));
 }
 
 RenderController::~RenderController()
@@ -192,4 +197,49 @@ void RenderController::configureModelsAndActions(QMenu* menu)
 
     connect(menu, SIGNAL(triggered(QAction*)),
             this, SLOT(modelChanged(QAction*)));
+}
+
+QStringList RenderController::primitiveSetup(void)
+{
+    QStringList text;
+
+    primitives.append(GL_POINTS);
+    primitives.append(GL_LINES);
+    primitives.append(GL_LINE_STRIP);
+    primitives.append(GL_LINE_LOOP);
+    primitives.append(GL_TRIANGLES);
+    primitives.append(GL_TRIANGLE_STRIP);
+    primitives.append(GL_TRIANGLE_FAN);
+    primitives.append(GL_QUADS);
+    primitives.append(GL_QUAD_STRIP);
+    primitives.append(GL_POLYGON);
+
+    text.append("GL_POINTS");
+    text.append("GL_LINES");
+    text.append("GL_LINE_STRIP");
+    text.append("GL_LINE_LOOP");
+    text.append("GL_TRIANGLES");
+    text.append("GL_TRIANGLE_STRIP");
+    text.append("GL_TRIANGLE_FAN");
+    text.append("GL_QUADS");
+    text.append("GL_QUAD_STRIP");
+    text.append("GL_POLYGON");
+
+    return text;
+
+}
+
+void RenderController::showPrimitiveSelector(void)
+{
+    this->primitivesDialog->show();
+}
+
+int RenderController::getCurrentOutputPrimitive(void)
+{
+    return primitives[primitivesDialog->getCurrentOutputPrimitiveIndex()];
+}
+
+int RenderController::getCurrentInputPrimitive(void)
+{
+    return primitives[primitivesDialog->getCurrentInputPrimitiveIndex()];
 }

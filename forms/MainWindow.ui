@@ -98,9 +98,16 @@
     <addaction name="actionRunAll"/>
     <addaction name="actionSave_Result_as_Image"/>
    </widget>
+   <widget class="QMenu" name="menuSettin_gs">
+    <property name="title">
+     <string>Settin&amp;gs</string>
+    </property>
+    <addaction name="actionChange_output_primitive"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menu_Build"/>
+   <addaction name="menuSettin_gs"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="movable">
@@ -334,6 +341,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionChange_output_primitive">
+   <property name="text">
+    <string>Change default primitives...</string>
    </property>
   </action>
  </widget>

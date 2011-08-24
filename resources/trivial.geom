@@ -4,16 +4,13 @@
 void main()
 {
 	int a;
-  for(int i = 0; i < gl_VerticesIn; ++i)
-  {
-      //gl_FrontColor = gl_FrontColorIn[i];
+ 	for(int i = 0; i < gl_VerticesIn; ++i)
+ 	{
+		//gl_FrontColor = gl_FrontColorIn[i];
 
-      if(i == 0)
-      	gl_FrontColor = vec4(1.0, 0.0, 0.0, 1.0);
-      else if(i == 1)
-	gl_FrontColor = vec4(0.0, 1.0, 0.0, 1.0);
-      else 
-	gl_FrontColor = vec4(0.0, 0.0, 1.0, 1.0);
+      if(i == 0) gl_FrontColor = vec4(1.0, 0.0, 0.0, 1.0);
+      else if(i == 1)	gl_FrontColor = vec4(0.0, 1.0, 0.0, 1.0);
+      else gl_FrontColor = vec4(0.0, 0.0, 1.0, 1.0);
 
       
       // copy position
