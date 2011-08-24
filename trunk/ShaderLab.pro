@@ -40,7 +40,8 @@ SOURCES += src/main.cpp \
     src/InterfaceRequests.cpp \
     src/ShaderController.cpp \
     src/Find.cpp \
-    src/HighLighter.cpp
+    src/HighLighter.cpp \
+    src/OutputPrimitiveDialog.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -62,11 +63,13 @@ HEADERS += headers/Sphere.h \
     headers/InterfaceRequests.h \
     headers/ShaderController.h \
     headers/Find.h \
-    headers/HighLighter.h
+    headers/HighLighter.h \
+    headers/OutputPrimitiveDialog.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
     forms/TexturePropertiesView.ui \
-    forms/Find.ui
+    forms/Find.ui \
+    forms/OutputPrimitiveDialog.ui
 RESOURCES += shaderlab.qrc
 OTHER_FILES += 
