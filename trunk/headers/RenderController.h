@@ -7,6 +7,8 @@
 #include <QAction>
 #include <QMap>
 
+#include "PrimitivesDialog.h"
+
 class MainWindow;
 class Object3D;
 class ArcBall;
@@ -32,6 +34,8 @@ class RenderController : public QObject
     QMap<QAction*, Object3D*> models;
     typedef QMap<QAction*, Object3D*> MMap;
 
+    QList<int> primitives;
+    PrimitivesDialog *primitivesDialog;
 
 public:
     explicit RenderController(MainWindow *mainWindow,
@@ -39,6 +43,10 @@ public:
     ~RenderController();
     QGLWidget* getGLContext(void);
     void updateGL(void);
+    int getCurrentOutputPrimitive(void);
+    int getCurrentInputPrimitive(void);
+
+
 
 public slots:
     void drawModel(void);
@@ -50,9 +58,12 @@ public slots:
     void wireFrameToggle(bool);
     void saveResultAsImage();
     void modelChanged(QAction*);
+    void showPrimitiveSelector(void);
+
 
 private:
     void configureModelsAndActions(QMenu*);
+    QStringList primitiveSetup(void);
 
 };
 

@@ -68,6 +68,7 @@ public:
     void setEnableShaderCode(ShaderLab::Shader, bool);
     QMenu* modelsMenu(void);
     void menuViewInsertAction(QAction* act);
+    QAction* menuChangeOutputPrimitive(void);
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */
