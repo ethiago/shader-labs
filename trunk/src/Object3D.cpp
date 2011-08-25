@@ -3,7 +3,7 @@
 
 Object3D::Object3D(const QVector3D& center, QObject *parent)
     : QObject(parent), m_center(center), m_translation(QVector3D()),
-      m_rotacoes(QMatrix4x4()) ,
+      m_rotations(QMatrix4x4()) ,
       m_interactiveQuartenion(QQuaternion()),
       m_slices(50), m_stacks (50), m_texture(-1)
 {
@@ -11,21 +11,21 @@ Object3D::Object3D(const QVector3D& center, QObject *parent)
 
 Object3D::Object3D(const Object3D& obj)
     : QObject(obj.parent()), m_center(obj.center()),
-      m_translation(obj.translation()), m_rotacoes(obj.rotacoes()),
+      m_translation(obj.translation()), m_rotations(obj.rotations()),
       m_interactiveQuartenion(obj.interactiveQuartenion()),
       m_slices(obj.slices()), m_stacks(obj.stacks()), m_texture(obj.texture())
 
 {
 }
 
-void Object3D::setRotacoes(const QMatrix4x4& rotacoes)
+void Object3D::setRotations(const QMatrix4x4& rotations)
 {
-    m_rotacoes = rotacoes;
+    m_rotations = rotations;
 }
 
-const QMatrix4x4& Object3D::rotacoes(void)const
+const QMatrix4x4& Object3D::rotations(void)const
 {
-    return m_rotacoes;
+    return m_rotations;
 }
 
 void Object3D::setInteractiveQuartenion(const QQuaternion& quaternion)
@@ -87,15 +87,16 @@ int Object3D::texture(void)const
     return m_texture;
 }
 
-void Object3D::addRotacao(const QQuaternion& rotacao)
+void Object3D::addRotation(const QQuaternion& rotation)
 {
     QMatrix4x4 m;
-    m.rotate(ShaderLab::degreeFromCos(rotacao.scalar()), rotacao.x(), rotacao.y(), rotacao.z());
-    m_rotacoes = m*m_rotacoes;
+    m.rotate(ShaderLab::degreeFromCos(rotation.scalar()), rotation.x(), rotation.y(), rotation.z());
+    m_rotations = m*m_rotations;
 }
 
 void Object3D::draw(void) const
 {
+    glMatrixMode(GL_MODELVIEW_MATRIX);
     glPushMatrix();
 
     glTranslatef(translation().x(), translation().y(), translation().z());
@@ -105,7 +106,7 @@ void Object3D::draw(void) const
     glRotatef(ShaderLab::degreeFromCos(t.scalar()),
               t.x(), t.y(), t.z());
 
-    glMultMatrixd(rotacoes().constData());
+    glMultMatrixd(rotations().constData());
 
     drawGeometry();
 
@@ -118,5 +119,5 @@ void Object3D::cleanTransformations()
     setCenter(QVector3D());
 
     setInteractiveQuartenion(QQuaternion());
-    setRotacoes(QMatrix4x4());
+    setRotations(QMatrix4x4());
 }

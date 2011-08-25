@@ -10,13 +10,16 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Arcball.h"
+#include "DirectionalLight.h"
 
 RenderController::RenderController(MainWindow *mainWindow,
                                    QObject *parent):
     QObject(parent)
 {
+    light = new DirectionalLight;
     arcBall = new ArcBall(500);
     wireframe = false;
+    lightRotation = false;
 
     this->display = new GLDisplay();
     mainWindow->setGLDisplay(display);
@@ -26,7 +29,11 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     configureModelsAndActions(mainWindow->modelsMenu());
 
-    connect(display, SIGNAL(drawModel()), this ,SLOT(drawModel()));
+    connect(display, SIGNAL(drawModel()),
+            this, SLOT(drawModel()));
+
+    connect(display, SIGNAL(lightSetup()),
+            this, SLOT(lightSetup()));
     }
 
     this->primitivesDialog = new PrimitivesDialog(primitiveSetup(), mainWindow);
@@ -54,6 +61,9 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     connect(mainWindow->menuChangeOutputPrimitive(), SIGNAL(triggered()),
             this, SLOT(showPrimitiveSelector()));
+
+    connect(mainWindow, SIGNAL(lightRotationToggle(bool)),
+            this, SLOT(lightRotationToggle(bool)));
 }
 
 RenderController::~RenderController()
@@ -73,6 +83,11 @@ RenderController::~RenderController()
 void RenderController::updateGL(void)
 {
     display->updateGL();
+}
+
+void RenderController::lightSetup(void)
+{
+    light->draw();
 }
 
 void RenderController::drawModel(void)
@@ -105,8 +120,14 @@ void RenderController::mouseLeftMove(QPoint ini, QPoint curr)
     if(ini == curr)
         return;
     QPoint center(display->width()/2, display->height()/2);
-    model->setInteractiveQuartenion(
+
+    if(lightRotation)
+        light->setInteractiveQuartenion(
                 arcBall->rotationForPoints(center,curr, ini));
+    else
+        model->setInteractiveQuartenion(
+                arcBall->rotationForPoints(center,curr, ini));
+
     display->updateGL();
 }
 
@@ -116,15 +137,26 @@ void RenderController::mouseLefthFinish(QPoint ini, QPoint curr)
         return;
     QPoint center(display->width()/2, display->height()/2);
     QQuaternion t = arcBall->rotationForPoints(center,curr, ini);
-    model->addRotacao(t);
-    model->setInteractiveQuartenion(QQuaternion());
+    if(lightRotation)
+    {
+        light->addRotation(t);
+        light->setInteractiveQuartenion(QQuaternion());
+    }else
+    {
+        model->addRotation(t);
+        model->setInteractiveQuartenion(QQuaternion());
+    }
+
     display->updateGL();
 }
 
 void RenderController::mouseCancel()
 {
-    model->setTraslation(QVector3D());
-    model->setInteractiveQuartenion(QQuaternion());
+    if(lightRotation)
+        light->setInteractiveQuartenion(QQuaternion());
+    else
+        model->setInteractiveQuartenion(QQuaternion());
+
     display->updateGL();
 }
 
@@ -242,4 +274,9 @@ GLenum RenderController::getCurrentOutputPrimitive(void)
 GLenum RenderController::getCurrentInputPrimitive(void)
 {
     return primitives[primitivesDialog->getCurrentInputPrimitiveIndex()];
+}
+
+void RenderController::lightRotationToggle(bool lt)
+{
+    lightRotation = lt;
 }

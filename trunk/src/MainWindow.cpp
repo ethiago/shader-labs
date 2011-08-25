@@ -100,6 +100,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(find, SIGNAL(replaceAll(QString,QString)),
             tabArea, SLOT(replaceAll(QString,QString)));
 
+    connect(ui->ckbLightRotation, SIGNAL(toggled(bool)),
+            this, SIGNAL(lightRotationToggle(bool)));
+
 }
 
 MainWindow::~MainWindow()
