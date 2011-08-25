@@ -99,3 +99,13 @@ int ShaderLab::extensions()
 {
     return m_extensions;
 }
+
+QList<ShaderLab::Shader> ShaderLab::shaderTypeList(void)
+{
+    QList<ShaderLab::Shader> list;
+    list.append(Vertex);
+    list.append(Geometry);
+    list.append(Fragment);
+
+    return list;
+}

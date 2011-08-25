@@ -45,6 +45,7 @@ signals:
     void newShaderActionClicked();
     void openShaderActionClicked();
     void lightRotationToggle(bool);
+    void loadProject();
 
 public:
     explicit MainWindow(QWidget *parent = 0);

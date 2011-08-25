@@ -13,6 +13,7 @@ class Object3D;
 class ChooseShaderDialog;
 class RenderController;
 class TextureController;
+class Project;
 
 class MainController : public QObject
 {
@@ -25,6 +26,8 @@ class MainController : public QObject
     RenderController *renderController;
 
     ChooseShaderDialog *chooseShaderDialog;
+
+    Project *project;
 
 public:
     explicit MainController(MainWindow *mw, QObject *parent = 0);
@@ -41,13 +44,15 @@ public slots:
     void changeTabActivationStatus(ShaderLab::Shader);
     void newShaderActionClicked(void);
     void openShaderActionClicked(void);
+    void loadProject(void);
 
 private:
 
     FileController* getFileControllerByShaderType(ShaderLab::Shader shadertype);
-    void codeAlreadyOpenProcessor(ShaderLab::Shader shadertype);
     bool closeShaderCode(ShaderLab::Shader);
+    bool openShader(ShaderLab::Shader, QString);
     void glSetup(void);
+
 
 };
 

@@ -10,6 +10,7 @@
 #include "MainWindow.h"
 #include "FileController.h"
 #include "Sphere.h"
+#include "Project.h"
 
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -18,6 +19,8 @@
 MainController::MainController(MainWindow *mw, QObject *parent)
     : QObject(parent)
 {
+    project = NULL;
+
     mainWindow = mw;
 
     chooseShaderDialog = new ChooseShaderDialog(mainWindow);
@@ -55,6 +58,9 @@ MainController::MainController(MainWindow *mw, QObject *parent)
 
     connect(mainWindow, SIGNAL(openShaderActionClicked()),
             this, SLOT(openShaderActionClicked()));
+
+    connect(mainWindow, SIGNAL(loadProject()),
+            this, SLOT(loadProject()));
 
     glSetup();
 
@@ -113,6 +119,8 @@ MainController::~MainController()
     delete chooseShaderDialog;
     delete textureController;
     delete renderController;
+    if(project != NULL)
+        delete project;
 }
 
 
@@ -131,6 +139,9 @@ bool MainController::closeShaderCode(ShaderLab::Shader shaderType)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
     it = fileControllers.find(shaderType);
+
+    if(it == fileControllers.end())
+        return true;
 
     FileController* fc = it.value();
 
@@ -172,17 +183,14 @@ void MainController::fileChanged(ShaderLab::Shader shaderType)
 /* Before ending the application, checks and manages all unsaved files. */
 void MainController::programCloseRequest(QCloseEvent* event)
 {
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
-
-    for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
+    FORSHADERS(shadertype)
     {
-        if(!closeShaderCode(it.key()))
+        if(!closeShaderCode(shadertype))
         {
             event->ignore();
             return;
         }
     }
-
 }
 
 /* Associated with the 'runShaders' signal. */
@@ -327,16 +335,6 @@ FileController* MainController::getFileControllerByShaderType(ShaderLab::Shader 
     else return NULL;
 }
 
-void MainController::codeAlreadyOpenProcessor(ShaderLab::Shader shadertype)
-{
-    FileController *fc = getFileControllerByShaderType(shadertype);
-
-    if(fc != NULL)
-    {
-        closeShaderCode(shadertype);
-    }
-}
-
 void MainController::newShaderActionClicked()
 {
     int ret = chooseShaderDialog->exec();
@@ -345,7 +343,8 @@ void MainController::newShaderActionClicked()
 
     ShaderLab::Shader shaderType = chooseShaderDialog->lastChosenShader();
 
-    codeAlreadyOpenProcessor(shaderType);
+    if(!closeShaderCode(shaderType))
+            return;
 
     FileController *fc = getFileControllerByShaderType(shaderType);
 
@@ -370,7 +369,8 @@ void MainController::openShaderActionClicked()
     ShaderLab::Shader shaderType = chooseShaderDialog->lastChosenShader();
     QString fileContent;
 
-    codeAlreadyOpenProcessor(shaderType);
+    if(!closeShaderCode(shaderType))
+        return;
 
     FileController *fc = getFileControllerByShaderType(shaderType);
 
@@ -381,7 +381,18 @@ void MainController::openShaderActionClicked()
                                   "../..",
                                   "*" + ShaderLab::shaderToExt(shaderType));
 
-        if(filepath.isEmpty()) return;
+        if(filepath.isEmpty())
+            return;
+
+        if(!FileController::isValid(filepath))
+        {
+            QMessageBox::warning(mainWindow, tr("Could not find file"),
+                                 tr("Não foi possível encontrar o arquivo:\n")+
+                                 filepath + "\n" +
+                                 tr("para o ") + tr(ShaderLab::shaderToStr(shaderType).toAscii()) +
+                                 tr(" shader"));
+            return;
+        }
 
         fc = new FileController(filepath, shaderType);
         fileControllers.insert(shaderType, fc);
@@ -395,4 +406,77 @@ void MainController::openShaderActionClicked()
         mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
 
     }
+}
+
+void MainController::loadProject(void)
+{
+    QString filename = QFileDialog::getOpenFileName(mainWindow,tr("Open Project"), "..", "*.slp");
+    if(filename.isEmpty())
+        return;
+
+    if(project != NULL)
+        delete project;
+
+    project = new Project;
+    if(!project->load(filename))
+    {
+        qDebug() << "Deu Ruim!";
+        return;
+    }
+
+    FORSHADERS(shadertype)
+    {
+        if(!closeShaderCode(shadertype))
+        {
+            delete project;
+            project = NULL;
+            return;
+        }
+    }
+
+    FORSHADERS(shadertype)
+    {
+        openShader(shadertype, project->getFileName(shadertype));
+    }
+}
+
+bool MainController::openShader(ShaderLab::Shader shaderType, QString filepath)
+{
+    QString fileContent;
+
+    if(!closeShaderCode(shaderType))
+        return false;
+
+    FileController *fc = getFileControllerByShaderType(shaderType);
+
+    if(!fc)
+    {
+        if(filepath.isEmpty())
+            return false;
+
+        if(!FileController::isValid(filepath))
+        {
+            QMessageBox::warning(mainWindow, tr("Could not find file"),
+                                 tr("Não foi possível encontrar o arquivo:\n")+
+                                 filepath + "\n" +
+                                 tr("para o ") + tr(ShaderLab::shaderToStr(shaderType).toAscii()) +
+                                 tr(" shader"));
+            return false;
+        }
+
+        fc = new FileController(filepath, shaderType);
+        fileControllers.insert(shaderType, fc);
+
+        fileContent = fc->getFileContent();
+
+        mainWindow->setVisibleShader(true, shaderType);
+        mainWindow->setShaderCode(fileContent, shaderType);
+        fc->setChanged(false);
+
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
+
+        return true;
+    }
+
+    return false;
 }

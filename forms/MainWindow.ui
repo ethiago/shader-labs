@@ -69,6 +69,8 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionLoad_Project"/>
+    <addaction name="separator"/>
     <addaction name="actionNewFile"/>
     <addaction name="actionOpenCode"/>
     <addaction name="separator"/>
@@ -122,6 +124,8 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionLoad_Project"/>
+   <addaction name="separator"/>
    <addaction name="actionOpenCode"/>
    <addaction name="actionNewFile"/>
    <addaction name="actionSaveFile"/>
@@ -353,6 +357,18 @@
   <action name="actionChange_output_primitive">
    <property name="text">
     <string>Change default primitives...</string>
+   </property>
+  </action>
+  <action name="actionLoad_Project">
+   <property name="icon">
+    <iconset resource="../shaderlab.qrc">
+     <normaloff>:/ico/img/Project-icon.png</normaloff>:/ico/img/Project-icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Load Project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>

@@ -43,7 +43,11 @@ public:
     static Shader intToShader(int v);
 
     static double degreeFromCos(double);
+
+    static QList<ShaderLab::Shader> shaderTypeList(void);
 };
+
+#define FORSHADERS(varname) foreach(ShaderLab::Shader varname, ShaderLab::shaderTypeList())
 
 
 #endif // GLOBAL_H

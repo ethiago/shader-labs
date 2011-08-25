@@ -3,7 +3,8 @@
 # -------------------------------------------------
 QT += core \
     gui \
-    opengl
+    opengl \
+    xml
 win32 { 
     TARGET = ShaderLab-win32
     INCLUDEPATH += lib/GLee5_4
@@ -42,7 +43,8 @@ SOURCES += src/main.cpp \
     src/Find.cpp \
     src/HighLighter.cpp \
     src/PrimitivesDialog.cpp \
-    src/DirectionalLight.cpp
+    src/DirectionalLight.cpp \
+    src/Project.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -66,7 +68,8 @@ HEADERS += headers/Sphere.h \
     headers/Find.h \
     headers/HighLighter.h \
     headers/PrimitivesDialog.h \
-    headers/DirectionalLight.h
+    headers/DirectionalLight.h \
+    headers/Project.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
