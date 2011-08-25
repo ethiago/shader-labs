@@ -234,12 +234,12 @@ void RenderController::showPrimitiveSelector(void)
     this->primitivesDialog->show();
 }
 
-int RenderController::getCurrentOutputPrimitive(void)
+GLenum RenderController::getCurrentOutputPrimitive(void)
 {
     return primitives[primitivesDialog->getCurrentOutputPrimitiveIndex()];
 }
 
-int RenderController::getCurrentInputPrimitive(void)
+GLenum RenderController::getCurrentInputPrimitive(void)
 {
     return primitives[primitivesDialog->getCurrentInputPrimitiveIndex()];
 }

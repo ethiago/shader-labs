@@ -3,24 +3,47 @@
 
 #include <QGLShader>
 #include <QString>
+#include <cmath>
 
 #define QT47_CAPABLE
 
-namespace ShaderLab {
+class ShaderLab {
 
-enum Shader{ Vertex, Fragment, Geometry };
+    int m_extensions;
 
-QString shaderToStrCap(Shader s);
-QString shaderToStr(Shader s);
-QString shaderToExt(Shader s);
+    static ShaderLab *s_instance;
+    ShaderLab();
 
-QGLShader::ShaderTypeBit shaderToQGLShader(Shader s);
+public:
 
-int shaderToInt(Shader s);
-Shader intToShader(int v);
+    static ShaderLab *instance()
+    {
+        if (!s_instance)
+            s_instance = new ShaderLab;
+        return s_instance;
+    }
 
-double degreeFromCos(double);
+    int extensions();
 
-}
+    enum Shader{ Vertex, Fragment, Geometry };
+
+    enum ExtensionSupport{ FramebufferObject = 1,
+                       VertexShader = 2,
+                       GeometryShader = 4,
+                       FragmentShader = 8,
+                       ShaderObjects = 16};
+
+    static QString shaderToStrCap(Shader s);
+    static QString shaderToStr(Shader s);
+    static QString shaderToExt(Shader s);
+
+    static QGLShader::ShaderTypeBit shaderToQGLShader(Shader s);
+
+    static int shaderToInt(Shader s);
+    static Shader intToShader(int v);
+
+    static double degreeFromCos(double);
+};
+
 
 #endif // GLOBAL_H

@@ -10,21 +10,14 @@
 #include <QTabBar>
 
 #include "ShaderCodeContainer.h"
-//#include "ChooseShaderDialog.h"
 #include "Find.h"
 
 namespace Ui {
     class MainWindow;
 }
 
-namespace ShaderLab
-{
-    class GLDisplay;
-}
-
 class SLTabWidget;
-
-using namespace ShaderLab;
+class GLDisplay;
 
 class MainWindow : public QMainWindow
 {

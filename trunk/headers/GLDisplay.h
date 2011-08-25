@@ -9,8 +9,6 @@
 #define NULLPOINT   QPoint(-1,-1)
 #define EPSILON     0.001
 
-namespace ShaderLab{
-
 class GLDisplay : public QGLWidget
 {
     Q_OBJECT
@@ -47,5 +45,5 @@ private:
 
 };
 
-}
+
 #endif // GLDISPLAY_H

@@ -13,12 +13,7 @@ class MainWindow;
 class Object3D;
 class ArcBall;
 
-namespace ShaderLab
-{
-    class GLDisplay;
-}
-
-using namespace ShaderLab;
+class GLDisplay;
 
 class TextureController;
 
@@ -34,7 +29,7 @@ class RenderController : public QObject
     QMap<QAction*, Object3D*> models;
     typedef QMap<QAction*, Object3D*> MMap;
 
-    QList<int> primitives;
+    QList<GLenum> primitives;
     PrimitivesDialog *primitivesDialog;
 
 public:
@@ -43,8 +38,8 @@ public:
     ~RenderController();
     QGLWidget* getGLContext(void);
     void updateGL(void);
-    int getCurrentOutputPrimitive(void);
-    int getCurrentInputPrimitive(void);
+    GLenum getCurrentOutputPrimitive(void);
+    GLenum getCurrentInputPrimitive(void);
 
 
 
