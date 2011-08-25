@@ -9,6 +9,9 @@
 SLTabWidget::SLTabWidget(QWidget *parent) :
     QTabWidget(parent)
 {
+    next = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this);
+    previous = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this);
+
     SLTabBar *tabBar = new SLTabBar();
     setTabBar(tabBar);
 
@@ -17,6 +20,18 @@ SLTabWidget::SLTabWidget(QWidget *parent) :
 
     connect(tabBar, SIGNAL(signal_TabClicked()),
             this, SLOT(changeActivationStatus()));
+
+    connect(next, SIGNAL(activated()),
+            this, SLOT(nextTab()));
+
+    connect(previous, SIGNAL(activated()),
+            this, SLOT(previousTab()));
+}
+
+SLTabWidget::~SLTabWidget()
+{
+    delete next;
+    delete previous;
 }
 
 void SLTabWidget::tabCloseRequested(int index)
@@ -56,4 +71,20 @@ void SLTabWidget::replaceAll(const QString& s, const QString& r)
     ShaderCodeContainer * scc = (ShaderCodeContainer *)currentWidget();
     if(scc != NULL)
         scc->replaceAll(s,r);
+}
+void SLTabWidget::previousTab(void)
+{
+    if(currentIndex() == 0 && count() > 0)
+        setCurrentIndex(count() - 1);
+    else if(count() > 0)
+        setCurrentIndex(currentIndex() - 1);
+}
+
+void SLTabWidget::nextTab(void)
+{
+    int newCurrent = (currentIndex() + 1) % count();
+    if(count() > 0)
+        setCurrentIndex(newCurrent);
+
+    qDebug() << newCurrent;
 }
