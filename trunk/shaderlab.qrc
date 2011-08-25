@@ -61,5 +61,6 @@
         <file>img/arrow-left.png</file>
         <file>img/arrow-right.png</file>
         <file>img/search.png</file>
+        <file>img/Project-icon.png</file>
     </qresource>
 </RCC>

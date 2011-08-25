@@ -161,3 +161,15 @@ bool FileController::save(const QString& content)
     else return false;
 }
 
+bool FileController::isValid(QString filepath)
+{
+    QFile file(filepath);
+    bool ret;
+    if(file.open(QFile::ReadOnly))
+        ret = true;
+    else
+        ret = false;
+
+    return ret;
+}
+

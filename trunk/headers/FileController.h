@@ -12,6 +12,8 @@ class FileController : public QObject
     Q_OBJECT
 
 public:
+    static bool isValid(QString filepath);
+
     explicit FileController(QString filepath, ShaderLab::Shader shadertype, QObject *parent = 0);
     explicit FileController(ShaderLab::Shader shadertype, QObject *parent = 0);
     ~FileController();

@@ -103,6 +103,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->ckbLightRotation, SIGNAL(toggled(bool)),
             this, SIGNAL(lightRotationToggle(bool)));
 
+    connect(ui->actionLoad_Project, SIGNAL(triggered()),
+            this, SIGNAL(loadProject()));
+
 }
 
 MainWindow::~MainWindow()
