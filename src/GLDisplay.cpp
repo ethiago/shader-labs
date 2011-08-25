@@ -36,10 +36,6 @@ void GLDisplay::initializeGL()
 
     glClearColor( 0.0, 0.0, 0.5, 1.0);
 
-    GLfloat ligthPosition[4] = { 0.0, 20.0, -3.0, 1.0 };
-
-    glLightfv( GL_LIGHT0, GL_POSITION, ligthPosition);
-
     glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );	// specify implementation-specific hints
 
     glClearDepth( 1.0 );					// specify the clear value for the depth buffer
@@ -74,6 +70,8 @@ void GLDisplay::paintGL()
 
     float xdist = xDist(aspect);
     float ydist = yDist(aspect);
+
+    emit lightSetup();
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

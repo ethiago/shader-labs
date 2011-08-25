@@ -41,7 +41,8 @@ SOURCES += src/main.cpp \
     src/ShaderController.cpp \
     src/Find.cpp \
     src/HighLighter.cpp \
-    src/PrimitivesDialog.cpp
+    src/PrimitivesDialog.cpp \
+    src/DirectionalLight.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -64,7 +65,8 @@ HEADERS += headers/Sphere.h \
     headers/ShaderController.h \
     headers/Find.h \
     headers/HighLighter.h \
-    headers/PrimitivesDialog.h
+    headers/PrimitivesDialog.h \
+    headers/DirectionalLight.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \

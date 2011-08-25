@@ -19,6 +19,7 @@ class GLDisplay : public QGLWidget
 
 signals:
     void drawModel(void);
+    void lightSetup(void);
     void mouseRigthMove(QPoint ini, QPoint curr);
     void mouseRigthFinish(QPoint ini, QPoint curr);
     void mouseLeftMove(QPoint ini, QPoint curr);

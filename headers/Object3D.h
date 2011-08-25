@@ -13,7 +13,7 @@ class Object3D : public QObject
 
     QVector3D m_center;
     QVector3D m_translation;
-    QMatrix4x4 m_rotacoes;
+    QMatrix4x4 m_rotations;
     QQuaternion m_interactiveQuartenion;
 
     //for glu objects
@@ -33,10 +33,9 @@ public:
     int slices(void)const;
     int stacks(void)const;
 
-    //Esta em portugues
-    void setRotacoes(const QMatrix4x4&);
-    const QMatrix4x4& rotacoes(void)const;
-    void addRotacao(const QQuaternion&);
+    void setRotations(const QMatrix4x4&);
+    const QMatrix4x4& rotations(void)const;
+    void addRotation(const QQuaternion&);
 
     void setInteractiveQuartenion(const QQuaternion& quaternion);
     const QQuaternion& interactiveQuartenion(void)const;

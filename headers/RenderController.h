@@ -9,6 +9,7 @@
 
 #include "PrimitivesDialog.h"
 
+class DirectionalLight;
 class MainWindow;
 class Object3D;
 class ArcBall;
@@ -24,7 +25,9 @@ class RenderController : public QObject
     GLDisplay *display;
     Object3D * model;
     ArcBall* arcBall;
+    DirectionalLight* light;
     bool wireframe;
+    bool lightRotation;
 
     QMap<QAction*, Object3D*> models;
     typedef QMap<QAction*, Object3D*> MMap;
@@ -54,6 +57,8 @@ public slots:
     void saveResultAsImage();
     void modelChanged(QAction*);
     void showPrimitiveSelector(void);
+    void lightSetup(void);
+    void lightRotationToggle(bool);
 
 
 private:
