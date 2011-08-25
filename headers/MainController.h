@@ -47,6 +47,7 @@ private:
     FileController* getFileControllerByShaderType(ShaderLab::Shader shadertype);
     void codeAlreadyOpenProcessor(ShaderLab::Shader shadertype);
     bool closeShaderCode(ShaderLab::Shader);
+    void glSetup(void);
 
 };
 

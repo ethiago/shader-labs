@@ -4,7 +4,6 @@
 #include <QMatrix4x4>
 
 #define MINI(a,b) ((a) < (b) ? (a) : (b))
-using namespace ShaderLab;
 
 GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
     rigthPressedPoint(NULLPOINT),
