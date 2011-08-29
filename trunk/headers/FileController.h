@@ -18,22 +18,24 @@ public:
     explicit FileController(ShaderLab::Shader shadertype, QObject *parent = 0);
     ~FileController();
 
-    QString getFileContent(void);
-    QString getFileName();
-    QGLShader* getShader(void);
-    bool getChanged(void);
-    bool IsNew(void);
-    ShaderLab::Shader getShaderType(void);
+    QString getFileContent(void) const;
+    QString getFileName() const;
+    QString getFilePath(void) const;
+
+    QGLShader* getShader(void) const;
+    bool getChanged(void) const;
+    bool IsNew(void) const;
+    ShaderLab::Shader getShaderType(void) const;
 
     void setChanged(bool val);
     void setFilePath(const QString &filepath);
 
     bool compile(const QString& code);
     bool compile(void);
-    QString log();
+    QString log() const;
     bool save(const QString& content);
 
-    bool isActive(void);
+    bool isActive(void) const;
     void setActive(bool);
 
 private:

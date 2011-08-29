@@ -106,6 +106,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionLoad_Project, SIGNAL(triggered()),
             this, SIGNAL(loadProject()));
 
+    connect(ui->actionSave_as_project, SIGNAL(triggered()),
+            this, SIGNAL(saveAsProject()));
+
 }
 
 MainWindow::~MainWindow()

@@ -13,6 +13,7 @@ public:
 
     static OperationState saveRequestDialog(const QString& filename, bool newFile);
     static QString saveAsRequestDialog(ShaderLab::Shader shader);
+    static QString saveProjectAsRequestDialog(void);
 
 };
 

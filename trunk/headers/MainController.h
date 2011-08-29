@@ -19,6 +19,8 @@ class MainController : public QObject
 {
     Q_OBJECT
 
+    typedef QMap<ShaderLab::Shader, FileController*>::iterator FileIterator;
+
     MainWindow *mainWindow;
     QMap<ShaderLab::Shader, FileController*> fileControllers;
     QGLShaderProgram program;
@@ -45,6 +47,7 @@ public slots:
     void newShaderActionClicked(void);
     void openShaderActionClicked(void);
     void loadProject(void);
+    void saveAsProject(void);
 
 private:
 
@@ -52,6 +55,7 @@ private:
     bool closeShaderCode(ShaderLab::Shader);
     bool openShader(ShaderLab::Shader, QString);
     void glSetup(void);
+    bool saveFileBool(ShaderLab::Shader);
 
 
 };
