@@ -65,6 +65,9 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     connect(mainWindow, SIGNAL(saveAsProject()),
             this, SLOT(saveAsProject()));
 
+    connect(mainWindow, SIGNAL(saveProject()),
+            this, SLOT(saveProject()));
+
     glSetup();
 
     mainWindow->showMaximized();
@@ -494,7 +497,11 @@ bool MainController::saveFileBool(ShaderLab::Shader shaderType)
 void MainController::saveAsProject(void)
 {
     if(project != NULL)
-        return; //lembrar de tratar
+    {
+        saveProjectLogic();
+        delete project;
+        project = NULL;
+    }
 
     for(FileIterator it = fileControllers.begin(); it != fileControllers.end(); ++it)
     {
@@ -514,4 +521,82 @@ void MainController::saveAsProject(void)
     }
 
     project->save(projectFileName);
+
+    mainWindow->setSecondTitle(project->getProjectFileName());
+}
+
+void MainController::saveProject(void)
+{
+    saveProjectLogic();
+}
+
+void MainController::saveProjectLogic(void)
+{
+    saveAll();
+
+    if(project == NULL)
+    {
+        if(InterfaceRequests::createProject())
+            saveAsProject();
+        return;
+    }
+
+    FORSHADERS(shadertype)
+    {
+        QString fileFc;
+        QString fileProj;
+
+        FileController *fc = getFileControllerByShaderType(shadertype);
+        if(fc)
+        {
+            if(!fc->IsNew())
+                fileFc = fc->getFilePath(); //absolut File Path
+            else
+                fileFc = "*";
+        }
+        fileProj = project->getFileName(shadertype); //absolut File Path
+
+        if(fileFc == fileProj)
+            continue;
+
+        if(fileFc.isEmpty())
+        {
+            if(InterfaceRequests::removeFileFromProject(fileProj))
+                project->removeShader(shadertype);
+
+            continue;
+        }
+
+        if(fileProj.isEmpty())
+        {
+            if(fc->IsNew())
+            {
+                QString nFileName = InterfaceRequests::includeNewFileIntoProject(shadertype);
+                if(nFileName.isEmpty())
+                    continue;
+
+                fc->setFilePath(nFileName);
+                fc->save(mainWindow->shaderCode(shadertype));
+                mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
+
+                project->includeShader(*fc);
+            }else
+            {
+                if(InterfaceRequests::includeFileIntoProject(fileFc))
+                    project->includeShader(*fc);
+            }
+
+            continue;
+        }
+
+        // are diferents
+
+        if(InterfaceRequests::replaceFileIntoProject(fileFc))
+        {
+            project->includeShader(*fc);
+        }
+    }
+
+    project->save();
+
 }

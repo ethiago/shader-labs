@@ -47,6 +47,7 @@ signals:
     void lightRotationToggle(bool);
     void loadProject();
     void saveAsProject(void);
+    void saveProject(void);
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -65,6 +66,7 @@ public:
     QMenu* modelsMenu(void);
     void menuViewInsertAction(QAction* act);
     QAction* menuChangeOutputPrimitive(void);
+    void setSecondTitle(const QString& title = QString());
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */

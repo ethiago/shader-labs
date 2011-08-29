@@ -133,13 +133,14 @@ bool Project::includeShader(const FileController& fileController)
 {
     shaderFiles[fileController.getShaderType()] = fileController.getFilePath();
 
-    qDebug() << shaderFiles;
-
     return true;
 }
 
-bool Project::save(const QString& fileName)
+bool Project::save(QString fileName)
 {
+    if(fileName.isEmpty())
+        fileName = m_fileName.absoluteFilePath();
+
     QFile file(fileName);
 
     if(file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -147,6 +148,8 @@ bool Project::save(const QString& fileName)
         QTextStream out(&file);
         out << getXml();
         file.close();
+
+        m_fileName = QFileInfo(fileName);
 
         return true;
     }
@@ -161,11 +164,9 @@ QString Project::getXml(void)
             "\t<shaders>\n";
 
     QMap<ShaderLab::Shader, QString>::iterator it;
-    qDebug() << "Qtd: " << shaderFiles.size();
 
     for(it = shaderFiles.begin(); it != shaderFiles.end(); ++it)
     {
-        qDebug() << "Ahhhhhh!";
 
         QString otag = "\t\t<" + ShaderLab::shaderToStr(it.key()) + ">";
         QString ctag = "</" + ShaderLab::shaderToStr(it.key()) + ">\n";
@@ -177,4 +178,19 @@ QString Project::getXml(void)
             "</ShaderLab>\n";
 
     return content;
+}
+
+void Project::removeShader(ShaderLab::Shader shaderType)
+{
+    shaderFiles.remove(shaderType);
+}
+
+QString Project::getProjectFileName(void)
+{
+    QString ret = m_fileName.fileName();
+
+    if(ret.right(4) == ".slp")
+        ret = ret.left(ret.length()-4);
+
+    return ret;
 }
