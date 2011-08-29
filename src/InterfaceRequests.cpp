@@ -47,3 +47,17 @@ QString InterfaceRequests::saveAsRequestDialog(ShaderLab::Shader shader)
 
     return filename;
 }
+
+QString InterfaceRequests::saveProjectAsRequestDialog()
+{
+    QString filename = QFileDialog::getSaveFileName(
+                       0,
+                       "Save project as...",
+                       "../..",
+                       "*.slp");
+
+    if(filename == ".slp")
+        return QString();
+
+    return filename;
+}

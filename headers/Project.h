@@ -7,6 +7,7 @@
 #include <QMap>
 
 #include "Global.h"
+#include "FileController.h"
 
 class Project : public QObject
 {
@@ -15,15 +16,26 @@ class Project : public QObject
     QMap<ShaderLab::Shader, QString> shaderFiles;
     typedef QMap<ShaderLab::Shader, QString>::iterator ShaderIterator;
 
+    QFileInfo m_fileName;
+
 public:
     explicit Project(QObject *parent = 0);
 
     bool load(const QString& fileName);
 
+    bool includeShader(const FileController& fileController);
+
+    bool save(const QString& fileName);
+
     QString getFileName(ShaderLab::Shader);
+    QString getRelativeFileName(ShaderLab::Shader);
+
+    QDir getProjectDir(void);
 
 private:
     bool loadFileTag(QDomElement);
+
+    QString getXml(void);
 
 };
 

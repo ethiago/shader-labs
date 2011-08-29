@@ -41,7 +41,7 @@ FileController::~FileController()
 /* ++++++++++++++++++++++ Getters and setters ++++++++++++++++++++++ */
 
 /* Returns the content of the file IN THE DISK. */
-QString FileController::getFileContent(void)
+QString FileController::getFileContent(void) const
 {
     QString content;
     QFile file(filePath.absoluteFilePath());
@@ -57,7 +57,7 @@ QString FileController::getFileContent(void)
 }
 
 /* Returns the name of the associated file. New files are given a default name. */
-QString FileController::getFileName()
+QString FileController::getFileName() const
 {
     if(isNew)
     {
@@ -70,31 +70,31 @@ QString FileController::getFileName()
 }
 
 /* Getter for the QGLShader attribute. */
-QGLShader *FileController::getShader(void)
+QGLShader *FileController::getShader(void) const
 {
     return shader;
 }
 
 /* Getter for the changed attribute. */
-bool FileController::getChanged(void)
+bool FileController::getChanged(void) const
 {
     return changed;
 }
 
 /* Getter for the shaderLabType attribute. */
-ShaderLab::Shader FileController::getShaderType(void)
+ShaderLab::Shader FileController::getShaderType(void) const
 {
     return shaderType;
 }
 
 /* Getter for the active attribute. */
-bool FileController::isActive(void)
+bool FileController::isActive(void) const
 {
     return active;
 }
 
 /* Getter for the isNew attribute. */
-bool FileController::IsNew(void)
+bool FileController::IsNew(void) const
 {
     return isNew;
 }
@@ -137,7 +137,7 @@ bool FileController::compile(const QString& code)
 }
 
 /* Returns the log from the last compilation process. */
-QString FileController::log()
+QString FileController::log() const
 {
     return shader->log();
 }
@@ -171,5 +171,10 @@ bool FileController::isValid(QString filepath)
         ret = false;
 
     return ret;
+}
+
+QString FileController::getFilePath(void) const
+{
+    return filePath.absoluteFilePath();
 }
 

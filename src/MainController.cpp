@@ -62,6 +62,9 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     connect(mainWindow, SIGNAL(loadProject()),
             this, SLOT(loadProject()));
 
+    connect(mainWindow, SIGNAL(saveAsProject()),
+            this, SLOT(saveAsProject()));
+
     glSetup();
 
     mainWindow->showMaximized();
@@ -285,21 +288,7 @@ void MainController::saveAll()
 /* Also used in the saveAll method. */
 void MainController::saveFile(ShaderLab::Shader shaderType)
 {
-    FileController *fc = getFileControllerByShaderType(shaderType);
-
-    if( fc->IsNew() )
-    {
-        QString filepath = InterfaceRequests::saveAsRequestDialog( shaderType );
-
-        if(filepath.isEmpty()) return;
-        fc->setFilePath(filepath);
-    }
-
-    if( fc->getChanged() )
-    {
-        fc->save(mainWindow->shaderCode(shaderType));
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-    }
+    saveFileBool(shaderType);
 }
 
 /* Associated with the 'saveFileAs' signal. */
@@ -479,4 +468,50 @@ bool MainController::openShader(ShaderLab::Shader shaderType, QString filepath)
     }
 
     return false;
+}
+
+bool MainController::saveFileBool(ShaderLab::Shader shaderType)
+{
+    FileController *fc = getFileControllerByShaderType(shaderType);
+
+    if( fc->IsNew() )
+    {
+        QString filepath = InterfaceRequests::saveAsRequestDialog( shaderType );
+
+        if(filepath.isEmpty()) return false;
+        fc->setFilePath(filepath);
+    }
+
+    if( fc->getChanged() )
+    {
+        fc->save(mainWindow->shaderCode(shaderType));
+        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
+    }
+
+    return true;
+}
+
+void MainController::saveAsProject(void)
+{
+    if(project != NULL)
+        return; //lembrar de tratar
+
+    for(FileIterator it = fileControllers.begin(); it != fileControllers.end(); ++it)
+    {
+        if(!saveFileBool(it.key()))
+            return;
+    }
+
+    QString projectFileName = InterfaceRequests::saveProjectAsRequestDialog();
+
+    if(projectFileName.isEmpty()) return;
+
+    project = new Project();
+
+    for(FileIterator it = fileControllers.begin(); it != fileControllers.end(); ++it)
+    {
+        project->includeShader(*(it.value()));
+    }
+
+    project->save(projectFileName);
 }

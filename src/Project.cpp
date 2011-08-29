@@ -21,6 +21,8 @@ bool Project::load(const QString& fileName)
     if(!f.open(QIODevice::ReadOnly | QIODevice::Text))
         return false;
 
+    m_fileName = QFileInfo(fileName);
+
     QDomDocument document;
 
     if(!document.setContent(f.readAll(), &erroMsg, &erroL, &erroC))
@@ -91,5 +93,88 @@ QString Project::getFileName(ShaderLab::Shader shadertype)
     if(it == shaderFiles.end())
         return QString();
     else
-        return it.value();
+    {
+        QFileInfo fi(it.value());
+
+        if(fi.isAbsolute())
+            return fi.absoluteFilePath();
+
+        QDir d = m_fileName.absoluteDir();
+
+        return d.absoluteFilePath(fi.filePath());
+    }
+}
+
+QString Project::getRelativeFileName(ShaderLab::Shader shadertype)
+{
+    ShaderIterator it = shaderFiles.find(shadertype);
+
+    if(it == shaderFiles.end())
+        return QString();
+    else
+    {
+        QFileInfo fi(it.value());
+
+        if(fi.isAbsolute())
+            return fi.absoluteFilePath();
+
+        QDir d = m_fileName.absoluteDir();
+
+        return d.relativeFilePath(fi.filePath());
+    }
+}
+
+QDir Project::getProjectDir(void)
+{
+    return m_fileName.absoluteDir();
+}
+
+bool Project::includeShader(const FileController& fileController)
+{
+    shaderFiles[fileController.getShaderType()] = fileController.getFilePath();
+
+    qDebug() << shaderFiles;
+
+    return true;
+}
+
+bool Project::save(const QString& fileName)
+{
+    QFile file(fileName);
+
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+        out << getXml();
+        file.close();
+
+        return true;
+    }
+    else
+        return false;
+}
+
+QString Project::getXml(void)
+{
+    QString content = QString("<?xml version='1.0' encoding='UTF-8'?>\n") +
+            "<ShaderLab>\n" +
+            "\t<shaders>\n";
+
+    QMap<ShaderLab::Shader, QString>::iterator it;
+    qDebug() << "Qtd: " << shaderFiles.size();
+
+    for(it = shaderFiles.begin(); it != shaderFiles.end(); ++it)
+    {
+        qDebug() << "Ahhhhhh!";
+
+        QString otag = "\t\t<" + ShaderLab::shaderToStr(it.key()) + ">";
+        QString ctag = "</" + ShaderLab::shaderToStr(it.key()) + ">\n";
+
+        content += otag + getRelativeFileName(it.key()) + ctag;
+    }
+
+    content = content +  "\t</shaders>\n" +
+            "</ShaderLab>\n";
+
+    return content;
 }
