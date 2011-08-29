@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <ShaderLab>
 	<shaders>
-		<vertex>./trivial.vert</vertex>
-		<fragment>./trivial.frag</fragment>
-		<geometry>./trivial.geom</geometry>
+		<vertex>/home/lpp/Projetos/ShaderLab/resources/trivial.vert</vertex>
+		<fragment>/home/lpp/Projetos/ShaderLab/resources/trivial.frag</fragment>
+		<geometry>trivial.geom</geometry>
 	</shaders>
 </ShaderLab>

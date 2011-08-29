@@ -48,6 +48,7 @@ public slots:
     void openShaderActionClicked(void);
     void loadProject(void);
     void saveAsProject(void);
+    void saveProject(void);
 
 private:
 
@@ -56,6 +57,7 @@ private:
     bool openShader(ShaderLab::Shader, QString);
     void glSetup(void);
     bool saveFileBool(ShaderLab::Shader);
+    void saveProjectLogic(void);
 
 
 };

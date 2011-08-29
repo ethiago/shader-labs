@@ -109,6 +109,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionSave_as_project, SIGNAL(triggered()),
             this, SIGNAL(saveAsProject()));
 
+    connect(ui->actionSave_project, SIGNAL(triggered()),
+            this, SIGNAL(saveProject()));
+
 }
 
 MainWindow::~MainWindow()
@@ -342,4 +345,12 @@ void MainWindow::menuViewInsertAction( QAction* act)
 QAction* MainWindow::menuChangeOutputPrimitive(void)
 {
     return ui->actionChange_output_primitive;
+}
+
+void MainWindow::setSecondTitle(const QString& title)
+{
+    if(title.isEmpty())
+        setWindowTitle("Shader Lab");
+    else
+        setWindowTitle("Shader Lab - " + title);
 }

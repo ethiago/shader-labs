@@ -36,7 +36,6 @@ SLTabWidget::~SLTabWidget()
 
 void SLTabWidget::tabCloseRequested(int index)
 {
-    qDebug() << ShaderLab::shaderToStr(((ShaderCodeContainer*)widget(index))->getShaderType());
     emit tabCloseRequested(((ShaderCodeContainer*)widget(index))->getShaderType());
 }
 
@@ -85,6 +84,4 @@ void SLTabWidget::nextTab(void)
     int newCurrent = (currentIndex() + 1) % count();
     if(count() > 0)
         setCurrentIndex(newCurrent);
-
-    qDebug() << newCurrent;
 }

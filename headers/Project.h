@@ -25,12 +25,15 @@ public:
 
     bool includeShader(const FileController& fileController);
 
-    bool save(const QString& fileName);
+    bool save(QString fileName = QString());
 
     QString getFileName(ShaderLab::Shader);
     QString getRelativeFileName(ShaderLab::Shader);
 
     QDir getProjectDir(void);
+    QString getProjectFileName(void);
+
+    void removeShader(ShaderLab::Shader);
 
 private:
     bool loadFileTag(QDomElement);
