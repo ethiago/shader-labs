@@ -19,7 +19,7 @@ void main()
 	} 
 	
  	gl_Position = gl_ModelViewProjectionMatrix * vert;
-	vec4 tmp = vec4(2,2,2,1);
+	vec4 tmp = vec4(2,3,0,1);
 
 	vec3 ePosition = vec3(gl_ModelViewMatrix * gl_Vertex);
 	vec3 lPosition = vec3(gl_ModelViewMatrix * tmp);
