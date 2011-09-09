@@ -34,7 +34,7 @@ void GLDisplay::initializeGL()
     glEnable(GL_LIGHTING);
     glShadeModel( GL_SMOOTH );
 
-    glClearColor( 0.0, 0.0, 0.5, 1.0);
+    glClearColor( 1.0, 1.0, 1.0, 1.0);
 
     glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );	// specify implementation-specific hints
 
