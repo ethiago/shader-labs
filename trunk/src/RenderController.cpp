@@ -68,11 +68,10 @@ RenderController::RenderController(MainWindow *mainWindow,
 
 RenderController::~RenderController()
 {
-    for(MMap::iterator it = models.begin(); it!= models.end(); ++it)
+    for(int i = 0 ; models.size(); ++i)
     {
-        Object3D* obj = it.value();
+        Object3D* obj = models[i].second;
         delete obj;
-        obj = NULL;
     }
     models.clear();
 
@@ -184,19 +183,16 @@ QGLWidget* RenderController::getGLContext(void)
 
 void RenderController::modelChanged(QAction* action)
 {
-    MMap::iterator entry;
-    entry = models.find(action);
-    if(entry == models.end())
-        return;
-
-    for(MMap::iterator it = models.begin(); it != models.end(); ++it)
+    for(int i = 0; i < models.size(); ++i)
     {
-        it.key()->setChecked(false);
+        models[i].first->setChecked(false);
+        if(models[i].first == action)
+        {
+           models[i].first->setChecked(true);
+           model = models[i].second;
+           model->cleanTransformations();
+        }
     }
-
-    entry.key()->setChecked(true);
-    model = entry.value();
-    model->cleanTransformations();
 
     display->updateGL();
 }
@@ -204,28 +200,32 @@ void RenderController::modelChanged(QAction* action)
 void RenderController::configureModelsAndActions(QMenu* menu)
 {
     QAction* act;
+    Object3D *model_tmp;
 
     act = menu->addAction(tr("&Sphere"));
     act->setCheckable(true);
-    models[act] = new Sphere(50,50);
+    model_tmp = new Sphere(50,50);
     act->setChecked(true);          // comeca pela esfera
-    model = models[act];            // comeca pela esfera
-
+    model = model_tmp;            // comeca pela esfera
+    models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("&Plane"));
     act->setCheckable(true);
     act->setChecked(false);
-    models[act] = new Plane(50,50);
+    model_tmp = new Plane(50,50);
+    models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("ST Sp&here"));
     act->setCheckable(true);
     act->setChecked(false);
-    models[act] = new Sphere(500,500);
+    model_tmp = new Sphere(500,500);
+    models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("ST P&lane"));
     act->setCheckable(true);
     act->setChecked(false);
-    models[act] = new Plane(500,500);
+    model_tmp = new Plane(500,500);
+    models.append(qMakePair(act, model_tmp));
 
     connect(menu, SIGNAL(triggered(QAction*)),
             this, SLOT(modelChanged(QAction*)));
@@ -279,4 +279,32 @@ GLenum RenderController::getCurrentInputPrimitive(void)
 void RenderController::lightRotationToggle(bool lt)
 {
     lightRotation = lt;
+}
+
+int RenderController::getModelId(void)
+{
+    for(int i = 0; i < models.size(); ++i)
+    {
+        if(models[i].second == model)
+            return i;
+    }
+
+    return -1;
+}
+
+void RenderController::setModelById(int ind)
+{
+    if(ind < 0 || ind >= models.size())
+        return;
+
+    for(int i = 0; i < models.size(); ++i)
+    {
+        models[i].first->setChecked(false);
+    }
+
+    models[ind].first->setChecked(true);
+    model = models[ind].second;
+    model->cleanTransformations();
+
+    display->updateGL();
 }

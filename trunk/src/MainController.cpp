@@ -426,6 +426,8 @@ void MainController::loadProject(void)
         }
     }
 
+    renderController->setModelById(project->getModelId());
+
     FORSHADERS(shadertype)
     {
         openShader(shadertype, project->getFileName(shadertype));
@@ -498,7 +500,7 @@ void MainController::saveAsProject(void)
 {
     if(project != NULL)
     {
-        saveProjectLogic();
+        logicToSaveProject();
         delete project;
         project = NULL;
     }
@@ -520,6 +522,8 @@ void MainController::saveAsProject(void)
         project->includeShader(*(it.value()));
     }
 
+    project->setModel(renderController->getModelId());
+
     project->save(projectFileName);
 
     mainWindow->setSecondTitle(project->getProjectFileName());
@@ -527,10 +531,10 @@ void MainController::saveAsProject(void)
 
 void MainController::saveProject(void)
 {
-    saveProjectLogic();
+    logicToSaveProject();
 }
 
-void MainController::saveProjectLogic(void)
+void MainController::logicToSaveProject(void)
 {
     saveAll();
 
@@ -596,6 +600,8 @@ void MainController::saveProjectLogic(void)
             project->includeShader(*fc);
         }
     }
+
+    project->setModel(renderController->getModelId());
 
     project->save();
 

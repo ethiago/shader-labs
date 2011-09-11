@@ -6,7 +6,7 @@
 #include "Project.h"
 
 Project::Project(QObject *parent) :
-    QObject(parent)
+    QObject(parent), modelId(-1)
 {
 }
 
@@ -41,7 +41,41 @@ bool Project::load(const QString& fileName)
     if(root.hasAttribute("version") && root.attribute("version") != "1.0")
         return false;
 
+    loadModelTag(root);
+
     return loadFileTag(root);
+}
+
+bool Project::loadModelTag(QDomElement root)
+{
+    QDomElement child;
+    QString value;
+
+    root = root.firstChildElement("model");
+    if(root.isNull())
+        return false;
+
+    //******ID******//
+    child = root.firstChildElement("id");
+    if(!child.isNull())
+    {
+        value = child.text();
+        if(!value.isEmpty())
+        {
+            bool ret;
+            int t = value.toInt(&ret);
+            if(ret)
+                modelId = t;
+
+        }
+    }else
+    {
+        return false;
+        //TODO: logica para carregar do arquivo
+    }
+    //**************//
+
+    return true;
 }
 
 bool Project::loadFileTag(QDomElement root)
@@ -174,8 +208,15 @@ QString Project::getXml(void)
         content += otag + getRelativeFileName(it.key()) + ctag;
     }
 
-    content = content +  "\t</shaders>\n" +
-            "</ShaderLab>\n";
+    content = content +  "\t</shaders>\n";
+
+    if(modelId >= 0)
+    {
+        content = content + "\t<model>\n"+
+                "\t\t<id>" + QString::number(modelId) + "</id>\n\t</model>\n";
+    }
+
+    content = content + "</ShaderLab>\n";
 
     return content;
 }
@@ -193,4 +234,14 @@ QString Project::getProjectFileName(void)
         ret = ret.left(ret.length()-4);
 
     return ret;
+}
+
+void Project::setModel(int ind)
+{
+    modelId = ind;
+}
+
+int Project::getModelId(void)
+{
+    return modelId;
 }

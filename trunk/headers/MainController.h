@@ -57,7 +57,7 @@ private:
     bool openShader(ShaderLab::Shader, QString);
     void glSetup(void);
     bool saveFileBool(ShaderLab::Shader);
-    void saveProjectLogic(void);
+    void logicToSaveProject(void);
 
 
 };
