@@ -43,6 +43,8 @@ bool Project::load(const QString& fileName)
 
     loadModelTag(root);
 
+    loadTextureTag(root);
+
     return loadFileTag(root);
 }
 
@@ -68,6 +70,31 @@ bool Project::loadModelTag(QDomElement root)
                 modelId = t;
 
         }
+    }
+    //**************//
+
+    return true;
+}
+
+bool Project::loadTextureTag(QDomElement root)
+{
+    QDomElement child;
+    QString value;
+
+    root = root.firstChildElement("textures");
+    if(root.isNull())
+        return false;
+
+    textures.clear();
+    //******filename******//
+    child = root.firstChildElement("filename");
+    while(!child.isNull())
+    {
+        value = child.text();
+        if(!value.isEmpty())
+            textures.append(value);
+
+        child = child.nextSiblingElement("filename");
     }
     //**************//
 
@@ -209,6 +236,18 @@ QString Project::getXml(void)
                 "\t\t<id>" + QString::number(modelId) + "</id>\n\t</model>\n";
     }
 
+    if(textures.size() > 0)
+    {
+        content = content + "\t<textures>\n";
+
+        for(int i = 0; i < textures.size(); ++i)
+        {
+            content = content + "\t\t<filename>" + textures[i]+ "</filename>\n";
+        }
+
+        content = content + "\t</textures>\n";
+    }
+
     content = content + "</ShaderLab>\n";
 
     return content;
@@ -237,4 +276,41 @@ void Project::setModel(int ind)
 int Project::getModelId(void)
 {
     return modelId;
+}
+
+void Project::setTextures(const QStringList& texturesNames)
+{
+    textures.clear();
+
+    for(int i = 0; i < texturesNames.size(); ++i)
+    {
+        QFileInfo fi(texturesNames[i]);
+
+        QDir d = m_fileName.absoluteDir();
+
+        textures.append(d.relativeFilePath(fi.filePath()));
+    }
+}
+
+QStringList Project::getTextures(void) const
+{
+    QStringList ret;
+
+    for(int i = 0; i < textures.size(); ++i)
+    {
+        QFileInfo fi(textures[i]);
+
+        if(fi.isAbsolute())
+        {
+            ret.append(fi.absoluteFilePath());
+        }
+        else
+        {
+            QDir d = m_fileName.absoluteDir();
+            ret.append(d.absoluteFilePath(fi.filePath()));
+        }
+
+    }
+
+    return ret;
 }

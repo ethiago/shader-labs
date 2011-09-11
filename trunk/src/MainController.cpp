@@ -428,6 +428,8 @@ void MainController::loadProject(void)
 
     renderController->setModelById(project->getModelId());
 
+    textureController->setTextures(project->getTextures());
+
     FORSHADERS(shadertype)
     {
         openShader(shadertype, project->getFileName(shadertype));
@@ -524,6 +526,8 @@ void MainController::saveAsProject(void)
 
     project->setModel(renderController->getModelId());
 
+    project->setTextures(textureController->getTextureFileNames());
+
     project->save(projectFileName);
 
     mainWindow->setSecondTitle(project->getProjectFileName());
@@ -602,6 +606,8 @@ void MainController::logicToSaveProject(void)
     }
 
     project->setModel(renderController->getModelId());
+
+    project->setTextures(textureController->getTextureFileNames());
 
     project->save();
 

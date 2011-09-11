@@ -16,6 +16,7 @@ class Project : public QObject
     QMap<ShaderLab::Shader, QString> shaderFiles;
     typedef QMap<ShaderLab::Shader, QString>::iterator ShaderIterator;
     int modelId;
+    QStringList textures;
 
     QFileInfo m_fileName;
 
@@ -39,9 +40,13 @@ public:
     void setModel(int);
     int getModelId(void);
 
+    void setTextures(const QStringList&);
+    QStringList getTextures(void) const;
+
 private:
     bool loadFileTag(QDomElement);
     bool loadModelTag(QDomElement);
+    bool loadTextureTag(QDomElement);
 
     QString getXml(void);
 

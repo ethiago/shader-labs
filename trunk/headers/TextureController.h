@@ -30,6 +30,8 @@ public:
 
     void applyTextures(QGLShaderProgram* program);
     void activateTexture(void);
+    QStringList getTextureFileNames();
+    void setTextures(const QStringList&);
 
 public slots:
     void textureFileName(const QString&);
@@ -41,6 +43,7 @@ public slots:
 private:
     void viewUpdateList(void);
     void clearTexture(void);
+    void removeAllTextures(void);
 
 };
 
