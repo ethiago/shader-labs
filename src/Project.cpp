@@ -68,10 +68,6 @@ bool Project::loadModelTag(QDomElement root)
                 modelId = t;
 
         }
-    }else
-    {
-        return false;
-        //TODO: logica para carregar do arquivo
     }
     //**************//
 
@@ -148,9 +144,6 @@ QString Project::getRelativeFileName(ShaderLab::Shader shadertype)
     else
     {
         QFileInfo fi(it.value());
-
-        if(fi.isAbsolute())
-            return fi.absoluteFilePath();
 
         QDir d = m_fileName.absoluteDir();
 
