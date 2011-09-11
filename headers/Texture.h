@@ -12,6 +12,7 @@ class Texture : public QObject
     QImage m_image;
     int m_glTextureName;
     QString m_varName;
+    QString m_filename;
 
 public:
     explicit Texture(QObject *parent = 0);
@@ -25,6 +26,9 @@ public:
 
     const QString& varName(void) const;
     void setVarName(const QString&);
+
+    const QString& filename(void) const;
+    void setFileName(const QString& fn);
 
     void clean(void);
 

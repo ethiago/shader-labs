@@ -71,6 +71,7 @@ void TextureController::textureFileName(const QString& imageFileName)
     m_textureList[textureContext].setImage(img);
     m_textureList[textureContext].setGLTextureName(m_context->bindTexture(imageFileName, GL_TEXTURE_2D));
     m_textureList[textureContext].setVarName(SAMPLEPREFIX + QString::number(textureContext));
+    m_textureList[textureContext].setFileName(imageFileName);
     activateTexture();
     viewUpdateList();
     m_context->updateGL();
@@ -147,4 +148,49 @@ void TextureController::activateTexture(void)
         glActiveTexture(GL_TEXTURE0 + i);
         glBindTexture(GL_TEXTURE_2D, m_textureList[i].glTextureName());
     }
+}
+
+QStringList TextureController::getTextureFileNames()
+{
+    QStringList filenames;
+
+    for(int i = 0; i < m_textureList.size(); ++i)
+    {
+        QString filename = m_textureList[i].filename();
+        if(!filename.isEmpty())
+        {
+            filenames.append(filename);
+        }
+    }
+
+    return filenames;
+}
+
+void TextureController::removeAllTextures(void)
+{
+    textureContext = m_textureList.size() - 1;
+
+    while(textureContext > 0)
+        removeTexture();
+
+    clearTexture();
+}
+
+void TextureController::setTextures(const QStringList& list)
+{
+    removeAllTextures();
+
+    for(int i = 0; i < list.size(); ++i)
+    {
+        if(m_textureList[0].glTextureName() >= 0)
+        {
+            m_textureList.push_back(Texture());
+            textureContext = m_textureList.size() - 1;
+        }
+        textureFileName(list[i]);
+    }
+
+    viewUpdateList();
+    activateTexture();
+    m_context->updateGL();
 }

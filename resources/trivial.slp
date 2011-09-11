@@ -8,4 +8,8 @@
 	<model>
 		<id>2</id>
 	</model>
+	<textures>
+		<filename>imgs/Chrysanthemum.jpg</filename>
+		<filename>imgs/terrain.png</filename>
+	</textures>
 </ShaderLab>
