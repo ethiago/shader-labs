@@ -6,6 +6,8 @@
 #include <QGLContext>
 #include <QAction>
 #include <QMap>
+#include <QList>
+#include <QPair>
 
 #include "PrimitivesDialog.h"
 
@@ -29,7 +31,7 @@ class RenderController : public QObject
     bool wireframe;
     bool lightRotation;
 
-    QMap<QAction*, Object3D*> models;
+    QList< QPair<QAction*, Object3D*> > models;
     typedef QMap<QAction*, Object3D*> MMap;
 
     QList<GLenum> primitives;
@@ -43,7 +45,8 @@ public:
     void updateGL(void);
     GLenum getCurrentOutputPrimitive(void);
     GLenum getCurrentInputPrimitive(void);
-
+    int getModelId(void);
+    void setModelById(int i);
 
 
 public slots:
@@ -58,7 +61,7 @@ public slots:
     void modelChanged(QAction*);
     void showPrimitiveSelector(void);
     void lightSetup(void);
-    void lightRotationToggle(bool);
+    void lightRotationToggle(bool);    
 
 
 private:

@@ -1,6 +1,5 @@
 #extension GL_EXT_geometry_shader4 : enable
  
-// a passthrough geometry shader for color and position
 void main()
 {
 	int a;

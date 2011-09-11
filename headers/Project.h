@@ -15,6 +15,7 @@ class Project : public QObject
 
     QMap<ShaderLab::Shader, QString> shaderFiles;
     typedef QMap<ShaderLab::Shader, QString>::iterator ShaderIterator;
+    int modelId;
 
     QFileInfo m_fileName;
 
@@ -35,8 +36,12 @@ public:
 
     void removeShader(ShaderLab::Shader);
 
+    void setModel(int);
+    int getModelId(void);
+
 private:
     bool loadFileTag(QDomElement);
+    bool loadModelTag(QDomElement);
 
     QString getXml(void);
 
