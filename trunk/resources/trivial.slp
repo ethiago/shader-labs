@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <ShaderLab>
 	<shaders>
-		<vertex>C:/Users/thiago/workspace/ShaderLab/shader-lab/resources/trivial.vert</vertex>
-		<fragment>C:/Users/thiago/workspace/ShaderLab/trivial.frag</fragment>
+		<vertex>trivial.vert</vertex>
+		<fragment>trivial.frag</fragment>
 		<geometry>trivial.geom</geometry>
 	</shaders>
 	<model>
-		<id>0</id>
+		<id>2</id>
 	</model>
 </ShaderLab>

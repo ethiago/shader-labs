@@ -68,7 +68,7 @@ RenderController::RenderController(MainWindow *mainWindow,
 
 RenderController::~RenderController()
 {
-    for(int i = 0 ; models.size(); ++i)
+    for(int i = 0 ; i < models.size(); ++i)
     {
         Object3D* obj = models[i].second;
         delete obj;
