@@ -24,6 +24,8 @@ public:
     void setInteractiveQuartenion(const QQuaternion& quaternion);
     const QQuaternion& interactiveQuartenion(void)const;
 
+    QVector3D getLightPosition()const;
+
     void draw(void) const;
 
     void cleanTransformations();

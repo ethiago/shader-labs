@@ -7,6 +7,7 @@ varying vec2 MCposition;
 void main()
 {
 	vec3 LightPosition = gl_LightSource[0].position.xyz;
+   //vec3 LightPosition = vec3(-1, 7, -100);
 	vec3 ecPosition    = vec3(gl_ModelViewMatrix * gl_Vertex);
 	vec3 tnorm         = normalize(gl_NormalMatrix * gl_Normal);
 	vec3 lightVec      = normalize(LightPosition - ecPosition);

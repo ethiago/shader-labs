@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Shader Lab</string>
+   <string>ShaderLabs</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../shaderlab.qrc">

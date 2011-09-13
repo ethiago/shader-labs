@@ -308,3 +308,8 @@ void RenderController::setModelById(int ind)
 
     display->updateGL();
 }
+
+QVector3D RenderController::getLightPosition() const
+{
+    return light->getLightPosition();
+}

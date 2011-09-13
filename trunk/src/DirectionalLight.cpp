@@ -38,13 +38,8 @@ void DirectionalLight::addRotation(const QQuaternion& rotacao)
 
 void DirectionalLight::draw(void) const
 {
-    QQuaternion t = interactiveQuartenion();
 
-    QMatrix4x4 m;
-    m.rotate(ShaderLab::degreeFromCos(t.scalar()), t.x(), t.y(), t.z());
-    m = m*m_rotations;
-
-    QVector3D lp = m.mapVector(QVector3D(0,-1,0));
+    QVector3D lp = getLightPosition();
 
     GLfloat lightPosition[4];
     lightPosition[0] = lp.x();
@@ -59,4 +54,16 @@ void DirectionalLight::cleanTransformations()
 {
     setInteractiveQuartenion(QQuaternion());
     setRotations(QMatrix4x4());
+}
+
+QVector3D DirectionalLight::getLightPosition() const
+{
+    QQuaternion t = interactiveQuartenion();
+
+    QMatrix4x4 m;
+    m.rotate(ShaderLab::degreeFromCos(t.scalar()), t.x(), t.y(), t.z());
+    m = m*m_rotations;
+
+    /* Ainda precisa de solução definitiva: a luz precisa ser passada para coordenadas de camera. */
+    return m.mapVector(QVector3D(0,-1000000,0));
 }
