@@ -47,6 +47,7 @@ public:
     GLenum getCurrentInputPrimitive(void);
     int getModelId(void);
     void setModelById(int i);
+    QVector3D getLightPosition()const;
 
 
 public slots:

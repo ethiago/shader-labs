@@ -75,9 +75,11 @@ void ShaderCodeContainer::setActivatedCode(bool active)
 {
     if(active)
     {
+        highLighter->setDocument(ui->shaderCodeBox->document());
         ui->shaderCodeBox->setPalette(activePalette);
     }else
     {
+        highLighter->setDocument(NULL);
         ui->shaderCodeBox->setPalette(inactivePalette);
     }
 }

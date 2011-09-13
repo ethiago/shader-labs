@@ -350,7 +350,7 @@ QAction* MainWindow::menuChangeOutputPrimitive(void)
 void MainWindow::setSecondTitle(const QString& title)
 {
     if(title.isEmpty())
-        setWindowTitle("Shader Lab");
+        setWindowTitle("ShaderLabs");
     else
-        setWindowTitle("Shader Lab - " + title);
+        setWindowTitle("ShaderLabs - " + title);
 }

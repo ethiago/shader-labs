@@ -6,7 +6,7 @@
 		<geometry>trivial.geom</geometry>
 	</shaders>
 	<model>
-		<id>2</id>
+		<id>0</id>
 	</model>
 	<textures>
 		<filename>imgs/Chrysanthemum.jpg</filename>

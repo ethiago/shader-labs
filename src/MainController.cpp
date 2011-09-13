@@ -434,6 +434,8 @@ void MainController::loadProject(void)
     {
         openShader(shadertype, project->getFileName(shadertype));
     }
+
+    mainWindow->setSecondTitle(project->getProjectFileName());
 }
 
 bool MainController::openShader(ShaderLab::Shader shaderType, QString filepath)
