@@ -9,6 +9,7 @@
 #include "Object3D.h"
 #include "Sphere.h"
 #include "Plane.h"
+#include "Cube.h"
 #include "Arcball.h"
 #include "DirectionalLight.h"
 
@@ -225,6 +226,12 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new Plane(500,500);
+    models.append(qMakePair(act, model_tmp));
+
+    act = menu->addAction(tr("&Cube"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    model_tmp = new Cube();
     models.append(qMakePair(act, model_tmp));
 
     connect(menu, SIGNAL(triggered(QAction*)),

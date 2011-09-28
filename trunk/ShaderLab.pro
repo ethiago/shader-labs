@@ -44,7 +44,8 @@ SOURCES += src/main.cpp \
     src/HighLighter.cpp \
     src/PrimitivesDialog.cpp \
     src/DirectionalLight.cpp \
-    src/Project.cpp
+    src/Project.cpp \
+    src/Cube.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -69,7 +70,8 @@ HEADERS += headers/Sphere.h \
     headers/HighLighter.h \
     headers/PrimitivesDialog.h \
     headers/DirectionalLight.h \
-    headers/Project.h
+    headers/Project.h \
+    headers/Cube.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
@@ -78,3 +80,5 @@ FORMS += forms/MainWindow.ui \
     forms/PrimitivesDialog.ui
 RESOURCES += shaderlab.qrc
 OTHER_FILES += 
+
+
