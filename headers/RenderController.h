@@ -9,14 +9,14 @@
 #include <QList>
 #include <QPair>
 
-#include "PrimitivesDialog.h"
-
 class DirectionalLight;
 class MainWindow;
 class Object3D;
 class ArcBall;
 
 class GLDisplay;
+class PrimitivesDialog;
+class GlobalProperties;
 
 class TextureController;
 
@@ -36,6 +36,7 @@ class RenderController : public QObject
 
     QList<GLenum> primitives;
     PrimitivesDialog *primitivesDialog;
+    GlobalProperties *propertries;
 
 public:
     explicit RenderController(MainWindow *mainWindow,
@@ -68,6 +69,7 @@ public slots:
 private:
     void configureModelsAndActions(QMenu*);
     QStringList primitiveSetup(void);
+
 
 };
 

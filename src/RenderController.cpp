@@ -10,8 +10,11 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Cube.h"
+#include "Tetrahedron.h"
 #include "Arcball.h"
 #include "DirectionalLight.h"
+#include "PrimitivesDialog.h"
+#include "GlobalProperties.h"
 
 RenderController::RenderController(MainWindow *mainWindow,
                                    QObject *parent):
@@ -26,18 +29,36 @@ RenderController::RenderController(MainWindow *mainWindow,
     mainWindow->setGLDisplay(display);
 
     {  // esta ordem deve ser mantida
-    display->updateGL();
+        display->updateGL();
 
-    configureModelsAndActions(mainWindow->modelsMenu());
+        configureModelsAndActions(mainWindow->modelsMenu());
 
-    connect(display, SIGNAL(drawModel()),
-            this, SLOT(drawModel()));
+        connect(display, SIGNAL(drawModel()),
+                this, SLOT(drawModel()));
 
-    connect(display, SIGNAL(lightSetup()),
-            this, SLOT(lightSetup()));
+        connect(display, SIGNAL(lightSetup()),
+                this, SLOT(lightSetup()));
     }
 
-    this->primitivesDialog = new PrimitivesDialog(primitiveSetup(), mainWindow);
+
+    { // configuracao das propriedades globais
+        propertries = new GlobalProperties(mainWindow);
+        propertries->setWidget(display->getPropertyBrowser());
+        mainWindow->addDockWidget(Qt::RightDockWidgetArea, propertries);
+    }
+
+    ShaderLab *sl = ShaderLab::instance();
+    if(!sl->geometryShaderEnabled())
+    {
+        mainWindow->setEnableMenuOutputPrimitives(false);
+    }
+    else
+    {
+        mainWindow->setEnableMenuOutputPrimitives(true);
+        this->primitivesDialog = new PrimitivesDialog(primitiveSetup(), mainWindow);
+        connect(mainWindow->menuChangeOutputPrimitive(), SIGNAL(triggered()),
+            this, SLOT(showPrimitiveSelector()));
+    }
 
     connect(display, SIGNAL(mouseLefthFinish(QPoint,QPoint)),
             this, SLOT(mouseLefthFinish(QPoint,QPoint)));
@@ -60,11 +81,9 @@ RenderController::RenderController(MainWindow *mainWindow,
     connect(mainWindow, SIGNAL(saveResultAsImage()),
             this, SLOT(saveResultAsImage()));
 
-    connect(mainWindow->menuChangeOutputPrimitive(), SIGNAL(triggered()),
-            this, SLOT(showPrimitiveSelector()));
-
     connect(mainWindow, SIGNAL(lightRotationToggle(bool)),
             this, SLOT(lightRotationToggle(bool)));
+
 }
 
 RenderController::~RenderController()
@@ -232,6 +251,12 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new Cube();
+    models.append(qMakePair(act, model_tmp));
+
+    act = menu->addAction(tr("&Tetrahedron"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    model_tmp = new Tetrahedron();
     models.append(qMakePair(act, model_tmp));
 
     connect(menu, SIGNAL(triggered(QAction*)),

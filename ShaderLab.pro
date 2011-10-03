@@ -19,6 +19,9 @@ MOC_DIR = tmp
 RCC_DIR = tmp
 UI_DIR = tmp
 DESTDIR = bin
+
+include(../qt-solutions/qtpropertybrowser/src/qtpropertybrowser.pri)
+
 SOURCES += src/main.cpp \
     src/Sphere.cpp \
     src/SLTabWidget.cpp \
@@ -45,7 +48,9 @@ SOURCES += src/main.cpp \
     src/PrimitivesDialog.cpp \
     src/DirectionalLight.cpp \
     src/Project.cpp \
-    src/Cube.cpp
+    src/Cube.cpp \
+    src/GlobalProperties.cpp \
+    src/Tetrahedron.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -71,14 +76,15 @@ HEADERS += headers/Sphere.h \
     headers/PrimitivesDialog.h \
     headers/DirectionalLight.h \
     headers/Project.h \
-    headers/Cube.h
+    headers/Cube.h \
+    headers/GlobalProperties.h \
+    headers/Tetrahedron.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
     forms/TexturePropertiesView.ui \
     forms/Find.ui \
-    forms/PrimitivesDialog.ui
+    forms/PrimitivesDialog.ui \
+    forms/GlobalProperties.ui
 RESOURCES += shaderlab.qrc
 OTHER_FILES += 
-
-

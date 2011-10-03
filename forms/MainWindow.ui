@@ -154,6 +154,9 @@
    <property name="features">
     <set>QDockWidget::AllDockWidgetFeatures</set>
    </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
    <property name="windowTitle">
     <string>   Render Area</string>
    </property>

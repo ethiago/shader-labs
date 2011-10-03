@@ -2,7 +2,7 @@
 #define TEXTURECONTROLLER_H
 
 #if defined(__WIN32__)
-    #include <GLee.h>
+#include <GLee.h>
 #endif
 #include <QObject>
 #include <QGLContext>

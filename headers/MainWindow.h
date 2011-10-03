@@ -67,6 +67,7 @@ public:
     void menuViewInsertAction(QAction* act);
     QAction* menuChangeOutputPrimitive(void);
     void setSecondTitle(const QString& title = QString());
+    void setEnableMenuOutputPrimitives(bool);
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */

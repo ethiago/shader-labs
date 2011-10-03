@@ -10,6 +10,8 @@ GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
     leftPressedPoint(NULLPOINT), zoom(1.0)
 {
     setStyleSheet("border: 2px solid black;");
+
+    setupPropertiesList();
 }
 
 GLDisplay::~GLDisplay()
@@ -33,8 +35,10 @@ void GLDisplay::initializeGL()
     glEnable( GL_LIGHT0 );
     glEnable(GL_LIGHTING);
     glShadeModel( GL_SMOOTH );
-
-    glClearColor( 1.0, 1.0, 1.0, 1.0);
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );	// specify implementation-specific hints
 
@@ -80,6 +84,9 @@ void GLDisplay::paintGL()
 
     glMatrixMode(GL_MODELVIEW);
 
+    QColor c = properties.find(BackGroundColor).value()->value().value<QColor>();
+    glClearColor( c.redF(), c.greenF(), c.blueF(), c.alphaF());
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
@@ -87,7 +94,8 @@ void GLDisplay::paintGL()
 
     gluLookAt(0,0,-15, 0,0,0, 0,-1,0);
 
-    glColor3f(1.0, 1.0, 1.0);
+    c = properties.find(ModelColor).value()->value().value<QColor>();
+    glColor4f( c.redF(), c.greenF(), c.blueF(), c.alphaF());
 
     emit drawModel();
 
@@ -168,3 +176,51 @@ void GLDisplay::mouseMoveEvent(QMouseEvent *event)
         event->ignore();
 }
 
+void GLDisplay::setupPropertiesList()
+{
+    variantManager = new QtVariantPropertyManager();
+
+    topItem = variantManager->addProperty(QtVariantPropertyManager::groupTypeId(),
+                QLatin1String("Global Property"));
+
+    {
+        QColor c = QColor(0, 0, 255);
+        item = variantManager->addProperty(QVariant::Color,
+                                           QLatin1String("BackGround Color"));
+        item->setValue(c);
+        topItem->addSubProperty(item);
+        properties.insert(BackGroundColor, item);
+    }
+
+    {
+        QColor c = QColor(255, 255, 255);
+        item = variantManager->addProperty(QVariant::Color,
+                                           QLatin1String("Model Color"));
+        item->setValue(c);
+        topItem->addSubProperty(item);
+        properties.insert(ModelColor, item);
+    }
+
+
+    variantFactory = new QtVariantEditorFactory();
+
+    variantEditor = new QtTreePropertyBrowser();
+    variantEditor->setFactoryForManager(variantManager, variantFactory);
+    variantEditor->addProperty(topItem);
+    variantEditor->setPropertiesWithoutValueMarked(true);
+    variantEditor->setRootIsDecorated(false);
+    variantEditor->setResizeMode(QtTreePropertyBrowser::Interactive);
+
+    connect(variantEditor, SIGNAL(currentItemChanged(QtBrowserItem*)),
+            this, SLOT(attributeChanged(QtBrowserItem*)));
+}
+
+QtTreePropertyBrowser* GLDisplay::getPropertyBrowser()
+{
+    return variantEditor;
+}
+
+void GLDisplay::attributeChanged(QtBrowserItem *)
+{
+    updateGL();
+}

@@ -7,7 +7,6 @@ class Cube : public Object3D
 {
     Q_OBJECT
 
-    float m_radius;
     int indexList;
 public:
     explicit Cube(const QVector3D& center = QVector3D(),

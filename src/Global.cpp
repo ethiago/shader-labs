@@ -109,3 +109,24 @@ QList<ShaderLab::Shader> ShaderLab::shaderTypeList(void)
 
     return list;
 }
+
+bool ShaderLab::criticalExtensionsEnabled()
+{
+    return ((this->extensions() & ShaderLab::FramebufferObject)  != 0 &&
+            (this->extensions() & ShaderLab::ShaderObjects) != 0);
+}
+
+bool ShaderLab::vertexShaderEnabled()
+{
+    return (this->extensions() & ShaderLab::VertexShader)  != 0;
+}
+
+bool ShaderLab::fragmentShaderEnabled()
+{
+    return (this->extensions() & ShaderLab::FragmentShader)  != 0;
+}
+
+bool ShaderLab::geometryShaderEnabled()
+{
+    return (this->extensions() & ShaderLab::GeometryShader)  != 0;
+}

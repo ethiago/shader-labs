@@ -8,7 +8,7 @@ void main()
 	vec2 BrickSize = vec2(0.3, 0.15);
 	vec2 BrickPct = vec2(0.9, 0.85);
 
-	vec3 color;
+	vec3 color = vec3(1.0,1.0,1.0);
 	vec2 position, useBrick;
 	
 	position = MCposition / BrickSize;
@@ -23,5 +23,5 @@ void main()
 	color = mix(MortarColor, BrickColor, useBrick.x * useBrick.y);
 	color *= (0.1 + LightIntensity);
 
-	gl_FragColor = vec4(color, 1.0);	
+	gl_FragColor = vec4(MortarColor, 1.0);	
 }
