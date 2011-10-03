@@ -33,6 +33,11 @@ public:
                        FragmentShader = 8,
                        ShaderObjects = 16};
 
+    bool criticalExtensionsEnabled();
+    bool vertexShaderEnabled();
+    bool fragmentShaderEnabled();
+    bool geometryShaderEnabled();
+
     static QString shaderToStrCap(Shader s);
     static QString shaderToStr(Shader s);
     static QString shaderToExt(Shader s);

@@ -1,13 +1,19 @@
 #include "TexturePropertiesView.h"
 #include "ui_TexturePropertiesView.h"
 #include "Texture.h"
+#include "MainWindow.h"
 #include <QCloseEvent>
 
-TexturePropertiesView::TexturePropertiesView(QWidget *parent) :
+TexturePropertiesView::TexturePropertiesView(MainWindow *parent) :
     QDockWidget(parent),
     ui(new Ui::TexturePropertiesView)
 {
     ui->setupUi(this);
+
+    QAction *act = toggleViewAction();
+    act->setText("Texture properties");
+    act->setShortcut(QKeySequence::fromString("Ctrl+T"));
+    parent->menuViewInsertAction(act);
 
     connect(ui->loadButton, SIGNAL(clicked()),
             this, SIGNAL(loadTextureClicked()));

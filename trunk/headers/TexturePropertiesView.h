@@ -4,11 +4,13 @@
 #include <QDockWidget>
 #include <QList>
 
+
 namespace Ui {
     class TexturePropertiesView;
 }
 
 class Texture;
+class MainWindow;
 
 class TexturePropertiesView : public QDockWidget
 {
@@ -21,7 +23,7 @@ signals:
     void textureCurrentChange(int);
 
 public:
-    explicit TexturePropertiesView(QWidget *parent = 0);
+    explicit TexturePropertiesView(MainWindow *parent = 0);
     ~TexturePropertiesView();
 
     void setTexture(const Texture& texture);

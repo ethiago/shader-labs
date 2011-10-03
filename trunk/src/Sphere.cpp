@@ -27,18 +27,7 @@ Sphere::~Sphere()
 
 void Sphere::drawGeometry(void)const
 {
-    /*
-    GLUquadric *quad = gluNewQuadric();
-
-    gluQuadricDrawStyle(quad, GLU_FILL);
-    gluQuadricNormals(quad, GLU_SMOOTH);
-
-    gluQuadricTexture(quad, true);
-    gluSphere(quad, radius(), slices(), stacks());
-    */
-
     glCallList(indexList);
-
 }
 
 void Sphere::storeList()
@@ -51,13 +40,8 @@ void Sphere::storeList()
     gluQuadricTexture(quad, true);
 
     glNewList(indexList, GL_COMPILE);
-    gluSphere(quad, radius(), slices(), stacks());
+        gluSphere(quad, radius(), slices(), stacks());
     glEndList();
-}
-
-void Sphere::setRadius(float radius)
-{
-    m_radius = radius;
 }
 
 float Sphere::radius(void)const

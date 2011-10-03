@@ -354,3 +354,8 @@ void MainWindow::setSecondTitle(const QString& title)
     else
         setWindowTitle("ShaderLabs - " + title);
 }
+
+void MainWindow::setEnableMenuOutputPrimitives(bool v)
+{
+    ui->actionChange_output_primitive->setEnabled(v);
+}

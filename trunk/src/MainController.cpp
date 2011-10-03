@@ -77,8 +77,7 @@ void MainController::glSetup(void)
 {
     ShaderLab * sl = ShaderLab::instance();
 
-    if((sl->extensions() & ShaderLab::FramebufferObject)  == 0 ||
-            (sl->extensions() & ShaderLab::ShaderObjects) == 0)
+    if(!sl->criticalExtensionsEnabled())
     {
             QMessageBox::critical(mainWindow, tr("OpenGL features missing"),
                 tr("The OpenGL extensions required to run this application are missing.\n") +
@@ -86,7 +85,7 @@ void MainController::glSetup(void)
             exit(0);
     }
 
-    if((sl->extensions() & ShaderLab::VertexShader)  == 0)
+    if(!sl->vertexShaderEnabled())
     {
         QMessageBox::warning(mainWindow, tr("OpenGL Vertex extension missing"),
             tr("The OpenGL Fragment extension required to run this application are missing.\n") +
@@ -97,7 +96,7 @@ void MainController::glSetup(void)
         chooseShaderDialog->addButton(ShaderLab::Vertex);
     }
 
-    if( (sl->extensions() & ShaderLab::FragmentShader) == 0 )
+    if(!sl->fragmentShaderEnabled())
     {
         QMessageBox::warning(mainWindow, tr("OpenGL Fragment extension missing"),
             tr("The OpenGL Fragment extension required to run this application are missing.\n") +
@@ -108,7 +107,7 @@ void MainController::glSetup(void)
         chooseShaderDialog->addButton(ShaderLab::Fragment);
     }
 
-    if( (sl->extensions() & ShaderLab::GeometryShader) == 0 )
+    if(!sl->geometryShaderEnabled())
     {
         QMessageBox::warning(mainWindow, tr("OpenGL Geometry extension missing"),
             tr("The OpenGL Geometry extension required to run this application are missing.\n") +

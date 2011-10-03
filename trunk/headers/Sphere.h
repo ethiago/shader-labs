@@ -23,10 +23,6 @@ private:
 
     void storeList();
 
- protected:
-    void setRadius(float radius);
-
-
 };
 
 #endif // SPHERE_H

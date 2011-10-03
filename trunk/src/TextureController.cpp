@@ -15,13 +15,6 @@ TextureController::TextureController(MainWindow* mw, QGLWidget* context,QObject 
    m_textureView = new TexturePropertiesView(mw);
    mw->addDockWidget(Qt::LeftDockWidgetArea, m_textureView);
 
-   {
-   QAction *act = m_textureView->toggleViewAction();
-   act->setText("Texture properties");
-   act->setShortcut(QKeySequence::fromString("Ctrl+T"));
-   mw->menuViewInsertAction(act);
-   }
-
    connect(m_textureView, SIGNAL(loadTextureClicked()),
            this, SLOT(loadTexture()));
 

@@ -5,6 +5,10 @@
 #include <QMouseEvent>
 #include <QMoveEvent>
 #include <QPoint>
+#include <QMap>
+#include <QtProperty>
+#include <QtVariantProperty>
+#include <QtTreePropertyBrowser>
 
 #define NULLPOINT   QPoint(-1,-1)
 #define EPSILON     0.001
@@ -16,6 +20,11 @@ class GLDisplay : public QGLWidget
     QPoint rigthPressedPoint;
     QPoint leftPressedPoint;
     float zoom;
+
+    enum Properties{
+        BackGroundColor,
+        ModelColor
+    };
 
 signals:
     void drawModel(void);
@@ -37,12 +46,27 @@ public:
     void setZoom(float z);
     float getZoom(void)const;
 
+    QtTreePropertyBrowser* getPropertyBrowser();
+
+private slots:
+    void attributeChanged(QtBrowserItem *);
+
 private:
+
+    QtVariantPropertyManager *variantManager;
+    QtProperty *topItem;
+    QtVariantProperty *item;
+    QtVariantEditorFactory *variantFactory;
+    QtTreePropertyBrowser *variantEditor;
+
+    QMap<Properties, QtVariantProperty*> properties;
+
     void mousePressEvent ( QMouseEvent * event );
     void mouseReleaseEvent ( QMouseEvent * event );
     void mouseMoveEvent(QMouseEvent *);
     float xDist(float aspect);
     float yDist(float aspect);
+    void setupPropertiesList();
 
 };
 
