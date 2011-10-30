@@ -45,6 +45,7 @@ RenderController::RenderController(MainWindow *mainWindow,
         propertries = new GlobalProperties(mainWindow);
         propertries->setWidget(display->getPropertyBrowser());
         mainWindow->addDockWidget(Qt::RightDockWidgetArea, propertries);
+        propertries->close();
     }
 
     ShaderLab *sl = ShaderLab::instance();
