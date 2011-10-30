@@ -12,6 +12,8 @@
 #include "Sphere.h"
 #include "Project.h"
 
+#define DEFFRAG "void main (){gl_FragColor = gl_Color;}"
+
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */
@@ -204,6 +206,7 @@ void MainController::programCloseRequest(QCloseEvent* event)
 void MainController::runAllActiveShaders(void)
 {
     QMap<ShaderLab::Shader, FileController*>::iterator it;
+    bool fragmentOk = false;
     QString output;
 
     program.removeAllShaders();
@@ -234,6 +237,8 @@ void MainController::runAllActiveShaders(void)
         if(compOK)
         {
             //program.addShader(shader);
+            if(shaderType == ShaderLab::Fragment)
+                fragmentOk = true;
 
             program.addShader(fc->getShader());
 
@@ -248,6 +253,12 @@ void MainController::runAllActiveShaders(void)
 
         output += "\n";
 
+    }
+
+    if(atLeastOne && !fragmentOk)
+    {
+        qDebug() << "Atachei!";
+        program.addShaderFromSourceCode(QGLShader::Fragment, QString(DEFFRAG));
     }
 
     output += "====================== Linking process ======================\n";
@@ -453,11 +464,7 @@ bool MainController::openShader(ShaderLab::Shader shaderType, QString filepath)
 
         if(!FileController::isValid(filepath))
         {
-            QMessageBox::warning(mainWindow, tr("Could not find file"),
-                                 tr("Não foi possível encontrar o arquivo:\n")+
-                                 filepath + "\n" +
-                                 tr("para o ") + tr(ShaderLab::shaderToStr(shaderType).toAscii()) +
-                                 tr(" shader"));
+            InterfaceRequests::openFileProblem(filepath);
             return false;
         }
 

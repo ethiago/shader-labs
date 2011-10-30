@@ -209,7 +209,7 @@ void GLDisplay::setupPropertiesList()
     variantEditor->addProperty(topItem);
     variantEditor->setPropertiesWithoutValueMarked(true);
     variantEditor->setRootIsDecorated(false);
-    variantEditor->setResizeMode(QtTreePropertyBrowser::Interactive);
+    //variantEditor->setResizeMode(QtTreePropertyBrowser::Interactive);
 
     connect(variantEditor, SIGNAL(currentItemChanged(QtBrowserItem*)),
             this, SLOT(attributeChanged(QtBrowserItem*)));

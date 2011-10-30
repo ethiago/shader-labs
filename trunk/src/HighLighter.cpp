@@ -135,7 +135,8 @@ Highlighter::Highlighter(QTextDocument *parent)
             << "\\bgl_TexCoord\\b" << "\\bgl_FogFragCoord\\b" << "\\bgl_Position\\b"
             << "\\bgl_PointSize\\b" << "\\bgl_ClipVertex\\b"
             << "\\bgl_FragColor\\b" << "\\bgl_FrontFacing\\b"
-            << "\\bgl_FragData\\b" << "\\bgl_FragDepth\\b";
+            << "\\bgl_FragData\\b" << "\\bgl_FragDepth\\b" <<
+               "\\bgl_MultiTexCoord[0-5]\\b";
     foreach (const QString &pattern, globalVarPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = globalVarFormat;

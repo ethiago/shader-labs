@@ -5,6 +5,7 @@
 #include <QImage>
 #include <QFileDialog>
 #include <QAction>
+#include "InterfaceRequests.h"
 
 TextureController::TextureController(MainWindow* mw, QGLWidget* context,QObject *parent) :
     QObject(parent)
@@ -55,7 +56,7 @@ void TextureController::textureFileName(const QString& imageFileName)
     QImage img(imageFileName);
     if(img.isNull())
     {
-        qDebug() << "Nao eh uma imagem valida";
+        InterfaceRequests::openFileProblem(imageFileName);
         return;
     }
 

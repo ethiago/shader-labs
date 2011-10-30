@@ -62,5 +62,7 @@
         <file>img/arrow-right.png</file>
         <file>img/search.png</file>
         <file>img/Project-icon.png</file>
+        <file alias="delete">img/delete.png</file>
+        <file>img/exchange.png</file>
     </qresource>
 </RCC>
