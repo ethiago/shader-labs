@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Find</class>
- <widget class="QFrame" name="Find">
+ <widget class="QWidget" name="Find">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -62,6 +62,17 @@
      <property name="icon">
       <iconset resource="../shaderlab.qrc">
        <normaloff>:/ico/img/arrow-right.png</normaloff>:/ico/img/arrow-right.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="5">
+    <widget class="QToolButton" name="closeButton">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../shaderlab.qrc">
+       <normaloff>:/ico/img/x.png</normaloff>:/ico/img/x.png</iconset>
      </property>
     </widget>
    </item>
