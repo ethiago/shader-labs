@@ -2,7 +2,7 @@
 #include "ui_Find.h"
 
 Find::Find(QWidget *parent) :
-    QFrame(parent, Qt::Window),
+    QWidget(parent),
     ui(new Ui::Find)
 {
    ui->setupUi(this);
@@ -19,6 +19,8 @@ Find::Find(QWidget *parent) :
            this, SLOT(findNext()));
    connect(ui->backButton, SIGNAL(clicked()),
            this, SLOT(findBack()));
+   connect(ui->closeButton, SIGNAL(clicked()),
+           this, SLOT(closeButton()));
    /*connect(ui->replaceButton, SIGNAL(clicked()),
            this, SLOT(replaceNext()));
    connect(ui->replaceAllButton, SIGNAL(clicked()),
@@ -79,4 +81,10 @@ void Find::replaceAll()
 {
     //if(!ui->findText->text().isEmpty() && !ui->replaceText->text().isEmpty())
     //    emit replaceAll(ui->findText->text(), ui->replaceText->text());
+}
+
+void Find::closeButton()
+{
+    m_toggleViewAction->setChecked(false);
+    toggle(false);
 }

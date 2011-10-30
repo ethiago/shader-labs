@@ -1,13 +1,13 @@
 #ifndef FIND_H
 #define FIND_H
 
-#include <QFrame>
+#include <QWidget>
 
 namespace Ui{
     class Find;
 }
 
-class Find : public QFrame
+class Find : public QWidget
 {
     Q_OBJECT
 
@@ -36,6 +36,7 @@ public slots:
     void findBack();
     void replaceNext();
     void replaceAll();
+    void closeButton();
 
 
 

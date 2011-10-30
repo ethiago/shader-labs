@@ -64,5 +64,6 @@
         <file>img/Project-icon.png</file>
         <file alias="delete">img/delete.png</file>
         <file>img/exchange.png</file>
+        <file>img/x.png</file>
     </qresource>
 </RCC>
