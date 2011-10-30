@@ -51,7 +51,7 @@
          </property>
          <property name="icon">
           <iconset resource="../shaderlab.qrc">
-           <normaloff>:/ico/img/loadtexture.png</normaloff>:/ico/img/loadtexture.png</iconset>
+           <normaloff>:/ico/img/exchange.png</normaloff>:/ico/img/exchange.png</iconset>
          </property>
         </widget>
        </item>
@@ -62,7 +62,7 @@
          </property>
          <property name="icon">
           <iconset resource="../shaderlab.qrc">
-           <normaloff>:/ico/img/removetexture.png</normaloff>:/ico/img/removetexture.png</iconset>
+           <normaloff>:/ico/delete</normaloff>:/ico/delete</iconset>
          </property>
         </widget>
        </item>

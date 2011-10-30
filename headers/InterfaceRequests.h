@@ -19,6 +19,7 @@ public:
     static QString includeNewFileIntoProject(ShaderLab::Shader);
     static bool replaceFileIntoProject(const QString& fileName);
     static bool createProject(void);
+    static void openFileProblem(const QString& filename);
 
 
 };

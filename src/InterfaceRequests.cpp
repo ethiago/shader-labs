@@ -164,3 +164,10 @@ bool InterfaceRequests::createProject(void)
     else
         return false;
 }
+
+void InterfaceRequests::openFileProblem(const QString& filename)
+{
+    QMessageBox::warning(0, "Open file error",
+                         "The file is not valid or could not be found.\n"
+                         +filename);
+}
