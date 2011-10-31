@@ -49,6 +49,7 @@ RenderController::RenderController(MainWindow *mainWindow,
     }
 
     ShaderLab *sl = ShaderLab::instance();
+    this->primitivesDialog = new PrimitivesDialog(primitiveSetup(), mainWindow);
     if(!sl->geometryShaderEnabled())
     {
         mainWindow->setEnableMenuOutputPrimitives(false);
@@ -56,7 +57,7 @@ RenderController::RenderController(MainWindow *mainWindow,
     else
     {
         mainWindow->setEnableMenuOutputPrimitives(true);
-        this->primitivesDialog = new PrimitivesDialog(primitiveSetup(), mainWindow);
+
         connect(mainWindow->menuChangeOutputPrimitive(), SIGNAL(triggered()),
             this, SLOT(showPrimitiveSelector()));
     }
