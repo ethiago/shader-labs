@@ -9,8 +9,8 @@
 SLTabWidget::SLTabWidget(QWidget *parent) :
     QTabWidget(parent)
 {
-    next = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this);
-    previous = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this);
+    next = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Tab), this);
+
 
     SLTabBar *tabBar = new SLTabBar();
     setTabBar(tabBar);
@@ -84,4 +84,11 @@ void SLTabWidget::nextTab(void)
     int newCurrent = (currentIndex() + 1) % count();
     if(count() > 0)
         setCurrentIndex(newCurrent);
+}
+
+void SLTabWidget::setFocus()
+{
+    ShaderCodeContainer * scc = (ShaderCodeContainer *)currentWidget();
+    if(scc != NULL)
+        scc->setFocus();
 }

@@ -41,6 +41,9 @@ private slots:
     void textChanged(bool);
     void cursorPositionChanged(void);
 
+public slots:
+    void setFocus();
+
 signals:
     void textChanged(ShaderLab::Shader);
     void clicked(Qt::MouseButton, ShaderLab::Shader);
