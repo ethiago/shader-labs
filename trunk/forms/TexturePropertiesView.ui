@@ -13,7 +13,7 @@
   <property name="minimumSize">
    <size>
     <width>196</width>
-    <height>308</height>
+    <height>315</height>
    </size>
   </property>
   <property name="autoFillBackground">
@@ -87,6 +87,19 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QComboBox" name="textureList"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="textureName">
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="imageContainer">

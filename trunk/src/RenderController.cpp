@@ -52,11 +52,11 @@ RenderController::RenderController(MainWindow *mainWindow,
     this->primitivesDialog = new PrimitivesDialog(primitiveSetup(), mainWindow);
     if(!sl->geometryShaderEnabled())
     {
-        mainWindow->setEnableMenuOutputPrimitives(false);
+        mainWindow->setEnableMenuGeometryShader(false);
     }
     else
     {
-        mainWindow->setEnableMenuOutputPrimitives(true);
+        mainWindow->setEnableMenuGeometryShader(true);
 
         connect(mainWindow->menuChangeOutputPrimitive(), SIGNAL(triggered()),
             this, SLOT(showPrimitiveSelector()));

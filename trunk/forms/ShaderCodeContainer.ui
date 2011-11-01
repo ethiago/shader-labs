@@ -55,7 +55,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTextEdit" name="shaderCodeBox">
+    <widget class="QPlainTextEdit" name="shaderCodeBox">
      <property name="palette">
       <palette>
        <active>
@@ -92,9 +92,6 @@
         </colorrole>
        </disabled>
       </palette>
-     </property>
-     <property name="acceptRichText">
-      <bool>false</bool>
      </property>
     </widget>
    </item>

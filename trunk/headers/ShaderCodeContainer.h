@@ -38,7 +38,7 @@ private:
     QPoint getCursorPosition(const QString& text, int pos);
 
 private slots:
-    void textChanged(void);
+    void textChanged(bool);
     void cursorPositionChanged(void);
 
 signals:

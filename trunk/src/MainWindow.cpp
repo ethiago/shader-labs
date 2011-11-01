@@ -355,7 +355,7 @@ void MainWindow::setSecondTitle(const QString& title)
         setWindowTitle("ShaderLabs - " + title);
 }
 
-void MainWindow::setEnableMenuOutputPrimitives(bool v)
+void MainWindow::setEnableMenuGeometryShader(bool v)
 {
-    ui->actionChange_output_primitive->setEnabled(v);
+    ui->menu_Geometry_Shader->setEnabled(v);
 }

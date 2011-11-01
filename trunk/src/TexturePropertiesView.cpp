@@ -39,6 +39,9 @@ void TexturePropertiesView::setTexture(const Texture& texture)
     img = img.scaled(ui->imageContainer->size());
 
     ui->imageContainer->setPixmap(QPixmap::fromImage(img));
+
+    ui->textureName->setText(texture.fileName());
+    ui->textureName->setToolTip(texture.fullFileName());
 }
 
 void TexturePropertiesView::setTextureList(const QList<QPair<QIcon, QString> >& textureList,
