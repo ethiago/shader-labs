@@ -73,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionWireframe, SIGNAL(toggled(bool)),
             this, SIGNAL(wireframeClicked(bool)));
 
-    connect(ui->actionSave_Result_as_Image, SIGNAL(triggered()),
+    connect(ui->saveImageButton, SIGNAL(clicked()),
             this, SIGNAL(saveResultAsImage()));
 
     connect(ui->actionNewFile, SIGNAL(triggered()),

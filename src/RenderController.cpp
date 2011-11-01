@@ -15,6 +15,7 @@
 #include "DirectionalLight.h"
 #include "PrimitivesDialog.h"
 #include "GlobalProperties.h"
+#include "InterfaceRequests.h"
 
 RenderController::RenderController(MainWindow *mainWindow,
                                    QObject *parent):
@@ -189,7 +190,7 @@ void RenderController::wireFrameToggle(bool wireframe)
 
 void RenderController::saveResultAsImage()
 {
-    QString filePath = QFileDialog::getSaveFileName(display, "Save Result As ...", "/home", "*.png");
+    QString filePath = InterfaceRequests::saveImage();
 
     if(filePath.isEmpty())
         return;

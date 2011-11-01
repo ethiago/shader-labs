@@ -11,6 +11,8 @@ GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
 {
     setStyleSheet("border: 2px solid black;");
 
+    setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
     setupPropertiesList();
 }
 
