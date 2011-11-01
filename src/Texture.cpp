@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include <QFileInfo>
 
 Texture::Texture(QObject *parent) :
     QObject(parent), m_image(QImage(":/ico/noImage")),
@@ -9,7 +10,7 @@ Texture::Texture(QObject *parent) :
 Texture::Texture(const Texture& tex) :
     QObject(tex.parent()), m_image(tex.image()),
     m_glTextureName(tex.glTextureName()), m_varName(tex.varName()),
-    m_filename(tex.filename())
+    m_filename(tex.fullFileName())
 {
 
 }
@@ -52,7 +53,17 @@ void Texture::setVarName(const QString& varName)
     m_varName = varName;
 }
 
-const QString& Texture::filename(void) const
+QString Texture::fileName(void) const
+{
+    QString var = m_filename;
+    if(var.isEmpty())
+        return QString();
+
+    QFileInfo fi(var);
+    return fi.fileName();
+}
+
+const QString& Texture::fullFileName(void) const
 {
     return m_filename;
 }
@@ -68,6 +79,6 @@ const Texture& Texture::operator=(const Texture& tex)
     m_image = tex.image();
     m_glTextureName = tex.glTextureName();
     m_varName = tex.varName();
-    m_filename = tex.filename();
+    m_filename = tex.fullFileName();
     return *this;
 }

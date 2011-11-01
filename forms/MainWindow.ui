@@ -59,7 +59,7 @@
      <x>0</x>
      <y>0</y>
      <width>743</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -106,7 +106,13 @@
     <property name="title">
      <string>Settin&amp;gs</string>
     </property>
-    <addaction name="actionChange_output_primitive"/>
+    <widget class="QMenu" name="menu_Geometry_Shader">
+     <property name="title">
+      <string>&amp;Geometry Shader</string>
+     </property>
+     <addaction name="actionChange_output_primitive"/>
+    </widget>
+    <addaction name="menu_Geometry_Shader"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>

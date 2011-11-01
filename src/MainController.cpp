@@ -497,6 +497,8 @@ bool MainController::saveFileBool(ShaderLab::Shader shaderType)
     {
         QString filepath = InterfaceRequests::saveAsRequestDialog( shaderType );
 
+        qDebug() << filepath;
+
         if(filepath.isEmpty()) return false;
         fc->setFilePath(filepath);
     }

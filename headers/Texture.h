@@ -27,7 +27,8 @@ public:
     const QString& varName(void) const;
     void setVarName(const QString&);
 
-    const QString& filename(void) const;
+    const QString& fullFileName(void) const;
+    QString fileName(void) const;
     void setFileName(const QString& fn);
 
     void clean(void);

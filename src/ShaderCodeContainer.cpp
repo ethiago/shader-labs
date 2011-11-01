@@ -11,7 +11,7 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
 {
     ui->setupUi(this);
     ui->shaderCodeBox->setFont(QFont("Courier"));
-    ui->shaderCodeBox->setAcceptRichText(false);
+    //ui->shaderCodeBox->setAcceptRichText(false);
     highLighter = new Highlighter(ui->shaderCodeBox->document());
 
     activePalette = ui->shaderCodeBox->palette();
@@ -29,7 +29,7 @@ ShaderCodeContainer::ShaderCodeContainer(ShaderLab::Shader shadertype, QWidget *
 
     ui->shaderCodeBox->setTabStopWidth(7*4);
 
-    connect(ui->shaderCodeBox, SIGNAL(textChanged()), this, SLOT(textChanged()));
+    connect(ui->shaderCodeBox, SIGNAL(modificationChanged(bool)), this, SLOT(textChanged(bool)));
 
     connect(ui->shaderCodeBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 }
@@ -41,7 +41,7 @@ ShaderCodeContainer::~ShaderCodeContainer()
 
 void ShaderCodeContainer::setText(const QString& code)
 {
-    ui->shaderCodeBox->setText(code);
+    ui->shaderCodeBox->setPlainText(code);
     setActivatedCode(true);
 }
 
@@ -55,9 +55,10 @@ ShaderLab::Shader ShaderCodeContainer::getShaderType(void)
     return shaderType;
 }
 
-void ShaderCodeContainer::textChanged(void)
+void ShaderCodeContainer::textChanged(bool v)
 {
-    emit textChanged(shaderType);
+    if(v)
+        emit textChanged(shaderType);
 }
 
 void ShaderCodeContainer::mouseReleaseEvent(QMouseEvent *e)

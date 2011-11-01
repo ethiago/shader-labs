@@ -150,7 +150,7 @@ QStringList TextureController::getTextureFileNames()
 
     for(int i = 0; i < m_textureList.size(); ++i)
     {
-        QString filename = m_textureList[i].filename();
+        QString filename = m_textureList[i].fullFileName();
         if(!filename.isEmpty())
         {
             filenames.append(filename);

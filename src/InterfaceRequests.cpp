@@ -40,11 +40,13 @@ QString InterfaceRequests::saveAsRequestDialog(ShaderLab::Shader shader)
                        0,
                        "Save " + ShaderLab::shaderToStr(shader) +" shader as...",
                        "../..",
-                       ShaderLab::shaderToExt(shader));
+                       "*"+ShaderLab::shaderToExt(shader));
+
+    qDebug() << "FILE:" << filename;
 
     QString ext = ShaderLab::shaderToExt(shader);
 
-    if(filename == ext)
+    if(filename == ext || filename.isEmpty())
         return QString();
 
     if(filename.right(ext.length()) != ext)
@@ -63,7 +65,7 @@ QString InterfaceRequests::saveProjectAsRequestDialog()
 
     QString ext = ".slp";
 
-    if(filename == ext)
+    if(filename == ext || filename.isEmpty())
         return QString();
 
     if(filename.right(ext.length()) != ext)
