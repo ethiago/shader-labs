@@ -120,6 +120,11 @@ void ShaderCodeContainer::findBack(const QString& s)
     ui->shaderCodeBox->find(s, QTextDocument::FindBackward);
 }
 
+void ShaderCodeContainer::setFocus()
+{
+    ui->shaderCodeBox->setFocus();
+}
+
 void ShaderCodeContainer::replaceNext(const QString&, const QString&)
 {
 }

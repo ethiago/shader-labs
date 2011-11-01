@@ -45,11 +45,14 @@ void Find::toggle(bool b)
     if(b)
     {
         if(okVisible)
-            setVisible(b);
+        {
+            setVisible(true);
+            ui->findText->setFocus();
+        }
         else
             m_toggleViewAction->setChecked(false);
     }else
-        setVisible(b);
+        setVisible(false);
 }
 
 void Find::setOkVisible(bool b)

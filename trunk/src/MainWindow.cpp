@@ -200,6 +200,7 @@ bool MainWindow::setVisibleShader(bool v, ShaderLab::Shader shadertype)
             tabArea->insertTab(tabArea->count(), it.value(), QString());
             tabArea->setCurrentIndex(tabArea->count() -1);
             tabArea->setTabIcon(tabArea->count() - 1, QIcon(":/ico/running"));
+            tabArea->setFocus();
         }
     }
     else

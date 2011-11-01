@@ -34,6 +34,8 @@ public slots:
     void previousTab(void);
     void nextTab(void);
 
+    void setFocus();
+
 };
 
 #endif // SLTABWIDGET_H
