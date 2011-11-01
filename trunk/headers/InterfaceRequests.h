@@ -20,6 +20,9 @@ public:
     static bool replaceFileIntoProject(const QString& fileName);
     static bool createProject(void);
     static void openFileProblem(const QString& filename);
+    static QString openShader(ShaderLab::Shader shader);
+    static QString openProject();
+    static QString saveImage();
 
 
 };

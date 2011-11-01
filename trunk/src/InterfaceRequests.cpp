@@ -2,6 +2,7 @@
 
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QFileInfo>
 
 InterfaceRequests::InterfaceRequests()
 {
@@ -32,46 +33,6 @@ InterfaceRequests::OperationState InterfaceRequests::saveRequestDialog(const QSt
         return No;
     else
         return Cancel;
-}
-
-QString InterfaceRequests::saveAsRequestDialog(ShaderLab::Shader shader)
-{
-    QString filename = QFileDialog::getSaveFileName(
-                       0,
-                       "Save " + ShaderLab::shaderToStr(shader) +" shader as...",
-                       "../..",
-                       "*"+ShaderLab::shaderToExt(shader));
-
-    qDebug() << "FILE:" << filename;
-
-    QString ext = ShaderLab::shaderToExt(shader);
-
-    if(filename == ext || filename.isEmpty())
-        return QString();
-
-    if(filename.right(ext.length()) != ext)
-        filename += ext;
-
-    return filename;
-}
-
-QString InterfaceRequests::saveProjectAsRequestDialog()
-{
-    QString filename = QFileDialog::getSaveFileName(
-                       0,
-                       "Save project as...",
-                       "../..",
-                       "*.slp");
-
-    QString ext = ".slp";
-
-    if(filename == ext || filename.isEmpty())
-        return QString();
-
-    if(filename.right(ext.length()) != ext)
-        filename += ext;
-
-    return filename;
 }
 
 bool InterfaceRequests::removeFileFromProject(const QString& fileName)
@@ -172,4 +133,104 @@ void InterfaceRequests::openFileProblem(const QString& filename)
     QMessageBox::warning(0, "Open file error",
                          "The file is not valid or could not be found.\n"
                          +filename);
+}
+
+QString InterfaceRequests::openShader(ShaderLab::Shader shader)
+{
+    static QString dir = ".";
+    QString filepath = QFileDialog::getOpenFileName(0,
+                              "Open " + ShaderLab::shaderToStr(shader) + " shader",
+                              dir,
+                              "*" + ShaderLab::shaderToExt(shader));
+
+    if(!filepath.isEmpty())
+    {
+        QFileInfo fi(filepath);
+        dir = fi.absolutePath();
+    }
+
+    return filepath;
+}
+
+QString InterfaceRequests::openProject()
+{
+    static QString dir = ".";
+    QString filename = QFileDialog::getOpenFileName(0,
+                                                    "Open Project",
+                                                    dir,
+                                                    "*.slp");
+    if(!filename.isEmpty())
+    {
+        QFileInfo fi(filename);
+        dir = fi.absolutePath();
+    }
+
+    return filename;
+}
+
+QString InterfaceRequests::saveAsRequestDialog(ShaderLab::Shader shader)
+{
+    static QString dir = ".";
+    QString filename = QFileDialog::getSaveFileName(
+                       0,
+                       "Save " + ShaderLab::shaderToStr(shader) +" shader as...",
+                       dir,
+                       "*"+ShaderLab::shaderToExt(shader));
+
+    QString ext = ShaderLab::shaderToExt(shader);
+
+    if(filename == ext || filename.isEmpty())
+        return QString();
+
+    QFileInfo fi(filename);
+    dir = fi.absolutePath();
+
+    if(filename.right(ext.length()) != ext)
+        filename += ext;
+
+    return filename;
+}
+
+QString InterfaceRequests::saveProjectAsRequestDialog()
+{
+    static QString dir = ".";
+    QString filename = QFileDialog::getSaveFileName(
+                       0,
+                       "Save project as...",
+                       dir,
+                       "*.slp");
+
+    QString ext = ".slp";
+
+    if(filename == ext || filename.isEmpty())
+        return QString();
+
+    QFileInfo fi(filename);
+    dir = fi.absolutePath();
+
+    if(filename.right(ext.length()) != ext)
+        filename += ext;
+
+    return filename;
+}
+
+QString InterfaceRequests::saveImage()
+{
+    static QString dir = ".";
+    QString filename = QFileDialog::getSaveFileName(0,
+                                                    "Save Image",
+                                                    dir,
+                                                    "*.png");
+    QString ext = ".png";
+
+    if(filename == ext || filename.isEmpty())
+        return QString();
+
+    QFileInfo fi(filename);
+    dir = fi.absolutePath();
+
+    if(filename.right(ext.length()) != ext)
+        filename += ext;
+
+    return filename;
 }

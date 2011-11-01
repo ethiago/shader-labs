@@ -382,10 +382,7 @@ void MainController::openShaderActionClicked()
 
     if(!fc)
     {
-        QString filepath = QFileDialog::getOpenFileName(mainWindow,
-                                  "Open " + ShaderLab::shaderToStr(shaderType) + " shader",
-                                  "../..",
-                                  "*" + ShaderLab::shaderToExt(shaderType));
+        QString filepath = InterfaceRequests::openShader(shaderType);
 
         if(filepath.isEmpty())
             return;
@@ -416,7 +413,8 @@ void MainController::openShaderActionClicked()
 
 void MainController::loadProject(void)
 {
-    QString filename = QFileDialog::getOpenFileName(mainWindow,tr("Open Project"), "..", "*.slp");
+    QString filename = InterfaceRequests::openProject();
+
     if(filename.isEmpty())
         return;
 

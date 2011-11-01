@@ -100,7 +100,6 @@
      <string>&amp;Build</string>
     </property>
     <addaction name="actionRunAll"/>
-    <addaction name="actionSave_Result_as_Image"/>
    </widget>
    <widget class="QMenu" name="menuSettin_gs">
     <property name="title">
@@ -134,17 +133,16 @@
    </attribute>
    <addaction name="actionLoad_Project"/>
    <addaction name="separator"/>
-   <addaction name="actionOpenCode"/>
    <addaction name="actionNewFile"/>
+   <addaction name="actionOpenCode"/>
    <addaction name="actionSaveFile"/>
    <addaction name="separator"/>
    <addaction name="actionRunAll"/>
-   <addaction name="actionSave_Result_as_Image"/>
   </widget>
   <widget class="QDockWidget" name="dockRenderWidget">
    <property name="minimumSize">
     <size>
-     <width>160</width>
+     <width>163</width>
      <height>160</height>
     </size>
    </property>
@@ -186,10 +184,39 @@
         <number>9</number>
        </property>
        <item>
-        <widget class="QCheckBox" name="ckbLightRotation">
-         <property name="text">
-          <string>Light Rotation</string>
+        <widget class="QWidget" name="optionsContents" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QToolButton" name="saveImageButton">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="../shaderlab.qrc">
+              <normaloff>:/ico/img/1303587978_3floppy_unmount.png</normaloff>:/ico/img/1303587978_3floppy_unmount.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="ckbLightRotation">
+            <property name="text">
+             <string>Light Rotation</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -348,18 +375,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
-   </property>
-  </action>
-  <action name="actionSave_Result_as_Image">
-   <property name="icon">
-    <iconset resource="../shaderlab.qrc">
-     <normaloff>:/ico/img/1303587978_3floppy_unmountImage.png</normaloff>:/ico/img/1303587978_3floppy_unmountImage.png</iconset>
-   </property>
-   <property name="text">
-    <string>Save Result As ...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+I</string>
    </property>
   </action>
   <action name="actionChange_output_primitive">
