@@ -23,15 +23,11 @@ SLTabWidget::SLTabWidget(QWidget *parent) :
 
     connect(next, SIGNAL(activated()),
             this, SLOT(nextTab()));
-
-    connect(previous, SIGNAL(activated()),
-            this, SLOT(previousTab()));
 }
 
 SLTabWidget::~SLTabWidget()
 {
     delete next;
-    delete previous;
 }
 
 void SLTabWidget::tabCloseRequested(int index)
