@@ -12,7 +12,6 @@ class SLTabWidget : public QTabWidget
     Q_OBJECT
 
     QShortcut * next;
-    QShortcut * previous;
 
 public:
     explicit SLTabWidget(QWidget *parent = 0);

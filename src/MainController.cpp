@@ -413,8 +413,11 @@ void MainController::openShaderActionClicked()
 
 void MainController::loadProject(void)
 {
-    QString filename = InterfaceRequests::openProject();
+    openProject(InterfaceRequests::openProject());
+}
 
+void MainController::openProject(const QString& filename)
+{
     if(filename.isEmpty())
         return;
 
@@ -449,6 +452,8 @@ void MainController::loadProject(void)
 
     mainWindow->setSecondTitle(project->getProjectFileName());
 }
+
+
 
 bool MainController::openShader(ShaderLab::Shader shaderType, QString filepath)
 {

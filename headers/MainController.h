@@ -34,6 +34,7 @@ class MainController : public QObject
 public:
     explicit MainController(MainWindow *mw, QObject *parent = 0);
     ~MainController();
+    void openProject(const QString&);
 
 public slots:
     void slot_closeShaderCode(ShaderLab::Shader);
