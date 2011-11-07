@@ -73,10 +73,14 @@ ShaderLab::ShaderLab()
     m_extensions = 0;
 
     const char *extensionString = reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS));
+    const char *renderer = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
+
 
     if(extensionString == 0)
        return;
 
+    QString rend(renderer);
+    qDebug() << rend;
     QStringList extension = QString( extensionString).split(QChar(' '));
     qDebug() << extension;
 
