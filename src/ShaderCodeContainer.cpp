@@ -58,7 +58,10 @@ ShaderLab::Shader ShaderCodeContainer::getShaderType(void)
 void ShaderCodeContainer::textChanged(bool v)
 {
     if(v)
+    {
         emit textChanged(shaderType);
+        ui->shaderCodeBox->document()->setModified(false);
+    }
 }
 
 void ShaderCodeContainer::mouseReleaseEvent(QMouseEvent *e)
