@@ -90,7 +90,7 @@ void MainController::glSetup(void)
     if(!sl->vertexShaderEnabled())
     {
         QMessageBox::warning(mainWindow, tr("OpenGL Vertex extension missing"),
-            tr("The OpenGL Fragment extension required to run this application are missing.\n") +
+            tr("The OpenGL Fragment extension required to run this application is missing.\n") +
             tr("The program will run without this feature."));
     }else
     {
@@ -101,7 +101,7 @@ void MainController::glSetup(void)
     if(!sl->fragmentShaderEnabled())
     {
         QMessageBox::warning(mainWindow, tr("OpenGL Fragment extension missing"),
-            tr("The OpenGL Fragment extension required to run this application are missing.\n") +
+            tr("The OpenGL Fragment extension required to run this application is missing.\n") +
             tr("The program will run without this feature."));
     }else
     {
@@ -112,7 +112,7 @@ void MainController::glSetup(void)
     if(!sl->geometryShaderEnabled())
     {
         QMessageBox::warning(mainWindow, tr("OpenGL Geometry extension missing"),
-            tr("The OpenGL Geometry extension required to run this application are missing.\n") +
+            tr("The OpenGL Geometry extension required to run this application is missing.\n") +
             tr("The program will run without this feature."));
     }else
     {
@@ -289,6 +289,7 @@ void MainController::runAllActiveShaders(void)
     mainWindow->setOutputText(output);
     renderController->updateGL();
 }
+
 
 /* Associated with the 'saveAll' signal. */
 /* Performs a saving routine for all unsaved files, distinguishing new and old files. */

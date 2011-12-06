@@ -1,17 +1,17 @@
 #include "PrimitivesDialog.h"
 #include "ui_PrimitivesDialog.h"
 
-PrimitivesDialog::PrimitivesDialog(QStringList texts, QWidget *parent) :
+PrimitivesDialog::PrimitivesDialog(QStringList inTexts, QStringList ouTexts, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::PrimitivesDialog)
 {
     ui->setupUi(this);
 
-    ui->comboBoxOutput->addItems(texts);
-    ui->comboBoxOutput->setCurrentIndex(4); //GL_TRIANGLES - To change, check RenderController::primitives
+    ui->comboBoxOutput->addItems(ouTexts);
+    ui->comboBoxOutput->setCurrentIndex(3); //GL_TRIANGLES - To change, check RenderController::primitives
 
-    ui->comboBoxInput->addItems(texts);
-    ui->comboBoxInput->setCurrentIndex(4); //GL_TRIANGLES - To change, check RenderController::primitives
+    ui->comboBoxInput->addItems(inTexts);
+    ui->comboBoxInput->setCurrentIndex(3); //GL_TRIANGLES - To change, check RenderController::primitives
 
 }
 

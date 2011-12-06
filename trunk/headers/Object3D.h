@@ -22,6 +22,8 @@ class Object3D : public QObject
 
     int m_texture;
 
+    int m_inputType;
+
     virtual void drawGeometry(void) const = 0;
 
 public:
@@ -49,12 +51,15 @@ public:
     void setTexture(int texture);
     int texture(void)const;
 
+    int inputType(void)const;
+
     void draw(void) const;
 
     void cleanTransformations();
 
 protected:
 
+    void setInputType(int input);
     void setStacks(int stacks);
     void setSlices(int slices);
 

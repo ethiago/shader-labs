@@ -50,7 +50,7 @@ RenderController::RenderController(MainWindow *mainWindow,
     }
 
     ShaderLab *sl = ShaderLab::instance();
-    this->primitivesDialog = new PrimitivesDialog(primitiveSetup(), mainWindow);
+    this->primitivesDialog = new PrimitivesDialog(inPrimitiveSetup(), outPrimitiveSetup(),  mainWindow);
     if(!sl->geometryShaderEnabled())
     {
         mainWindow->setEnableMenuGeometryShader(false);
@@ -266,34 +266,40 @@ void RenderController::configureModelsAndActions(QMenu* menu)
             this, SLOT(modelChanged(QAction*)));
 }
 
-QStringList RenderController::primitiveSetup(void)
+QStringList RenderController::inPrimitiveSetup(void)
 {
     QStringList text;
 
     primitives.append(GL_POINTS);
     primitives.append(GL_LINES);
-    primitives.append(GL_LINE_STRIP);
-    primitives.append(GL_LINE_LOOP);
+    primitives.append(GL_LINES_ADJACENCY_EXT);
     primitives.append(GL_TRIANGLES);
-    primitives.append(GL_TRIANGLE_STRIP);
-    primitives.append(GL_TRIANGLE_FAN);
-    primitives.append(GL_QUADS);
-    primitives.append(GL_QUAD_STRIP);
-    primitives.append(GL_POLYGON);
+    primitives.append(GL_TRIANGLES_ADJACENCY_EXT);
+
 
     text.append("GL_POINTS");
     text.append("GL_LINES");
-    text.append("GL_LINE_STRIP");
-    text.append("GL_LINE_LOOP");
+    text.append("GL_LINES_ADJACENCY_EXT");
     text.append("GL_TRIANGLES");
-    text.append("GL_TRIANGLE_STRIP");
-    text.append("GL_TRIANGLE_FAN");
-    text.append("GL_QUADS");
-    text.append("GL_QUAD_STRIP");
-    text.append("GL_POLYGON");
+    text.append("GL_TRIANGLES_ADJACENCY_EXT");
 
     return text;
+}
 
+QStringList RenderController::outPrimitiveSetup(void)
+{
+    QStringList text;
+
+    primitives.append(GL_POINTS);
+    primitives.append(GL_LINE_STRIP);
+    primitives.append(GL_TRIANGLE_STRIP);
+
+
+    text.append("GL_POINTS");
+    text.append("GL_LINE_STRIP");
+    text.append("GL_TRIANGLE_STRIP");
+
+    return text;
 }
 
 void RenderController::showPrimitiveSelector(void)

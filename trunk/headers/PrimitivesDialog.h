@@ -10,7 +10,7 @@ namespace Ui {
 class PrimitivesDialog : public QDialog {
     Q_OBJECT
 public:
-    PrimitivesDialog(QStringList texts, QWidget *parent = 0);
+    PrimitivesDialog(QStringList inTexts, QStringList ouTexts, QWidget *parent = 0);
     ~PrimitivesDialog();
     int getCurrentInputPrimitiveIndex(void);
     int getCurrentOutputPrimitiveIndex(void);
