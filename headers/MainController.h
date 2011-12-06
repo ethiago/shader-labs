@@ -31,6 +31,8 @@ class MainController : public QObject
 
     Project *project;
 
+    int tmpProgram;
+
 public:
     explicit MainController(MainWindow *mw, QObject *parent = 0);
     ~MainController();

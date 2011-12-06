@@ -5,7 +5,7 @@ Object3D::Object3D(const QVector3D& center, QObject *parent)
     : QObject(parent), m_center(center), m_translation(QVector3D()),
       m_rotations(QMatrix4x4()) ,
       m_interactiveQuartenion(QQuaternion()),
-      m_slices(50), m_stacks (50), m_texture(-1)
+      m_slices(50), m_stacks (50), m_texture(-1), m_inputType(GL_TRIANGLES)
 {
 }
 
@@ -13,7 +13,8 @@ Object3D::Object3D(const Object3D& obj)
     : QObject(obj.parent()), m_center(obj.center()),
       m_translation(obj.translation()), m_rotations(obj.rotations()),
       m_interactiveQuartenion(obj.interactiveQuartenion()),
-      m_slices(obj.slices()), m_stacks(obj.stacks()), m_texture(obj.texture())
+      m_slices(obj.slices()), m_stacks(obj.stacks()),
+      m_texture(obj.texture()), m_inputType(obj.inputType())
 
 {
 }
@@ -120,4 +121,14 @@ void Object3D::cleanTransformations()
 
     setInteractiveQuartenion(QQuaternion());
     setRotations(QMatrix4x4());
+}
+
+int Object3D::inputType(void)const
+{
+    return m_inputType;
+}
+
+void Object3D::setInputType(int input)
+{
+    m_inputType = input;
 }

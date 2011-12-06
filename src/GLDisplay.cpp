@@ -82,7 +82,10 @@ void GLDisplay::paintGL()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glFrustum(-xdist, xdist, -ydist, +ydist, 5.0, 100);
+
+    glOrtho(-xdist*3.0, xdist*3.0, -ydist*3.0, +ydist*3.0, 5.0, 50);
+
+    //glFrustum(-xdist, xdist, -ydist, +ydist, 5.0, 50);
 
     glMatrixMode(GL_MODELVIEW);
 
