@@ -7,7 +7,7 @@ Plane::Plane(int stacks, int slices) : Object3D()
     setSlices(slices);
 
     indexList = glGenLists(1);
-
+    setInputType(GL_TRIANGLES);
     storeList();
 }
 

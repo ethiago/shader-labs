@@ -50,7 +50,7 @@ RenderController::RenderController(MainWindow *mainWindow,
     }
 
     ShaderLab *sl = ShaderLab::instance();
-    this->primitivesDialog = new PrimitivesDialog(inPrimitiveSetup(), outPrimitiveSetup(),  mainWindow);
+    this->primitivesDialog = new PrimitivesDialog(outPrimitiveSetup(),  mainWindow);
     if(!sl->geometryShaderEnabled())
     {
         mainWindow->setEnableMenuGeometryShader(false);
@@ -266,26 +266,6 @@ void RenderController::configureModelsAndActions(QMenu* menu)
             this, SLOT(modelChanged(QAction*)));
 }
 
-QStringList RenderController::inPrimitiveSetup(void)
-{
-    QStringList text;
-
-    primitives.append(GL_POINTS);
-    primitives.append(GL_LINES);
-    primitives.append(GL_LINES_ADJACENCY_EXT);
-    primitives.append(GL_TRIANGLES);
-    primitives.append(GL_TRIANGLES_ADJACENCY_EXT);
-
-
-    text.append("GL_POINTS");
-    text.append("GL_LINES");
-    text.append("GL_LINES_ADJACENCY_EXT");
-    text.append("GL_TRIANGLES");
-    text.append("GL_TRIANGLES_ADJACENCY_EXT");
-
-    return text;
-}
-
 QStringList RenderController::outPrimitiveSetup(void)
 {
     QStringList text;
@@ -314,7 +294,9 @@ GLenum RenderController::getCurrentOutputPrimitive(void)
 
 GLenum RenderController::getCurrentInputPrimitive(void)
 {
-    return primitives[primitivesDialog->getCurrentInputPrimitiveIndex()];
+    //return primitives[primitivesDialog->getCurrentInputPrimitiveIndex()];
+    return model->inputType();
+
 }
 
 void RenderController::lightRotationToggle(bool lt)
