@@ -10,6 +10,7 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Cube.h"
+#include "Point.h"
 #include "Tetrahedron.h"
 #include "Arcball.h"
 #include "DirectionalLight.h"
@@ -260,6 +261,12 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new Tetrahedron();
+    models.append(qMakePair(act, model_tmp));
+
+    act = menu->addAction(tr("&Point"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    model_tmp = new Point();
     models.append(qMakePair(act, model_tmp));
 
     connect(menu, SIGNAL(triggered(QAction*)),

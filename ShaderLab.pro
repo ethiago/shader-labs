@@ -50,7 +50,8 @@ SOURCES += src/main.cpp \
     src/Project.cpp \
     src/Cube.cpp \
     src/GlobalProperties.cpp \
-    src/Tetrahedron.cpp
+    src/Tetrahedron.cpp \
+    src/Point.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -78,7 +79,8 @@ HEADERS += headers/Sphere.h \
     headers/Project.h \
     headers/Cube.h \
     headers/GlobalProperties.h \
-    headers/Tetrahedron.h
+    headers/Tetrahedron.h \
+    headers/Point.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
@@ -88,3 +90,6 @@ FORMS += forms/MainWindow.ui \
     forms/GlobalProperties.ui
 RESOURCES += shaderlab.qrc
 OTHER_FILES += 
+
+
+

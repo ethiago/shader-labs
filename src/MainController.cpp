@@ -257,7 +257,6 @@ void MainController::runAllActiveShaders(void)
 
     if(atLeastOne && !fragmentOk)
     {
-        qDebug() << "Atachei!";
         program.addShaderFromSourceCode(QGLShader::Fragment, QString(DEFFRAG));
     }
 
@@ -267,13 +266,11 @@ void MainController::runAllActiveShaders(void)
 
 #ifdef QT47_CAPABLE
         ShaderLab * sl = ShaderLab::instance();
-        //if(sl->geometryShaderEnabled())
-        //{
-            //program.setGeometryInputType(renderController->getCurrentInputPrimitive());
-            //program.setGeometryOutputType(renderController->getCurrentOutputPrimitive());
+        if(sl->geometryShaderEnabled())
+        {
             program.setGeometryInputType(renderController->getCurrentInputPrimitive());
-            program.setGeometryOutputType(GL_TRIANGLES);
-        //}
+            program.setGeometryOutputType(renderController->getCurrentOutputPrimitive());
+        }
 #endif
         program.link();
         output += program.log();
