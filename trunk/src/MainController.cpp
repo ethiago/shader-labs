@@ -267,11 +267,13 @@ void MainController::runAllActiveShaders(void)
 
 #ifdef QT47_CAPABLE
         ShaderLab * sl = ShaderLab::instance();
-        if(sl->geometryShaderEnabled())
-        {
+        //if(sl->geometryShaderEnabled())
+        //{
+            //program.setGeometryInputType(renderController->getCurrentInputPrimitive());
+            //program.setGeometryOutputType(renderController->getCurrentOutputPrimitive());
             program.setGeometryInputType(renderController->getCurrentInputPrimitive());
-            program.setGeometryOutputType(renderController->getCurrentOutputPrimitive());
-        }
+            program.setGeometryOutputType(GL_TRIANGLES);
+        //}
 #endif
         program.link();
         output += program.log();

@@ -9,7 +9,7 @@ Sphere::Sphere(int stacks, int slices, float radius, const QVector3D& center, QO
     setSlices(slices);
 
     indexList = glGenLists(1);
-
+    setInputType(GL_TRIANGLES);
     storeList();
 }
 

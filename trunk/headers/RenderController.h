@@ -68,7 +68,6 @@ public slots:
 
 private:
     void configureModelsAndActions(QMenu*);
-    QStringList inPrimitiveSetup(void);
     QStringList outPrimitiveSetup(void);
 
 

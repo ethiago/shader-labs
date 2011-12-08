@@ -7,7 +7,7 @@ Tetrahedron::Tetrahedron(const QVector3D& center, QObject *parent):
     Object3D(center, parent)
 {
     indexList = glGenLists(1);
-
+    setInputType(GL_TRIANGLES);
     storeList();
 }
 

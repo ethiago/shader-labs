@@ -10,10 +10,11 @@ namespace Ui {
 class PrimitivesDialog : public QDialog {
     Q_OBJECT
 public:
-    PrimitivesDialog(QStringList inTexts, QStringList ouTexts, QWidget *parent = 0);
+    PrimitivesDialog(QStringList ouTexts, QWidget *parent = 0);
     ~PrimitivesDialog();
     int getCurrentInputPrimitiveIndex(void);
     int getCurrentOutputPrimitiveIndex(void);
+    void changeCurrentInputType(const QString& s);
 
 protected:
     void changeEvent(QEvent *e);
