@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>../../shader-lab/resources/research/rayTetra/rayTetra.vert</vertex>
+		<fragment>../../shader-lab/resources/research/rayTetra/rayTetra.frag</fragment>
+		<geometry>../../shader-lab/resources/research/rayTetra/rayTetra.geom</geometry>
+	</shaders>
+	<model>
+		<id>6</id>
+	</model>
+</ShaderLab>
