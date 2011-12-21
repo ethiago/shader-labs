@@ -23,7 +23,8 @@ class GLDisplay : public QGLWidget
 
     enum Properties{
         BackGroundColor,
-        ModelColor
+        ModelColor,
+        Ortho
     };
 
 signals:
