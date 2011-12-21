@@ -82,10 +82,12 @@ void GLDisplay::paintGL()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
+    bool o = properties.find(Ortho).value()->value().value<bool>();
 
-    glOrtho(-xdist*3.0, xdist*3.0, -ydist*3.0, +ydist*3.0, 5.0, 50);
-
-    //glFrustum(-xdist, xdist, -ydist, +ydist, 5.0, 50);
+    if(o)
+        glOrtho(-xdist*3.0, xdist*3.0, -ydist*3.0, +ydist*3.0, 5.0, 50);
+    else
+        glFrustum(-xdist, xdist, -ydist, +ydist, 5.0, 50);
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -204,6 +206,14 @@ void GLDisplay::setupPropertiesList()
         item->setValue(c);
         topItem->addSubProperty(item);
         properties.insert(ModelColor, item);
+    }
+
+    {
+        item = variantManager->addProperty(QVariant::Bool,
+                                           QLatin1String("Ortho"));
+        item->setValue(false);
+        topItem->addSubProperty(item);
+        properties.insert(Ortho, item);
     }
 
 
