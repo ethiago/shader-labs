@@ -146,7 +146,7 @@ void main()
 			posc = osTetra[0][idx.y] + p.t*(osTetra[0][idx.w] - osTetra[0][idx.y]);
 		}
 
-//lineStrip
+//lineStrip Debug
 /*
 		gl_FrontColor = vec4(1.0,0.0,0.0,1.0);
 		gl_Position = center; EmitVertex();
@@ -182,8 +182,6 @@ void main()
 		gl_Position = psTetra[0][idx.w]; EmitVertex();
 		EndPrimitive();
 */
-
-//Final Triangle Strip
 
 		gl_Position = center;
 		Qi = Qic;
