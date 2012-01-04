@@ -13,6 +13,7 @@ out mat4 Qo;
 out vec4 pos;
 
 mat4 Q[4];
+mat4 ssTetra;
 
 ivec4 sort(void)
 {
@@ -86,13 +87,13 @@ vec3 parametroInterpolacao(in ivec3 idx,in vec2 p)
 	return area;
 }
 
-vec2 inter(in ivec4 idx)
+vec2 intersection(in ivec4 idx)
 {
 	vec2 ret = vec2(0.0);
-	vec2 a = psTetra[0][idx[0]].xy;
-	vec2 b = psTetra[0][idx[2]].xy;
-	vec2 c = psTetra[0][idx[1]].xy;
-	vec2 d = psTetra[0][idx[3]].xy;
+	vec2 a = ssTetra[idx[0]].xy;
+	vec2 b = ssTetra[idx[2]].xy;
+	vec2 c = ssTetra[idx[1]].xy;
+	vec2 d = ssTetra[idx[3]].xy;
 
 	float der = (b.y - a.y)/(b.x - a.x);
 	float ydc = d.y-c.y;
@@ -108,151 +109,70 @@ vec2 inter(in ivec4 idx)
 void main()
 {
 	ivec4 idx;
-	vec2 p;
 
 	Q[0] = Q0[0];
 	Q[1] = Q1[0];
 	Q[2] = Q2[0];
 	Q[3] = Q3[0];
+
+	ssTetra[0] = psTetra[0][0] / psTetra[0][0].w;
+	ssTetra[1] = psTetra[0][1] / psTetra[0][1].w;
+	ssTetra[2] = psTetra[0][2] / psTetra[0][2].w;
+	ssTetra[3] = psTetra[0][3] / psTetra[0][3].w;
 		
 	idx = sort();
-
-	gl_FrontColor = vec4(1.0);
 	
-	p = inter(idx);
+	vec2 s,t;	
+	vec2 p = intersection(idx);
+	s[0] = 1.0 - p.s;
+	s[1] = p.s;
+	t[0] = 1.0 - p.t;
+	t[1] = p.t;
 
 	vec4 center;
 	mat4 Qic;
 	mat4 Qoc;
 	vec4 posc;
 
-	if(p.s > 0.0 && p.s < 1.0 && p.t < 1.0 && p.t > 0.0)
+	if(s[0] > 0.0 && s[0] < 1.0 && t[0] < 1.0 && t[0] > 0.0)
 	{
-		
-
-		float z0 = psTetra[0][idx.x].z + p.s*(psTetra[0][idx.z].z - psTetra[0][idx.x].z);
-		float z1 = psTetra[0][idx.y].z + p.t*(psTetra[0][idx.w].z - psTetra[0][idx.y].z);
+		float z0 = s[0]*ssTetra[idx[0]].z + s[1]*ssTetra[idx[2]].z;
+		float z1 = t[0]*ssTetra[idx[1]].z + t[1]*ssTetra[idx[3]].z;
 		if(z0 < z1)
 		{
-			center = psTetra[0][idx.x] + p.s*(psTetra[0][idx.z] - psTetra[0][idx.x]);
-			Qic = Q[idx.x] + p.s*(Q[idx.z] - Q[idx.x]);
-			Qoc = Q[idx.y] + p.t*(Q[idx.w] - Q[idx.y]);
-			posc = osTetra[0][idx.x] + p.s*(osTetra[0][idx.z] - osTetra[0][idx.x]);
+			center = s[0]*psTetra[0][idx[0]] + s[1]*psTetra[0][idx[2]];
+			Qic =    s[0]*Q[idx[0]]          + s[1]*Q[idx[2]];
+			Qoc =    t[0]*Q[idx[1]]          + t[1]*Q[idx[3]];
+			posc =   s[0]*osTetra[0][idx[0]] + s[1]*osTetra[0][idx[2]];
 		}else
 		{
-			center = psTetra[0][idx.y] + p.t*(psTetra[0][idx.w] - psTetra[0][idx.y]);
-			Qic = Q[idx.y] + p.t*(Q[idx.w] - Q[idx.y]);
-			Qoc = Q[idx.x] + p.s*(Q[idx.z] - Q[idx.x]);
-			posc = osTetra[0][idx.y] + p.t*(osTetra[0][idx.w] - osTetra[0][idx.y]);
+			center = t[0]*psTetra[0][idx[1]] + t[1]*psTetra[0][idx[3]];
+			Qic =    t[0]*Q[idx[1]]          + t[1]*Q[idx[3]];
+			Qoc =    s[0]*Q[idx[0]]          + s[1]*Q[idx[2]];
+			posc =   t[0]*osTetra[0][idx[1]] + t[1]*osTetra[0][idx[3]];
 		}
 
-//lineStrip Debug
-/*
-		gl_FrontColor = vec4(1.0,0.0,0.0,1.0);
-		gl_Position = center; EmitVertex();
-		gl_Position = psTetra[0][idx.x]; EmitVertex();
-		EndPrimitive();
-		gl_Position = center; EmitVertex();
-		gl_Position = psTetra[0][idx.y]; EmitVertex();
-		EndPrimitive();
-		gl_Position = center; EmitVertex();
-		gl_Position = psTetra[0][idx.z]; EmitVertex();
-		EndPrimitive();
-		gl_Position = center; EmitVertex();
-		gl_Position = psTetra[0][idx.w]; EmitVertex();
-		EndPrimitive();
-
 		gl_FrontColor = vec4(1.0);
-		gl_Position = psTetra[0][idx.x]; EmitVertex();
-		gl_Position = psTetra[0][idx.y]; EmitVertex();
-		EndPrimitive();
-		gl_Position = psTetra[0][idx.x]; EmitVertex();
-		gl_Position = psTetra[0][idx.z]; EmitVertex();
-		EndPrimitive();
-		gl_Position = psTetra[0][idx.x]; EmitVertex();
-		gl_Position = psTetra[0][idx.w]; EmitVertex();
-		EndPrimitive();
-		gl_Position = psTetra[0][idx.y]; EmitVertex();
-		gl_Position = psTetra[0][idx.z]; EmitVertex();
-		EndPrimitive();
-		gl_Position = psTetra[0][idx.y]; EmitVertex();
-		gl_Position = psTetra[0][idx.w]; EmitVertex();
-		EndPrimitive();
-		gl_Position = psTetra[0][idx.z]; EmitVertex();
-		gl_Position = psTetra[0][idx.w]; EmitVertex();
-		EndPrimitive();
-*/
-
-		gl_Position = center;
-		Qi = Qic;
-		Qo = Qoc;
-		pos = posc;
-		EmitVertex();
-		gl_Position = psTetra[0][idx[0]];
-		Qi = Q[idx[0]];
-		Qo = Q[idx[0]];
-		pos = osTetra[0][idx[0]];
- 		EmitVertex();
-		gl_Position = psTetra[0][idx[1]]; 
-		Qi = Q[idx[1]];
-		Qo = Q[idx[1]];
-		pos = osTetra[0][idx[1]];
-		EmitVertex();
-		EndPrimitive();
-
-
-		gl_Position = center;
-		Qi = Qic;
-		Qo = Qoc;
-		pos = posc;
-		EmitVertex();
-		gl_Position = psTetra[0][idx[1]];
-		Qi = Q[idx[1]];
-		Qo = Q[idx[1]];
-		pos = osTetra[0][idx[1]];
- 		EmitVertex();
-		gl_Position = psTetra[0][idx[2]]; 
-		Qi = Q[idx[2]];
-		Qo = Q[idx[2]];
-		pos = osTetra[0][idx[2]];
-		EmitVertex();
-		EndPrimitive();
-
-
-		gl_Position = center;
-		Qi = Qic;
-		Qo = Qoc;
-		pos = posc;
-		EmitVertex();
-		gl_Position = psTetra[0][idx[2]];
-		Qi = Q[idx[2]];
-		Qo = Q[idx[2]];
-		pos = osTetra[0][idx[2]];
- 		EmitVertex();
-		gl_Position = psTetra[0][idx[3]]; 
-		Qi = Q[idx[3]];
-		Qo = Q[idx[3]];
-		pos = osTetra[0][idx[3]];
-		EmitVertex();
-		EndPrimitive();		
-
-
-		gl_Position = center;
-		Qi = Qic;
-		Qo = Qoc;
-		pos = posc;
-		EmitVertex();
-		gl_Position = psTetra[0][idx[3]];
-		Qi = Q[idx[3]];
-		Qo = Q[idx[3]];
-		pos = osTetra[0][idx[3]];
- 		EmitVertex();
-		gl_Position = psTetra[0][idx[0]]; 
-		Qi = Q[idx[0]];
-		Qo = Q[idx[0]];
-		pos = osTetra[0][idx[0]];
-		EmitVertex();
-		EndPrimitive();
+		for(int i = 0; i < 4; i++)
+		{
+			int iplus1 = (i+1)%4;
+			gl_Position = center;
+			Qi = Qic;
+			Qo = Qoc;
+			pos = posc;
+			EmitVertex();
+			gl_Position = psTetra[0][idx[i]];
+			Qi = Q[idx[i]];
+			Qo = Q[idx[i]];
+			pos = osTetra[0][idx[i]];
+ 			EmitVertex();
+			gl_Position = psTetra[0][idx[iplus1]]; 
+			Qi = Q[idx[iplus1]];
+			Qo = Q[idx[iplus1]];
+			pos = osTetra[0][idx[iplus1]];
+			EmitVertex();
+			EndPrimitive();
+		}
 	}else
 	{
 		int t = idx[2];
