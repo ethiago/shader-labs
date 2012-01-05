@@ -10,10 +10,10 @@ in mat4 psTetra[];
 
 out mat4 Qi;
 out mat4 Qo;
-out vec4 pos;
+out vec4 pi;
+out vec4 po;
 
 mat4 Q[4];
-mat4 ssTetra;
 
 ivec4 sort(void)
 {
@@ -23,16 +23,11 @@ ivec4 sort(void)
 	int t;
 
 //<MaisAbaixo>
-	float above = psTetra[0][0].y;
 	t = 0;
 	for(int i = 1; i < 4; ++i)
-	{
-		if(psTetra[0][i].y < above)
-		{
-			above = psTetra[0][i].y;
+		if(psTetra[0][i].y < psTetra[0][t].y)
 			t = i;
-		}
-	}
+
 	idx[0] = t;
 	idx[t] = 0;
 //</MaisAbaixo>
@@ -65,6 +60,19 @@ ivec4 sort(void)
 
 }
 
+vec3 parametroInterpolacao2(in ivec3 idx,in vec2 p)
+{
+	//mat3 A = mat3(psTetra[0][idx[0]].x, psTetra[0][idx[1]].x, psTetra[0][idx[2]].x,
+	//			  psTetra[0][idx[0]].y, psTetra[0][idx[1]].y, psTetra[0][idx[2]].y,
+	//			  1.0                 , 1.0                 , 1.0);
+	mat3 A = mat3(vec3(psTetra[0][idx[0]].xy, 1.0),
+				  vec3(psTetra[0][idx[1]].xy, 1.0),
+				  vec3(psTetra[0][idx[2]].xy, 1.0));
+	vec3 P = vec3(p,1.0);
+
+	return P*inverse(transpose(A));
+}
+/*  Quero verificar se o algorítimo de baixo e mais rapido que o de cima
 vec3 parametroInterpolacao(in ivec3 idx,in vec2 p)
 {
 	float areaTotal;
@@ -86,14 +94,14 @@ vec3 parametroInterpolacao(in ivec3 idx,in vec2 p)
 
 	return area;
 }
-
+*/
 vec2 intersection(in ivec4 idx)
 {
 	vec2 ret = vec2(0.0);
-	vec2 a = ssTetra[idx[0]].xy;
-	vec2 b = ssTetra[idx[2]].xy;
-	vec2 c = ssTetra[idx[1]].xy;
-	vec2 d = ssTetra[idx[3]].xy;
+	vec2 a = psTetra[0][idx[0]].xy;
+	vec2 b = psTetra[0][idx[2]].xy;
+	vec2 c = psTetra[0][idx[1]].xy;
+	vec2 d = psTetra[0][idx[3]].xy;
 
 	float der = (b.y - a.y)/(b.x - a.x);
 	float ydc = d.y-c.y;
@@ -109,70 +117,47 @@ vec2 intersection(in ivec4 idx)
 void main()
 {
 	ivec4 idx;
+	vec2 s,t;	
+	vec4 center;
+	mat4 Qic;
+	mat4 Qoc;
+	vec4 pic;
+	vec4 poc;
+	int nTriangulos;
 
 	Q[0] = Q0[0];
 	Q[1] = Q1[0];
 	Q[2] = Q2[0];
 	Q[3] = Q3[0];
-
-	ssTetra[0] = psTetra[0][0] / psTetra[0][0].w;
-	ssTetra[1] = psTetra[0][1] / psTetra[0][1].w;
-	ssTetra[2] = psTetra[0][2] / psTetra[0][2].w;
-	ssTetra[3] = psTetra[0][3] / psTetra[0][3].w;
 		
 	idx = sort();
 	
-	vec2 s,t;	
 	vec2 p = intersection(idx);
 	s[0] = 1.0 - p.s;
 	s[1] = p.s;
 	t[0] = 1.0 - p.t;
 	t[1] = p.t;
 
-	vec4 center;
-	mat4 Qic;
-	mat4 Qoc;
-	vec4 posc;
-
 	if(s[0] > 0.0 && s[0] < 1.0 && t[0] < 1.0 && t[0] > 0.0)
 	{
-		float z0 = s[0]*ssTetra[idx[0]].z + s[1]*ssTetra[idx[2]].z;
-		float z1 = t[0]*ssTetra[idx[1]].z + t[1]*ssTetra[idx[3]].z;
+		float z0 = s[0]*psTetra[0][idx[0]].z + s[1]*psTetra[0][idx[2]].z;
+		float z1 = t[0]*psTetra[0][idx[1]].z + t[1]*psTetra[0][idx[3]].z;
 		if(z0 < z1)
 		{
 			center = s[0]*psTetra[0][idx[0]] + s[1]*psTetra[0][idx[2]];
+			pic =    s[0]*osTetra[0][idx[0]] + s[1]*osTetra[0][idx[2]];
+			poc =    t[0]*osTetra[0][idx[1]] + t[1]*osTetra[0][idx[3]];
 			Qic =    s[0]*Q[idx[0]]          + s[1]*Q[idx[2]];
 			Qoc =    t[0]*Q[idx[1]]          + t[1]*Q[idx[3]];
-			posc =   s[0]*osTetra[0][idx[0]] + s[1]*osTetra[0][idx[2]];
 		}else
 		{
 			center = t[0]*psTetra[0][idx[1]] + t[1]*psTetra[0][idx[3]];
+			pic =    t[0]*osTetra[0][idx[1]] + t[1]*osTetra[0][idx[3]];
+			poc =    s[0]*osTetra[0][idx[0]] + s[1]*osTetra[0][idx[2]];
 			Qic =    t[0]*Q[idx[1]]          + t[1]*Q[idx[3]];
 			Qoc =    s[0]*Q[idx[0]]          + s[1]*Q[idx[2]];
-			posc =   t[0]*osTetra[0][idx[1]] + t[1]*osTetra[0][idx[3]];
 		}
-
-		gl_FrontColor = vec4(1.0);
-		for(int i = 0; i < 4; i++)
-		{
-			int iplus1 = (i+1)%4;
-			gl_Position = center;
-			Qi = Qic;
-			Qo = Qoc;
-			pos = posc;
-			EmitVertex();
-			gl_Position = psTetra[0][idx[i]];
-			Qi = Q[idx[i]];
-			Qo = Q[idx[i]];
-			pos = osTetra[0][idx[i]];
- 			EmitVertex();
-			gl_Position = psTetra[0][idx[iplus1]]; 
-			Qi = Q[idx[iplus1]];
-			Qo = Q[idx[iplus1]];
-			pos = osTetra[0][idx[iplus1]];
-			EmitVertex();
-			EndPrimitive();
-		}
+		nTriangulos = 4;
 	}else
 	{
 		int t = idx[2];
@@ -180,74 +165,55 @@ void main()
 		idx[3] = t;
 		// idx[0,1,2] formam um triangulo CCW
 
-		vec3 pI = parametroInterpolacao(idx.xyz, psTetra[0][idx[3]].xy);
+		vec3 pI = parametroInterpolacao2(idx.xyz, psTetra[0][idx[3]].xy);
 
 		float z0 = pI[0]*psTetra[0][idx[0]].z + pI[1]*psTetra[0][idx[1]].z + pI[2]*psTetra[0][idx[2]].z; //z do triangulo
 		float z1 = psTetra[0][idx[3]].z;
 		if(z0 < z1) // triangulo na frente
 		{
 			center = pI[0]*psTetra[0][idx[0]] + pI[1]*psTetra[0][idx[1]] + pI[2]*psTetra[0][idx[2]]; 
-			Qic = pI[0]*Q[idx[0]] + pI[1]*Q[idx[1]] + pI[2]*Q[idx[2]];
-			Qoc = Q[idx[3]];
-			posc = pI[0]*osTetra[0][idx[0]] + pI[1]*osTetra[0][idx[1]] + pI[2]*osTetra[0][idx[2]];
+			pic =    pI[0]*osTetra[0][idx[0]] + pI[1]*osTetra[0][idx[1]] + pI[2]*osTetra[0][idx[2]];
+			poc =    osTetra[0][idx[3]];
+			Qic =    pI[0]*Q[idx[0]]          + pI[1]*Q[idx[1]]          + pI[2]*Q[idx[2]];
+			Qoc =    Q[idx[3]];
+
 		}else // vertice na frente
 		{
 			center = psTetra[0][idx[3]];
-			Qic = Q[idx[3]];
-			Qoc = pI[0]*Q[idx[0]] + pI[1]*Q[idx[1]] + pI[2]*Q[idx[2]];
-			posc = osTetra[0][idx[3]];
+			pic =    osTetra[0][idx[3]];
+			poc =    pI[0]*osTetra[0][idx[0]] + pI[1]*osTetra[0][idx[1]] + pI[2]*osTetra[0][idx[2]];
+			Qic =    Q[idx[3]];
+			Qoc =    pI[0]*Q[idx[0]] + pI[1]*Q[idx[1]] + pI[2]*Q[idx[2]];
 		}
 
+		nTriangulos = 3;
+	}
 
+	gl_FrontColor = vec4(1.0);
+	for(int i = 0; i < nTriangulos; i++)
+	{
+		int iplus1 = (i+1)%nTriangulos;
 		gl_Position = center;
 		Qi = Qic;
 		Qo = Qoc;
-		pos = posc;
+		pi = pic;
+		po = poc;
 		EmitVertex();
-		gl_Position = psTetra[0][idx[0]];
-		Qi = Q[idx[0]];
-		Qo = Q[idx[0]];
-		pos = osTetra[0][idx[0]];
- 		EmitVertex();
-		gl_Position = psTetra[0][idx[1]]; 
-		Qi = Q[idx[1]];
-		Qo = Q[idx[1]];
-		pos = osTetra[0][idx[1]];
+	
+		gl_Position = psTetra[0][idx[i]];
+		Qi = Q[idx[i]];
+		Qo = Q[idx[i]];
+		pi = osTetra[0][idx[i]];
+		po = osTetra[0][idx[i]];
 		EmitVertex();
-		EndPrimitive();
-
-		gl_Position = center;
-		Qi = Qic;
-		Qo = Qoc;
-		pos = posc;
+	
+		gl_Position = psTetra[0][idx[iplus1]]; 
+		Qi = Q[idx[iplus1]];
+		Qo = Q[idx[iplus1]];
+		pi = osTetra[0][idx[iplus1]];
+		po = osTetra[0][idx[iplus1]];
 		EmitVertex();
-		gl_Position = psTetra[0][idx[1]];
-		Qi = Q[idx[1]];
-		Qo = Q[idx[1]];
-		pos = osTetra[0][idx[1]];
- 		EmitVertex();
-		gl_Position = psTetra[0][idx[2]]; 
-		Qi = Q[idx[2]];
-		Qo = Q[idx[2]];
-		pos = osTetra[0][idx[2]];
-		EmitVertex();
-		EndPrimitive();
-
-		gl_Position = center;
-		Qi = Qic;
-		Qo = Qoc;
-		pos = posc;
-		EmitVertex();
-		gl_Position = psTetra[0][idx[2]];
-		Qi = Q[idx[2]];
-		Qo = Q[idx[2]];
-		pos = osTetra[0][idx[2]];
- 		EmitVertex();
-		gl_Position = psTetra[0][idx[0]]; 
-		Qi = Q[idx[0]];
-		Qo = Q[idx[0]];
-		pos = osTetra[0][idx[0]];
-		EmitVertex();
+	
 		EndPrimitive();
 	}
 }
