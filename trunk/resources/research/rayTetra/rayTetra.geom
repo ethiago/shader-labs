@@ -65,12 +65,12 @@ vec3 parametroInterpolacao2(in ivec3 idx,in vec2 p)
 	//mat3 A = mat3(psTetra[0][idx[0]].x, psTetra[0][idx[1]].x, psTetra[0][idx[2]].x,
 	//			  psTetra[0][idx[0]].y, psTetra[0][idx[1]].y, psTetra[0][idx[2]].y,
 	//			  1.0                 , 1.0                 , 1.0);
-	mat3 A = mat3(vec3(psTetra[0][idx[0]].xy, 1.0),
-				  vec3(psTetra[0][idx[1]].xy, 1.0),
-				  vec3(psTetra[0][idx[2]].xy, 1.0));
+	mat3 A = mat3(vec3(psTetra[0][idx[0]].xy, 1.0),  //coluna
+				  vec3(psTetra[0][idx[1]].xy, 1.0),  //coluna
+				  vec3(psTetra[0][idx[2]].xy, 1.0)); //coluna
 	vec3 P = vec3(p,1.0);
 
-	return P*inverse(transpose(A));
+	return inverse(A)*P;
 }
 /*  Quero verificar se o algorítimo de baixo e mais rapido que o de cima
 vec3 parametroInterpolacao(in ivec3 idx,in vec2 p)
