@@ -2,7 +2,7 @@
 #extension GL_ARB_gpu_shader5 : enable
 
 
-const mat4 tQ = mat4(1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,0.0,1.0,0.0, 0.0,0.0,0.0,-1.5);
+const mat4 tQ = mat4(1.0,0.0,0.0,0.0, 0.0,1.0,0.0,0.0, 0.0,0.0,1.0,0.0, 0.0,0.0,0.0,-0.5);
 
 // Receberei como atributo
 mat4 tetraIn = mat4(-1.0, -1.0, -1.0, 1.0,
@@ -60,10 +60,16 @@ void main ()
 
 	
 // Receberei QIn e entao sera Q = QIn;
-	Q0 = trans0*tQ*transpose(trans0);
+	/*Q0 = trans0*tQ*transpose(trans0);
 	Q1 = trans1*tQ*transpose(trans1);
 	Q2 = trans2*tQ*transpose(trans2);
 	Q3 = trans3*tQ*transpose(trans3);
+*/
+
+	Q0 = tQ;
+	Q1 = tQ;
+	Q2 = tQ;
+	Q3 = tQ;
 
 	gl_Position = gl_Vertex;
 	gl_FrontColor = gl_Color;
