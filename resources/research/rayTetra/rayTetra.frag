@@ -20,29 +20,20 @@ float a,b,c,d;
 
 vec4 cor;
 
-float f(in float t)
+//<CORRETO>
+float casoLinear()
 {
-	return a*(t*t*t) + b*(t*t) + c*t + d;
+	return -d/c;
 }
 
-float df(in float t)
+float _2(float v)
 {
-	return 3*a*(t*t) + 2*b*(t) + c;
+	return v*v;
 }
 
-bool acharRaiz(in float a, in float b, in float c, out vec2 raizes)
+float _3(float v)
 {
-	raizes = vec2(-1.0);
-	
-	float delta =(b*b) - (4.0*a*c);
-	
-	if(delta < 0.0)
-		return false;
-	
-	delta = sqrt(delta);
-	raizes[0] = (-b - delta)/(2.0*a);
-	raizes[1] = (-b + delta)/(2.0*a);
-	return true;
+	return v*v*v;
 }
 
 float shade(in vec3 p, in vec3 n, in vec3 v)
@@ -55,6 +46,63 @@ float shade(in vec3 p, in vec3 n, in vec3 v)
 	spec = pow(spec, 16.0);
 
 	return dif*dc + spec*sc + ac;
+}
+
+bool acharRaiz(in float a, in float b, in float c, out vec2 raizes)
+{
+	raizes = vec2(-1.0);
+	
+	float delta = b*b - (4.0*a*c);
+	
+	if(delta < 0.0)
+		return false;
+	
+	delta = sqrt(delta);
+	
+	raizes[0] = (-b - delta)/(2.0*a);
+	raizes[1] = (-b + delta)/(2.0*a);
+	
+	if(raizes[1] < raizes[0])
+	{
+		float t = raizes[0];
+		raizes[0] = raizes[1];
+		raizes[1] = t;
+	}
+
+	return true;
+}
+
+bool valido(in float t)
+{
+	return (t >= 0.0 && t <= 1.0);
+}
+
+float casoQuadrica()
+{
+	float qa = b;
+	float qb = c;
+	float qc = d;
+	vec2 r;
+
+	if(!acharRaiz(qa, qb, qc, r))
+		discard;
+
+	if(r[0] < 0.0)
+		return r[1];
+	else
+		return r[0];
+}
+//</CORRETO>
+
+//<NAOVERIFICADO>
+float f(in float t)
+{
+	return a*(t*t*t) + b*(t*t) + c*t + d;
+}
+
+float df(in float t)
+{
+	return 3*a*(t*t) + 2*b*(t) + c;
 }
 
 float acharNewton(in float t0)
@@ -71,20 +119,9 @@ vec2 acharMaxMinLocal()
 {
 	vec2 r;
 	if(!acharRaiz(3.0*a, 2.0*b, c, r))
-		discard;
+		r = vec2(-1.0);
 
 	return r;
-}
-
-bool valido(in float t)
-{
-	return (t >= 0.0 && t <= 1.0);
-}
-
-float buscaLinear(in float x0, in float fx0,in  float x1, in float fx1)
-{
-	return x0 + ((abs(fx0)*(x1-x0))/abs(fx0-fx1));
-	//return (x1-x0)/2.0;
 }
 
 float buscaBinaria(in float x0,in float fx0,in float x1,in float fx1)
@@ -102,7 +139,7 @@ float buscaBinaria(in float x0,in float fx0,in float x1,in float fx1)
 		else
 		{
 			x0 = t;
-			fx0 = t;
+			fx0 = ft;
 		}
 		t = (x0+x1)/2.0;
 	}while(t-x0 > err2);
@@ -110,7 +147,7 @@ float buscaBinaria(in float x0,in float fx0,in float x1,in float fx1)
 	return t;	
 }
 
-float acharTCubicaBuscaBinaria()
+float acharTCubicaSeparacaoDominio()
 {
 	vec2 mm = acharMaxMinLocal();
 	vec2 fx  = vec2(f(0.0), f(1.0));
@@ -157,37 +194,7 @@ float acharTCubicaBuscaBinaria()
 
 float casoCubica()
 {
-	cor = vec4(0.0,1.0,0.0,1.0);
-
-	return acharTCubicaBuscaBinaria();
-}
-
-float casoQuadrica()
-{
-	float qa = b;
-	float qb = c;
-	float qc = d;
-	vec2 r;
-
-	cor = vec4(1.0,0.0,1.0,1.0);
-
-	if(!acharRaiz(qa, qb, qc, r))
-		discard;
-	
-	if(r[0] < 0.0)
-		return r[1];
-	else
-		return r[0];
-}
-
-float casoLinear()
-{
-	return -d/c;
-}
-
-float _2(float v)
-{
-	return v*v;
+	return acharTCubicaSeparacaoDominio();
 }
 
 void main ()
@@ -204,29 +211,36 @@ void main ()
 	float pdo = dot(pi, Qo * dir);
 	float ppo = dot(pi, Qo * pi);
 
-/*
+
     a = ddo - ddi;
 	b = 2*(pdo - pdi) + ddi;
 	c = 2*pdi + ppo - ppi;
-	d = ppi - 0.5;
+	d = ppi;
+
+//<FUNCOESVALIDACAO>
+/*
+	// x^2 + y^2 + z^3 = z^2
+	a = _3(dir.z);
+	b = _2(dir.x) + _2(dir.y) - _2(dir.z) + 3*pi.z*_2(dir.z);
+	c = 2*(dir.x*pi.x + dir.y*pi.y - dir.z*pi.z) + 3*_2(pi.z)*dir.z;
+	d = _2(pi.x) + _2(pi.y) - _2(pi.z) + _3(pi.z);
 */
-
-/*	// x^2 + y^2 + z^3 = z^2
-	a = _2(dir.z)*dir.z;
-	b = _2(dir.x) + _2(dir.y) - _2(dir.z) + 3*_2(dir.z)*pi.z;
-	c = 2*(dir.x*pi.y + dir.x*pi.y - dir.z*pi.z) + 3*dir.z*_2(pi.z);
-	d = _2(pi.x) + _2(pi.y) - _2(pi.z) + _2(pi.z)*pi.z;
+/*
+	// x^3 + y^3 + z^3 = 0
+	a = _3(dir.x)+ _3(dir.y) +_3(dir.z);
+	b = 3*(pi.x*_2(dir.x) + pi.y*_2(dir.y) + pi.z*_2(dir.z));
+	c = 3*(_2(pi.x)*dir.x + _2(pi.y)*dir.y + _2(pi.z)*dir.z);
+	d = _3(pi.x) + _3(pi.y) + _3(pi.z);
 */
-
-
-	// xyz=0
+/*
+	// xyz = 0
 	a = dir.x*dir.y*dir.z;
-	b =  pi.x*dir.y*dir.z + pi.y*dir.x*dir.z + pi.z*dir.x*dir.y;
-	c =  pi.x*pi.y*dir.z + pi.x*pi.z*dir.y + pi.y*pi.z*dir.x;
-	d =  pi.x*pi.y*pi.z;
+	b = pi.x*dir.y*dir.z + pi.y*dir.x*dir.z + pi.z*dir.x*dir.y;
+	c = pi.x*pi.y*dir.z + pi.x*pi.z*dir.y + pi.y*pi.z*dir.x;
+	d = pi.x*pi.y*pi.z;
+*/
+//</FUNCOESVALIDACAO>
 	
-
-
 	float t = -1.0;		
 	
 	if(abs(a) > err) //a != 0
@@ -235,16 +249,19 @@ void main ()
 		t = casoQuadrica();
 	else if(abs(c) > err)
 		t = casoLinear();
-	
+
 	if(!valido(t))
 		discard;
-  	
+	  	
 	vec3 p =  pi.xyz + t*dir.xyz;
-	//mat4 Q = (1.0 - t)*Qi + t*Qo;
-  	//vec3 n = normalize((mat3(Q) * p));
+	mat4 Q = (1.0 - t)*Qi + t*Qo;
+  	vec3 n = normalize((mat3(Q) * p));
+//<NORMAISVALIDACAO>
 	//vec3 n = normalize(vec3(2*p.x, 2*p.y, 3*_2(p.z)-2*p.z));// x^2 + y^2 + z^3 = z^2
-	vec3 n = normalize(vec3(p.y*p.z, p.x*p.z, p.x*p.y)); //xyz=0
-	cor = vec4(1.0,.0,.0,1.0);
+	//vec3 n = normalize(vec3(_2(p.x), _2(p.y), _2(p.z)));// x^3 + y^3 + z^3 = 0
+	//vec3 n = normalize(vec3(p.y*p.z, p.x*p.z, p.x*p.y));// xyz = 0
+//</NORMAISVALIDACAO>
+	cor = vec4(1.0);
 	gl_FragColor = cor * shade(p,n,normalize(-dir.xyz));
 	//gl_FragColor = cor;
 	gl_FragColor.a = 1.0;	
