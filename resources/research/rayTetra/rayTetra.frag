@@ -7,6 +7,9 @@ varying mat4 Qo;
 varying vec4 pi;
 varying vec4 po;
 
+varying vec4 cori;
+varying vec4 coro;
+
 const float ac = 0.3;
 const float dc = 0.4;
 const float sc = 0.3;
@@ -38,7 +41,7 @@ float _3(float v)
 
 float shade(in vec3 p, in vec3 n, in vec3 v)
 {
-	n = faceforward(n,n,v);
+	//n = faceforward(n,n,v);
 	vec3 lv = normalize(lp - p);
 	float dif = max(dot(lv, n), 0.0);
 	
@@ -155,18 +158,15 @@ float acharTCubicaSeparacaoDominio()
 
 	if(valido(mm[0]))
 	{
-		cor = vec4(1.0,0.0,0.0,1.0);
 		if(sign(fx[0]) * sign(fm[0]) <= 0)
 			return acharNewton(buscaBinaria(0.0, fx[0], mm[0], fm[0])); 
 			
 		if(valido(mm[1]))
 		{
-			cor = vec4(0.6,0.0,0.0,1.0);
 			if(sign(fm[0]) * sign(fm[1]) <= 0)
 				return acharNewton(buscaBinaria(mm[0], fm[0], mm[1], fm[1]));
 		}else
 		{		
-			cor = vec4(0.3,0.0,0.0,1.0);
 			if(sign(fm[0]) * sign(fx[1]) <= 0)
 				return acharNewton(buscaBinaria(mm[0], fm[0], 1.0, fx[1]));
 		}
@@ -174,17 +174,13 @@ float acharTCubicaSeparacaoDominio()
 
 	if(valido(mm[1]))
 	{
-		cor = vec4(1.0,1.0,0.0,1.0);
 		if(sign(fx[0]) * sign(fm[1]) <= 0)
 			return acharNewton(buscaBinaria(0.0, fx[0], mm[1], fm[1]));
   
-		cor = vec4(0.6,0.6,0.0,1.0);
 		if(sign(fm[1]) * sign(fx[1]) <= 0)
 			return acharNewton(buscaBinaria(mm[1], fm[1], 1.0, fx[1]));
 	}else
 	{
-
-		cor = vec4(0.0,1.0,0.0,1.0);
 		if(sign(fx[0]) * sign(fx[1]) <= 0)
 			return acharNewton(buscaBinaria(0.0, fx[0], 1.0, fx[1]));
 	}
@@ -252,16 +248,17 @@ void main ()
 
 	if(!valido(t))
 		discard;
-	  	
+
 	vec3 p =  pi.xyz + t*dir.xyz;
-	mat4 Q = (1.0 - t)*Qi + t*Qo;
-  	vec3 n = normalize((mat3(Q) * p));
 //<NORMAISVALIDACAO>
 	//vec3 n = normalize(vec3(2*p.x, 2*p.y, 3*_2(p.z)-2*p.z));// x^2 + y^2 + z^3 = z^2
 	//vec3 n = normalize(vec3(_2(p.x), _2(p.y), _2(p.z)));// x^3 + y^3 + z^3 = 0
 	//vec3 n = normalize(vec3(p.y*p.z, p.x*p.z, p.x*p.y));// xyz = 0
 //</NORMAISVALIDACAO>
-	cor = vec4(1.0);
+	mat4 Q = (1.0 - t)*Qi + t*Qo;
+	vec3 n = normalize((mat3(Q) * p));
+
+	cor = (1.0 - t)*cori + t*coro;
 	gl_FragColor = cor * shade(p,n,normalize(-dir.xyz));
 	//gl_FragColor = cor;
 	gl_FragColor.a = 1.0;	

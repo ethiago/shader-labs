@@ -7,11 +7,14 @@ in mat4 Q2[];
 in mat4 Q3[];
 in mat4 osTetra[];
 in mat4 psTetra[];
+in mat4 cor[];
 
 out mat4 Qi;
 out mat4 Qo;
 out vec4 pi;
 out vec4 po;
+out vec4 cori;
+out vec4 coro;
 
 mat4 Q[4];
 
@@ -62,9 +65,6 @@ ivec4 sort(void)
 
 vec3 parametroInterpolacao2(in ivec3 idx,in vec2 p)
 {
-	//mat3 A = mat3(psTetra[0][idx[0]].x, psTetra[0][idx[1]].x, psTetra[0][idx[2]].x,
-	//			  psTetra[0][idx[0]].y, psTetra[0][idx[1]].y, psTetra[0][idx[2]].y,
-	//			  1.0                 , 1.0                 , 1.0);
 	mat3 A = mat3(vec3(psTetra[0][idx[0]].xy, 1.0),  //coluna
 				  vec3(psTetra[0][idx[1]].xy, 1.0),  //coluna
 				  vec3(psTetra[0][idx[2]].xy, 1.0)); //coluna
@@ -123,6 +123,8 @@ void main()
 	mat4 Qoc;
 	vec4 pic;
 	vec4 poc;
+	vec4 coric;
+	vec4 coroc;
 	int nTriangulos;
 
 	Q[0] = Q0[0];
@@ -145,17 +147,26 @@ void main()
 		if(z0 < z1)
 		{
 			center = s[0]*psTetra[0][idx[0]] + s[1]*psTetra[0][idx[2]];
+			
 			pic =    s[0]*osTetra[0][idx[0]] + s[1]*osTetra[0][idx[2]];
-			poc =    t[0]*osTetra[0][idx[1]] + t[1]*osTetra[0][idx[3]];
 			Qic =    s[0]*Q[idx[0]]          + s[1]*Q[idx[2]];
+			coric =  s[0]*cor[0][idx[0]]     + s[1]*cor[0][idx[2]];
+
+			poc =    t[0]*osTetra[0][idx[1]] + t[1]*osTetra[0][idx[3]];
 			Qoc =    t[0]*Q[idx[1]]          + t[1]*Q[idx[3]];
+			coroc =  t[0]*cor[0][idx[1]]     + t[1]*cor[0][idx[3]];
+			
 		}else
 		{
 			center = t[0]*psTetra[0][idx[1]] + t[1]*psTetra[0][idx[3]];
+			
 			pic =    t[0]*osTetra[0][idx[1]] + t[1]*osTetra[0][idx[3]];
-			poc =    s[0]*osTetra[0][idx[0]] + s[1]*osTetra[0][idx[2]];
 			Qic =    t[0]*Q[idx[1]]          + t[1]*Q[idx[3]];
+			coric =  t[0]*cor[0][idx[1]]     + t[1]*cor[0][idx[3]];
+			
+			poc =    s[0]*osTetra[0][idx[0]] + s[1]*osTetra[0][idx[2]];
 			Qoc =    s[0]*Q[idx[0]]          + s[1]*Q[idx[2]];
+			coroc =  s[0]*cor[0][idx[0]]     + t[1]*cor[0][idx[2]];
 		}
 		nTriangulos = 4;
 	}else
@@ -172,18 +183,25 @@ void main()
 		if(z0 < z1) // triangulo na frente
 		{
 			center = pI[0]*psTetra[0][idx[0]] + pI[1]*psTetra[0][idx[1]] + pI[2]*psTetra[0][idx[2]]; 
+			
 			pic =    pI[0]*osTetra[0][idx[0]] + pI[1]*osTetra[0][idx[1]] + pI[2]*osTetra[0][idx[2]];
-			poc =    osTetra[0][idx[3]];
 			Qic =    pI[0]*Q[idx[0]]          + pI[1]*Q[idx[1]]          + pI[2]*Q[idx[2]];
+			coric =  pI[0]*cor[0][idx[0]]     + pI[1]*cor[0][idx[1]]     + pI[2]*cor[0][idx[2]];
+	
+			poc =    osTetra[0][idx[3]];
 			Qoc =    Q[idx[3]];
-
+			coroc =  cor[0][idx[3]];
 		}else // vertice na frente
 		{
 			center = psTetra[0][idx[3]];
+
 			pic =    osTetra[0][idx[3]];
-			poc =    pI[0]*osTetra[0][idx[0]] + pI[1]*osTetra[0][idx[1]] + pI[2]*osTetra[0][idx[2]];
 			Qic =    Q[idx[3]];
-			Qoc =    pI[0]*Q[idx[0]] + pI[1]*Q[idx[1]] + pI[2]*Q[idx[2]];
+			coric =  cor[0][idx[3]];
+
+			poc =    pI[0]*osTetra[0][idx[0]] + pI[1]*osTetra[0][idx[1]] + pI[2]*osTetra[0][idx[2]];
+			Qoc =    pI[0]*Q[idx[0]]          + pI[1]*Q[idx[1]]          + pI[2]*Q[idx[2]];
+			coroc =  pI[0]*cor[0][idx[0]]     + pI[1]*cor[0][idx[1]]     + pI[2]*cor[0][idx[2]];
 		}
 
 		nTriangulos = 3;
@@ -198,6 +216,8 @@ void main()
 		Qo = Qoc;
 		pi = pic;
 		po = poc;
+		cori = coric;
+		coro = coroc;
 		EmitVertex();
 	
 		gl_Position = psTetra[0][idx[i]];
@@ -205,6 +225,8 @@ void main()
 		Qo = Q[idx[i]];
 		pi = osTetra[0][idx[i]];
 		po = osTetra[0][idx[i]];
+		cori = cor[0][idx[i]];
+		coro = cor[0][idx[i]];
 		EmitVertex();
 	
 		gl_Position = psTetra[0][idx[iplus1]]; 
@@ -212,6 +234,8 @@ void main()
 		Qo = Q[idx[iplus1]];
 		pi = osTetra[0][idx[iplus1]];
 		po = osTetra[0][idx[iplus1]];
+		cori = cor[0][idx[iplus1]];
+		coro = cor[0][idx[iplus1]];
 		EmitVertex();
 	
 		EndPrimitive();
