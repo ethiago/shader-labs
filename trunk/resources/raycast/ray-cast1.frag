@@ -11,12 +11,13 @@ const float ambContrib = 0.3;
 
 float distSphere(in vec3 center, in vec3 vv)
 {
-	float b = dot(vv, center);
+	float a = dot(vv,vv);
+	float b = -2*dot(vv, center);
 	float c = dot(center, center) - r*r;
 
-	float delta = b*b - c;
+	float delta = b*b - 4*a*c;
 
-	return (b - sqrt(delta));
+	return (-b - sqrt(delta))/(2*a);
 }
 
 float intensity(in vec3 inter, in vec3 center, in vec3 vv)

@@ -29,7 +29,6 @@ SOURCES += src/main.cpp \
     src/Arcball.cpp \
     src/ChooseShaderDialog.cpp \
     src/SLCommandLinkButton.cpp \
-    src/FileController.cpp \
     src/GLDisplay.cpp \
     src/Global.cpp \
     src/TextureController.cpp \
@@ -40,7 +39,6 @@ SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/Object3D.cpp \
     src/RenderController.cpp \
-    src/ShaderCodeContainer.cpp \
     src/InterfaceRequests.cpp \
     src/ShaderController.cpp \
     src/Find.cpp \
@@ -51,14 +49,21 @@ SOURCES += src/main.cpp \
     src/Cube.cpp \
     src/GlobalProperties.cpp \
     src/Tetrahedron.cpp \
-    src/Point.cpp
+    src/Point.cpp \
+    src/Scene3D.cpp \
+    src/SLObject.cpp \
+    src/SLShader.cpp \
+    src/SLFile.cpp \
+    src/SLTextures.cpp \
+    src/EditorController.cpp \
+    src/SLCodeContainer.cpp \
+    src/ShaderCodeContainer.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
     headers/Arcball.h \
     headers/ChooseShaderDialog.h \
     headers/SLCommandLinkButton.h \
-    headers/FileController.h \
     headers/GLDisplay.h \
     headers/Global.h \
     headers/TextureController.h \
@@ -69,7 +74,6 @@ HEADERS += headers/Sphere.h \
     headers/MainWindow.h \
     headers/Object3D.h \
     headers/RenderController.h \
-    headers/ShaderCodeContainer.h \
     headers/InterfaceRequests.h \
     headers/ShaderController.h \
     headers/Find.h \
@@ -80,7 +84,15 @@ HEADERS += headers/Sphere.h \
     headers/Cube.h \
     headers/GlobalProperties.h \
     headers/Tetrahedron.h \
-    headers/Point.h
+    headers/Point.h \
+    headers/Scene3D.h \
+    headers/SLObject.h \
+    headers/SLShader.h \
+    headers/SLFile.h \
+    headers/SLTextures.h \
+    headers/EditorController.h \
+    headers/SLCodeContainer.h \
+    headers/ShaderCodeContainer.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
@@ -90,6 +102,3 @@ FORMS += forms/MainWindow.ui \
     forms/GlobalProperties.ui
 RESOURCES += shaderlab.qrc
 OTHER_FILES += 
-
-
-

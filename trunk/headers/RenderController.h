@@ -11,6 +11,7 @@
 
 class DirectionalLight;
 class MainWindow;
+class Scene3D;
 class Object3D;
 class ArcBall;
 
@@ -25,10 +26,10 @@ class RenderController : public QObject
     Q_OBJECT
 
     GLDisplay *display;
+    Scene3D * scene;
     Object3D * model;
     ArcBall* arcBall;
     DirectionalLight* light;
-    bool wireframe;
     bool lightRotation;
 
     QList< QPair<QAction*, Object3D*> > models;
@@ -58,7 +59,7 @@ public slots:
     void mouseLeftMove(QPoint ini, QPoint curr);
     void mouseLefthFinish(QPoint ini, QPoint curr);
     void mouseCancel();
-    void wireFrameToggle(bool);
+    void wireFrameToggle();
     void saveResultAsImage();
     void modelChanged(QAction*);
     void showPrimitiveSelector(void);

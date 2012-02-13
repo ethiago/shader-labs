@@ -2,13 +2,18 @@
 #include <QToolTip>
 #include "GLDisplay.h"
 #include <QMatrix4x4>
+#include "Global.h"
 
 #define MINI(a,b) ((a) < (b) ? (a) : (b))
 
-GLDisplay::GLDisplay(QWidget *parent) : QGLWidget(parent),
+GLDisplay::GLDisplay(QGLContext* context, QWidget *parent) :
+    QGLWidget(context,parent),
     rigthPressedPoint(NULLPOINT),
     leftPressedPoint(NULLPOINT), zoom(1.0)
 {
+    ShaderLab *sl = ShaderLab::instance();
+    sl->setContext(context);
+
     setStyleSheet("border: 2px solid black;");
 
     setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);

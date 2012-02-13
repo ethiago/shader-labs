@@ -7,7 +7,7 @@
 #include <QMap>
 
 #include "Global.h"
-#include "FileController.h"
+#include "SLFile.h"
 
 class Project : public QObject
 {
@@ -25,7 +25,7 @@ public:
 
     bool load(const QString& fileName);
 
-    bool includeShader(const FileController& fileController);
+    bool includeShader(const SLFile& fileController);
 
     bool save(QString fileName = QString());
 

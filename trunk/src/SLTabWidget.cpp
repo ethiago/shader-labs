@@ -4,6 +4,7 @@
 #include <QDebug>
 #include "SLTabBar.h"
 #include "ShaderCodeContainer.h"
+#include "SLCodeContainer.h"
 
 
 SLTabWidget::SLTabWidget(QWidget *parent) :
@@ -32,12 +33,16 @@ SLTabWidget::~SLTabWidget()
 
 void SLTabWidget::tabCloseRequested(int index)
 {
-    emit tabCloseRequested(((ShaderCodeContainer*)widget(index))->getShaderType());
+    ShaderCodeContainer* scc = (ShaderCodeContainer*)widget(index);
+    //cc->closeRequest();
+    emit tabCloseRequested(scc->getShaderType());
 }
 
 void SLTabWidget::changeActivationStatus()
 {
-    emit changeActivationStatus(((ShaderCodeContainer*)currentWidget())->getShaderType());
+    ShaderCodeContainer* ssc= (ShaderCodeContainer*)currentWidget();
+    //ssc->changeActivatedStatus();
+    emit changeActivationStatus(ssc->getShaderType());
 }
 
 void SLTabWidget::findNext(const QString& s)
@@ -87,4 +92,19 @@ void SLTabWidget::setFocus()
     ShaderCodeContainer * scc = (ShaderCodeContainer *)currentWidget();
     if(scc != NULL)
         scc->setFocus();
+}
+
+void SLTabWidget::closeTab(QWidget* w)
+{
+    removeTab(indexOf(w));
+    if(count() == 0)
+        setVisible(false);
+}
+
+int SLTabWidget::addTab ( QWidget * page, const QIcon & icon, const QString & label )
+{
+    setVisible(true);
+    ShaderCodeContainer *cc = (ShaderCodeContainer *)page;
+    connect(cc, SIGNAL(closeSignal(QWidget*)), this, SLOT(closeTab(QWidget*)));
+    return QTabWidget::addTab(page, icon, label);
 }

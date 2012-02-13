@@ -8,7 +8,7 @@
 #include "InterfaceRequests.h"
 #include "MainController.h"
 #include "MainWindow.h"
-#include "FileController.h"
+#include "SLFile.h"
 #include "Sphere.h"
 #include "Project.h"
 
@@ -78,6 +78,7 @@ MainController::MainController(MainWindow *mw, QObject *parent)
 void MainController::glSetup(void)
 {
     ShaderLab * sl = ShaderLab::instance();
+    sl->extensionsAnalise();
 
     if(!sl->criticalExtensionsEnabled())
     {
@@ -144,13 +145,13 @@ void MainController::slot_closeShaderCode(ShaderLab::Shader shadertype)
 
 bool MainController::closeShaderCode(ShaderLab::Shader shaderType)
 {
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    QMap<ShaderLab::Shader, SLFile*>::iterator it;
     it = fileControllers.find(shaderType);
 
     if(it == fileControllers.end())
         return true;
 
-    FileController* fc = it.value();
+    SLFile* fc = it.value();
 
     if( (fc->IsNew() || fc->getChanged()) )
     {
@@ -175,7 +176,7 @@ bool MainController::closeShaderCode(ShaderLab::Shader shaderType)
 /* Updates both the isChanged property and the displayed name of the file. */
 void MainController::fileChanged(ShaderLab::Shader shaderType)
 {
-    FileController *fc = getFileControllerByShaderType(shaderType);
+    SLFile *fc = getFileControllerByShaderType(shaderType);
 
     if(fc != NULL)
     {
@@ -205,7 +206,7 @@ void MainController::programCloseRequest(QCloseEvent* event)
 /* Builds a compilation output that will be show to the programmer. */
 void MainController::runAllActiveShaders(void)
 {
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    QMap<ShaderLab::Shader, SLFile*>::iterator it;
     bool fragmentOk = false;
     QString output;
 
@@ -220,7 +221,7 @@ void MainController::runAllActiveShaders(void)
 
     for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
     {
-        FileController * fc = it.value();
+        SLFile * fc = it.value();
         if(!fc->isActive())
             continue;
 
@@ -294,7 +295,7 @@ void MainController::runAllActiveShaders(void)
 /* Performs a saving routine for all unsaved files, distinguishing new and old files. */
 void MainController::saveAll()
 {
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    QMap<ShaderLab::Shader, SLFile*>::iterator it;
 
     for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
         saveFile(it.key());
@@ -312,7 +313,7 @@ void MainController::saveFile(ShaderLab::Shader shaderType)
 /* Only for existing files, creates a new file with the content of the screen and saves it. */
 void  MainController::saveFileAs(ShaderLab::Shader shaderType)
 {
-    FileController *fc = getFileControllerByShaderType(shaderType);
+    SLFile *fc = getFileControllerByShaderType(shaderType);
 
     QString filepath = InterfaceRequests::saveAsRequestDialog( shaderType );
 
@@ -325,15 +326,15 @@ void  MainController::saveFileAs(ShaderLab::Shader shaderType)
 
 void MainController::changeTabActivationStatus(ShaderLab::Shader shaderType)
 {
-    FileController *fc = getFileControllerByShaderType(shaderType);
+    SLFile *fc = getFileControllerByShaderType(shaderType);
 
     fc->setActive(!fc->isActive());
     mainWindow->setEnableShaderCode(shaderType, fc->isActive());
 }
 
-FileController* MainController::getFileControllerByShaderType(ShaderLab::Shader shaderType)
+SLFile* MainController::getFileControllerByShaderType(ShaderLab::Shader shaderType)
 {
-    QMap<ShaderLab::Shader, FileController*>::iterator it;
+    QMap<ShaderLab::Shader, SLFile*>::iterator it;
     it = fileControllers.find(shaderType);
 
     if( it != fileControllers.end() )
@@ -352,11 +353,11 @@ void MainController::newShaderActionClicked()
     if(!closeShaderCode(shaderType))
             return;
 
-    FileController *fc = getFileControllerByShaderType(shaderType);
+    SLFile *fc = getFileControllerByShaderType(shaderType);
 
     if(!fc)
     {
-        fc = new FileController(shaderType);
+        fc = new SLFile(shaderType);
         fileControllers.insert(shaderType, fc);
 
         mainWindow->setVisibleShader(true, shaderType);
@@ -378,7 +379,7 @@ void MainController::openShaderActionClicked()
     if(!closeShaderCode(shaderType))
         return;
 
-    FileController *fc = getFileControllerByShaderType(shaderType);
+    SLFile *fc = getFileControllerByShaderType(shaderType);
 
     if(!fc)
     {
@@ -387,7 +388,7 @@ void MainController::openShaderActionClicked()
         if(filepath.isEmpty())
             return;
 
-        if(!FileController::isValid(filepath))
+        if(!SLFile::isValid(filepath))
         {
             QMessageBox::warning(mainWindow, tr("Could not find file"),
                                  tr("Não foi possível encontrar o arquivo:\n")+
@@ -397,7 +398,7 @@ void MainController::openShaderActionClicked()
             return;
         }
 
-        fc = new FileController(filepath, shaderType);
+        fc = new SLFile(filepath, shaderType);
         fileControllers.insert(shaderType, fc);
 
         fileContent = fc->getFileContent();
@@ -462,20 +463,20 @@ bool MainController::openShader(ShaderLab::Shader shaderType, QString filepath)
     if(!closeShaderCode(shaderType))
         return false;
 
-    FileController *fc = getFileControllerByShaderType(shaderType);
+    SLFile *fc = getFileControllerByShaderType(shaderType);
 
     if(!fc)
     {
         if(filepath.isEmpty())
             return false;
 
-        if(!FileController::isValid(filepath))
+        if(!SLFile::isValid(filepath))
         {
             InterfaceRequests::openFileProblem(filepath);
             return false;
         }
 
-        fc = new FileController(filepath, shaderType);
+        fc = new SLFile(filepath, shaderType);
         fileControllers.insert(shaderType, fc);
 
         fileContent = fc->getFileContent();
@@ -494,7 +495,7 @@ bool MainController::openShader(ShaderLab::Shader shaderType, QString filepath)
 
 bool MainController::saveFileBool(ShaderLab::Shader shaderType)
 {
-    FileController *fc = getFileControllerByShaderType(shaderType);
+    SLFile *fc = getFileControllerByShaderType(shaderType);
 
     if( fc->IsNew() )
     {
@@ -571,7 +572,7 @@ void MainController::logicToSaveProject(void)
         QString fileFc;
         QString fileProj;
 
-        FileController *fc = getFileControllerByShaderType(shadertype);
+        SLFile *fc = getFileControllerByShaderType(shadertype);
         if(fc)
         {
             if(!fc->IsNew())

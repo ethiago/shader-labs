@@ -8,7 +8,7 @@
 #include "Global.h"
 
 class MainWindow;
-class FileController;
+class SLFile;
 class Object3D;
 class ChooseShaderDialog;
 class RenderController;
@@ -19,10 +19,10 @@ class MainController : public QObject
 {
     Q_OBJECT
 
-    typedef QMap<ShaderLab::Shader, FileController*>::iterator FileIterator;
+    typedef QMap<ShaderLab::Shader, SLFile*>::iterator FileIterator;
 
     MainWindow *mainWindow;
-    QMap<ShaderLab::Shader, FileController*> fileControllers;
+    QMap<ShaderLab::Shader, SLFile*> fileControllers;
     QGLShaderProgram program;
     TextureController *textureController;
     RenderController *renderController;
@@ -55,7 +55,7 @@ public slots:
 
 private:
 
-    FileController* getFileControllerByShaderType(ShaderLab::Shader shadertype);
+    SLFile* getFileControllerByShaderType(ShaderLab::Shader shadertype);
     bool closeShaderCode(ShaderLab::Shader);
     bool openShader(ShaderLab::Shader, QString);
     void glSetup(void);
