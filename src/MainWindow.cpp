@@ -70,8 +70,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionSaveAll, SIGNAL(triggered()),
             this, SIGNAL(saveAll()));
 
-    connect(ui->actionWireframe, SIGNAL(toggled(bool)),
-            this, SIGNAL(wireframeClicked(bool)));
+    connect(ui->actionWireframe, SIGNAL(triggered()),
+            this, SIGNAL(wireframeClicked()));
 
     connect(ui->saveImageButton, SIGNAL(clicked()),
             this, SIGNAL(saveResultAsImage()));

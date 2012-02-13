@@ -183,9 +183,9 @@ QDir Project::getProjectDir(void)
     return m_fileName.absoluteDir();
 }
 
-bool Project::includeShader(const FileController& fileController)
+bool Project::includeShader(const SLFile& fileController)
 {
-    shaderFiles[fileController.getShaderType()] = fileController.getFilePath();
+    shaderFiles[fileController.shaderType()] = fileController.getFilePath();
 
     return true;
 }

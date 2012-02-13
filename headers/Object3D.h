@@ -24,6 +24,8 @@ class Object3D : public QObject
 
     int m_inputType;
 
+    bool m_wireframe;
+
     virtual void drawGeometry(void) const = 0;
 
 public:
@@ -50,6 +52,9 @@ public:
 
     void setTexture(int texture);
     int texture(void)const;
+
+    void setWireframe(bool wire);
+    bool wireframe(void)const;
 
     int inputType(void)const;
 

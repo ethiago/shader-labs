@@ -68,13 +68,11 @@ double ShaderLab::degreeFromCos(double _cos)
     return (acos(_cos)*180.0)/M_PI;
 }
 
-ShaderLab::ShaderLab()
- {
+void ShaderLab::extensionsAnalise()
+{
     m_extensions = 0;
-
     const char *extensionString = reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS));
     const char *renderer = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
-
 
     if(extensionString == 0)
        return;
@@ -97,6 +95,11 @@ ShaderLab::ShaderLab()
         else if(ext == "GL_ARB_shader_objects")
             m_extensions |= ShaderLab::ShaderObjects;
     }
+}
+
+ShaderLab::ShaderLab()
+ {
+    m_context = NULL;
  }
 
 int ShaderLab::extensions()
@@ -133,4 +136,14 @@ bool ShaderLab::fragmentShaderEnabled()
 bool ShaderLab::geometryShaderEnabled()
 {
     return (this->extensions() & ShaderLab::GeometryShader)  != 0;
+}
+
+void ShaderLab::setContext(QGLContext* context)
+{
+    m_context = context;
+}
+
+QGLContext* ShaderLab::glContext()
+{
+    return m_context;
 }

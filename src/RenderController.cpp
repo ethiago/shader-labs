@@ -11,6 +11,7 @@
 #include "Plane.h"
 #include "Cube.h"
 #include "Point.h"
+#include "Scene3D.h"
 #include "Tetrahedron.h"
 #include "Arcball.h"
 #include "DirectionalLight.h"
@@ -22,12 +23,13 @@ RenderController::RenderController(MainWindow *mainWindow,
                                    QObject *parent):
     QObject(parent)
 {
+    scene = new Scene3D();
     light = new DirectionalLight;
     arcBall = new ArcBall(500);
-    wireframe = false;
     lightRotation = false;
 
-    this->display = new GLDisplay();
+
+    this->display = new GLDisplay(new QGLContext(QGLFormat::defaultFormat()));
     mainWindow->setGLDisplay(display);
 
     {  // esta ordem deve ser mantida
@@ -79,8 +81,8 @@ RenderController::RenderController(MainWindow *mainWindow,
     connect(display, SIGNAL(mouseCancel()),
             this, SLOT(mouseCancel()));
 
-    connect(mainWindow, SIGNAL(wireframeClicked(bool)),
-            this, SLOT(wireFrameToggle(bool)));
+    connect(mainWindow, SIGNAL(wireframeClicked()),
+            this, SLOT(wireFrameToggle()));
 
     connect(mainWindow, SIGNAL(saveResultAsImage()),
             this, SLOT(saveResultAsImage()));
@@ -92,6 +94,8 @@ RenderController::RenderController(MainWindow *mainWindow,
 
 RenderController::~RenderController()
 {
+    scene->clearObjects();
+    delete scene;
     for(int i = 0 ; i < models.size(); ++i)
     {
         Object3D* obj = models[i].second;
@@ -115,26 +119,21 @@ void RenderController::lightSetup(void)
 
 void RenderController::drawModel(void)
 {
-    if(wireframe)
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    else
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-    model->draw();
+    scene->draw();
 }
 
 void RenderController::mouseRigthMove(QPoint begin, QPoint curr)
 {
     QVector3D v(curr-begin);
-    model->setTraslation(v/40.0);
+    scene->setTraslation(v/40.0);
     display->updateGL();
 }
 
 void RenderController::mouseRigthFinish(QPoint ini, QPoint curr)
 {
     QVector3D v(curr-ini);
-    model->setTraslation(QVector3D());
-    model->setCenter(model->center() + (v/40.0));
+    scene->setTraslation(QVector3D());
+    scene->setCenter(scene->center() + (v/40.0));
     display->updateGL();
 }
 
@@ -148,7 +147,7 @@ void RenderController::mouseLeftMove(QPoint ini, QPoint curr)
         light->setInteractiveQuartenion(
                 arcBall->rotationForPoints(center,curr, ini));
     else
-        model->setInteractiveQuartenion(
+        scene->setInteractiveQuartenion(
                 arcBall->rotationForPoints(center,curr, ini));
 
     display->updateGL();
@@ -166,8 +165,8 @@ void RenderController::mouseLefthFinish(QPoint ini, QPoint curr)
         light->setInteractiveQuartenion(QQuaternion());
     }else
     {
-        model->addRotation(t);
-        model->setInteractiveQuartenion(QQuaternion());
+        scene->addRotation(t);
+        scene->setInteractiveQuartenion(QQuaternion());
     }
 
     display->updateGL();
@@ -178,14 +177,14 @@ void RenderController::mouseCancel()
     if(lightRotation)
         light->setInteractiveQuartenion(QQuaternion());
     else
-        model->setInteractiveQuartenion(QQuaternion());
+        scene->setInteractiveQuartenion(QQuaternion());
 
     display->updateGL();
 }
 
-void RenderController::wireFrameToggle(bool wireframe)
+void RenderController::wireFrameToggle()
 {
-    this->wireframe = wireframe;
+    model->setWireframe(!model->wireframe());
     display->updateGL();
 }
 
@@ -214,7 +213,8 @@ void RenderController::modelChanged(QAction* action)
         {
            models[i].first->setChecked(true);
            model = models[i].second;
-           model->cleanTransformations();
+           scene->clearObjects();
+           scene->addObject(models[i].second);
         }
     }
 
@@ -231,6 +231,7 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     model_tmp = new Sphere(50,50);
     act->setChecked(true);          // comeca pela esfera
     model = model_tmp;            // comeca pela esfera
+    scene->addObject(model_tmp);
     models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("&Plane"));
@@ -334,7 +335,8 @@ void RenderController::setModelById(int ind)
 
     models[ind].first->setChecked(true);
     model = models[ind].second;
-    model->cleanTransformations();
+    scene->clearObjects();
+    scene->addObject(models[ind].second);
 
     display->updateGL();
 }

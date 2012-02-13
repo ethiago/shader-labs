@@ -2,6 +2,7 @@
 #define GLOBAL_H
 
 #include <QGLShader>
+#include <QGLContext>
 #include <QString>
 #include <cmath>
 
@@ -10,6 +11,8 @@
 class ShaderLab {
 
     int m_extensions;
+
+    QGLContext *m_context;
 
     static ShaderLab *s_instance;
     ShaderLab();
@@ -33,10 +36,14 @@ public:
                        FragmentShader = 8,
                        ShaderObjects = 16};
 
+    void extensionsAnalise();
     bool criticalExtensionsEnabled();
     bool vertexShaderEnabled();
     bool fragmentShaderEnabled();
     bool geometryShaderEnabled();
+    void setContext(QGLContext*);
+    QGLContext* glContext();
+
 
     static QString shaderToStrCap(Shader s);
     static QString shaderToStr(Shader s);

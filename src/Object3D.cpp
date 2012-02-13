@@ -2,10 +2,11 @@
 #include "Global.h"
 
 Object3D::Object3D(const QVector3D& center, QObject *parent)
-    : QObject(parent), m_center(center), m_translation(QVector3D()),
-      m_rotations(QMatrix4x4()) ,
+    : QObject(parent), m_center(center),
+      m_translation(QVector3D()), m_rotations(QMatrix4x4()) ,
       m_interactiveQuartenion(QQuaternion()),
-      m_slices(50), m_stacks (50), m_texture(-1), m_inputType(GL_TRIANGLES)
+      m_slices(50), m_stacks (50), m_texture(-1),
+      m_inputType(GL_TRIANGLES), m_wireframe(false)
 {
 }
 
@@ -14,7 +15,8 @@ Object3D::Object3D(const Object3D& obj)
       m_translation(obj.translation()), m_rotations(obj.rotations()),
       m_interactiveQuartenion(obj.interactiveQuartenion()),
       m_slices(obj.slices()), m_stacks(obj.stacks()),
-      m_texture(obj.texture()), m_inputType(obj.inputType())
+      m_texture(obj.texture()), m_inputType(obj.inputType()),
+      m_wireframe(obj.wireframe())
 
 {
 }
@@ -88,6 +90,16 @@ int Object3D::texture(void)const
     return m_texture;
 }
 
+void Object3D::setWireframe(bool wire)
+{
+    m_wireframe = wire;
+}
+
+bool Object3D::wireframe(void)const
+{
+    return m_wireframe;
+}
+
 void Object3D::addRotation(const QQuaternion& rotation)
 {
     QMatrix4x4 m;
@@ -108,6 +120,11 @@ void Object3D::draw(void) const
               t.x(), t.y(), t.z());
 
     glMultMatrixd(rotations().constData());
+
+    if(m_wireframe)
+        glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+    else
+        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
     drawGeometry();
 

@@ -39,7 +39,7 @@ signals:
     void selectedFile(ShaderLab::Shader);
     void shaderCodeChanged(ShaderLab::Shader);
     void drawModel(void);
-    void wireframeClicked(bool);
+    void wireframeClicked();
     void changeActivationStatusClicked(ShaderLab::Shader);
     void saveResultAsImage();
     void newShaderActionClicked();

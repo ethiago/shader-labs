@@ -37,7 +37,7 @@ signals:
     void mouseCancel();
 
 public:
-    GLDisplay(QWidget *parent = 0);
+    GLDisplay(QGLContext* context,QWidget *parent = 0);
     ~GLDisplay();
 
     void initializeGL();

@@ -16,6 +16,8 @@ class SLTabWidget : public QTabWidget
 public:
     explicit SLTabWidget(QWidget *parent = 0);
     ~SLTabWidget();
+    int addTab ( QWidget * page, const QIcon & icon, const QString & label );
+
 
 signals:
     void tabCloseRequested(ShaderLab::Shader);
@@ -29,6 +31,7 @@ public slots:
     void findBack(const QString&);
     void replaceNext(const QString&, const QString&);
     void replaceAll(const QString&, const QString&);
+    void closeTab(QWidget*);
 
     void previousTab(void);
     void nextTab(void);
