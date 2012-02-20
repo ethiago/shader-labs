@@ -23,6 +23,8 @@ public:
     static QString openShader(ShaderLab::Shader shader);
     static QString openProject();
     static QString saveImage();
+    static void notLoadProject(void);
+    static bool projectSaveContinue(void);
 
 
 };

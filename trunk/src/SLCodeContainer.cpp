@@ -6,16 +6,16 @@
 
 
 
-SLCodeContainer::SLCodeContainer(ShaderLab::Shader shadertype, QWidget *parent) :
+SLCodeContainer::SLCodeContainer(ShaderLab::Shader shadertype, const QString& title, QWidget *parent) :
     QWidget(parent), ui(new Ui::ShaderCodeContainer)
 {
 
-    m_save = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_K), this);
+    m_save = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S), this);
     m_active = true;
 
     ui->setupUi(this);
     ui->shaderCodeBox->setFont(QFont("Courier"));
-    //ui->shaderCodeBox->setAcceptRichText(false);
+
     highLighter = new Highlighter(ui->shaderCodeBox->document());
 
     activePalette = ui->shaderCodeBox->palette();
@@ -37,7 +37,10 @@ SLCodeContainer::SLCodeContainer(ShaderLab::Shader shadertype, QWidget *parent) 
 
     connect(ui->shaderCodeBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
-    connect(m_save, SIGNAL(activatedAmbiguously()), this, SIGNAL(save()));
+    connect(m_save, SIGNAL(activated()), this, SIGNAL(save()));
+
+    setWindowTitle(title);
+    setWindowIcon(QIcon(":/ico/running"));
 }
 
 SLCodeContainer::~SLCodeContainer()
@@ -48,7 +51,7 @@ SLCodeContainer::~SLCodeContainer()
 void SLCodeContainer::setText(const QString& code)
 {
     ui->shaderCodeBox->setPlainText(code);
-    setActivatedCode(true);
+    //setActivatedCode(true);
 }
 
 QString SLCodeContainer::getText()
@@ -82,22 +85,6 @@ void SLCodeContainer::mouseDoubleClickEvent(QMouseEvent *e)
         emit doubleClicked(shaderType);
 }
 
-void SLCodeContainer::setActivatedCode(bool active)
-{
-    m_active = active;
-    if(active)
-    {
-        highLighter->setDocument(ui->shaderCodeBox->document());
-        ui->shaderCodeBox->setPalette(activePalette);
-        setWindowIcon(QIcon(":/ico/running"));
-    }else
-    {
-        highLighter->setDocument(NULL);
-        ui->shaderCodeBox->setPalette(inactivePalette);
-        setWindowIcon(QIcon(":/ico/stopped"));
-    }
-}
-
 void SLCodeContainer::changeActivatedStatus()
 {
     m_active = !m_active;
@@ -105,12 +92,12 @@ void SLCodeContainer::changeActivatedStatus()
     {
         highLighter->setDocument(ui->shaderCodeBox->document());
         ui->shaderCodeBox->setPalette(activePalette);
-        setWindowIcon(QIcon(":/ico/running"));
+        setTabIcon(QIcon(":/ico/running"));
     }else
     {
         highLighter->setDocument(NULL);
         ui->shaderCodeBox->setPalette(inactivePalette);
-        setWindowIcon(QIcon(":/ico/stopped"));
+        setTabIcon(QIcon(":/ico/stopped"));
     }
     emit activateStatusChanged();
 }
@@ -177,4 +164,32 @@ void SLCodeContainer::close()
 bool SLCodeContainer::activateCode()
 {
     return m_active;
+}
+
+void SLCodeContainer::setTabTitle(const QString& title)
+{
+    setWindowTitle(title);
+    emit setTabTitle(title, this);
+}
+
+void SLCodeContainer::setTabIcon(const QIcon& icon)
+{
+    setWindowIcon(icon);
+    emit setTabIcon(icon, this);
+}
+
+void SLCodeContainer::updateTabBar()
+{
+    emit setTabTitle(windowTitle(), this);
+    emit setTabIcon(windowIcon(), this);
+}
+
+void SLCodeContainer::saveShader()
+{
+    emit save();
+}
+
+void SLCodeContainer::saveShaderAs()
+{
+    emit saveAs();
 }

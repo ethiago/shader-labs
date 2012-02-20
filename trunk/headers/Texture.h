@@ -7,14 +7,14 @@
 
 class Texture : public QObject
 {
-    Q_OBJECT
-
     QImage m_image;
     int m_glTextureName;
     QString m_varName;
     QString m_filename;
 
 public:
+    static bool isValid(const QString& filePath);
+
     explicit Texture(QObject *parent = 0);
     explicit Texture(const Texture&);
 
@@ -34,10 +34,6 @@ public:
     void clean(void);
 
     const Texture& operator=(const Texture&);
-
-signals:
-
-public slots:
 
 };
 

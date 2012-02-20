@@ -23,9 +23,6 @@ public:
     explicit GlobalProperties(MainWindow *parent = 0);
     ~GlobalProperties();
 
-private slots:
-    void currentItemChanged ( QtBrowserItem * current );
-
 private:
     Ui::GlobalProperties *ui;
 

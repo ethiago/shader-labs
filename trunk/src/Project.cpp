@@ -4,6 +4,7 @@
 #include <QDebug>
 
 #include "Project.h"
+#include "InterfaceRequests.h"
 
 Project::Project(QObject *parent) :
     QObject(parent), modelId(-1)
@@ -185,9 +186,44 @@ QDir Project::getProjectDir(void)
 
 bool Project::includeShader(const SLFile& fileController)
 {
-    shaderFiles[fileController.shaderType()] = fileController.getFilePath();
+    return includeShader(fileController.getFilePath(), fileController.shaderType());
+}
+
+bool Project::includeShader(const QString& filePath, ShaderLab::Shader shaderType)
+{
+    shaderFiles[shaderType] = filePath;
 
     return true;
+}
+
+void Project::checkShader(const QString& filePath, ShaderLab::Shader shaderType)
+{
+    ShaderIterator it = shaderFiles.find(shaderType);
+    if(it == shaderFiles.end() && filePath.isEmpty())
+        return;
+
+    if(filePath.isEmpty())
+    {
+        //does remove?
+        if(InterfaceRequests::removeFileFromProject(it.value()))
+            removeShader(shaderType);
+        return;
+    }
+
+    if(it == shaderFiles.end())
+    {
+        //does include?
+        if(InterfaceRequests::includeFileIntoProject(filePath))
+            includeShader(filePath, shaderType);
+        return;
+    }
+
+    if(getFileName(shaderType) != filePath)
+    {
+        if(InterfaceRequests::replaceFileIntoProject(filePath))
+            includeShader(filePath, shaderType);
+        return;
+    }
 }
 
 bool Project::save(QString fileName)
@@ -199,11 +235,11 @@ bool Project::save(QString fileName)
 
     if(file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
+        m_fileName = QFileInfo(fileName);
+
         QTextStream out(&file);
         out << getXml();
         file.close();
-
-        m_fileName = QFileInfo(fileName);
 
         return true;
     }
@@ -266,6 +302,11 @@ QString Project::getProjectFileName(void)
         ret = ret.left(ret.length()-4);
 
     return ret;
+}
+
+QString Project::getAbsoluteFilePath(void)
+{
+    return m_fileName.absoluteFilePath();
 }
 
 void Project::setModel(int ind)

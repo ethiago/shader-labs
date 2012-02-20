@@ -3,7 +3,6 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include "SLTabBar.h"
-#include "ShaderCodeContainer.h"
 #include "SLCodeContainer.h"
 
 
@@ -33,51 +32,42 @@ SLTabWidget::~SLTabWidget()
 
 void SLTabWidget::tabCloseRequested(int index)
 {
-    ShaderCodeContainer* scc = (ShaderCodeContainer*)widget(index);
-    //cc->closeRequest();
-    emit tabCloseRequested(scc->getShaderType());
+    SLCodeContainer* cc = (SLCodeContainer*)widget(index);
+    cc->closeRequest();
 }
 
 void SLTabWidget::changeActivationStatus()
 {
-    ShaderCodeContainer* ssc= (ShaderCodeContainer*)currentWidget();
-    //ssc->changeActivatedStatus();
-    emit changeActivationStatus(ssc->getShaderType());
+    SLCodeContainer* cc = (SLCodeContainer*)currentWidget();
+    cc->changeActivatedStatus();
 }
 
 void SLTabWidget::findNext(const QString& s)
 {
-    ShaderCodeContainer * scc = (ShaderCodeContainer *)currentWidget();
-    if(scc != NULL)
-        scc->findNext(s);
+    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    if(cc != NULL)
+        cc->findNext(s);
 }
 
 void SLTabWidget::findBack(const QString& s)
 {
-    ShaderCodeContainer * scc = (ShaderCodeContainer *)currentWidget();
-    if(scc != NULL)
-        scc->findBack(s);
+    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    if(cc != NULL)
+        cc->findBack(s);
 }
 
 void SLTabWidget::replaceNext(const QString& s, const QString& r)
 {
-    ShaderCodeContainer * scc = (ShaderCodeContainer *)currentWidget();
-    if(scc != NULL)
-        scc->replaceNext(s,r);
+    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    if(cc != NULL)
+        cc->replaceNext(s,r);
 }
 
 void SLTabWidget::replaceAll(const QString& s, const QString& r)
 {
-    ShaderCodeContainer * scc = (ShaderCodeContainer *)currentWidget();
-    if(scc != NULL)
-        scc->replaceAll(s,r);
-}
-void SLTabWidget::previousTab(void)
-{
-    if(currentIndex() == 0 && count() > 0)
-        setCurrentIndex(count() - 1);
-    else if(count() > 0)
-        setCurrentIndex(currentIndex() - 1);
+    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    if(cc != NULL)
+        cc->replaceAll(s,r);
 }
 
 void SLTabWidget::nextTab(void)
@@ -89,9 +79,9 @@ void SLTabWidget::nextTab(void)
 
 void SLTabWidget::setFocus()
 {
-    ShaderCodeContainer * scc = (ShaderCodeContainer *)currentWidget();
-    if(scc != NULL)
-        scc->setFocus();
+    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    if(cc != NULL)
+        cc->setFocus();
 }
 
 void SLTabWidget::closeTab(QWidget* w)
@@ -101,10 +91,22 @@ void SLTabWidget::closeTab(QWidget* w)
         setVisible(false);
 }
 
-int SLTabWidget::addTab ( QWidget * page, const QIcon & icon, const QString & label )
+int SLTabWidget::addTab ( EditorController * controller, const QIcon & icon, const QString & label )
 {
     setVisible(true);
-    ShaderCodeContainer *cc = (ShaderCodeContainer *)page;
+    SLCodeContainer *cc = (SLCodeContainer *)controller->codeContainer();
     connect(cc, SIGNAL(closeSignal(QWidget*)), this, SLOT(closeTab(QWidget*)));
-    return QTabWidget::addTab(page, icon, label);
+    connect(cc, SIGNAL(setTabIcon(QIcon,QWidget*)), this, SLOT(setTabIcon(QIcon,QWidget*)));
+    connect(cc, SIGNAL(setTabTitle(QString,QWidget*)), this, SLOT(setTabTitle(QString,QWidget*)));
+    return QTabWidget::addTab(cc, icon, label);
+}
+
+void SLTabWidget::setTabTitle(const QString& title, QWidget*w)
+{
+    setTabText(indexOf(w), title);
+}
+
+void SLTabWidget::setTabIcon(const QIcon& icon, QWidget*w)
+{
+    QTabWidget::setTabIcon(indexOf(w),icon);
 }

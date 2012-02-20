@@ -7,8 +7,6 @@ GlobalProperties::GlobalProperties(MainWindow *parent) :
 {
     ui->setupUi(this);
 
-    //setupProperties();
-
     QAction *act = toggleViewAction();
     act->setText("Global properties");
     act->setShortcut(QKeySequence::fromString("Ctrl+G"));
@@ -56,15 +54,5 @@ void GlobalProperties::setupProperties()
     variantEditor->setPropertiesWithoutValueMarked(true);
     variantEditor->setRootIsDecorated(false);
 
-    connect(variantEditor, SIGNAL(currentItemChanged(QtBrowserItem*)),
-            this, SLOT(currentItemChanged(QtBrowserItem*)));
-
     this->setWidget(variantEditor);
-}
-
-void GlobalProperties::currentItemChanged ( QtBrowserItem * current )
-{
-    QtProperty *p = current->property();
-
-    qDebug() << p->propertyName() << "::" << p->valueText();
 }

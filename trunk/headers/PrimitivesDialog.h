@@ -1,6 +1,7 @@
 #ifndef PRIMITIVESDIALOG_H
 #define PRIMITIVESDIALOG_H
 
+#include <QtOpenGL>
 #include <QDialog>
 
 namespace Ui {
@@ -9,12 +10,17 @@ namespace Ui {
 
 class PrimitivesDialog : public QDialog {
     Q_OBJECT
+
+    Ui::PrimitivesDialog *ui;
+
 public:
-    PrimitivesDialog(QStringList ouTexts, QWidget *parent = 0);
+    PrimitivesDialog(QWidget *parent = 0);
     ~PrimitivesDialog();
     int getCurrentInputPrimitiveIndex(void);
     int getCurrentOutputPrimitiveIndex(void);
     void changeCurrentInputType(const QString& s);
+    GLenum getCurrentOutputPrimitive(void);
+    GLenum getCurrentInputPrimitive(void);
 
 protected:
     void changeEvent(QEvent *e);
@@ -22,7 +28,9 @@ protected:
 signals:
 
 private:
-    Ui::PrimitivesDialog *ui;
+    void primitiveSetup();
+
+
 };
 
 #endif // PRIMITIVESDIALOG_H

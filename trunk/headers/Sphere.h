@@ -5,7 +5,6 @@
 
 class Sphere : public Object3D
 {
-    Q_OBJECT
 
     float m_radius;
     int indexList;
@@ -17,6 +16,8 @@ public:
     ~Sphere();
 
     float radius(void)const;
+
+    virtual Object3D* copy() const;
 
 private:
     virtual void drawGeometry(void) const;

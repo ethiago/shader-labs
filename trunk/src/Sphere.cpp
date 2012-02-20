@@ -16,8 +16,12 @@ Sphere::Sphere(int stacks, int slices, float radius, const QVector3D& center, QO
 Sphere::Sphere(const Sphere& sph): Object3D(sph), m_radius(sph.radius())
 {
     indexList = glGenLists(1);
-
     storeList();
+}
+
+Object3D* Sphere::copy() const
+{
+    return new Sphere(*this);
 }
 
 Sphere::~Sphere()

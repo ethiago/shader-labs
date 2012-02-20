@@ -11,9 +11,20 @@ Plane::Plane(int stacks, int slices) : Object3D()
     storeList();
 }
 
+Plane::Plane(const Plane& p): Object3D(p)
+{
+    indexList = glGenLists(1);
+    storeList();
+}
+
 Plane::~Plane()
 {
     glDeleteLists(indexList, 1);
+}
+
+Object3D* Plane::copy(void) const
+{
+    return new Plane(*this);
 }
 
 void Plane::drawGeometry(void) const

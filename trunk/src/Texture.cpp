@@ -82,3 +82,9 @@ const Texture& Texture::operator=(const Texture& tex)
     m_filename = tex.fullFileName();
     return *this;
 }
+
+bool Texture::isValid(const QString& filePath)
+{
+    QImage i(filePath);
+    return !(i.isNull());
+}

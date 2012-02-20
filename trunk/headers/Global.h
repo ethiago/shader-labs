@@ -12,7 +12,7 @@ class ShaderLab {
 
     int m_extensions;
 
-    QGLContext *m_context;
+    QGLWidget *m_context;
 
     static ShaderLab *s_instance;
     ShaderLab();
@@ -41,8 +41,8 @@ public:
     bool vertexShaderEnabled();
     bool fragmentShaderEnabled();
     bool geometryShaderEnabled();
-    void setContext(QGLContext*);
-    QGLContext* glContext();
+    void setContext(QGLWidget*);
+    QGLWidget* glContext();
 
 
     static QString shaderToStrCap(Shader s);
@@ -57,9 +57,11 @@ public:
     static double degreeFromCos(double);
 
     static QList<ShaderLab::Shader> shaderTypeList(void);
+    static QList<ShaderLab::Shader> enabledsShaderTypeList(void);
 };
 
 #define FORSHADERS(varname) foreach(ShaderLab::Shader varname, ShaderLab::shaderTypeList())
+#define FORENABLEDSHADERS(varname) foreach(ShaderLab::Shader varname, ShaderLab::enabledsShaderTypeList())
 
 
 #endif // GLOBAL_H

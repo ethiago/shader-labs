@@ -12,25 +12,33 @@ class EditorController : public QObject
     Q_OBJECT
 
     SLFile *file;
-    SLCodeContainer *codeContainer;
+    SLCodeContainer *m_codeContainer;
 
 public:
-    explicit EditorController(const QString& filepath,
-                              ShaderLab::Shader shadertype,
+    explicit EditorController(ShaderLab::Shader shadertype,
+                              const QString& filepath = QString(),
                               QObject *parent = 0);
     virtual ~EditorController();
-private:
+
+    SLCodeContainer * codeContainer(void);
     bool closeShaderCode();
-    bool saveFile();
+    bool saveFile(bool forceNew = false);
+    bool isActive();
+    QString getContent();
+    QString getContentFile();
+    const SLFile& getFile();
 
 signals:
-    void useless();
+    void useless(EditorController*);
 
 public slots:
     void slot_closeShaderCode();
     void slot_saveFile();
+    void saveAs();
     void fileChanged();
     void changeTabActivationStatus();
+
+
 
 };
 

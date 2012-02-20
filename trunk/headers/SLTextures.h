@@ -27,21 +27,24 @@ signals:
     void updateGL();
 
 public:
-    explicit SLTextures(QObject *parent = 0);
+    explicit SLTextures(MainWindow* mw, QObject* parent = 0);
+    virtual ~SLTextures();
 
     void applyTextures(QGLShaderProgram* program);
     void activateTexture(void);
     QStringList getTextureFileNames();
     void setTextures(const QStringList&);
+    void closeView(MainWindow *mw);
 
 public slots:
-    void textureFileName(const QString&);
     void removeTexture(void);
-    void loadTexture(void);
+    void changeTexture(void);
     void addTexture(void);
     void textureCurrentChange(int);
 
 private:
+    void remakeVarNames();
+    void setupTexture(const QString& imageFileName, bool add);
     void viewUpdateList(void);
     void clearTexture(void);
     void removeAllTextures(void);

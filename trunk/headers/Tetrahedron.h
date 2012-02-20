@@ -5,13 +5,14 @@
 
 class Tetrahedron : public Object3D
 {
-    Q_OBJECT
     int indexList;
 public:
     explicit Tetrahedron(const QVector3D& center = QVector3D(),
                     QObject *parent = 0);
     explicit Tetrahedron(const Tetrahedron& tt);
     ~Tetrahedron();
+
+    virtual Object3D* copy() const;
 
 private:
     virtual void drawGeometry(void) const;

@@ -9,7 +9,11 @@ class Plane : public Object3D
 
 public:
     explicit Plane(int staks, int slices);
+    explicit Plane(const Plane& p);
+
     ~Plane();
+
+    virtual Object3D* copy(void) const;
 
 private:
     void drawGeometry(void) const;

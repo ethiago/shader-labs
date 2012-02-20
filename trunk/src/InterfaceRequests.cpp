@@ -234,3 +234,28 @@ QString InterfaceRequests::saveImage()
 
     return filename;
 }
+
+void InterfaceRequests::notLoadProject()
+{
+    QMessageBox::warning(0, "Open file error",
+                         "The file content was not recognized as ShaderLabs Project.\n");
+}
+
+bool InterfaceRequests::projectSaveContinue(void)
+{
+    QMessageBox::StandardButton ok = QMessageBox::Yes;
+    QMessageBox::StandardButton no = QMessageBox::No;
+    QMessageBox::StandardButton bt;
+
+    QString msg = QString("There is any new code. New codes will not be included in project.\n") +
+            ("Do you want to continue?");
+
+    bt = QMessageBox::question(0, "Save project", msg,
+                               no | ok,
+                               ok);
+
+    if(bt == ok)
+        return true;
+    else
+        return false;
+}

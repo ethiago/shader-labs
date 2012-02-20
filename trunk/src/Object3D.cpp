@@ -6,7 +6,8 @@ Object3D::Object3D(const QVector3D& center, QObject *parent)
       m_translation(QVector3D()), m_rotations(QMatrix4x4()) ,
       m_interactiveQuartenion(QQuaternion()),
       m_slices(50), m_stacks (50), m_texture(-1),
-      m_inputType(GL_TRIANGLES), m_wireframe(false)
+      m_inputType(GL_TRIANGLES), m_wireframe(false),
+      m_modelId(-1)
 {
 }
 
@@ -16,7 +17,7 @@ Object3D::Object3D(const Object3D& obj)
       m_interactiveQuartenion(obj.interactiveQuartenion()),
       m_slices(obj.slices()), m_stacks(obj.stacks()),
       m_texture(obj.texture()), m_inputType(obj.inputType()),
-      m_wireframe(obj.wireframe())
+      m_wireframe(obj.wireframe()), m_modelId(obj.modelId())
 
 {
 }
@@ -98,6 +99,16 @@ void Object3D::setWireframe(bool wire)
 bool Object3D::wireframe(void)const
 {
     return m_wireframe;
+}
+
+void Object3D::setModelId(int id)
+{
+    m_modelId = id;
+}
+
+int Object3D::modelId(void) const
+{
+    return m_modelId;
 }
 
 void Object3D::addRotation(const QQuaternion& rotation)

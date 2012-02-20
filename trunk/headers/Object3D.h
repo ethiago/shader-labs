@@ -9,8 +9,6 @@
 
 class Object3D : public QObject
 {
-    Q_OBJECT
-
     QVector3D m_center;
     QVector3D m_translation;
     QMatrix4x4 m_rotations;
@@ -25,6 +23,8 @@ class Object3D : public QObject
     int m_inputType;
 
     bool m_wireframe;
+
+    int m_modelId;
 
     virtual void drawGeometry(void) const = 0;
 
@@ -56,11 +56,16 @@ public:
     void setWireframe(bool wire);
     bool wireframe(void)const;
 
+    void setModelId(int id);
+    int modelId(void) const;
+
     int inputType(void)const;
 
     void draw(void) const;
 
     void cleanTransformations();
+
+    virtual Object3D* copy(void) const = 0;
 
 protected:
 

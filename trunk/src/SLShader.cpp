@@ -1,20 +1,43 @@
 #include "SLShader.h"
+#include "InterfaceRequests.h"
+#include "EditorController.h"
 
 #define DEFFRAG "void main (){gl_FragColor = gl_Color;}"
 
-SLShader::SLShader(QObject *parent) :
-    QObject(parent), vertexShader(ShaderLab::Vertex),
-    geometryShader(ShaderLab::Geometry), fragmentShader(ShaderLab::Fragment)
+SLShader::SLShader(MainWindow* mw, QObject *parent) :
+    QObject(parent), vertexShader(NULL),
+    geometryShader(NULL), fragmentShader(NULL)
 {
-    vertexShader.setActive(false);
-    geometryShader.setActive(false);
-    fragmentShader.setActive(false);
+    primitivesDialog = new PrimitivesDialog(mw);
+
+    connect(mw, SIGNAL(newPrimitiveDialog()), this, SLOT(showPrimitive()));
 }
 
-void SLShader::logProcess(const SLFile& shader)
+SLShader::~SLShader()
 {
-    m_log += "==================== Compiling "+ ShaderLab::shaderToStr(shader.shaderType()) +" code ====================\n";
-    QString tlog = shader.log();
+    if(vertexShader)
+    {
+        vertexShader->closeShaderCode();
+        delete vertexShader;
+    }
+    if(geometryShader)
+    {
+        geometryShader->closeShaderCode();
+        delete geometryShader;
+    }
+    if(fragmentShader)
+    {
+        fragmentShader->closeShaderCode();
+        delete fragmentShader;
+    }
+    //disconnect(0, 0, primitivesDialog, 0);
+    delete primitivesDialog;
+}
+
+void SLShader::logProcess(const QString& log, ShaderLab::Shader st)
+{
+    m_log += "==================== Compiling "+ ShaderLab::shaderToStr(st) +" code ====================\n";
+    QString tlog = log;
 
     if(tlog == "")
         m_log += "Successfull.\n";
@@ -22,63 +45,56 @@ void SLShader::logProcess(const SLFile& shader)
         m_log += tlog + "\n";
 }
 
-void SLShader::compileAndLink(GLenum inputType, GLenum outputType)
+void SLShader::compileAndLink(QGLShaderProgram* program)
 {
-    program.removeAllShaders();
-    program.release();
+    program->removeAllShaders();
+    program->release();
 
     bool atLeastOne = false;
-    bool compOK, thereIsCode = false;
+    bool thereIsCode = false;
     bool fragmentOk = false;
 
     m_log = "";
 
-    if(vertexShader.isActive())
+    if(vertexShader && vertexShader->isActive())
     {
         thereIsCode = true;
-        compOK = vertexShader.compile();
 
-        if(compOK)
-        {
-            program.addShader(vertexShader.getShader());
-
+        if(program->addShaderFromSourceCode(
+                    QGLShader::Vertex, vertexShader->getContent()))
             atLeastOne = true;
-        }
-        logProcess(vertexShader);
+
+        logProcess(program->log(), ShaderLab::Vertex);
     }
 
-    if(geometryShader.isActive())
+    if(geometryShader && geometryShader->isActive())
     {
         thereIsCode = true;
-        compOK = geometryShader.compile();
 
-        if(compOK)
-        {
-            program.addShader(geometryShader.getShader());
-
+        if(program->addShaderFromSourceCode(
+                    QGLShader::Geometry, geometryShader->getContent()))
             atLeastOne = true;
-        }
-        logProcess(geometryShader);
+
+        logProcess(program->log(), ShaderLab::Geometry);
     }
 
-    if(fragmentShader.isActive())
+    if(fragmentShader && fragmentShader->isActive())
     {
         thereIsCode = true;
-        compOK = fragmentShader.compile();
 
-        if(compOK)
+        if(program->addShaderFromSourceCode(
+                    QGLShader::Fragment, fragmentShader->getContent()))
         {
-            program.addShader(fragmentShader.getShader());
-
             atLeastOne = true;
             fragmentOk = true;
         }
-        logProcess(fragmentShader);
+
+        logProcess(program->log(), ShaderLab::Fragment);
     }
 
     if(atLeastOne && !fragmentOk)
     {
-        program.addShaderFromSourceCode(QGLShader::Fragment, QString(DEFFRAG));
+        program->addShaderFromSourceCode(QGLShader::Fragment, QString(DEFFRAG));
     }
 
     m_log += "====================== Linking process ======================\n";
@@ -88,12 +104,12 @@ void SLShader::compileAndLink(GLenum inputType, GLenum outputType)
         ShaderLab * sl = ShaderLab::instance();
         if(sl->geometryShaderEnabled())
         {
-            program.setGeometryInputType(inputType);
-            program.setGeometryOutputType(outputType);
+            program->setGeometryInputType(primitivesDialog->getCurrentInputPrimitive());
+            program->setGeometryOutputType(primitivesDialog->getCurrentOutputPrimitive());
         }
 
-        program.link();
-        m_log += program.log();
+        program->link();
+        m_log += program->log();
     }
     else
         m_log += "Due to problems, linking process could not be performed.";
@@ -107,21 +123,131 @@ const QString& SLShader::log()
     return m_log;
 }
 
-void SLShader::release()
+EditorController* SLShader::setShader(const QString& filePath, ShaderLab::Shader shadertype)
 {
-    program.release();
-}
 
-void SLShader::bind()
-{
-    program.bind();
-}
-
-void SLShader::setShader(const QString& filePath, ShaderLab::Shader shadertype)
-{
     if(shadertype == ShaderLab::Vertex)
     {
-        vertexShader.setFilePath(filePath);
-        vertexShader.setActive(true);
+        if(!closeShader(&vertexShader))
+            return NULL;
+
+        vertexShader = new EditorController(ShaderLab::Vertex, filePath);
+        connect(vertexShader, SIGNAL(useless(EditorController*)),
+                this, SLOT(unlessEditor(EditorController*)));
+        return vertexShader;
+    }else if(shadertype == ShaderLab::Geometry)
+    {
+        if(!closeShader(&geometryShader))
+            return NULL;
+
+        geometryShader = new EditorController(ShaderLab::Geometry, filePath);
+        connect(geometryShader, SIGNAL(useless(EditorController*)),
+                this, SLOT(unlessEditor(EditorController*)));
+        return geometryShader;
+    }else if(shadertype == ShaderLab::Fragment)
+    {
+        if(!closeShader(&fragmentShader))
+            return NULL;
+
+        fragmentShader = new EditorController(ShaderLab::Fragment, filePath);
+        connect(fragmentShader, SIGNAL(useless(EditorController*)),
+                this, SLOT(unlessEditor(EditorController*)));
+        return fragmentShader;
     }
+
+    return NULL;
+}
+
+void SLShader::showPrimitive()
+{
+    primitivesDialog->show();
+}
+
+void SLShader::unlessEditor(EditorController* editor)
+{
+    if(editor == vertexShader)
+    {
+        delete vertexShader;
+        vertexShader = NULL;
+    }else
+    if(editor == geometryShader)
+    {
+        delete geometryShader;
+        geometryShader = NULL;
+    }else
+    if(editor == fragmentShader)
+    {
+        delete fragmentShader;
+        fragmentShader = NULL;
+    }
+}
+
+bool SLShader::isAnyNew()
+{
+    if(vertexShader && (vertexShader->getFile().IsNew()))
+        return true;
+    if(geometryShader && (geometryShader->getFile().IsNew()))
+        return true;
+    if(fragmentShader && (fragmentShader->getFile().IsNew()))
+        return true;
+
+    return false;
+}
+
+bool SLShader::saveAllShaders()
+{
+    bool all = true;
+    if(vertexShader && !(vertexShader->saveFile()))
+        all = false;
+    if(geometryShader && !(geometryShader->saveFile()))
+        all = false;
+    if(fragmentShader && !(fragmentShader->saveFile()))
+        all = false;
+
+    return all;
+}
+
+bool SLShader::closeAllFiles()
+{
+    if(!closeShader(&vertexShader))
+        return false;
+    if(!closeShader(&geometryShader))
+        return false;
+    if(!closeShader(&fragmentShader))
+        return false;
+
+    return true;
+}
+
+bool SLShader::closeShader(EditorController** shader)
+{
+    if(*shader)
+    {
+        if(!(*shader)->closeShaderCode())
+            return false;
+
+        delete *shader;
+        *shader = NULL;
+    }
+    return true;
+}
+
+QString SLShader::getAbsoluteFilePath(ShaderLab::Shader shaderType)
+{
+    if(shaderType == ShaderLab::Vertex && vertexShader && !(vertexShader->getFile().IsNew()))
+    {
+        return vertexShader->getFile().getFilePath();
+    }
+
+    if(shaderType == ShaderLab::Geometry && geometryShader && !(geometryShader->getFile().IsNew()))
+    {
+        return geometryShader->getFile().getFilePath();
+    }
+
+    if(shaderType == ShaderLab::Fragment && fragmentShader && !(fragmentShader->getFile().IsNew()))
+    {
+        return fragmentShader->getFile().getFilePath();
+    }
+
+    return QString();
 }

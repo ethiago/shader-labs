@@ -7,15 +7,15 @@
 #include <QAction>
 #include "InterfaceRequests.h"
 
-SLTextures::SLTextures(QObject *parent) :
+SLTextures::SLTextures(MainWindow* mw, QObject* parent) :
     QObject(parent)
 {
    m_textureList.append(Texture());
-
-   m_textureView = new TexturePropertiesView(NULL);
+   m_textureView = new TexturePropertiesView(mw);
+   mw->addDockWidget(Qt::LeftDockWidgetArea, m_textureView);
 
    connect(m_textureView, SIGNAL(loadTextureClicked()),
-           this, SLOT(loadTexture()));
+           this, SLOT(changeTexture()));
 
    connect(m_textureView, SIGNAL(removeTextureClicked()),
            this, SLOT(removeTexture()));
@@ -28,36 +28,49 @@ SLTextures::SLTextures(QObject *parent) :
 
    textureCurrentChange(0);
    viewUpdateList();
-
 }
 
-void SLTextures::loadTexture(void)
+SLTextures::~SLTextures()
+{
+    m_textureList.clear();
+    if(m_textureView)
+        delete m_textureView;
+}
+
+void SLTextures::changeTexture(void)
 {
     QString filename = QFileDialog::getOpenFileName(m_textureView, "Open Image", ".", tr("Images (*.png *.jpg *.tiff *.svg)"));
 
-    if(!filename.isEmpty())
-        textureFileName(filename);
+    setupTexture(filename, false);
 }
 
 void SLTextures::addTexture(void)
 {
-    if(m_textureList[0].glTextureName() >= 0)
-    {
-        m_textureList.push_back(Texture());
-        textureContext = m_textureList.size() - 1;
-    }
-    loadTexture();
+    QString filename = QFileDialog::getOpenFileName(m_textureView, "Open Image", ".", tr("Images (*.png *.jpg *.tiff *.svg)"));
+
+    setupTexture(filename, true);
 }
 
-void SLTextures::textureFileName(const QString& imageFileName)
+void SLTextures::setupTexture(const QString& imageFileName, bool add)
 {
     ShaderLab *sl = ShaderLab::instance();
-    QImage img(imageFileName);
-    if(img.isNull())
+
+    if(imageFileName.isEmpty())
+        return;
+
+    if(!Texture::isValid(imageFileName))
     {
         InterfaceRequests::openFileProblem(imageFileName);
         return;
     }
+
+    if(add && m_textureList[0].glTextureName() >= 0)
+    {
+            m_textureList.push_back(Texture());
+            textureContext = m_textureList.size() - 1;
+    }
+
+    QImage img(imageFileName);
 
     clearTexture();
 
@@ -67,7 +80,7 @@ void SLTextures::textureFileName(const QString& imageFileName)
     m_textureList[textureContext].setFileName(imageFileName);
     activateTexture();
     viewUpdateList();
-    emit updateGL();
+    sl->glContext()->updateGL();
 }
 
 void SLTextures::clearTexture(void)
@@ -80,14 +93,25 @@ void SLTextures::clearTexture(void)
         m_textureList[textureContext].clean();
     }
 }
+
+void SLTextures::remakeVarNames()
+{
+    for(int i = 0; i < m_textureList.size(); i++)
+    {
+        m_textureList[i].setVarName(SAMPLEPREFIX + QString::number(i));
+    }
+}
+
 void SLTextures::removeTexture(void)
 {
 
+    ShaderLab *sl = ShaderLab::instance();
     clearTexture();
 
     if(m_textureList.size() > 1)
     {
         m_textureList.removeAt(textureContext);
+        remakeVarNames();
         if(textureContext == m_textureList.size())
             textureCurrentChange(textureContext-1);
         else
@@ -99,18 +123,19 @@ void SLTextures::removeTexture(void)
 
     viewUpdateList();
     activateTexture();
-    emit updateGL();
+    sl->glContext()->updateGL();
 }
 
 void SLTextures::textureCurrentChange(int index)
 {
+    ShaderLab *sl = ShaderLab::instance();
     if(index < 0)
         return;
 
     textureContext = index;
     m_textureView->setTexture(m_textureList[textureContext]);
     activateTexture();
-    emit updateGL();
+    sl->glContext()->updateGL();
 }
 
 void SLTextures::viewUpdateList(void)
@@ -177,15 +202,19 @@ void SLTextures::setTextures(const QStringList& list)
 
     for(int i = 0; i < list.size(); ++i)
     {
-        if(m_textureList[0].glTextureName() >= 0)
-        {
-            m_textureList.push_back(Texture());
-            textureContext = m_textureList.size() - 1;
-        }
-        textureFileName(list[i]);
+        setupTexture(list[i], true);
     }
 
     viewUpdateList();
     activateTexture();
-    emit updateGL();
+    ShaderLab::instance()->glContext()->updateGL();
+}
+
+void SLTextures::closeView(MainWindow *mw)
+{
+    mw->menuViewRemoveAction(m_textureView->toggleViewAction());
+    mw->removeDockWidget(m_textureView);
+    disconnect(m_textureView, 0, 0, 0);
+    delete m_textureView;
+    m_textureView = NULL;
 }

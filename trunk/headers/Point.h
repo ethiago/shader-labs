@@ -5,12 +5,14 @@
 
 class Point : public Object3D
 {
-    Q_OBJECT
 
 public:
     explicit Point(const QVector3D& center = QVector3D(),
                     QObject *parent = 0);
+    explicit Point(const Point& p);
      ~Point();
+
+    virtual Object3D* copy() const;
 
 private:
     virtual void drawGeometry(void) const;
