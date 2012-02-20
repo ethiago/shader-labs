@@ -13,6 +13,7 @@ TexturePropertiesView::TexturePropertiesView(MainWindow *parent) :
     QAction *act = toggleViewAction();
     act->setText("Texture properties");
     act->setShortcut(QKeySequence::fromString("Ctrl+T"));
+
     parent->menuViewInsertAction(act);
 
     connect(ui->loadButton, SIGNAL(clicked()),

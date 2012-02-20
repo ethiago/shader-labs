@@ -19,12 +19,11 @@ class SLCodeContainer : public QWidget
     QShortcut * m_save;
     bool m_active;
 public:
-    explicit SLCodeContainer(ShaderLab::Shader shadertype, QWidget *parent = 0);
+    explicit SLCodeContainer(ShaderLab::Shader shadertype, const QString& title = QString(), QWidget *parent = 0);
     ~SLCodeContainer();
     void setText(const QString&);
     QString getText(void);
     ShaderLab::Shader getShaderType(void);
-    void setActivatedCode(bool);
     bool activateCode();
     void changeActivatedStatus();
 
@@ -35,6 +34,11 @@ public:
     void closeRequest();
     void close();
     void changeActivationStatus();
+    void setTabTitle(const QString& title);
+    void setTabIcon(const QIcon& icon);
+    void updateTabBar();
+    void saveShader();
+    void saveShaderAs();
 
 private:
     Ui::ShaderCodeContainer *ui;
@@ -46,11 +50,11 @@ private:
     QPoint getCursorPosition(const QString& text, int pos);
 
 private slots:
-    void textChanged(bool);
     void cursorPositionChanged(void);
 
 public slots:
     void setFocus();
+    void textChanged(bool);
 
 signals:
     void textChanged(ShaderLab::Shader);
@@ -61,6 +65,9 @@ signals:
     void closeRequestSignal();
     void save();
     void activateStatusChanged();
+    void setTabTitle(const QString& title, QWidget*);
+    void setTabIcon(const QIcon& icon, QWidget*);
+    void saveAs();
 
 protected:
     void mouseReleaseEvent(QMouseEvent *);

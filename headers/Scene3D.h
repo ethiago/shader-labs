@@ -4,21 +4,27 @@
 #include "Object3D.h"
 #include <QVector>
 
+class SLObject;
+
 class Scene3D : public Object3D
 {
-    Q_OBJECT
-
-    QVector<Object3D*> objects;
+    SLObject* current;
+    QVector<SLObject*> objects;
 
 public:
     explicit Scene3D(const QVector3D& center = QVector3D(),
                      QObject *parent = 0);
+    virtual ~Scene3D();
 
     void drawGeometry(void) const;
 
-    void addObject(Object3D*);
-    void removeObject(Object3D*);
-    void clearObjects(void);
+    void addSLObject(SLObject* obj);
+
+    void setObjectToCurrent(Object3D*);
+
+    SLObject* currentSLObject(void);
+
+    virtual Object3D* copy() const;
 
 private:
     void drawOrigin()const;

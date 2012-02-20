@@ -9,13 +9,11 @@
 
 class SLFile : public QObject
 {
-    Q_OBJECT
 
 public:
     static bool isValid(QString filepath);
 
-    explicit SLFile(QString filepath, ShaderLab::Shader shadertype, QObject *parent = 0);
-    explicit SLFile(ShaderLab::Shader shadertype, QObject *parent = 0);
+    explicit SLFile(ShaderLab::Shader shadertype,const QString& filepath = QString(), QObject *parent = 0);
     ~SLFile();
 
     QString getFileContent(void) const;
@@ -28,11 +26,9 @@ public:
     ShaderLab::Shader shaderType(void) const;
 
     void setChanged(bool val);
+    bool isSaved();
     void setFilePath(const QString &filepath);
 
-    bool compile(const QString& code);
-    bool compile(void);
-    QString log() const;
     bool save(const QString& content);
 
     bool isActive(void) const;
@@ -40,7 +36,6 @@ public:
 
 private:
     QFileInfo filePath; /* Path to the file which the current instance is responsible for. */
-    QGLShader *shader;  /* QT resource to compile a shader program. */
 
     bool changed;       /* Indicates that the content of a file has been changed. */
     bool isNew;         /* Indicates that the current instance has been crated for a new file. */

@@ -31,7 +31,6 @@ SOURCES += src/main.cpp \
     src/SLCommandLinkButton.cpp \
     src/GLDisplay.cpp \
     src/Global.cpp \
-    src/TextureController.cpp \
     src/Texture.cpp \
     src/TexturePropertiesView.cpp \
     src/Plane.cpp \
@@ -40,7 +39,6 @@ SOURCES += src/main.cpp \
     src/Object3D.cpp \
     src/RenderController.cpp \
     src/InterfaceRequests.cpp \
-    src/ShaderController.cpp \
     src/Find.cpp \
     src/HighLighter.cpp \
     src/PrimitivesDialog.cpp \
@@ -56,8 +54,7 @@ SOURCES += src/main.cpp \
     src/SLFile.cpp \
     src/SLTextures.cpp \
     src/EditorController.cpp \
-    src/SLCodeContainer.cpp \
-    src/ShaderCodeContainer.cpp
+    src/SLCodeContainer.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -66,7 +63,6 @@ HEADERS += headers/Sphere.h \
     headers/SLCommandLinkButton.h \
     headers/GLDisplay.h \
     headers/Global.h \
-    headers/TextureController.h \
     headers/Texture.h \
     headers/TexturePropertiesView.h \
     headers/Plane.h \
@@ -75,7 +71,6 @@ HEADERS += headers/Sphere.h \
     headers/Object3D.h \
     headers/RenderController.h \
     headers/InterfaceRequests.h \
-    headers/ShaderController.h \
     headers/Find.h \
     headers/HighLighter.h \
     headers/PrimitivesDialog.h \
@@ -91,8 +86,7 @@ HEADERS += headers/Sphere.h \
     headers/SLFile.h \
     headers/SLTextures.h \
     headers/EditorController.h \
-    headers/SLCodeContainer.h \
-    headers/ShaderCodeContainer.h
+    headers/SLCodeContainer.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \

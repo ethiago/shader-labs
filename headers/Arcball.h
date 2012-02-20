@@ -8,8 +8,6 @@
 
 class ArcBall : public QObject
 {
-    Q_OBJECT
-
     float m_radius;
     QPoint m_center;
 public:

@@ -1,6 +1,5 @@
 #include <QtGui/QApplication>
 
-#include "TextureController.h"
 #include "MainController.h"
 #include "RenderController.h"
 #include "MainWindow.h"
@@ -8,9 +7,6 @@
 #include "Global.h"
 #include <QDebug>
 #include <QMessageBox>
-
-
-
 
 int main(int argc, char *argv[])
 {

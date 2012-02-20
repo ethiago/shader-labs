@@ -117,6 +117,20 @@ QList<ShaderLab::Shader> ShaderLab::shaderTypeList(void)
     return list;
 }
 
+QList<ShaderLab::Shader> ShaderLab::enabledsShaderTypeList(void)
+{
+    ShaderLab *sl = ShaderLab::instance();
+    QList<ShaderLab::Shader> list;
+    if(sl->vertexShaderEnabled())
+        list.append(Vertex);
+    if(sl->geometryShaderEnabled())
+        list.append(Geometry);
+    if(sl->fragmentShaderEnabled())
+        list.append(Fragment);
+
+    return list;
+}
+
 bool ShaderLab::criticalExtensionsEnabled()
 {
     return ((this->extensions() & ShaderLab::FramebufferObject)  != 0 &&
@@ -135,15 +149,16 @@ bool ShaderLab::fragmentShaderEnabled()
 
 bool ShaderLab::geometryShaderEnabled()
 {
+//  return false;
     return (this->extensions() & ShaderLab::GeometryShader)  != 0;
 }
 
-void ShaderLab::setContext(QGLContext* context)
+void ShaderLab::setContext(QGLWidget* context)
 {
     m_context = context;
 }
 
-QGLContext* ShaderLab::glContext()
+QGLWidget* ShaderLab::glContext()
 {
     return m_context;
 }

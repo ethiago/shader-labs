@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QList>
 #include <QPair>
+#include "Global.h"
 
 class DirectionalLight;
 class MainWindow;
@@ -19,7 +20,9 @@ class GLDisplay;
 class PrimitivesDialog;
 class GlobalProperties;
 
-class TextureController;
+class SLObject;
+class EditorController;
+class Project;
 
 class RenderController : public QObject
 {
@@ -31,25 +34,29 @@ class RenderController : public QObject
     ArcBall* arcBall;
     DirectionalLight* light;
     bool lightRotation;
+    MainWindow *mainWindow;
 
     QList< QPair<QAction*, Object3D*> > models;
     typedef QMap<QAction*, Object3D*> MMap;
 
     QList<GLenum> primitives;
-    PrimitivesDialog *primitivesDialog;
     GlobalProperties *propertries;
 
 public:
     explicit RenderController(MainWindow *mainWindow,
                               QObject *parent = 0);
     ~RenderController();
-    QGLWidget* getGLContext(void);
     void updateGL(void);
-    GLenum getCurrentOutputPrimitive(void);
-    GLenum getCurrentInputPrimitive(void);
     int getModelId(void);
     void setModelById(int i);
     QVector3D getLightPosition()const;
+    void addSLObject(SLObject*);
+    EditorController* setShader( ShaderLab::Shader, const QString& filePath = QString());
+    void setTexturesFromProject(const QStringList& list);
+    bool closeAllFiles();
+    void setProject(Project*);
+    void closeObject();
+
 
 
 public slots:
@@ -62,14 +69,15 @@ public slots:
     void wireFrameToggle();
     void saveResultAsImage();
     void modelChanged(QAction*);
-    void showPrimitiveSelector(void);
     void lightSetup(void);
-    void lightRotationToggle(bool);    
+    void lightRotationToggle(bool);
+    void saveProjectAs(void);
+    void saveProject(void);
+
 
 
 private:
     void configureModelsAndActions(QMenu*);
-    QStringList outPrimitiveSetup(void);
 
 
 };

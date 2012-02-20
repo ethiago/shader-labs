@@ -7,14 +7,19 @@ Cube::Cube(const QVector3D& center, QObject *parent):
     Object3D(center, parent)
 {
     indexList = glGenLists(1);
+    setInputType(GL_TRIANGLES);
     storeList();
 }
 
 Cube::Cube(const Cube& cb): Object3D(cb)
 {
     indexList = glGenLists(1);
-    setInputType(GL_TRIANGLES);
     storeList();
+}
+
+Object3D* Cube::copy(void) const
+{
+    return new Cube(*this);
 }
 
 Cube::~Cube()

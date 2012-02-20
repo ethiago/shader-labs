@@ -1,8 +1,8 @@
+#include "SLObject.h"
 #include <QDebug>
 #include <QMessageBox>
 #include <QFileDialog>
 
-#include "TextureController.h" // Deve ser a primeira declaracao das classes proprias
 #include "RenderController.h"
 #include "ChooseShaderDialog.h"
 #include "InterfaceRequests.h"
@@ -11,6 +11,9 @@
 #include "SLFile.h"
 #include "Sphere.h"
 #include "Project.h"
+#include "EditorController.h"
+#include "SLTabWidget.h"
+#include "SLCodeContainer.h"
 
 #define DEFFRAG "void main (){gl_FragColor = gl_Color;}"
 
@@ -21,39 +24,21 @@
 MainController::MainController(MainWindow *mw, QObject *parent)
     : QObject(parent)
 {
-    project = NULL;
-
     mainWindow = mw;
 
     chooseShaderDialog = new ChooseShaderDialog(mainWindow);
     chooseShaderDialog->setModal(true);
 
+    tabWidget = mw->createTabWidget();
+
     renderController = new RenderController(mainWindow);
-    textureController = new TextureController(mainWindow, renderController->getGLContext());
 
-    connect(mainWindow, SIGNAL(closeTabRequest(ShaderLab::Shader)),
-            this, SLOT(slot_closeShaderCode(ShaderLab::Shader)));
+    renderController->addSLObject(new SLObject(mainWindow));
 
-    connect(mainWindow, SIGNAL(runShaders()),
-            this, SLOT(runAllActiveShaders()));
+    glSetup();
 
     connect(mainWindow, SIGNAL(programClose(QCloseEvent*)),
             this, SLOT(programCloseRequest(QCloseEvent*)));
-
-    connect(mainWindow, SIGNAL(saveFile(ShaderLab::Shader)),
-            this, SLOT(saveFile(ShaderLab::Shader)));
-
-    connect(mainWindow, SIGNAL(shaderCodeChanged(ShaderLab::Shader)),
-            this, SLOT(fileChanged(ShaderLab::Shader)));
-
-    connect(mainWindow, SIGNAL(saveFileAs(ShaderLab::Shader)),
-            this, SLOT(saveFileAs(ShaderLab::Shader)));
-
-    connect(mainWindow, SIGNAL(saveAll()),
-            this, SLOT(saveAll()));
-
-    connect(mainWindow, SIGNAL(changeActivationStatusClicked(ShaderLab::Shader)),
-            this, SLOT(changeTabActivationStatus(ShaderLab::Shader)));
 
     connect(mainWindow, SIGNAL(newShaderActionClicked()),
             this, SLOT(newShaderActionClicked()));
@@ -64,13 +49,14 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     connect(mainWindow, SIGNAL(loadProject()),
             this, SLOT(loadProject()));
 
-    connect(mainWindow, SIGNAL(saveAsProject()),
-            this, SLOT(saveAsProject()));
+    connect(mainWindow, SIGNAL(saveShader()),
+            this, SLOT(saveShader()));
 
-    connect(mainWindow, SIGNAL(saveProject()),
-            this, SLOT(saveProject()));
+    connect(mainWindow, SIGNAL(saveShaderAs()),
+            this, SLOT(saveShaderAs()));
 
-    glSetup();
+    connect(mainWindow, SIGNAL(newObject()),
+            this, SLOT(newObject()));
 
     mainWindow->showMaximized();
 }
@@ -95,7 +81,6 @@ void MainController::glSetup(void)
             tr("The program will run without this feature."));
     }else
     {
-        mainWindow->addShader(ShaderLab::Vertex);
         chooseShaderDialog->addButton(ShaderLab::Vertex);
     }
 
@@ -106,7 +91,6 @@ void MainController::glSetup(void)
             tr("The program will run without this feature."));
     }else
     {
-        mainWindow->addShader(ShaderLab::Fragment);
         chooseShaderDialog->addButton(ShaderLab::Fragment);
     }
 
@@ -115,75 +99,18 @@ void MainController::glSetup(void)
         QMessageBox::warning(mainWindow, tr("OpenGL Geometry extension missing"),
             tr("The OpenGL Geometry extension required to run this application is missing.\n") +
             tr("The program will run without this feature."));
+        mainWindow->setEnableMenuGeometryShader(false);
     }else
     {
-        mainWindow->addShader(ShaderLab::Geometry);
         chooseShaderDialog->addButton(ShaderLab::Geometry);
+        mainWindow->setEnableMenuGeometryShader(true);
     }
 }
 
 MainController::~MainController()
 {
     delete chooseShaderDialog;
-    delete textureController;
     delete renderController;
-    if(project != NULL)
-        delete project;
-}
-
-
-/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-/* +++++++++++++++++++++++++++++ Slots +++++++++++++++++++++++++++++ */
-
-/* Associated with the 'closeTabRequest' signal. */
-/* Reponsible for closing the tab of a shader program. Only when the content was changed, */
-/* and giving different treatment for new and old files. */
-void MainController::slot_closeShaderCode(ShaderLab::Shader shadertype)
-{
-    closeShaderCode(shadertype);
-}
-
-bool MainController::closeShaderCode(ShaderLab::Shader shaderType)
-{
-    QMap<ShaderLab::Shader, SLFile*>::iterator it;
-    it = fileControllers.find(shaderType);
-
-    if(it == fileControllers.end())
-        return true;
-
-    SLFile* fc = it.value();
-
-    if( (fc->IsNew() || fc->getChanged()) )
-    {
-        InterfaceRequests::OperationState st = InterfaceRequests::saveRequestDialog(fc->getFileName(), fc->IsNew());
-        if(st == InterfaceRequests::Yes)
-            saveFile(shaderType);
-        else if(st == InterfaceRequests::Cancel)
-            return false;
-    }
-
-    fileControllers.erase(it);
-    program.removeShader(fc->getShader());
-
-    delete fc;
-
-    mainWindow->setVisibleShader(false, shaderType);
-
-    return true;
-}
-
-/* Associated with the 'shaderCodeChanged' signal. */
-/* Updates both the isChanged property and the displayed name of the file. */
-void MainController::fileChanged(ShaderLab::Shader shaderType)
-{
-    SLFile *fc = getFileControllerByShaderType(shaderType);
-
-    if(fc != NULL)
-    {
-        fc->setChanged(true);
-
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-    }
 }
 
 
@@ -191,155 +118,20 @@ void MainController::fileChanged(ShaderLab::Shader shaderType)
 /* Before ending the application, checks and manages all unsaved files. */
 void MainController::programCloseRequest(QCloseEvent* event)
 {
-    FORSHADERS(shadertype)
-    {
-        if(!closeShaderCode(shadertype))
-        {
-            event->ignore();
-            return;
-        }
-    }
+    if(!renderController->closeAllFiles())
+        event->ignore();
 }
 
-/* Associated with the 'runShaders' signal. */
-/* Compiles and runs all opened shader codes that are being edited, not the saved content. Also doesn't requires saving the code. */
-/* Builds a compilation output that will be show to the programmer. */
-void MainController::runAllActiveShaders(void)
+void MainController::configureShader(ShaderLab::Shader shaderType, const QString& filePath)
 {
-    QMap<ShaderLab::Shader, SLFile*>::iterator it;
-    bool fragmentOk = false;
-    QString output;
+    EditorController * editor = renderController->setShader(shaderType, filePath);
+    if(editor == NULL)
+        return;
 
-    program.removeAllShaders();
-    program.release();
+    connect(mainWindow, SIGNAL(saveAll()), editor, SLOT(slot_saveFile()));
 
-    bool atLeastOne = false;
-    bool compOK, thereIsCode = false;
-    ShaderLab::Shader shaderType;
-
-    mainWindow->setOutputText(QString());
-
-    for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
-    {
-        SLFile * fc = it.value();
-        if(!fc->isActive())
-            continue;
-
-        thereIsCode = true;
-        shaderType = it.key();
-
-        output += "==================== Compiling " + ShaderLab::shaderToStr(shaderType) + " code ====================\n";
-
-        //QGLShader* shader = new QGLShader(ShaderLab::shaderToQGLShader(fc->getShaderType()));
-
-        //compOK = shader->compileSourceCode(mainWindow->shaderCode(it.key()));
-        compOK = fc->compile(mainWindow->shaderCode( shaderType ) );
-
-        if(compOK)
-        {
-            //program.addShader(shader);
-            if(shaderType == ShaderLab::Fragment)
-                fragmentOk = true;
-
-            program.addShader(fc->getShader());
-
-            atLeastOne = true;
-        }
-
-        //QString log = shader->log();
-        QString log = fc->log();
-
-        if(log == "") output += "Successfull.\n";
-        else output += log;
-
-        output += "\n";
-
-    }
-
-    if(atLeastOne && !fragmentOk)
-    {
-        program.addShaderFromSourceCode(QGLShader::Fragment, QString(DEFFRAG));
-    }
-
-    output += "====================== Linking process ======================\n";
-    if(atLeastOne)
-    {
-
-#ifdef QT47_CAPABLE
-        ShaderLab * sl = ShaderLab::instance();
-        if(sl->geometryShaderEnabled())
-        {
-            program.setGeometryInputType(renderController->getCurrentInputPrimitive());
-            program.setGeometryOutputType(renderController->getCurrentOutputPrimitive());
-        }
-#endif
-        program.link();
-        output += program.log();
-
-        program.bind();
-
-        textureController->applyTextures(&program);
-    }
-    else
-        output += "Due to problems, linking process could not be performed.";
-
-    if(!thereIsCode)
-        output = tr("No active shader code to compile.");
-
-    mainWindow->setOutputText(output);
-    renderController->updateGL();
-}
-
-
-/* Associated with the 'saveAll' signal. */
-/* Performs a saving routine for all unsaved files, distinguishing new and old files. */
-void MainController::saveAll()
-{
-    QMap<ShaderLab::Shader, SLFile*>::iterator it;
-
-    for(it = fileControllers.begin(); it != fileControllers.end(); ++it)
-        saveFile(it.key());
-}
-
-/* Associated with the 'saveFile' signal. */
-/* Called for a single instance (tab in the UI). */
-/* Also used in the saveAll method. */
-void MainController::saveFile(ShaderLab::Shader shaderType)
-{
-    saveFileBool(shaderType);
-}
-
-/* Associated with the 'saveFileAs' signal. */
-/* Only for existing files, creates a new file with the content of the screen and saves it. */
-void  MainController::saveFileAs(ShaderLab::Shader shaderType)
-{
-    SLFile *fc = getFileControllerByShaderType(shaderType);
-
-    QString filepath = InterfaceRequests::saveAsRequestDialog( shaderType );
-
-    if(filepath.isEmpty()) return;
-    fc->setFilePath(filepath);
-
-    if(fc->save(mainWindow->shaderCode(shaderType)))
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-}
-
-void MainController::changeTabActivationStatus(ShaderLab::Shader shaderType)
-{
-    SLFile *fc = getFileControllerByShaderType(shaderType);
-
-    fc->setActive(!fc->isActive());
-    mainWindow->setEnableShaderCode(shaderType, fc->isActive());
-}
-
-SLFile* MainController::getFileControllerByShaderType(ShaderLab::Shader shaderType)
-{
-    QMap<ShaderLab::Shader, SLFile*>::iterator it;
-    it = fileControllers.find(shaderType);
-
-    if( it != fileControllers.end() )
-        return it.value();
-    else return NULL;
+    tabWidget->addTab(editor);
+    editor->codeContainer()->updateTabBar();
 }
 
 void MainController::newShaderActionClicked()
@@ -348,23 +140,7 @@ void MainController::newShaderActionClicked()
     if(ret != QDialog::Accepted)
         return;
 
-    ShaderLab::Shader shaderType = chooseShaderDialog->lastChosenShader();
-
-    if(!closeShaderCode(shaderType))
-            return;
-
-    SLFile *fc = getFileControllerByShaderType(shaderType);
-
-    if(!fc)
-    {
-        fc = new SLFile(shaderType);
-        fileControllers.insert(shaderType, fc);
-
-        mainWindow->setVisibleShader(true, shaderType);
-        mainWindow->setShaderCode(QString(),  shaderType);
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-    }
-
+    configureShader(chooseShaderDialog->lastChosenShader());
 }
 
 void MainController::openShaderActionClicked()
@@ -374,41 +150,37 @@ void MainController::openShaderActionClicked()
         return;
 
     ShaderLab::Shader shaderType = chooseShaderDialog->lastChosenShader();
-    QString fileContent;
 
-    if(!closeShaderCode(shaderType))
+    QString filepath = InterfaceRequests::openShader(shaderType);
+
+    if(filepath.isEmpty())
         return;
 
-    SLFile *fc = getFileControllerByShaderType(shaderType);
-
-    if(!fc)
+    if(!SLFile::isValid(filepath))
     {
-        QString filepath = InterfaceRequests::openShader(shaderType);
+        InterfaceRequests::openFileProblem(filepath);
+        return;
+    }
 
-        if(filepath.isEmpty())
-            return;
+    configureShader(shaderType, filepath);
 
-        if(!SLFile::isValid(filepath))
-        {
-            QMessageBox::warning(mainWindow, tr("Could not find file"),
-                                 tr("Não foi possível encontrar o arquivo:\n")+
-                                 filepath + "\n" +
-                                 tr("para o ") + tr(ShaderLab::shaderToStr(shaderType).toAscii()) +
-                                 tr(" shader"));
-            return;
-        }
+}
 
-        fc = new SLFile(filepath, shaderType);
-        fileControllers.insert(shaderType, fc);
+void MainController::saveShaderAs()
+{
+    if(tabWidget->count() > 0)
+    {
+        SLCodeContainer *cc = (SLCodeContainer *)tabWidget->currentWidget();
+        cc->saveShaderAs();
+    }
+}
 
-        fileContent = fc->getFileContent();
-
-        mainWindow->setVisibleShader(true, shaderType);
-        mainWindow->setShaderCode(fileContent, shaderType);
-        fc->setChanged(false);
-
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-
+void MainController::saveShader()
+{
+    if(tabWidget->count() > 0)
+    {
+        SLCodeContainer *cc = (SLCodeContainer *)tabWidget->currentWidget();
+        cc->saveShader();
     }
 }
 
@@ -422,211 +194,39 @@ void MainController::openProject(const QString& filename)
     if(filename.isEmpty())
         return;
 
-    if(project != NULL)
-        delete project;
-
-    project = new Project;
+    Project *project = new Project;
     if(!project->load(filename))
     {
-        qDebug() << "Deu Ruim!";
+        InterfaceRequests::notLoadProject();
+        delete project;
         return;
-    }
-
-    FORSHADERS(shadertype)
-    {
-        if(!closeShaderCode(shadertype))
-        {
-            delete project;
-            project = NULL;
-            return;
-        }
     }
 
     renderController->setModelById(project->getModelId());
 
-    textureController->setTextures(project->getTextures());
-
-    FORSHADERS(shadertype)
+    FORENABLEDSHADERS(shadertype)
     {
-        openShader(shadertype, project->getFileName(shadertype));
-    }
-
-    mainWindow->setSecondTitle(project->getProjectFileName());
-}
-
-
-
-bool MainController::openShader(ShaderLab::Shader shaderType, QString filepath)
-{
-    QString fileContent;
-
-    if(!closeShaderCode(shaderType))
-        return false;
-
-    SLFile *fc = getFileControllerByShaderType(shaderType);
-
-    if(!fc)
-    {
-        if(filepath.isEmpty())
-            return false;
-
-        if(!SLFile::isValid(filepath))
+        QString fn = project->getFileName(shadertype);
+        if(!fn.isEmpty())
         {
-            InterfaceRequests::openFileProblem(filepath);
-            return false;
-        }
-
-        fc = new SLFile(filepath, shaderType);
-        fileControllers.insert(shaderType, fc);
-
-        fileContent = fc->getFileContent();
-
-        mainWindow->setVisibleShader(true, shaderType);
-        mainWindow->setShaderCode(fileContent, shaderType);
-        fc->setChanged(false);
-
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-
-        return true;
-    }
-
-    return false;
-}
-
-bool MainController::saveFileBool(ShaderLab::Shader shaderType)
-{
-    SLFile *fc = getFileControllerByShaderType(shaderType);
-
-    if( fc->IsNew() )
-    {
-        QString filepath = InterfaceRequests::saveAsRequestDialog( shaderType );
-
-        qDebug() << filepath;
-
-        if(filepath.isEmpty()) return false;
-        fc->setFilePath(filepath);
-    }
-
-    if( fc->getChanged() )
-    {
-        fc->save(mainWindow->shaderCode(shaderType));
-        mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shaderType);
-    }
-
-    return true;
-}
-
-void MainController::saveAsProject(void)
-{
-    if(project != NULL)
-    {
-        logicToSaveProject();
-        delete project;
-        project = NULL;
-    }
-
-    for(FileIterator it = fileControllers.begin(); it != fileControllers.end(); ++it)
-    {
-        if(!saveFileBool(it.key()))
-            return;
-    }
-
-    QString projectFileName = InterfaceRequests::saveProjectAsRequestDialog();
-
-    if(projectFileName.isEmpty()) return;
-
-    project = new Project();
-
-    for(FileIterator it = fileControllers.begin(); it != fileControllers.end(); ++it)
-    {
-        project->includeShader(*(it.value()));
-    }
-
-    project->setModel(renderController->getModelId());
-
-    project->setTextures(textureController->getTextureFileNames());
-
-    project->save(projectFileName);
-
-    mainWindow->setSecondTitle(project->getProjectFileName());
-}
-
-void MainController::saveProject(void)
-{
-    logicToSaveProject();
-}
-
-void MainController::logicToSaveProject(void)
-{
-    saveAll();
-
-    if(project == NULL)
-    {
-        if(InterfaceRequests::createProject())
-            saveAsProject();
-        return;
-    }
-
-    FORSHADERS(shadertype)
-    {
-        QString fileFc;
-        QString fileProj;
-
-        SLFile *fc = getFileControllerByShaderType(shadertype);
-        if(fc)
-        {
-            if(!fc->IsNew())
-                fileFc = fc->getFilePath(); //absolut File Path
+            if(!SLFile::isValid(fn))
+                InterfaceRequests::openFileProblem(fn);
             else
-                fileFc = "*";
-        }
-        fileProj = project->getFileName(shadertype); //absolut File Path
-
-        if(fileFc == fileProj)
-            continue;
-
-        if(fileFc.isEmpty())
-        {
-            if(InterfaceRequests::removeFileFromProject(fileProj))
-                project->removeShader(shadertype);
-
-            continue;
-        }
-
-        if(fileProj.isEmpty())
-        {
-            if(fc->IsNew())
-            {
-                QString nFileName = InterfaceRequests::includeNewFileIntoProject(shadertype);
-                if(nFileName.isEmpty())
-                    continue;
-
-                fc->setFilePath(nFileName);
-                fc->save(mainWindow->shaderCode(shadertype));
-                mainWindow->setFileNameDisplay(fc->getFileName(), fc->getChanged(), shadertype);
-
-                project->includeShader(*fc);
-            }else
-            {
-                if(InterfaceRequests::includeFileIntoProject(fileFc))
-                    project->includeShader(*fc);
-            }
-
-            continue;
-        }
-
-        // are diferents
-
-        if(InterfaceRequests::replaceFileIntoProject(fileFc))
-        {
-            project->includeShader(*fc);
+                configureShader(shadertype,fn);
         }
     }
 
-    project->setModel(renderController->getModelId());
+    renderController->setTexturesFromProject(project->getTextures());
 
-    project->setTextures(textureController->getTextureFileNames());
+    mainWindow->setSecondTitle(project->getAbsoluteFilePath());
 
-    project->save();
-
+    renderController->setProject(project);
 }
+
+void MainController::newObject()
+{
+    renderController->closeObject();
+    renderController->addSLObject(new SLObject(mainWindow));
+    mainWindow->setSecondTitle();
+}
+

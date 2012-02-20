@@ -1,8 +1,4 @@
-#include <QToolTip>
-#include <QDebug>
-#include <QtOpenGL>
-#include <QPoint>
-
+#include "SLObject.h"
 #include "RenderController.h"
 #include "GLDisplay.h"
 #include "MainWindow.h"
@@ -18,16 +14,22 @@
 #include "PrimitivesDialog.h"
 #include "GlobalProperties.h"
 #include "InterfaceRequests.h"
+#include "Project.h"
+
+#include <QToolTip>
+#include <QDebug>
+#include <QtOpenGL>
+#include <QPoint>
 
 RenderController::RenderController(MainWindow *mainWindow,
                                    QObject *parent):
     QObject(parent)
 {
+    this->mainWindow = mainWindow;
     scene = new Scene3D();
     light = new DirectionalLight;
     arcBall = new ArcBall(500);
     lightRotation = false;
-
 
     this->display = new GLDisplay(new QGLContext(QGLFormat::defaultFormat()));
     mainWindow->setGLDisplay(display);
@@ -50,20 +52,6 @@ RenderController::RenderController(MainWindow *mainWindow,
         propertries->setWidget(display->getPropertyBrowser());
         mainWindow->addDockWidget(Qt::RightDockWidgetArea, propertries);
         propertries->close();
-    }
-
-    ShaderLab *sl = ShaderLab::instance();
-    this->primitivesDialog = new PrimitivesDialog(outPrimitiveSetup(),  mainWindow);
-    if(!sl->geometryShaderEnabled())
-    {
-        mainWindow->setEnableMenuGeometryShader(false);
-    }
-    else
-    {
-        mainWindow->setEnableMenuGeometryShader(true);
-
-        connect(mainWindow->menuChangeOutputPrimitive(), SIGNAL(triggered()),
-            this, SLOT(showPrimitiveSelector()));
     }
 
     connect(display, SIGNAL(mouseLefthFinish(QPoint,QPoint)),
@@ -90,11 +78,15 @@ RenderController::RenderController(MainWindow *mainWindow,
     connect(mainWindow, SIGNAL(lightRotationToggle(bool)),
             this, SLOT(lightRotationToggle(bool)));
 
+    connect(mainWindow, SIGNAL(saveAsProject()),
+            this, SLOT(saveProjectAs()));
+
+    connect(mainWindow, SIGNAL(saveProject()),
+            this, SLOT(saveProject()));
 }
 
 RenderController::~RenderController()
 {
-    scene->clearObjects();
     delete scene;
     for(int i = 0 ; i < models.size(); ++i)
     {
@@ -199,11 +191,6 @@ void RenderController::saveResultAsImage()
     display->grabFrameBuffer().save(filePath);
 }
 
-QGLWidget* RenderController::getGLContext(void)
-{
-    return display;
-}
-
 void RenderController::modelChanged(QAction* action)
 {
     for(int i = 0; i < models.size(); ++i)
@@ -213,8 +200,7 @@ void RenderController::modelChanged(QAction* action)
         {
            models[i].first->setChecked(true);
            model = models[i].second;
-           scene->clearObjects();
-           scene->addObject(models[i].second);
+           scene->setObjectToCurrent(models[i].second);
         }
     }
 
@@ -231,80 +217,54 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     model_tmp = new Sphere(50,50);
     act->setChecked(true);          // comeca pela esfera
     model = model_tmp;            // comeca pela esfera
-    scene->addObject(model_tmp);
+    scene->setObjectToCurrent(model_tmp);
+    model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("&Plane"));
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new Plane(50,50);
+    model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("ST Sp&here"));
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new Sphere(500,500);
+    model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("ST P&lane"));
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new Plane(500,500);
+    model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("&Cube"));
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new Cube();
+    model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("&Tetrahedron"));
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new Tetrahedron();
+    model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("&Point"));
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new Point();
+    model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
     connect(menu, SIGNAL(triggered(QAction*)),
             this, SLOT(modelChanged(QAction*)));
-}
-
-QStringList RenderController::outPrimitiveSetup(void)
-{
-    QStringList text;
-
-    primitives.append(GL_POINTS);
-    primitives.append(GL_LINE_STRIP);
-    primitives.append(GL_TRIANGLE_STRIP);
-
-
-    text.append("GL_POINTS");
-    text.append("GL_LINE_STRIP");
-    text.append("GL_TRIANGLE_STRIP");
-
-    return text;
-}
-
-void RenderController::showPrimitiveSelector(void)
-{
-    this->primitivesDialog->show();
-}
-
-GLenum RenderController::getCurrentOutputPrimitive(void)
-{
-    return primitives[primitivesDialog->getCurrentOutputPrimitiveIndex()];
-}
-
-GLenum RenderController::getCurrentInputPrimitive(void)
-{
-    //return primitives[primitivesDialog->getCurrentInputPrimitiveIndex()];
-    return model->inputType();
-
 }
 
 void RenderController::lightRotationToggle(bool lt)
@@ -335,8 +295,7 @@ void RenderController::setModelById(int ind)
 
     models[ind].first->setChecked(true);
     model = models[ind].second;
-    scene->clearObjects();
-    scene->addObject(models[ind].second);
+    scene->setObjectToCurrent(models[ind].second);
 
     display->updateGL();
 }
@@ -344,4 +303,51 @@ void RenderController::setModelById(int ind)
 QVector3D RenderController::getLightPosition() const
 {
     return light->getLightPosition();
+}
+
+void RenderController::addSLObject(SLObject* obj)
+{
+    obj->setObject(model);
+    scene->addSLObject(obj);
+}
+
+EditorController* RenderController::setShader( ShaderLab::Shader shaderType, const QString& filePath)
+{
+    return scene->currentSLObject()->shader()->setShader(filePath,shaderType);
+}
+
+void RenderController::setTexturesFromProject(const QStringList& list)
+{
+    scene->currentSLObject()->setTexturesFromProject(list);
+}
+
+bool RenderController::closeAllFiles()
+{
+    return scene->currentSLObject()->shader()->closeAllFiles();
+}
+
+void RenderController::saveProjectAs(void)
+{
+    QString projectName = scene->currentSLObject()->saveMerge(true);
+    if(!projectName.isEmpty())
+        mainWindow->setSecondTitle(projectName);
+}
+
+void RenderController::saveProject(void)
+{
+    QString projectName = scene->currentSLObject()->saveMerge(false);
+    if(!projectName.isEmpty())
+        mainWindow->setSecondTitle(projectName);
+}
+
+void RenderController::setProject(Project* p)
+{
+    scene->currentSLObject()->setProject(p);
+}
+
+void RenderController::closeObject()
+{
+    saveProject();
+    scene->currentSLObject()->closeProject();
+    scene->currentSLObject()->close(mainWindow);
 }

@@ -48,7 +48,7 @@ void main ()
 	psTetra[2] = gl_ModelViewProjectionMatrix * tetraIn[2];
 	psTetra[3] = gl_ModelViewProjectionMatrix * tetraIn[3];
 
-	Q0 = para_2she;
+	Q0 = saddle;
 	Q1 = saddle;
 	Q2 = cylinder;
 	Q3 = cone;

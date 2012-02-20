@@ -3,40 +3,45 @@
 #include "SLCodeContainer.h"
 #include "InterfaceRequests.h"
 
-EditorController::EditorController(const QString& filepath,
-                                   ShaderLab::Shader shadertype, QObject *parent) :
+EditorController::EditorController(ShaderLab::Shader shadertype,
+                                   const QString& filepath, QObject *parent) :
     QObject(parent)
 {
-    file = new SLFile(filepath, shadertype);
-    codeContainer = new SLCodeContainer(shadertype);
+    file = new SLFile(shadertype, filepath);
+    m_codeContainer = new SLCodeContainer(shadertype, file->getFileName());
+    m_codeContainer->setText(file->getFileContent());
 
-    connect(codeContainer, SIGNAL(closeRequestSignal()),
+    connect(m_codeContainer, SIGNAL(closeRequestSignal()),
             this, SLOT(slot_closeShaderCode()));
 
-    connect(codeContainer, SIGNAL(save()),
+    connect(m_codeContainer, SIGNAL(save()),
             this, SLOT(slot_saveFile()));
 
-    connect(codeContainer, SIGNAL(textChanged()),
+    connect(m_codeContainer, SIGNAL(saveAs()),
+            this, SLOT(saveAs()));
+
+    connect(m_codeContainer, SIGNAL(textChanged()),
             this, SLOT(fileChanged()));
 
-    connect(codeContainer, SIGNAL(activateStatusChanged()),
+    connect(m_codeContainer, SIGNAL(activateStatusChanged()),
             this, SLOT(changeTabActivationStatus()));
+
+    if(filepath.isEmpty())
+        m_codeContainer->textChanged(true);
 }
 
 EditorController::~EditorController()
 {
-    if(file)
-        delete file;
-    if(codeContainer)
-    {
-        codeContainer->close();
-        delete codeContainer;
-    }
+    delete file;
+
+    m_codeContainer->close();
+    delete m_codeContainer;
 }
 
 void EditorController::slot_closeShaderCode()
 {
-    closeShaderCode();
+    if(closeShaderCode())
+        emit useless(this);
 }
 
 bool EditorController::closeShaderCode()
@@ -48,24 +53,22 @@ bool EditorController::closeShaderCode()
                 InterfaceRequests::saveRequestDialog(file->getFileName(), file->IsNew());
 
         if(st == InterfaceRequests::Yes)
-            saveFile();
-        else if(st == InterfaceRequests::Cancel)
+        {
+            if(!saveFile())
+                return false;
+        }else if(st == InterfaceRequests::Cancel)
             return false;
     }
 
-    codeContainer->close();
-
-    delete file;
-    delete codeContainer;
+    m_codeContainer->close();
 
     return true;
-
 }
 
 void EditorController::fileChanged()
 {
     file->setChanged(true);
-    codeContainer->setWindowTitle("*"+file->getFileName());
+    m_codeContainer->setTabTitle("*"+file->getFileName());
 }
 
 void EditorController::slot_saveFile()
@@ -73,21 +76,28 @@ void EditorController::slot_saveFile()
     saveFile();
 }
 
-bool EditorController::saveFile()
+void EditorController::saveAs()
 {
-    if( file->IsNew() )
+    saveFile(true);
+}
+
+bool EditorController::saveFile(bool forceNew)
+{
+    if( file->IsNew() || forceNew)
     {
         QString filepath = InterfaceRequests::saveAsRequestDialog( file->shaderType() );
 
         if(filepath.isEmpty()) return false;
 
         file->setFilePath(filepath);
+
+        file->setChanged(true);
     }
 
     if( file->getChanged() )
     {
-        file->save(codeContainer->getText());
-        codeContainer->setWindowTitle(file->getFileName());
+        file->save(m_codeContainer->getText());
+        m_codeContainer->setTabTitle(file->getFileName());
     }
 
     return true;
@@ -97,4 +107,29 @@ void EditorController::changeTabActivationStatus()
 {
     bool active = !file->isActive();
     file->setActive(active);
+}
+
+SLCodeContainer * EditorController::codeContainer(void)
+{
+    return m_codeContainer;
+}
+
+const SLFile& EditorController::getFile()
+{
+    return *file;
+}
+
+bool EditorController::isActive()
+{
+    return file->isActive();
+}
+
+QString EditorController::getContent()
+{
+    return m_codeContainer->getText();
+}
+
+QString EditorController::getContentFile()
+{
+    return file->getFileContent();
 }

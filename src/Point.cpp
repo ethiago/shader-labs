@@ -9,6 +9,15 @@ Point::Point(const QVector3D& center, QObject *parent):
     setInputType(GL_POINTS);
 }
 
+Point::Point(const Point& p) : Object3D(p)
+{
+}
+
+
+Object3D* Point::copy() const
+{
+    return new Point(*this);
+}
 
 Point::~Point()
 {
@@ -17,6 +26,6 @@ Point::~Point()
 void Point::drawGeometry(void)const
 {
     glBegin(GL_POINTS);
-    glVertex3f(center().x(), center().y(), center().z());
+    glVertex3i(0,0,0);
     glEnd();
 }

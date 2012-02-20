@@ -1,35 +1,55 @@
+#include "SLObject.h"
 #include <QtOpenGL>
 #include "Scene3D.h"
 #include "Cube.h"
 #include "Sphere.h"
 
+
 Scene3D::Scene3D(const QVector3D& center, QObject *parent) :
-    Object3D(center, parent)
+    Object3D(center, parent), current(NULL)
 {
+}
+
+Scene3D::~Scene3D()
+{
+    for(int i = 0; i < objects.size(); ++i)
+    {
+        if(objects[i] != current)
+        {
+            objects[i]->deleteObject3D();
+        }
+        delete objects[i];
+    }
+    objects.clear();
+}
+
+Object3D* Scene3D::copy() const
+{
+    return new Scene3D();
 }
 
 void Scene3D::drawGeometry(void) const
 {
     drawOrigin();
     for(int i = 0; i < objects.size(); ++i)
-        objects.at(i)->draw();
+        objects[i]->draw();
 }
 
-void Scene3D::addObject(Object3D* obj)
+void Scene3D::addSLObject(SLObject* obj)
 {
     objects.append(obj);
+    current = obj;
 }
 
-void Scene3D::clearObjects(void)
+void Scene3D::setObjectToCurrent(Object3D* obj)
 {
-    objects.clear();
+    if(current)
+        current->setObject(obj);
 }
 
-void Scene3D::removeObject(Object3D* obj)
+SLObject* Scene3D::currentSLObject(void)
 {
-    for(int i = 0; i < objects.size(); ++i)
-        if(objects[i] == obj)
-            objects.remove(i);
+    return current;
 }
 
 void Scene3D::drawOrigin()const
@@ -39,6 +59,8 @@ void Scene3D::drawOrigin()const
     glGetBooleanv(GL_LIGHTING,&isLighting);
     glGetFloatv(GL_CURRENT_COLOR,color);
     glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    glUseProgram(0);
 
     glBegin(GL_LINES);
     glColor3f(1.0, 0, 0);
@@ -54,6 +76,7 @@ void Scene3D::drawOrigin()const
     glVertex3i(0, 0, 1);
     glEnd();
 
+    glEnable(GL_TEXTURE_2D);
     glColor4fv(color);
     if(isLighting)
         glEnable(GL_LIGHTING);

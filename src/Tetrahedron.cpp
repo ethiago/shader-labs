@@ -18,6 +18,11 @@ Tetrahedron::Tetrahedron(const Tetrahedron& tt): Object3D(tt)
     storeList();
 }
 
+Object3D* Tetrahedron::copy() const
+{
+    return new Tetrahedron(*this);
+}
+
 Tetrahedron::~Tetrahedron()
 {
     glDeleteLists(indexList,1);

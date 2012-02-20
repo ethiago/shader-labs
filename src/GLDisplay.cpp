@@ -11,9 +11,6 @@ GLDisplay::GLDisplay(QGLContext* context, QWidget *parent) :
     rigthPressedPoint(NULLPOINT),
     leftPressedPoint(NULLPOINT), zoom(1.0)
 {
-    ShaderLab *sl = ShaderLab::instance();
-    sl->setContext(context);
-
     setStyleSheet("border: 2px solid black;");
 
     setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -37,6 +34,8 @@ float GLDisplay::getZoom(void)const
 
 void GLDisplay::initializeGL()
 {
+    ShaderLab *sl = ShaderLab::instance();
+    sl->setContext(this);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
     glEnable( GL_LIGHT0 );

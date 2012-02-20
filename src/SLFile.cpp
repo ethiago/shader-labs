@@ -7,33 +7,26 @@
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */
 
 /* Constructor for a file that already exists */
-SLFile::SLFile(QString filepath, ShaderLab::Shader shadertype, QObject *parent) : QObject(parent)
+SLFile::SLFile(ShaderLab::Shader shadertype,const QString& filepath, QObject *parent) : QObject(parent)
 {
-    filePath = filepath;
-    m_shaderType = shadertype;
-    isNew = false;
-    changed = false;
-    active = true;
+     m_shaderType = shadertype;
+     active = true;
+     if(SLFile::isValid(filepath))
+    {
+        filePath = filepath;
+        isNew = false;
+        changed = false;
+    }else
+    {
+        isNew = true;
+        changed = true;
+    }
 
-    shader = new QGLShader(ShaderLab::shaderToQGLShader(m_shaderType), this);
-
-}
-
-/* Constructor for a new file, created inside ShaderLab */
-SLFile::SLFile(ShaderLab::Shader shadertype, QObject *parent) : QObject(parent)
-{
-    m_shaderType = shadertype;
-    isNew = true;
-    changed = true;
-    active = true;
-
-    shader = new QGLShader(ShaderLab::shaderToQGLShader(m_shaderType));
 }
 
 /* Class destructor */
 SLFile::~SLFile()
 {
-    delete shader;
 }
 
 
@@ -67,12 +60,6 @@ QString SLFile::getFileName() const
     {
         return filePath.fileName();
     }
-}
-
-/* Getter for the QGLShader attribute. */
-QGLShader *SLFile::getShader(void) const
-{
-    return shader;
 }
 
 /* Getter for the changed attribute. */
@@ -120,27 +107,6 @@ void SLFile::setActive(bool a)
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++++++++++ Other methods +++++++++++++++++++++++++ */
 
-/* Compiles the source code from a file in the disk, given a path to it. */
-bool SLFile::compile(void)
-{
-    return shader->compileSourceFile(filePath.absoluteFilePath());
-}
-
-/* Compiles the code currently in the screen, given the code. */
-bool SLFile::compile(const QString& code)
-{
-
-    delete shader;
-    shader = new QGLShader(ShaderLab::shaderToQGLShader(m_shaderType), this);
-    return shader->compileSourceCode(code);
-
-}
-
-/* Returns the log from the last compilation process. */
-QString SLFile::log() const
-{
-    return shader->log();
-}
 
 /* Saves the given content on the file. */
 /* Assumes that filepath has been set for all cases (new or old files) */
@@ -178,3 +144,7 @@ QString SLFile::getFilePath(void) const
     return filePath.absoluteFilePath();
 }
 
+bool SLFile::isSaved()
+{
+    return !changed;
+}

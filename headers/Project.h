@@ -11,7 +11,6 @@
 
 class Project : public QObject
 {
-    Q_OBJECT
 
     QMap<ShaderLab::Shader, QString> shaderFiles;
     typedef QMap<ShaderLab::Shader, QString>::iterator ShaderIterator;
@@ -26,6 +25,8 @@ public:
     bool load(const QString& fileName);
 
     bool includeShader(const SLFile& fileController);
+    bool includeShader(const QString& filePath, ShaderLab::Shader shaderType);
+    void checkShader(const QString& filePath, ShaderLab::Shader shaderType);
 
     bool save(QString fileName = QString());
 
@@ -34,6 +35,7 @@ public:
 
     QDir getProjectDir(void);
     QString getProjectFileName(void);
+    QString getAbsoluteFilePath(void);
 
     void removeShader(ShaderLab::Shader);
 

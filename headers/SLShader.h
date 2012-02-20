@@ -4,34 +4,44 @@
 #include <QObject>
 #include <QGLShaderProgram>
 #include <Global.h>
+#include "MainWindow.h"
+#include "PrimitivesDialog.h"
 #include "SLFile.h"
+
+class EditorController;
 
 class SLShader : public QObject
 {
     Q_OBJECT
 
-    SLFile vertexShader;
-    SLFile geometryShader;
-    SLFile fragmentShader;
+    EditorController* vertexShader;
+    EditorController* geometryShader;
+    EditorController* fragmentShader;
 
-    QGLShaderProgram program;
+    QGLShaderProgram m_program;
 
     QString m_log;
 
-    void logProcess(const SLFile&);
+    PrimitivesDialog *primitivesDialog;
+
+    void logProcess(const QString& log, ShaderLab::Shader st);
+    bool closeShader(EditorController**);
 public:
-    explicit SLShader(QObject *parent = 0);
+    explicit SLShader(MainWindow* mw, QObject *parent = 0);
+    ~SLShader();
 
-    void compileAndLink(GLenum inputType, GLenum outputType);
+    void compileAndLink(QGLShaderProgram* m_program);
     const QString& log();
-    void bind();
-    void release();
-
-    void setShader(const QString& filePath, ShaderLab::Shader shadertype);
-
-signals:
+    EditorController* setShader(const QString& filePath, ShaderLab::Shader shadertype);
+    bool isAnyNew();
+    bool closeAllFiles();
+    bool saveAllShaders();
+    QString getAbsoluteFilePath(ShaderLab::Shader shaderType);
 
 public slots:
+    void showPrimitive();
+    void unlessEditor(EditorController*);
+
 
 };
 

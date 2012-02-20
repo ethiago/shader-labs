@@ -73,6 +73,8 @@
     <addaction name="actionSave_project"/>
     <addaction name="actionSave_as_project"/>
     <addaction name="separator"/>
+    <addaction name="actionNew_Object"/>
+    <addaction name="separator"/>
     <addaction name="actionNewFile"/>
     <addaction name="actionOpenCode"/>
     <addaction name="separator"/>
@@ -332,9 +334,6 @@
    <property name="text">
     <string>&amp;Save</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
-   </property>
   </action>
   <action name="actionNewFile">
    <property name="icon">
@@ -402,6 +401,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionNew_Object">
+   <property name="text">
+    <string>New Object</string>
    </property>
   </action>
  </widget>

@@ -9,7 +9,6 @@
 
 class DirectionalLight : public QObject
 {
-    Q_OBJECT
 
     QMatrix4x4 m_rotations;
     QQuaternion m_interactiveQuartenion;
