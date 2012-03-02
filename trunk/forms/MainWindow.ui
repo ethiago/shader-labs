@@ -144,7 +144,7 @@
   <widget class="QDockWidget" name="dockRenderWidget">
    <property name="minimumSize">
     <size>
-     <width>163</width>
+     <width>186</width>
      <height>160</height>
     </size>
    </property>
@@ -208,6 +208,13 @@
             <property name="icon">
              <iconset resource="../shaderlab.qrc">
               <normaloff>:/ico/img/1303587978_3floppy_unmount.png</normaloff>:/ico/img/1303587978_3floppy_unmount.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="originButton">
+            <property name="text">
+             <string>O</string>
             </property>
            </widget>
           </item>

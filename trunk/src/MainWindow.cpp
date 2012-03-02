@@ -92,6 +92,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionNew_Object, SIGNAL(triggered()),
             this, SIGNAL(newObject()));
 
+    connect(ui->originButton, SIGNAL(clicked()),
+            this, SIGNAL(origin()));
+
 }
 
 MainWindow::~MainWindow()

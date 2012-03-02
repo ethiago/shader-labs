@@ -6,7 +6,7 @@
 
 
 Scene3D::Scene3D(const QVector3D& center, QObject *parent) :
-    Object3D(center, parent), current(NULL)
+    Object3D(center, parent), current(NULL), origin(true)
 {
 }
 
@@ -30,7 +30,8 @@ Object3D* Scene3D::copy() const
 
 void Scene3D::drawGeometry(void) const
 {
-    drawOrigin();
+    if(origin)
+        drawOrigin();
     for(int i = 0; i < objects.size(); ++i)
         objects[i]->draw();
 }
@@ -80,4 +81,9 @@ void Scene3D::drawOrigin()const
     glColor4fv(color);
     if(isLighting)
         glEnable(GL_LIGHTING);
+}
+
+void Scene3D::changeOrigin()
+{
+    origin = !origin;
 }

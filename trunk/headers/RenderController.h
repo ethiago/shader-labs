@@ -73,7 +73,7 @@ public slots:
     void lightRotationToggle(bool);
     void saveProjectAs(void);
     void saveProject(void);
-
+    void origin(void);
 
 
 private:
