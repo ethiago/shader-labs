@@ -43,6 +43,7 @@ signals:
     void saveShader();
     void saveShaderAs();
     void newObject();
+    void origin();
 
 public:
     explicit MainWindow(QWidget *parent = 0);

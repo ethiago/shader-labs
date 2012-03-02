@@ -83,6 +83,9 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     connect(mainWindow, SIGNAL(saveProject()),
             this, SLOT(saveProject()));
+
+    connect(mainWindow, SIGNAL(origin()),
+            this, SLOT(origin()));
 }
 
 RenderController::~RenderController()
@@ -350,4 +353,10 @@ void RenderController::closeObject()
     saveProject();
     scene->currentSLObject()->closeProject();
     scene->currentSLObject()->close(mainWindow);
+}
+
+void RenderController::origin(void)
+{
+    scene->changeOrigin();
+    display->updateGL();
 }
