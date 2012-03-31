@@ -1,9 +1,9 @@
 #include "SLObject.h"
+#include "RenderController.h"
 #include <QDebug>
 #include <QMessageBox>
 #include <QFileDialog>
 
-#include "RenderController.h"
 #include "ChooseShaderDialog.h"
 #include "InterfaceRequests.h"
 #include "MainController.h"

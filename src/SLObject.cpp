@@ -41,6 +41,8 @@ void SLObject::draw()
     {
         textures.applyTextures(&program);
         program.bind();
+
+        program.setUniformValue("wsize", ShaderLab::instance()->glContext()->size());
     }
 
     m_object->draw();
