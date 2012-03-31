@@ -1,12 +1,6 @@
 #include <QtGui/QApplication>
-
 #include "MainController.h"
-#include "RenderController.h"
 #include "MainWindow.h"
-#include "GLDisplay.h"
-#include "Global.h"
-#include <QDebug>
-#include <QMessageBox>
 
 int main(int argc, char *argv[])
 {

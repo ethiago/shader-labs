@@ -1,6 +1,6 @@
+#include "GLDisplay.h"
 #include <QDebug>
 #include <QToolTip>
-#include "GLDisplay.h"
 #include <QMatrix4x4>
 #include "Global.h"
 
@@ -36,6 +36,7 @@ void GLDisplay::initializeGL()
 {
     ShaderLab *sl = ShaderLab::instance();
     sl->setContext(this);
+    glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
     glEnable( GL_LIGHT0 );

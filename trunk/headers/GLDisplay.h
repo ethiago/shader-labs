@@ -1,6 +1,9 @@
 #ifndef GLDISPLAY_H
 #define GLDISPLAY_H
 
+#if defined(__WIN32__)
+#include <GLee.h>
+#endif
 #include <QGLWidget>
 #include <QMouseEvent>
 #include <QMoveEvent>

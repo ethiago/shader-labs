@@ -1,6 +1,6 @@
+#include "GLDisplay.h"
 #include "SLObject.h"
 #include "RenderController.h"
-#include "GLDisplay.h"
 #include "MainWindow.h"
 #include "Object3D.h"
 #include "Sphere.h"
