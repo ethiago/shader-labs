@@ -22,9 +22,11 @@ varying mat4 Q1;
 varying mat4 Q2;
 varying mat4 Q3;
 
-varying mat4 osTetra;
-varying mat4 psTetra;
-varying mat4 cor;
+varying mat4 osTetraIn;
+varying mat4 psTetraIn;
+varying mat4 corIn;
+
+varying mat4 mvp;
 
 mat4 trans0;
 mat4 trans1;
@@ -33,24 +35,26 @@ mat4 trans3;
 
 void main ()
 {
-	osTetra[0] = tetraIn[0];
-	osTetra[1] = tetraIn[1];
-	osTetra[2] = tetraIn[2];
-	osTetra[3] = tetraIn[3];
+	mvp = gl_ModelViewProjectionMatrix;
 
-	cor[0] = vec4(0.0, 0.0, 0.0, 1.0);
-	cor[1] = vec4(1.0, 0.0, 0.0, 1.0);
-	cor[2] = vec4(0.0, 1.0, 0.0, 1.0);
-	cor[3] = vec4(0.0, 0.0, 1.0, 1.0);
+	osTetraIn[0] = tetraIn[0];
+	osTetraIn[1] = tetraIn[1];
+	osTetraIn[2] = tetraIn[2];
+	osTetraIn[3] = tetraIn[3];
+
+	corIn[0] = vec4(0.0, 0.0, 0.0, 1.0);
+	corIn[1] = vec4(1.0, 0.0, 0.0, 1.0);
+	corIn[2] = vec4(0.0, 1.0, 0.0, 1.0);
+	corIn[3] = vec4(0.0, 0.0, 1.0, 1.0);
 	
-	psTetra[0] = gl_ModelViewProjectionMatrix * tetraIn[0];
-	psTetra[1] = gl_ModelViewProjectionMatrix * tetraIn[1];
-	psTetra[2] = gl_ModelViewProjectionMatrix * tetraIn[2];
-	psTetra[3] = gl_ModelViewProjectionMatrix * tetraIn[3];
+	psTetraIn[0] = gl_ModelViewProjectionMatrix * tetraIn[0];
+	psTetraIn[1] = gl_ModelViewProjectionMatrix * tetraIn[1];
+	psTetraIn[2] = gl_ModelViewProjectionMatrix * tetraIn[2];
+	psTetraIn[3] = gl_ModelViewProjectionMatrix * tetraIn[3];
 
-	Q0 = saddle;
+	Q0 = cone;
 	Q1 = saddle;
-	Q2 = cylinder;
+	Q2 = sphere;
 	Q3 = cone;
 
 	gl_Position = gl_Vertex;
