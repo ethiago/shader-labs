@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <ShaderLab>
 	<shaders>
-		<vertex>rayTetra.vert</vertex>
-		<fragment>rayTetra.frag</fragment>
-		<geometry>rayTetra.geom</geometry>
+		<vertex>tetraQuad.vert</vertex>
+		<fragment>tetraQuad.frag</fragment>
+		<geometry>tetraQuad.geom</geometry>
 	</shaders>
 	<model>
 		<id>6</id>
