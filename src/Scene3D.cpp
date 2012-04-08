@@ -6,7 +6,7 @@
 
 
 Scene3D::Scene3D(const QVector3D& center, QObject *parent) :
-    Object3D(center, parent), current(NULL), origin(true)
+    Object3D(center, parent), current(NULL), origin(false), m_objectsVisibility(false)
 {
 }
 
@@ -33,7 +33,8 @@ void Scene3D::drawGeometry(void) const
     if(origin)
         drawOrigin();
     for(int i = 0; i < objects.size(); ++i)
-        objects[i]->draw();
+        if(m_objectsVisibility || objects[i] == current)
+            objects[i]->draw();
 }
 
 void Scene3D::addSLObject(SLObject* obj)
@@ -83,7 +84,12 @@ void Scene3D::drawOrigin()const
         glEnable(GL_LIGHTING);
 }
 
-void Scene3D::changeOrigin()
+void Scene3D::changeOrigin(bool v)
 {
-    origin = !origin;
+    origin = v;
+}
+
+void Scene3D::objectsVisibility(bool v)
+{
+    m_objectsVisibility = v;
 }

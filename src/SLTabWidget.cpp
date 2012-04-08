@@ -88,12 +88,19 @@ void SLTabWidget::closeTab(QWidget* w)
 {
     removeTab(indexOf(w));
     if(count() == 0)
+    {
         setVisible(false);
+        emit changeVisibility(false);
+    }
 }
 
 int SLTabWidget::addTab ( EditorController * controller, const QIcon & icon, const QString & label )
 {
-    setVisible(true);
+    if(count() == 0)
+    {
+        setVisible(true);
+        emit changeVisibility(true);
+    }
     SLCodeContainer *cc = (SLCodeContainer *)controller->codeContainer();
     connect(cc, SIGNAL(closeSignal(QWidget*)), this, SLOT(closeTab(QWidget*)));
     connect(cc, SIGNAL(setTabIcon(QIcon,QWidget*)), this, SLOT(setTabIcon(QIcon,QWidget*)));

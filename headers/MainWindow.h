@@ -25,6 +25,7 @@ class MainWindow : public QMainWindow
 public slots:
     void exitApplication(void);
     void shaderLog(const QString& log);
+    void tabVisibilityChanged(bool);
 
 /* Created by the UI */
 signals:
@@ -43,7 +44,8 @@ signals:
     void saveShader();
     void saveShaderAs();
     void newObject();
-    void origin();
+    void origin(bool);
+    void objectsVisibility(bool);
 
 public:
     explicit MainWindow(QWidget *parent = 0);

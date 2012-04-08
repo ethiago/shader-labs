@@ -1,8 +1,10 @@
 #include <QFont>
+#include <QDebug>
 #include <QMouseEvent>
 #include "SLCodeContainer.h"
 #include "ui_ShaderCodeContainer.h"
 #include "HighLighter.h"
+#include "codeeditor.h"
 
 
 
@@ -12,16 +14,14 @@ SLCodeContainer::SLCodeContainer(ShaderLab::Shader shadertype, const QString& ti
 
     m_save = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S), this);
     m_active = true;
+    shaderType = shadertype;
 
     ui->setupUi(this);
-    ui->shaderCodeBox->setFont(QFont("Courier"));
+    setupCodeBox();
 
-    highLighter = new Highlighter(ui->shaderCodeBox->document());
+    activePalette = shaderCodeBox->palette();
+    inactivePalette = shaderCodeBox->palette();
 
-    activePalette = ui->shaderCodeBox->palette();
-    inactivePalette = ui->shaderCodeBox->palette();
-
-    shaderType = shadertype;
 
     QBrush brush(QColor(128, 128, 128, 255));
     brush.setStyle(Qt::SolidPattern);
@@ -30,12 +30,6 @@ SLCodeContainer::SLCodeContainer(ShaderLab::Shader shadertype, const QString& ti
     QBrush brush1(QColor(159, 158, 158, 255));
     brush1.setStyle(Qt::SolidPattern);
     inactivePalette.setBrush(QPalette::Disabled, QPalette::Text, brush1);
-
-    ui->shaderCodeBox->setTabStopWidth(7*4);
-
-    connect(ui->shaderCodeBox, SIGNAL(modificationChanged(bool)), this, SLOT(textChanged(bool)));
-
-    connect(ui->shaderCodeBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
     connect(m_save, SIGNAL(activated()), this, SIGNAL(save()));
 
@@ -46,17 +40,43 @@ SLCodeContainer::SLCodeContainer(ShaderLab::Shader shadertype, const QString& ti
 SLCodeContainer::~SLCodeContainer()
 {
     delete ui;
+    delete shaderCodeBox;
+}
+
+void SLCodeContainer::setupCodeBox()
+{
+    shaderCodeBox = new CodeEditor(this);
+    shaderCodeBox->setObjectName(QString::fromUtf8("shaderCodeBox"));
+
+    QBrush brush1(QColor(159, 158, 158, 255));
+    brush1.setStyle(Qt::SolidPattern);
+    QBrush brush2(QColor(0, 0, 0, 255));
+    brush2.setStyle(Qt::SolidPattern);
+
+    QPalette palette1;
+    palette1.setBrush(QPalette::Active, QPalette::Text, brush2);
+    palette1.setBrush(QPalette::Inactive, QPalette::Text, brush2);
+    palette1.setBrush(QPalette::Disabled, QPalette::Text, brush1);
+    shaderCodeBox->setPalette(palette1);
+
+    ui->verticalLayout->addWidget(shaderCodeBox);
+
+    highLighter = new Highlighter(shaderCodeBox->document());
+    shaderCodeBox->setFont(QFont("Courier"));
+    shaderCodeBox->setTabStopWidth(7*4);
+
+    connect(shaderCodeBox, SIGNAL(modificationChanged(bool)), this, SLOT(textChanged(bool)));
+    connect(shaderCodeBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 }
 
 void SLCodeContainer::setText(const QString& code)
 {
-    ui->shaderCodeBox->setPlainText(code);
-    //setActivatedCode(true);
+    shaderCodeBox->setPlainText(code);
 }
 
 QString SLCodeContainer::getText()
 {
-    return ui->shaderCodeBox->toPlainText();
+    return shaderCodeBox->toPlainText();
 }
 
 ShaderLab::Shader SLCodeContainer::getShaderType(void)
@@ -70,7 +90,7 @@ void SLCodeContainer::textChanged(bool v)
     {
         emit textChanged(shaderType);
         emit textChanged();
-        ui->shaderCodeBox->document()->setModified(false);
+        shaderCodeBox->document()->setModified(false);
     }
 }
 
@@ -90,13 +110,13 @@ void SLCodeContainer::changeActivatedStatus()
     m_active = !m_active;
     if(m_active)
     {
-        highLighter->setDocument(ui->shaderCodeBox->document());
-        ui->shaderCodeBox->setPalette(activePalette);
+        highLighter->setDocument(shaderCodeBox->document());
+        shaderCodeBox->setPalette(activePalette);
         setTabIcon(QIcon(":/ico/running"));
     }else
     {
         highLighter->setDocument(NULL);
-        ui->shaderCodeBox->setPalette(inactivePalette);
+        shaderCodeBox->setPalette(inactivePalette);
         setTabIcon(QIcon(":/ico/stopped"));
     }
     emit activateStatusChanged();
@@ -127,24 +147,24 @@ QPoint SLCodeContainer::getCursorPosition(const QString& text, int pos)
 
 void SLCodeContainer::cursorPositionChanged(void)
 {
-    QTextCursor tc = ui->shaderCodeBox->textCursor();
-    QPoint p = getCursorPosition(ui->shaderCodeBox->toPlainText(), tc.position());
+    QTextCursor tc = shaderCodeBox->textCursor();
+    QPoint p = getCursorPosition(shaderCodeBox->toPlainText(), tc.position());
     ui->cursorPositionLabel->setText(QString::number(p.x()) + ":" + QString::number(p.y()));
 }
 
 void SLCodeContainer::findNext(const QString& s)
 {
-    ui->shaderCodeBox->find(s);
+    shaderCodeBox->find(s);
 }
 
 void SLCodeContainer::findBack(const QString& s)
 {
-    ui->shaderCodeBox->find(s, QTextDocument::FindBackward);
+    shaderCodeBox->find(s, QTextDocument::FindBackward);
 }
 
 void SLCodeContainer::setFocus()
 {
-    ui->shaderCodeBox->setFocus();
+    shaderCodeBox->setFocus();
 }
 
 void SLCodeContainer::replaceNext(const QString&, const QString&)

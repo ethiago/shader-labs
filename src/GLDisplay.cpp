@@ -4,7 +4,7 @@
 #include <QMatrix4x4>
 #include "Global.h"
 
-#define MINI(a,b) ((a) < (b) ? (a) : (b))
+#define ZOOMSTEP 0.05
 
 GLDisplay::GLDisplay(QGLContext* context, QWidget *parent) :
     QGLWidget(context,parent),
@@ -47,9 +47,9 @@ void GLDisplay::initializeGL()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );	// specify implementation-specific hints
+    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 
-    glClearDepth( 1.0 );					// specify the clear value for the depth buffer
+    glClearDepth( 1.0 );
     glDepthFunc( GL_LEQUAL );
     glDisable(GL_CULL_FACE);
 }
@@ -77,7 +77,7 @@ float GLDisplay::yDist(float aspect)
 
 void GLDisplay::paintGL()
 {
-    float aspect = width()*1.0/height();
+    float aspect = float(width())/height();
 
     float xdist = xDist(aspect);
     float ydist = yDist(aspect);
@@ -153,7 +153,6 @@ void GLDisplay::mouseReleaseEvent ( QMouseEvent * event )
     {
         if(rigthPressedPoint != NULLPOINT)
         {
-            //emit mouseRigthFinish(rigthPressedPoint, event->pos());
             rigthPressedPoint = NULLPOINT;
         }
         event->accept();
@@ -174,7 +173,6 @@ void GLDisplay::mouseMoveEvent(QMouseEvent *event)
     {
         if(rigthPressedPoint != NULLPOINT)
         {
-            //emit mouseRigthMove(rigthPressedPoint, event->pos());
         }
         event->accept();
     }else if(event->buttons() == Qt::LeftButton)
@@ -196,7 +194,7 @@ void GLDisplay::setupPropertiesList()
                 QLatin1String("Global Property"));
 
     {
-        QColor c = QColor(0, 0, 255);
+        QColor c = QColor(150, 190, 190);
         item = variantManager->addProperty(QVariant::Color,
                                            QLatin1String("BackGround Color"));
         item->setValue(c);
@@ -221,7 +219,6 @@ void GLDisplay::setupPropertiesList()
         properties.insert(Ortho, item);
     }
 
-
     variantFactory = new QtVariantEditorFactory();
 
     variantEditor = new QtTreePropertyBrowser();
@@ -229,11 +226,21 @@ void GLDisplay::setupPropertiesList()
     variantEditor->addProperty(topItem);
     variantEditor->setPropertiesWithoutValueMarked(true);
     variantEditor->setRootIsDecorated(false);
-    //variantEditor->setResizeMode(QtTreePropertyBrowser::Interactive);
 
     connect(variantEditor, SIGNAL(currentItemChanged(QtBrowserItem*)),
             this, SLOT(attributeChanged(QtBrowserItem*)));
 }
+
+void GLDisplay::wheelEvent(QWheelEvent * event)
+{
+    int nsteps = event->delta() / (8*15);
+
+    if (event->orientation() == Qt::Vertical) {
+        zoom += ZOOMSTEP * nsteps;
+        event->accept();
+        updateGL();
+    }else event->ignore();
+ }
 
 QtTreePropertyBrowser* GLDisplay::getPropertyBrowser()
 {

@@ -68,6 +68,7 @@ private:
     void mousePressEvent ( QMouseEvent * event );
     void mouseReleaseEvent ( QMouseEvent * event );
     void mouseMoveEvent(QMouseEvent *);
+    void wheelEvent(QWheelEvent *);
     float xDist(float aspect);
     float yDist(float aspect);
     void setupPropertiesList();

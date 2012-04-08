@@ -84,8 +84,11 @@ RenderController::RenderController(MainWindow *mainWindow,
     connect(mainWindow, SIGNAL(saveProject()),
             this, SLOT(saveProject()));
 
-    connect(mainWindow, SIGNAL(origin()),
-            this, SLOT(origin()));
+    connect(mainWindow, SIGNAL(origin(bool)),
+            this, SLOT(origin(bool)));
+
+    connect(mainWindow, SIGNAL(objectsVisibility(bool)),
+            this, SLOT(objectsVisibility(bool)));
 }
 
 RenderController::~RenderController()
@@ -355,8 +358,14 @@ void RenderController::closeObject()
     scene->currentSLObject()->close(mainWindow);
 }
 
-void RenderController::origin(void)
+void RenderController::origin(bool v)
 {
-    scene->changeOrigin();
+    scene->changeOrigin(v);
+    display->updateGL();
+}
+
+void RenderController::objectsVisibility(bool v)
+{
+    scene->objectsVisibility(v);
     display->updateGL();
 }

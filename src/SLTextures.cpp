@@ -12,7 +12,6 @@ SLTextures::SLTextures(MainWindow* mw, QObject* parent) :
 {
    m_textureList.append(Texture());
    m_textureView = new TexturePropertiesView(mw);
-   mw->addDockWidget(Qt::LeftDockWidgetArea, m_textureView);
 
    connect(m_textureView, SIGNAL(loadTextureClicked()),
            this, SLOT(changeTexture()));

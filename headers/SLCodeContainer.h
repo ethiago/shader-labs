@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QTimer>
 #include <QShortcut>
+#include <QPlainTextEdit>
 #include "Global.h"
 
 namespace Ui {
@@ -11,6 +12,7 @@ namespace Ui {
 }
 
 class Highlighter;
+class CodeEditor;
 
 class SLCodeContainer : public QWidget
 {
@@ -42,12 +44,14 @@ public:
 
 private:
     Ui::ShaderCodeContainer *ui;
+    CodeEditor *shaderCodeBox;
     QPalette activePalette;
     QPalette inactivePalette;
     ShaderLab::Shader shaderType;
     Highlighter * highLighter;
 
     QPoint getCursorPosition(const QString& text, int pos);
+    void setupCodeBox();
 
 private slots:
     void cursorPositionChanged(void);

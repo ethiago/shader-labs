@@ -25,12 +25,6 @@ public:
 
 private:
     Ui::GlobalProperties *ui;
-
-    int v1;
-    bool v2;
-    QColor v3;
-
-    void setupProperties();
 };
 
 #endif // GLOBALPROPERTIES_H

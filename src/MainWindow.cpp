@@ -92,8 +92,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionNew_Object, SIGNAL(triggered()),
             this, SIGNAL(newObject()));
 
-    connect(ui->originButton, SIGNAL(clicked()),
-            this, SIGNAL(origin()));
+    connect(ui->originButton, SIGNAL(toggled(bool)),
+            this, SIGNAL(origin(bool)));
+
+    connect(ui->objectsVisibility, SIGNAL(toggled(bool)),
+            this, SIGNAL(objectsVisibility(bool)));
 
 }
 
@@ -195,6 +198,9 @@ SLTabWidget* MainWindow::createTabWidget()
     connect(find, SIGNAL(replaceAll(QString,QString)),
             tabArea, SLOT(replaceAll(QString,QString)));
 
+    connect(tabArea, SIGNAL(changeVisibility(bool)),
+            this, SLOT(tabVisibilityChanged(bool)));
+
     return tabArea;
 }
 
@@ -202,4 +208,9 @@ void MainWindow::shaderLog(const QString& log)
 {
     ui->outputTextBox->clear();
     ui->outputTextBox->setPlainText(log);
+}
+
+void MainWindow::tabVisibilityChanged(bool v)
+{
+    find->setOkVisible(v);
 }
