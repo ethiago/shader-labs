@@ -54,7 +54,8 @@ SOURCES += src/main.cpp \
     src/SLFile.cpp \
     src/SLTextures.cpp \
     src/EditorController.cpp \
-    src/SLCodeContainer.cpp
+    src/SLCodeContainer.cpp \
+    src/codeeditor.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -86,7 +87,8 @@ HEADERS += headers/Sphere.h \
     headers/SLFile.h \
     headers/SLTextures.h \
     headers/EditorController.h \
-    headers/SLCodeContainer.h
+    headers/SLCodeContainer.h \
+    headers/codeeditor.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \

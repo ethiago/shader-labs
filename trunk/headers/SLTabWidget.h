@@ -20,6 +20,9 @@ public:
     //int addTab ( QWidget * page, const QIcon & icon, const QString & label );
     int addTab ( EditorController * controller, const QIcon & icon = QIcon(), const QString & label = QString());
 
+signals:
+    void changeVisibility(bool);
+
 public slots:
     void tabCloseRequested(int index);
     void changeActivationStatus();

@@ -65,5 +65,6 @@
         <file alias="delete">img/delete.png</file>
         <file>img/exchange.png</file>
         <file>img/x.png</file>
+        <file alias="origin">img/origin.png</file>
     </qresource>
 </RCC>

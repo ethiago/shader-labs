@@ -11,6 +11,7 @@ class Scene3D : public Object3D
     SLObject* current;
     QVector<SLObject*> objects;
     bool origin;
+    bool m_objectsVisibility;
 
 public:
     explicit Scene3D(const QVector3D& center = QVector3D(),
@@ -27,7 +28,9 @@ public:
 
     virtual Object3D* copy() const;
 
-    void changeOrigin();
+    void changeOrigin(bool v);
+
+    void objectsVisibility(bool v);
 
 private:
     void drawOrigin()const;

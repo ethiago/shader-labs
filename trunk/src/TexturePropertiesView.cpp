@@ -15,6 +15,7 @@ TexturePropertiesView::TexturePropertiesView(MainWindow *parent) :
     act->setShortcut(QKeySequence::fromString("Ctrl+T"));
 
     parent->menuViewInsertAction(act);
+    parent->addDockWidget(Qt::LeftDockWidgetArea, this);
 
     connect(ui->loadButton, SIGNAL(clicked()),
             this, SIGNAL(loadTextureClicked()));
@@ -27,6 +28,8 @@ TexturePropertiesView::TexturePropertiesView(MainWindow *parent) :
 
     connect(ui->textureList, SIGNAL(currentIndexChanged(int)),
             this, SIGNAL(textureCurrentChange(int)));
+
+    setVisible(false);
 }
 
 TexturePropertiesView::~TexturePropertiesView()

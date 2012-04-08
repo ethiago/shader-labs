@@ -58,8 +58,6 @@ public:
     void setProject(Project*);
     void closeObject();
 
-
-
 public slots:
     void drawModel(void);
     void mouseRigthMove(QPoint ini, QPoint curr);
@@ -74,7 +72,8 @@ public slots:
     void lightRotationToggle(bool);
     void saveProjectAs(void);
     void saveProject(void);
-    void origin(void);
+    void origin(bool);
+    void objectsVisibility(bool);
 
 
 private:
