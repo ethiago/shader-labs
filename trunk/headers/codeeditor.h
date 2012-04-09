@@ -43,6 +43,7 @@
 
  #include <QPlainTextEdit>
  #include <QObject>
+#include <QShortcut>
 
  class QPaintEvent;
  class QResizeEvent;
@@ -69,9 +70,13 @@
      void updateLineNumberAreaWidth(int newBlockCount);
      void highlightCurrentLine();
      void updateLineNumberArea(const QRect &, int);
+     void increaseFont(void);
+     void decreaseFont(void);
 
  private:
      QWidget *lineNumberArea;
+     QShortcut *increase;
+     QShortcut *decrease;
  };
 
 

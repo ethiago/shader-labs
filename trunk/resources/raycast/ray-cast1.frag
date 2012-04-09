@@ -41,17 +41,20 @@ void main ()
 	vec3 sphere1 = (gl_ModelViewMatrix * c1).xyz;
 	vec3 sphere2 = (gl_ModelViewMatrix * c2).xyz;
 
-	float t1 = distSphere(sphere1, vv2);
-	if(t1 >= 0.0)
+	float t1 = max(0.0, distSphere(sphere1, vv2));
+	if(t1 > 0.0)
 	{
 		t = t1;
 		c = sphere1;
 	}
-	float t2 = distSphere(sphere2, vv2);
-	if(t2 >= 0.0)
+	float t2 = max(0.0, distSphere(sphere2, vv2));
+	if(t2 > 0.0)
 	{
-		t = t2;
-		c = sphere2;
+		if((t > 0.0 && t2 < t) || t < 0.0)
+		{
+			t = t2;
+			c = sphere2;
+		}
 	}
 	
 	if(t < 0.0)

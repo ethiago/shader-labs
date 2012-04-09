@@ -46,10 +46,17 @@
  CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
  {
      lineNumberArea = new LineNumberArea(this);
+     increase = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Plus), this);
+     decrease = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus), this);
+
+     QFontMetrics fm(font());
+     setTabStopWidth(fm.width(' ')*4);
 
      connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
      connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
      connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+     connect(increase, SIGNAL(activated()), this, SLOT(increaseFont()));
+     connect(decrease, SIGNAL(activated()), this, SLOT(decreaseFont()));
 
      updateLineNumberAreaWidth(0);
      highlightCurrentLine();
@@ -148,4 +155,22 @@
          bottom = top + (int) blockBoundingRect(block).height();
          ++blockNumber;
      }
+ }
+
+ void CodeEditor::increaseFont(void)
+ {
+     QFont f = font();
+     f.setPointSize(f.pointSize() + 1);
+     setFont(f);
+     QFontMetrics fm(f);
+     setTabStopWidth(fm.width(' ')*4);
+ }
+
+ void CodeEditor::decreaseFont(void)
+ {
+     QFont f = font();
+     f.setPointSize(f.pointSize() - 1);
+     setFont(f);
+     QFontMetrics fm(f);
+     setTabStopWidth(fm.width(' ')*4);
  }

@@ -267,7 +267,7 @@ void main()
 	psVertex[2] = psTetraIn[0][2];
 	psVertex[3] = psTetraIn[0][3];
 		
-	//processaTetraedro();
+	processaTetraedro();
 	//geraLinhasTetraedro();
 
 	cor[3] = vec4(1.0);
@@ -288,8 +288,8 @@ void main()
 	psVertex[0] = mvp[0] * osVertex[0];
 	Q[0] = cylinder;
 
-	//geraLinhasTetraedro();
 	//processaTetraedro();
+	//geraLinhasTetraedro();
 
 	cor[0] = corIn[0][0];
 	osVertex[0] = osTetraIn[0][0];
@@ -301,8 +301,8 @@ void main()
 	psVertex[2] = mvp[0] * osVertex[2];
 	Q[2] = cylinder;
 
-	//geraLinhasTetraedro();
 	//processaTetraedro();
+	//geraLinhasTetraedro();
 
 	cor[2] = corIn[0][2];
 	osVertex[2] = osTetraIn[0][2];
@@ -314,6 +314,6 @@ void main()
 	psVertex[1] = mvp[0] * osVertex[1];
 	Q[1] = cylinder;
 
+	//processaTetraedro();
 	//geraLinhasTetraedro();
-	processaTetraedro();
 }
