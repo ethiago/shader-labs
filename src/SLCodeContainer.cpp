@@ -63,7 +63,6 @@ void SLCodeContainer::setupCodeBox()
 
     highLighter = new Highlighter(shaderCodeBox->document());
     shaderCodeBox->setFont(QFont("Courier"));
-    shaderCodeBox->setTabStopWidth(7*4);
 
     connect(shaderCodeBox, SIGNAL(modificationChanged(bool)), this, SLOT(textChanged(bool)));
     connect(shaderCodeBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
