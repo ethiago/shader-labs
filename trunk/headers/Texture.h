@@ -11,6 +11,7 @@ class Texture : public QObject
     int m_glTextureName;
     QString m_varName;
     QString m_filename;
+    bool m_2d;
 
 public:
     static bool isValid(const QString& filePath);
@@ -33,7 +34,12 @@ public:
 
     void clean(void);
 
+    bool is2D()const;
+
     const Texture& operator=(const Texture&);
+
+protected:
+    void set3D();
 
 };
 

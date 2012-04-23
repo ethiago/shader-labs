@@ -3,14 +3,14 @@
 
 Texture::Texture(QObject *parent) :
     QObject(parent), m_image(QImage(":/ico/noImage")),
-    m_glTextureName(-1), m_varName(QString()), m_filename(QString())
+    m_glTextureName(-1), m_varName(QString()), m_filename(QString()), m_2d(true)
 {
 }
 
 Texture::Texture(const Texture& tex) :
     QObject(tex.parent()), m_image(tex.image()),
     m_glTextureName(tex.glTextureName()), m_varName(tex.varName()),
-    m_filename(tex.fullFileName())
+    m_filename(tex.fullFileName()), m_2d(tex.is2D())
 {
 
 }
@@ -80,6 +80,7 @@ const Texture& Texture::operator=(const Texture& tex)
     m_glTextureName = tex.glTextureName();
     m_varName = tex.varName();
     m_filename = tex.fullFileName();
+    m_2d = tex.is2D();
     return *this;
 }
 
@@ -87,4 +88,14 @@ bool Texture::isValid(const QString& filePath)
 {
     QImage i(filePath);
     return !(i.isNull());
+}
+
+bool Texture::is2D()const
+{
+    return m_2d;
+}
+
+void Texture::set3D()
+{
+    m_2d = false;
 }

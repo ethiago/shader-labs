@@ -25,6 +25,8 @@ public:
     static QString saveImage();
     static void notLoadProject(void);
     static bool projectSaveContinue(void);
+    static void sizeFileNotMatch(int size, int inf);
+    static void fileTooLarge(int texelQuantity);
 
 
 };

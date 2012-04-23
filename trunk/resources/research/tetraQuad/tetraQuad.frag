@@ -1,14 +1,19 @@
-#version 120
+#version 150 compatibility
 #extension GL_ARB_gpu_shader_fp64 : enable
 
-varying mat4 Qi;
-varying mat4 Qo;
+in mat4 Qi;
+noperspective in mat4 Qo;
+mat4 Qo2;
 
-varying vec4 pi;
-varying vec4 po;
+in vec4 pi;
+noperspective in vec4 po;
+vec4 po2;
 
-varying vec4 cori;
-varying vec4 coro;
+in vec4 cori;
+noperspective in vec4 coro;
+vec4 coro2;
+
+noperspective in float woI;
 
 const float ac = 0.3;
 const float dc = 0.4;
@@ -23,7 +28,6 @@ float a,b,c,d;
 
 vec4 cor;
 
-//<CORRETO>
 float casoLinear()
 {
 	return -d/c;
@@ -41,7 +45,6 @@ float _3(float v)
 
 float shade(in vec3 p, in vec3 n, in vec3 v)
 {
-	//n = faceforward(n,n,v);
 	vec3 lv = normalize(lp - p);
 	float dif = max(dot(lv, n), 0.0);
 	
@@ -95,9 +98,7 @@ float casoQuadrica()
 	else
 		return r[0];
 }
-//</CORRETO>
 
-//<NAOVERIFICADO>
 float f(in float t)
 {
 	return a*(t*t*t) + b*(t*t) + c*t + d;
@@ -195,17 +196,22 @@ float casoCubica()
 
 void main ()
 {
-	cor = vec4(1.0);
+	po2 = po/woI;
+	po2 /= po2.w;
+	Qo2 = Qo/woI;
+	coro2 = coro/woI;
 
-	vec4 dir = po - pi;
+
+	cor = vec4(1.0);
+	vec4 dir = po2 - pi;
 
 	float ddi = dot(dir, Qi * dir);
 	float pdi = dot(pi, Qi * dir);
 	float ppi = dot(pi, Qi * pi);
 
-	float ddo = dot(dir, Qo * dir);
-	float pdo = dot(pi, Qo * dir);
-	float ppo = dot(pi, Qo * pi);
+	float ddo = dot(dir, Qo2 * dir);
+	float pdo = dot(pi, Qo2 * dir);
+	float ppo = dot(pi, Qo2 * pi);
 
 
     a = ddo - ddi;
@@ -213,30 +219,6 @@ void main ()
 	c = 2*pdi + ppo - ppi;
 	d = ppi;
 
-//<FUNCOESVALIDACAO>
-/*
-	// x^2 + y^2 + z^3 = z^2
-	a = _3(dir.z);
-	b = _2(dir.x) + _2(dir.y) - _2(dir.z) + 3*pi.z*_2(dir.z);
-	c = 2*(dir.x*pi.x + dir.y*pi.y - dir.z*pi.z) + 3*_2(pi.z)*dir.z;
-	d = _2(pi.x) + _2(pi.y) - _2(pi.z) + _3(pi.z);
-*/
-/*
-	// x^3 + y^3 + z^3 = 0
-	a = _3(dir.x)+ _3(dir.y) +_3(dir.z);
-	b = 3*(pi.x*_2(dir.x) + pi.y*_2(dir.y) + pi.z*_2(dir.z));
-	c = 3*(_2(pi.x)*dir.x + _2(pi.y)*dir.y + _2(pi.z)*dir.z);
-	d = _3(pi.x) + _3(pi.y) + _3(pi.z);
-*/
-/*
-	// xyz = 0
-	a = dir.x*dir.y*dir.z;
-	b = pi.x*dir.y*dir.z + pi.y*dir.x*dir.z + pi.z*dir.x*dir.y;
-	c = pi.x*pi.y*dir.z + pi.x*pi.z*dir.y + pi.y*pi.z*dir.x;
-	d = pi.x*pi.y*pi.z;
-*/
-//</FUNCOESVALIDACAO>
-	
 	float t = -1.0;		
 	
 	if(abs(a) > err) //a != 0
@@ -249,17 +231,20 @@ void main ()
 	if(!valido(t))
 		discard;
 
-	vec3 p =  pi.xyz + t*dir.xyz;
-//<NORMAISVALIDACAO>
-	//vec3 n = normalize(vec3(2*p.x, 2*p.y, 3*_2(p.z)-2*p.z));// x^2 + y^2 + z^3 = z^2
-	//vec3 n = normalize(vec3(_2(p.x), _2(p.y), _2(p.z)));// x^3 + y^3 + z^3 = 0
-	//vec3 n = normalize(vec3(p.y*p.z, p.x*p.z, p.x*p.y));// xyz = 0
-//</NORMAISVALIDACAO>
-	mat4 Q = (1.0 - t)*Qi + t*Qo;
-	vec3 n = normalize((mat3(Q) * p));
+	vec4 p =  pi + t*dir;
+	p.w = 1.0;
 
-	cor = (1.0 - t)*cori + t*coro;
-	gl_FragColor = cor * shade(p,n,normalize(-dir.xyz));
-	//gl_FragColor = cor;
-	gl_FragColor.a = 1.0;	
+	mat4 Q = (1.0 - t)*Qi + t*Qo2;
+ 
+	vec3 n = normalize((Q * p).xyz);
+
+	cor = (1.0 - t)*cori + t*coro2;
+	gl_FragColor = cor * shade(p.xyz, n ,normalize(-dir.xyz));
+	gl_FragColor.a = 1.0;
+
+//<Controlling the Viewport> http://www.opengl.org/registry/doc/glspec41.core.20100725.pdf   pag 137
+	vec4 pd = gl_ModelViewProjectionMatrix * p; 
+  gl_FragDepth = ((gl_DepthRange.far - gl_DepthRange.near) * pd.z/pd.w + gl_DepthRange.near + gl_DepthRange.far)/2.0 ;
+//</Controlling the Viewport>
+
 }

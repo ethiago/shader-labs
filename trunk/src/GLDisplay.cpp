@@ -39,6 +39,7 @@ void GLDisplay::initializeGL()
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_3D);
     glEnable( GL_LIGHT0 );
     glEnable(GL_LIGHTING);
     glShadeModel( GL_SMOOTH );
