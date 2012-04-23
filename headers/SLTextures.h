@@ -10,10 +10,12 @@
 #include <QGLShaderProgram>
 #include "Texture.h"
 
-#define SAMPLEPREFIX "sampler2d"
+#define SAMPLEPREFIX2D "sampler2d"
+#define SAMPLEPREFIX3D "sampler3d"
 
 class MainWindow;
 class TexturePropertiesView;
+class SLTexture3DDialog;
 
 class SLTextures : public QObject
 {
@@ -22,6 +24,7 @@ class SLTextures : public QObject
     QList<Texture> m_textureList;
     int textureContext;
     TexturePropertiesView* m_textureView;
+    SLTexture3DDialog *m_texture3DDialog;
 
 signals:
     void updateGL();
@@ -41,6 +44,7 @@ public slots:
     void changeTexture(void);
     void addTexture(void);
     void textureCurrentChange(int);
+    void addTexture3D(void);
 
 private:
     void remakeVarNames();

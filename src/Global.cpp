@@ -94,7 +94,7 @@ void ShaderLab::extensionsAnalise()
             m_extensions |= ShaderLab::GeometryShader;
         else if(ext == "GL_ARB_shader_objects")
             m_extensions |= ShaderLab::ShaderObjects;
-    }
+    }   
 }
 
 ShaderLab::ShaderLab()

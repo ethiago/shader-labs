@@ -55,7 +55,9 @@ SOURCES += src/main.cpp \
     src/SLTextures.cpp \
     src/EditorController.cpp \
     src/SLCodeContainer.cpp \
-    src/codeeditor.cpp
+    src/codeeditor.cpp \
+    src/Texture3D.cpp \
+    src/SLTexture3dDialog.cpp
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -88,13 +90,16 @@ HEADERS += headers/Sphere.h \
     headers/SLTextures.h \
     headers/EditorController.h \
     headers/SLCodeContainer.h \
-    headers/codeeditor.h
+    headers/codeeditor.h \
+    headers/Texture3D.h \
+    headers/SLTexture3dDialog.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \
     forms/TexturePropertiesView.ui \
     forms/Find.ui \
     forms/PrimitivesDialog.ui \
-    forms/GlobalProperties.ui
+    forms/GlobalProperties.ui \
+    forms/SLTexture3dDialog.ui
 RESOURCES += shaderlab.qrc
 OTHER_FILES += 

@@ -66,5 +66,6 @@
         <file>img/exchange.png</file>
         <file>img/x.png</file>
         <file alias="origin">img/origin.png</file>
+        <file alias="tex3d">img/tex3D.png</file>
     </qresource>
 </RCC>

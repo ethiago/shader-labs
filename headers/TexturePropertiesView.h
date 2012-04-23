@@ -21,6 +21,7 @@ signals:
     void removeTextureClicked(void);
     void addTextureClicked(void);
     void textureCurrentChange(int);
+    void addTexture3DClicked(void);
 
 public:
     explicit TexturePropertiesView(MainWindow *parent = 0);

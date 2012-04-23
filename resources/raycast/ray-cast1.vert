@@ -1,6 +1,6 @@
 varying vec3 vv;
 
-const float scale = 5.0;
+const float scale = 2.0;
 
 void main ()
 {

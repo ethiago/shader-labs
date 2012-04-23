@@ -259,3 +259,17 @@ bool InterfaceRequests::projectSaveContinue(void)
     else
         return false;
 }
+
+void InterfaceRequests::sizeFileNotMatch(int size, int inf)
+{
+    QMessageBox::warning(0, "Open file error",
+                         "The file size(" + QString::number(size) +
+                         ") does not match informed data("+ QString::number(inf) +").");
+}
+
+void InterfaceRequests::fileTooLarge(int texelQuantity)
+{
+    QMessageBox::warning(0, "Open file error",
+                         "The number of texels (" + QString::number(texelQuantity) +
+                         ") is too large. It must be at most "+ QString::number(5832000) +".");
+}
