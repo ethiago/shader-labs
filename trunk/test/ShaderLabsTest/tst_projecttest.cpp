@@ -30,7 +30,7 @@ void ProjectTest::testCase1_data()
 {
     QTest::addColumn<QString>("in");
     QTest::addColumn<QString>("out");
-    QTest::newRow("0") << QString() << QString("");
+    QTest::newRow("0") << QString() << QString(" ");
 }
 
 QTEST_APPLESS_MAIN(ProjectTest);
