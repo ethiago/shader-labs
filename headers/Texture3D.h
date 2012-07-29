@@ -1,7 +1,10 @@
 #ifndef TEXTURE3D_H
 #define TEXTURE3D_H
 
-#include "GLee.h"
+#if defined(__WIN32__)
+    #include "GLee.h"
+#endif
+
 #include "Texture.h"
 
 class Texture3D : public Texture

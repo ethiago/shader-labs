@@ -62,7 +62,10 @@ void Scene3D::drawOrigin()const
     glGetFloatv(GL_CURRENT_COLOR,color);
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
-    glUseProgram(0);
+
+#ifdef GL_VERSION_2_0
+    //glUseProgram(0);
+#endif
 
     glBegin(GL_LINES);
     glColor3f(1.0, 0, 0);

@@ -10,6 +10,7 @@ win32 {
     INCLUDEPATH += lib/GLee5_4
     SOURCES += lib/GLee5_4/GLee.c
 }
+
 unix:TARGET = ShaderLab-unix32
 TEMPLATE = app
 DEPENDPATH += src
@@ -20,7 +21,13 @@ RCC_DIR = tmp
 UI_DIR = tmp
 DESTDIR = bin
 
-include(../qt-solutions/qtpropertybrowser/src/qtpropertybrowser.pri)
+#QtSolutions_PropertyBrowser-head
+DEPENDPATH += 3rd-party/qtpropertybrowser/src
+INCLUDEPATH += 3rd-party/qtpropertybrowser/src
+LIBS += -L../shader-lab/lib -lQtSolutions_PropertyBrowser-head
+#QtSolutions_PropertyBrowser-head
+
+
 
 SOURCES += src/main.cpp \
     src/Sphere.cpp \

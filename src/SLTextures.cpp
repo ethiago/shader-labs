@@ -7,7 +7,7 @@
 #include <QFileDialog>
 #include <QAction>
 #include "InterfaceRequests.h"
-#include "SLTexture3DDialog.h"
+#include "SLTexture3dDialog.h"
 
 SLTextures::SLTextures(MainWindow* mw, QObject* parent) :
     QObject(parent)
