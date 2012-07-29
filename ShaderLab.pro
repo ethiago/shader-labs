@@ -19,7 +19,7 @@ OBJECTS_DIR = tmp
 MOC_DIR = tmp
 RCC_DIR = tmp
 UI_DIR = tmp
-DESTDIR = bin
+DESTDIR = ../ShaderLabs/bin
 
 #QtSolutions_PropertyBrowser-head
 DEPENDPATH += 3rd-party/qtpropertybrowser/src
