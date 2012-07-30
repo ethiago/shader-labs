@@ -64,7 +64,11 @@ SOURCES += src/main.cpp \
     src/SLCodeContainer.cpp \
     src/codeeditor.cpp \
     src/Texture3D.cpp \
-    src/SLTexture3dDialog.cpp
+    src/SLTexture3dDialog.cpp \
+    src/PointPatch.cpp \
+    src/IcosahedronPatch.cpp \
+    src/Patch.cpp
+
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
     headers/SLTabBar.h \
@@ -99,7 +103,10 @@ HEADERS += headers/Sphere.h \
     headers/SLCodeContainer.h \
     headers/codeeditor.h \
     headers/Texture3D.h \
-    headers/SLTexture3dDialog.h
+    headers/SLTexture3dDialog.h \
+    headers/PointPatch.h \
+    headers/IcosahedronPatch.h \
+    headers/Patch.h
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \

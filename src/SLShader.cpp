@@ -1,12 +1,13 @@
 #include "SLShader.h"
 #include "InterfaceRequests.h"
 #include "EditorController.h"
+#include "Object3D.h"
 
 #define DEFFRAG "void main (){gl_FragColor = gl_Color;}"
 
 SLShader::SLShader(MainWindow* mw, QObject *parent) :
-    QObject(parent), vertexShader(NULL),
-    geometryShader(NULL), fragmentShader(NULL)
+    QObject(parent), vertexShader(NULL), geometryShader(NULL),
+    fragmentShader(NULL), tessCtrlShader(NULL), tessEvalShader(NULL)
 {
     primitivesDialog = new PrimitivesDialog(mw);
 
@@ -30,6 +31,16 @@ SLShader::~SLShader()
         fragmentShader->closeShaderCode();
         delete fragmentShader;
     }
+    if(tessCtrlShader)
+    {
+        tessCtrlShader->closeShaderCode();
+        delete tessCtrlShader;
+    }
+    if(tessEvalShader)
+    {
+        tessEvalShader->closeShaderCode();
+        delete tessEvalShader;
+    }
     //disconnect(0, 0, primitivesDialog, 0);
     delete primitivesDialog;
 }
@@ -45,7 +56,7 @@ void SLShader::logProcess(const QString& log, ShaderLab::Shader st)
         m_log += tlog + "\n";
 }
 
-void SLShader::compileAndLink(QGLShaderProgram* program)
+void SLShader::compileAndLink(QGLShaderProgram* program, Object3D* obj)
 {
     program->removeAllShaders();
     program->release();
@@ -78,6 +89,29 @@ void SLShader::compileAndLink(QGLShaderProgram* program)
         logProcess(program->log(), ShaderLab::Geometry);
     }
 
+    if(tessCtrlShader && tessCtrlShader->isActive())
+    {
+        thereIsCode = true;
+
+        if(program->addShaderFromSourceCode(
+                    QGLShader::TessellationCtrl, tessCtrlShader->getContent()))
+            atLeastOne = true;
+
+        logProcess(program->log(), ShaderLab::TessellationCtrl);
+    }
+
+    if(tessEvalShader && tessEvalShader->isActive())
+    {
+        thereIsCode = true;
+
+        if(program->addShaderFromSourceCode(
+                    QGLShader::TessellationEval, tessEvalShader->getContent()))
+            atLeastOne = true;
+
+        logProcess(program->log(), ShaderLab::TessellationEval);
+    }
+
+
     if(fragmentShader && fragmentShader->isActive())
     {
         thereIsCode = true;
@@ -104,7 +138,7 @@ void SLShader::compileAndLink(QGLShaderProgram* program)
         ShaderLab * sl = ShaderLab::instance();
         if(sl->geometryShaderEnabled())
         {
-            program->setGeometryInputType(primitivesDialog->getCurrentInputPrimitive());
+            program->setGeometryInputType(obj->inputType());
             program->setGeometryOutputType(primitivesDialog->getCurrentOutputPrimitive());
         }
 
@@ -153,6 +187,24 @@ EditorController* SLShader::setShader(const QString& filePath, ShaderLab::Shader
         connect(fragmentShader, SIGNAL(useless(EditorController*)),
                 this, SLOT(unlessEditor(EditorController*)));
         return fragmentShader;
+    }else if(shadertype == ShaderLab::TessellationCtrl)
+    {
+        if(!closeShader(&tessCtrlShader))
+            return NULL;
+
+        tessCtrlShader = new EditorController(ShaderLab::TessellationCtrl, filePath);
+        connect(tessCtrlShader, SIGNAL(useless(EditorController*)),
+                this, SLOT(unlessEditor(EditorController*)));
+        return tessCtrlShader;
+    }else if(shadertype == ShaderLab::TessellationEval)
+    {
+        if(!closeShader(&tessEvalShader))
+            return NULL;
+
+        tessEvalShader = new EditorController(ShaderLab::TessellationEval, filePath);
+        connect(tessEvalShader, SIGNAL(useless(EditorController*)),
+                this, SLOT(unlessEditor(EditorController*)));
+        return tessEvalShader;
     }
 
     return NULL;
@@ -169,16 +221,26 @@ void SLShader::unlessEditor(EditorController* editor)
     {
         delete vertexShader;
         vertexShader = NULL;
-    }else
-    if(editor == geometryShader)
+    }
+    else if(editor == geometryShader)
     {
         delete geometryShader;
         geometryShader = NULL;
-    }else
-    if(editor == fragmentShader)
+    }
+    else if(editor == fragmentShader)
     {
         delete fragmentShader;
         fragmentShader = NULL;
+    }
+    else if(editor == tessCtrlShader)
+    {
+        delete tessCtrlShader;
+        tessCtrlShader = NULL;
+    }
+    else if(editor == tessEvalShader)
+    {
+         delete tessEvalShader;
+         tessEvalShader = NULL;
     }
 }
 
@@ -189,6 +251,10 @@ bool SLShader::isAnyNew()
     if(geometryShader && (geometryShader->getFile().IsNew()))
         return true;
     if(fragmentShader && (fragmentShader->getFile().IsNew()))
+        return true;
+    if(tessCtrlShader && (tessCtrlShader->getFile().IsNew()))
+        return true;
+    if(tessEvalShader && (tessEvalShader->getFile().IsNew()))
         return true;
 
     return false;
@@ -203,6 +269,11 @@ bool SLShader::saveAllShaders()
         all = false;
     if(fragmentShader && !(fragmentShader->saveFile()))
         all = false;
+    if(tessCtrlShader && !(tessCtrlShader->saveFile()))
+        all = false;
+    if(tessEvalShader && !(tessEvalShader->saveFile()))
+        all = false;
+
 
     return all;
 }
@@ -214,6 +285,10 @@ bool SLShader::closeAllFiles()
     if(!closeShader(&geometryShader))
         return false;
     if(!closeShader(&fragmentShader))
+        return false;
+    if(!closeShader(&tessCtrlShader))
+        return false;
+    if(!closeShader(&tessEvalShader))
         return false;
 
     return true;
@@ -247,6 +322,15 @@ QString SLShader::getAbsoluteFilePath(ShaderLab::Shader shaderType)
     if(shaderType == ShaderLab::Fragment && fragmentShader && !(fragmentShader->getFile().IsNew()))
     {
         return fragmentShader->getFile().getFilePath();
+    }
+
+    if(shaderType == ShaderLab::TessellationCtrl && tessCtrlShader && !(tessCtrlShader->getFile().IsNew()))
+    {
+        return tessCtrlShader->getFile().getFilePath();
+    }
+    if(shaderType == ShaderLab::TessellationEval && tessEvalShader && !(tessEvalShader->getFile().IsNew()))
+    {
+        return tessEvalShader->getFile().getFilePath();
     }
 
     return QString();

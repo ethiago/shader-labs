@@ -51,7 +51,7 @@ void SLObject::draw()
 
 void SLObject::compileShaders()
 {
-   m_shader->compileAndLink(&program);
+   m_shader->compileAndLink(&program, m_object);
    emit sendLog(m_shader->log());
    ShaderLab::instance()->glContext()->updateGL();
 }

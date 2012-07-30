@@ -2,7 +2,7 @@
 #define SLFILE_H
 
 #include <QObject>
-#include <QGLShader>
+#include "qglshaderprogram.h"
 #include <QFileInfo>
 
 #include "Global.h"

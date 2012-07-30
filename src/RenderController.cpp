@@ -9,6 +9,8 @@
 #include "Point.h"
 #include "Scene3D.h"
 #include "Tetrahedron.h"
+#include "PointPatch.h"
+#include "IcosahedronPatch.h"
 #include "Arcball.h"
 #include "DirectionalLight.h"
 #include "PrimitivesDialog.h"
@@ -268,6 +270,22 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     model_tmp = new Point();
     model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
+
+    act = menu->addAction(tr("P&ointPatch"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    model_tmp = new PointPatch();
+    model_tmp->setModelId(models.size());
+    models.append(qMakePair(act, model_tmp));
+
+    act = menu->addAction(tr("&IcosahedronPatch"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    model_tmp = new IcosahedronPatch();
+    model_tmp->setModelId(models.size());
+    models.append(qMakePair(act, model_tmp));
+
+
 
     connect(menu, SIGNAL(triggered(QAction*)),
             this, SLOT(modelChanged(QAction*)));

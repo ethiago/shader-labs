@@ -10,6 +10,8 @@ TexturePropertiesView::TexturePropertiesView(MainWindow *parent) :
 {
     ui->setupUi(this);
 
+    ui->add3DButton->setVisible(false);
+
     QAction *act = toggleViewAction();
     act->setText("Texture properties");
     act->setShortcut(QKeySequence::fromString("Ctrl+T"));
