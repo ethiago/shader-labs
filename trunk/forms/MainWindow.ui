@@ -463,6 +463,11 @@
     <string>New Object</string>
    </property>
   </action>
+  <action name="actionPoint">
+   <property name="text">
+    <string>Point</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

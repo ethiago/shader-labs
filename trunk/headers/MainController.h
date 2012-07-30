@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QMap>
-#include <QGLShaderProgram>
+#include "qglshaderprogram.h"
 
 #include "Global.h"
 

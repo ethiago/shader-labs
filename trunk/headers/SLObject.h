@@ -4,7 +4,7 @@
 #include "SLTextures.h"
 #include "SLShader.h"
 #include "Object3D.h"
-#include <QGLShaderProgram>
+#include "qglshaderprogram.h"
 #include <QObject>
 
 class Project;

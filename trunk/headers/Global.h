@@ -1,7 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include <QGLShader>
+#include <QGLShaderProgram>
 #include <QGLContext>
 #include <QString>
 #include <cmath>
@@ -28,19 +28,21 @@ public:
 
     int extensions();
 
-    enum Shader{ Vertex, Fragment, Geometry };
+    enum Shader{ Vertex, Fragment, Geometry, TessellationEval, TessellationCtrl };
 
     enum ExtensionSupport{ FramebufferObject = 1,
                        VertexShader = 2,
                        GeometryShader = 4,
                        FragmentShader = 8,
-                       ShaderObjects = 16};
+                       TessellationShader = 16,
+                       ShaderObjects = 32};
 
     void extensionsAnalise();
     bool criticalExtensionsEnabled();
     bool vertexShaderEnabled();
     bool fragmentShaderEnabled();
     bool geometryShaderEnabled();
+    bool tesselationShaderEnable();
     void setContext(QGLWidget*);
     QGLWidget* glContext();
 

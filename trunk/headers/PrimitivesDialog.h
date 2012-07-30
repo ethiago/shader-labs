@@ -16,11 +16,11 @@ class PrimitivesDialog : public QDialog {
 public:
     PrimitivesDialog(QWidget *parent = 0);
     ~PrimitivesDialog();
-    int getCurrentInputPrimitiveIndex(void);
+    //int getCurrentInputPrimitiveIndex(void);
     int getCurrentOutputPrimitiveIndex(void);
-    void changeCurrentInputType(const QString& s);
+    //void changeCurrentInputType(const QString& s);
     GLenum getCurrentOutputPrimitive(void);
-    GLenum getCurrentInputPrimitive(void);
+    //GLenum getCurrentInputPrimitive(void);
 
 protected:
     void changeEvent(QEvent *e);

@@ -5,6 +5,7 @@
 
 #include "Project.h"
 #include "InterfaceRequests.h"
+#include "Global.h"
 
 Project::Project(QObject *parent) :
     QObject(parent), modelId(-1)
@@ -111,35 +112,18 @@ bool Project::loadFileTag(QDomElement root)
     if(root.isNull())
         return false;
 
-    //******Vertex******//
-    child = root.firstChildElement("vertex");
-    if(!child.isNull())
-    {
-        value = child.text();
-        if(!value.isEmpty())
-            shaderFiles[ShaderLab::Vertex] = value;
-    }
-    //******************//
 
-    //******Fragment******//
-    child = root.firstChildElement("fragment");
-    if(!child.isNull())
+    FORENABLEDSHADERS(shaderType)
     {
-        value = child.text();
-        if(!value.isEmpty())
-            shaderFiles[ShaderLab::Fragment] = value;
+        child = root.firstChildElement(ShaderLab::shaderToStr(shaderType));
+        if(!child.isNull())
+        {
+            value = child.text();
+            if(!value.isEmpty())
+                shaderFiles[shaderType] = value;
+        }
     }
-    //********************//
 
-    //******Geometry******//
-    child = root.firstChildElement("geometry");
-    if(!child.isNull())
-    {
-        value = child.text();
-        if(!value.isEmpty())
-            shaderFiles[ShaderLab::Geometry] = value;
-    }
-    //********************//
 
     return true;
 }

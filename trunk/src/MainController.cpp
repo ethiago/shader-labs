@@ -105,6 +105,17 @@ void MainController::glSetup(void)
         chooseShaderDialog->addButton(ShaderLab::Geometry);
         mainWindow->setEnableMenuGeometryShader(true);
     }
+
+    if(!sl->tesselationShaderEnable())
+    {
+        QMessageBox::warning(mainWindow, tr("OpenGL Tessellation extension missing"),
+            tr("The OpenGL Tessellation extension required to run this application is missing.\n") +
+            tr("The program will run without this feature."));
+    }else
+    {
+        chooseShaderDialog->addButton(ShaderLab::TessellationCtrl);
+        chooseShaderDialog->addButton(ShaderLab::TessellationEval);
+    }
 }
 
 MainController::~MainController()

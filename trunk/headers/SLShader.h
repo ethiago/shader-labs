@@ -2,13 +2,14 @@
 #define SLSHADER_H
 
 #include <QObject>
-#include <QGLShaderProgram>
+#include "qglshaderprogram.h"
 #include <Global.h>
 #include "MainWindow.h"
 #include "PrimitivesDialog.h"
 #include "SLFile.h"
 
 class EditorController;
+class Object3D;
 
 class SLShader : public QObject
 {
@@ -17,6 +18,8 @@ class SLShader : public QObject
     EditorController* vertexShader;
     EditorController* geometryShader;
     EditorController* fragmentShader;
+    EditorController* tessCtrlShader;
+    EditorController* tessEvalShader;
 
     QGLShaderProgram m_program;
 
@@ -30,7 +33,7 @@ public:
     explicit SLShader(MainWindow* mw, QObject *parent = 0);
     ~SLShader();
 
-    void compileAndLink(QGLShaderProgram* m_program);
+    void compileAndLink(QGLShaderProgram* m_program,Object3D*);
     const QString& log();
     EditorController* setShader(const QString& filePath, ShaderLab::Shader shadertype);
     bool isAnyNew();

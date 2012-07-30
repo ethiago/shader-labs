@@ -16,11 +16,11 @@ PrimitivesDialog::~PrimitivesDialog()
     delete ui;
 }
 
-void PrimitivesDialog::changeCurrentInputType(const QString& s)
-{
-    ui->comboBoxInput->clear();
-    ui->comboBoxInput->addItem(s);
-}
+//void PrimitivesDialog::changeCurrentInputType(const QString& s)
+//{
+//    ui->comboBoxInput->clear();
+//    ui->comboBoxInput->addItem(s);
+//}
 
 void PrimitivesDialog::changeEvent(QEvent *e)
 {
@@ -39,10 +39,10 @@ int PrimitivesDialog::getCurrentOutputPrimitiveIndex(void)
     return ui->comboBoxOutput->currentIndex();
 }
 
-int PrimitivesDialog::getCurrentInputPrimitiveIndex(void)
-{
-    return ui->comboBoxInput->currentIndex();
-}
+//int PrimitivesDialog::getCurrentInputPrimitiveIndex(void)
+//{
+//    return ui->comboBoxInput->currentIndex();
+//}
 
 GLenum PrimitivesDialog::getCurrentOutputPrimitive(void)
 {
@@ -50,10 +50,10 @@ GLenum PrimitivesDialog::getCurrentOutputPrimitive(void)
     return ui->comboBoxOutput->itemData(ui->comboBoxOutput->currentIndex()).value<int>();
 }
 
-GLenum PrimitivesDialog::getCurrentInputPrimitive(void)
-{
-    return ui->comboBoxInput->itemData(ui->comboBoxInput->currentIndex()).value<int>();
-}
+//GLenum PrimitivesDialog::getCurrentInputPrimitive(void)
+//{
+//    return ui->comboBoxInput->itemData(ui->comboBoxInput->currentIndex()).value<int>();
+//}
 
 void PrimitivesDialog::primitiveSetup()
 {

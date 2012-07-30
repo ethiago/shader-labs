@@ -9,6 +9,8 @@ QString ShaderLab::shaderToStr(Shader s)
         case Vertex: return "vertex";
         case Fragment: return "fragment";
         case Geometry: return "geometry";
+        case TessellationCtrl: return "tessellation_control";
+        case TessellationEval: return "tessellation_evaluation";
     }
 
     return QString();
@@ -21,6 +23,8 @@ QString ShaderLab::shaderToStrCap(Shader s)
         case Vertex: return "Vertex";
         case Fragment: return "Fragment";
         case Geometry: return "Geometry";
+        case TessellationCtrl: return "TessellationControl";
+        case TessellationEval: return "TessellationEvaluation";
     }
 
     return QString();
@@ -33,6 +37,8 @@ QString ShaderLab::shaderToExt(Shader s)
         case Vertex: return ".vert";
         case Fragment: return ".frag";
         case Geometry: return ".geom";
+        case TessellationCtrl: return ".tsct";
+        case TessellationEval: return ".tsev";
     }
 
     return QString();
@@ -45,9 +51,10 @@ QGLShader::ShaderTypeBit ShaderLab::shaderToQGLShader(Shader s)
     {
         case Vertex: return QGLShader::Vertex;
         case Fragment: return QGLShader::Fragment;
-#ifdef QT47_CAPABLE
         case Geometry: return QGLShader::Geometry;
-#endif
+        case TessellationCtrl: return QGLShader::TessellationCtrl;
+        case TessellationEval: return QGLShader::TessellationEval;
+
     }
 
     return QGLShader::Vertex;
@@ -92,6 +99,8 @@ void ShaderLab::extensionsAnalise()
             m_extensions |= ShaderLab::FragmentShader;
         else if(ext == "GL_ARB_geometry_shader4")
             m_extensions |= ShaderLab::GeometryShader;
+        else if(ext == "GL_ARB_tessellation_shader")
+            m_extensions |= ShaderLab::TessellationShader;
         else if(ext == "GL_ARB_shader_objects")
             m_extensions |= ShaderLab::ShaderObjects;
     }   
@@ -113,6 +122,8 @@ QList<ShaderLab::Shader> ShaderLab::shaderTypeList(void)
     list.append(Vertex);
     list.append(Geometry);
     list.append(Fragment);
+    list.append(TessellationEval);
+    list.append(TessellationCtrl);
 
     return list;
 }
@@ -127,6 +138,11 @@ QList<ShaderLab::Shader> ShaderLab::enabledsShaderTypeList(void)
         list.append(Geometry);
     if(sl->fragmentShaderEnabled())
         list.append(Fragment);
+    if(sl->tesselationShaderEnable())
+    {
+        list.append(TessellationEval);
+        list.append(TessellationCtrl);
+    }
 
     return list;
 }
@@ -151,6 +167,11 @@ bool ShaderLab::geometryShaderEnabled()
 {
 //  return false;
     return (this->extensions() & ShaderLab::GeometryShader)  != 0;
+}
+
+bool ShaderLab::tesselationShaderEnable()
+{
+    return (this->extensions() & ShaderLab::TessellationShader)  != 0;
 }
 
 void ShaderLab::setContext(QGLWidget* context)
