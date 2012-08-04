@@ -1,5 +1,4 @@
 #include "PointPatch.h"
-#include <QtOpenGL>
 
 PointPatch::PointPatch() :
     Patch()
@@ -23,7 +22,7 @@ Object3D* PointPatch::copy() const
 
 void PointPatch::drawGeometry(void) const
 {
-    //gl_PatchParameteri(GL_PATCH_VERTICES, 3);
+    //glPatchParameteri(GL_PATCH_VERTICES, 3);
 
     glBegin(GL_PATCHES);
     glVertex3i(0,0,0);

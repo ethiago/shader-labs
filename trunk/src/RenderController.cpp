@@ -1,5 +1,5 @@
 #include "GLDisplay.h"
-#include "SLObject.h"
+#include "SLObject2.h"
 #include "RenderController.h"
 #include "MainWindow.h"
 #include "Object3D.h"
@@ -17,17 +17,20 @@
 #include "GlobalProperties.h"
 #include "InterfaceRequests.h"
 #include "Project.h"
+#include "SLObjectController.h"
+#include "SLShaderProgramController.h"
 
 #include <QToolTip>
 #include <QDebug>
 #include <QtOpenGL>
 #include <QPoint>
 
-RenderController::RenderController(MainWindow *mainWindow,
+RenderController::RenderController(MainWindow *mainWindow,SLObjectController * obj,
                                    QObject *parent):
     QObject(parent)
 {
     this->mainWindow = mainWindow;
+    objectController = obj;
     scene = new Scene3D();
     light = new DirectionalLight;
     arcBall = new ArcBall(500);
@@ -91,6 +94,8 @@ RenderController::RenderController(MainWindow *mainWindow,
 
     connect(mainWindow, SIGNAL(objectsVisibility(bool)),
             this, SLOT(objectsVisibility(bool)));
+
+    newSLObject();
 }
 
 RenderController::~RenderController()
@@ -329,25 +334,26 @@ QVector3D RenderController::getLightPosition() const
     return light->getLightPosition();
 }
 
-void RenderController::addSLObject(SLObject* obj)
+void RenderController::newSLObject()
 {
-    obj->setObject(model);
-    scene->addSLObject(obj);
+    scene->addSLObject(objectController->newObject(model));
 }
 
 EditorController* RenderController::setShader( ShaderLab::Shader shaderType, const QString& filePath)
 {
-    return scene->currentSLObject()->shader()->setShader(filePath,shaderType);
+    SLShaderProgramController * pc = objectController->programController();
+    return pc->setShader(shaderType,filePath);
 }
 
 void RenderController::setTexturesFromProject(const QStringList& list)
 {
-    scene->currentSLObject()->setTexturesFromProject(list);
+    objectController->setTexturesFromProject(list);
 }
 
 bool RenderController::closeAllFiles()
 {
-    return scene->currentSLObject()->shader()->closeAllFiles();
+    SLShaderProgramController * pc = objectController->programController();
+    return pc->closeAllShaders();
 }
 
 void RenderController::saveProjectAs(void)
@@ -359,7 +365,7 @@ void RenderController::saveProjectAs(void)
 
 void RenderController::saveProject(void)
 {
-    QString projectName = scene->currentSLObject()->saveMerge(false);
+    QString projectName = objectController->saveProject(false);
     if(!projectName.isEmpty())
         mainWindow->setSecondTitle(projectName);
 }
@@ -372,8 +378,7 @@ void RenderController::setProject(Project* p)
 void RenderController::closeObject()
 {
     saveProject();
-    scene->currentSLObject()->closeProject();
-    scene->currentSLObject()->close(mainWindow);
+    objectController->closeObject();
 }
 
 void RenderController::origin(bool v)

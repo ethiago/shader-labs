@@ -24,6 +24,7 @@ class GlobalProperties;
 class SLObject;
 class EditorController;
 class Project;
+class SLObjectController;
 
 class RenderController : public QObject
 {
@@ -36,6 +37,8 @@ class RenderController : public QObject
     DirectionalLight* light;
     bool lightRotation;
     MainWindow *mainWindow;
+    SLObjectController * objectController;
+
 
     QList< QPair<QAction*, Object3D*> > models;
     typedef QMap<QAction*, Object3D*> MMap;
@@ -44,14 +47,14 @@ class RenderController : public QObject
     GlobalProperties *propertries;
 
 public:
-    explicit RenderController(MainWindow *mainWindow,
+    explicit RenderController(MainWindow *mainWindow, SLObjectController * obj,
                               QObject *parent = 0);
     ~RenderController();
     void updateGL(void);
     int getModelId(void);
     void setModelById(int i);
     QVector3D getLightPosition()const;
-    void addSLObject(SLObject*);
+    void newSLObject();
     EditorController* setShader( ShaderLab::Shader, const QString& filePath = QString());
     void setTexturesFromProject(const QStringList& list);
     bool closeAllFiles();

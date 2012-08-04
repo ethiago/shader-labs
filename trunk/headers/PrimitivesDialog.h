@@ -16,16 +16,14 @@ class PrimitivesDialog : public QDialog {
 public:
     PrimitivesDialog(QWidget *parent = 0);
     ~PrimitivesDialog();
-    //int getCurrentInputPrimitiveIndex(void);
-    int getCurrentOutputPrimitiveIndex(void);
-    //void changeCurrentInputType(const QString& s);
-    GLenum getCurrentOutputPrimitive(void);
-    //GLenum getCurrentInputPrimitive(void);
 
-protected:
-    void changeEvent(QEvent *e);
+    int getCurrentOutputPrimitiveIndex(void);
+    GLenum getCurrentOutputPrimitive(void);
+    GLuint getOutputVertexCount(void);
+    void setMaxOutputVertexOut(int);
 
 signals:
+    void valueChanged();
 
 private:
     void primitiveSetup();

@@ -14,11 +14,11 @@ SLFile::SLFile(ShaderLab::Shader shadertype,const QString& filepath, QObject *pa
      if(SLFile::isValid(filepath))
     {
         filePath = filepath;
-        isNew = false;
+        m_new = false;
         changed = false;
     }else
     {
-        isNew = true;
+        m_new = true;
         changed = true;
     }
 
@@ -52,7 +52,7 @@ QString SLFile::getFileContent(void) const
 /* Returns the name of the associated file. New files are given a default name. */
 QString SLFile::getFileName() const
 {
-    if(isNew)
+    if(m_new)
     {
         return QString("new_") + ShaderLab::shaderToStr(m_shaderType);
     }
@@ -81,9 +81,9 @@ bool SLFile::isActive(void) const
 }
 
 /* Getter for the isNew attribute. */
-bool SLFile::IsNew(void) const
+bool SLFile::isNew(void) const
 {
-    return isNew;
+    return m_new;
 }
 
 /* Setter for the changed attribute. */
@@ -120,7 +120,7 @@ bool SLFile::save(const QString& content)
         out << content;
         file.close();
         changed = false;
-        isNew = false;
+        m_new = false;
 
         return true;
     }

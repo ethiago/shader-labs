@@ -12,6 +12,7 @@ win32 {
 }
 
 unix:TARGET = ShaderLab-unix32
+unix:LIBS += -lGL
 TEMPLATE = app
 DEPENDPATH += src
 INCLUDEPATH += headers
@@ -19,12 +20,10 @@ OBJECTS_DIR = tmp
 MOC_DIR = tmp
 RCC_DIR = tmp
 UI_DIR = tmp
-DESTDIR = ../ShaderLabs/bin
-
+DEPLOYDIR = ../ShaderLabs
+DESTDIR = $$DEPLOYDIR/bin
 #QtSolutions_PropertyBrowser-head
-DEPENDPATH += 3rd-party/qtpropertybrowser/src
-INCLUDEPATH += 3rd-party/qtpropertybrowser/src
-LIBS += -L../shader-lab/lib -lQtSolutions_PropertyBrowser-head
+include(3rd-party/qtpropertybrowser/src/qtpropertybrowser.pri)
 #QtSolutions_PropertyBrowser-head
 
 
@@ -56,7 +55,6 @@ SOURCES += src/main.cpp \
     src/Tetrahedron.cpp \
     src/Point.cpp \
     src/Scene3D.cpp \
-    src/SLObject.cpp \
     src/SLShader.cpp \
     src/SLFile.cpp \
     src/SLTextures.cpp \
@@ -67,7 +65,13 @@ SOURCES += src/main.cpp \
     src/SLTexture3dDialog.cpp \
     src/PointPatch.cpp \
     src/IcosahedronPatch.cpp \
-    src/Patch.cpp
+    src/Patch.cpp \
+    src/SLShaderProgram.cpp \
+    src/SLShader2.cpp \
+    src/SLShaderProgramController.cpp \
+    src/slshaderprogram.cpp \
+    src/SLObject2.cpp \
+    src/SLObjectController.cpp
 
 HEADERS += headers/Sphere.h \
     headers/SLTabWidget.h \
@@ -95,7 +99,6 @@ HEADERS += headers/Sphere.h \
     headers/Tetrahedron.h \
     headers/Point.h \
     headers/Scene3D.h \
-    headers/SLObject.h \
     headers/SLShader.h \
     headers/SLFile.h \
     headers/SLTextures.h \
@@ -106,7 +109,15 @@ HEADERS += headers/Sphere.h \
     headers/SLTexture3dDialog.h \
     headers/PointPatch.h \
     headers/IcosahedronPatch.h \
-    headers/Patch.h
+    headers/Patch.h \
+    headers/SLShaderProgram.h \
+    headers/SLShader2.h \
+    headers/slshaderprogram.h \
+    headers/SLShaderProgramController.h \
+    headers/SLObject2.h \
+    headers/SLObjectController.h
+
+
 FORMS += forms/MainWindow.ui \
     forms/ShaderCodeContainer.ui \
     forms/ChooseShaderDialog.ui \

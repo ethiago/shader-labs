@@ -1,15 +1,19 @@
 #ifndef SCENE3D_H
 #define SCENE3D_H
 
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h>
+#include <GL/glext.h>
+
 #include "Object3D.h"
 #include <QVector>
 
-class SLObject;
+class SLObject2;
 
 class Scene3D : public Object3D
 {
-    SLObject* current;
-    QVector<SLObject*> objects;
+    SLObject2* current;
+    QVector<SLObject2*> objects;
     bool origin;
     bool m_objectsVisibility;
 
@@ -20,11 +24,11 @@ public:
 
     void drawGeometry(void) const;
 
-    void addSLObject(SLObject* obj);
+    void addSLObject(SLObject2* obj);
 
     void setObjectToCurrent(Object3D*);
 
-    SLObject* currentSLObject(void);
+    SLObject2* currentSLObject(void);
 
     virtual Object3D* copy() const;
 

@@ -1,7 +1,7 @@
 load(qt_build_config)
 
 TARGET     = QtOpenGL
-QT         = core-private gui-private widgets-private
+QT         = qt core gui core-private gui-private widgets-private
 
 DEFINES   += QT_NO_USING_NAMESPACE
 win32-msvc*|win32-icc:QMAKE_LFLAGS += /BASE:0x63000000
@@ -18,6 +18,10 @@ contains(QT_CONFIG, egl):CONFIG += egl
 QMAKE_DOCS = $$PWD/doc/qtopengl.qdocconf
 QMAKE_DOCS_INDEX = ../../doc
 
+OBJECTS_DIR = tmp
+MOC_DIR = tmp
+RCC_DIR = tmp
+UI_DIR = tmp
 DESTDIR = bin
 
 HEADERS += qgl.h \

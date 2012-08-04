@@ -45,6 +45,7 @@ QString ShaderLab::shaderToExt(Shader s)
 
 }
 
+/*
 QGLShader::ShaderTypeBit ShaderLab::shaderToQGLShader(Shader s)
 {
     switch(s)
@@ -52,13 +53,14 @@ QGLShader::ShaderTypeBit ShaderLab::shaderToQGLShader(Shader s)
         case Vertex: return QGLShader::Vertex;
         case Fragment: return QGLShader::Fragment;
         case Geometry: return QGLShader::Geometry;
-        case TessellationCtrl: return QGLShader::TessellationCtrl;
-        case TessellationEval: return QGLShader::TessellationEval;
+        //case TessellationCtrl: return QGLShader::TessellationCtrl;
+        //case TessellationEval: return QGLShader::TessellationEval;
 
     }
 
     return QGLShader::Vertex;
 }
+*/
 
 int ShaderLab::shaderToInt(Shader s)
 {

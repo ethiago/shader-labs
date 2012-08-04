@@ -7,7 +7,6 @@
 #include <QObject>
 #include <QGLContext>
 #include <QList>
-#include <QGLShaderProgram>
 #include "Texture.h"
 
 #define SAMPLEPREFIX2D "sampler2d"
@@ -16,6 +15,7 @@
 class MainWindow;
 class TexturePropertiesView;
 class SLTexture3DDialog;
+class SLShaderProgram;
 
 class SLTextures : public QObject
 {
@@ -30,14 +30,13 @@ signals:
     void updateGL();
 
 public:
-    explicit SLTextures(MainWindow* mw, QObject* parent = 0);
+    explicit SLTextures(TexturePropertiesView*, SLTexture3DDialog *, QObject* parent = 0);
     virtual ~SLTextures();
 
-    void applyTextures(QGLShaderProgram* program);
+    void applyTextures(SLShaderProgram*);
     void activateTexture(void);
     QStringList getTextureFileNames();
     void setTextures(const QStringList&);
-    void closeView(MainWindow *mw);
 
 public slots:
     void removeTexture(void);

@@ -5,7 +5,7 @@
 
 SLObject::SLObject(MainWindow *mw,  QObject *parent) :
     QObject(parent), m_shader(new SLShader(mw)), m_object(NULL),
-    textures(mw), m_project(NULL)
+    textures(0), m_project(NULL)
 {
     connect(mw, SIGNAL(runShaders()), this, SLOT(compileShaders()));
     connect(this, SIGNAL(sendLog(QString)), mw, SLOT(shaderLog(QString)));
