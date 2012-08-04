@@ -75,8 +75,8 @@ GLuint Texture3D::openGLBind(GLubyte ***data, int width, int height, int detph)
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    //glTexImage3D(GL_PROXY_TEXTURE_3D, 0, GL_LUMINANCE, width, height, detph, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
-    glTexImage3D(GL_TEXTURE_3D, 0, GL_LUMINANCE, 180, 180, 180, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
+    glTexImage3D(GL_PROXY_TEXTURE_3D, 0, GL_LUMINANCE, width, height, detph, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
+    //glTexImage3D(GL_TEXTURE_3D, 0, GL_LUMINANCE, 180, 180, 180, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, data);
 
     return texname;
 }

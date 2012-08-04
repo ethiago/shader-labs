@@ -15,6 +15,7 @@ class RenderController;
 class Project;
 class EditorController;
 class SLTabWidget;
+class SLObjectController;
 
 class MainController : public QObject
 {
@@ -22,6 +23,7 @@ class MainController : public QObject
 
     MainWindow *mainWindow;
     RenderController *renderController;
+    SLObjectController* objectController;
 
     ChooseShaderDialog *chooseShaderDialog;
     SLTabWidget *tabWidget;

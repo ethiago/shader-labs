@@ -13,6 +13,7 @@ class EditorController : public QObject
 
     SLFile *file;
     SLCodeContainer *m_codeContainer;
+    ShaderLab::Shader m_type;
 
 public:
     explicit EditorController(ShaderLab::Shader shadertype,
@@ -24,12 +25,13 @@ public:
     bool closeShaderCode();
     bool saveFile(bool forceNew = false);
     bool isActive();
+    bool isNew();
     QString getContent();
     QString getContentFile();
     const SLFile& getFile();
 
 signals:
-    void useless(EditorController*);
+    void useless(ShaderLab::Shader);
 
 public slots:
     void slot_closeShaderCode();

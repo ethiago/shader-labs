@@ -8,14 +8,12 @@
 #include <QAction>
 #include "InterfaceRequests.h"
 #include "SLTexture3dDialog.h"
+#include "SLShaderProgram.h"
 
-SLTextures::SLTextures(MainWindow* mw, QObject* parent) :
-    QObject(parent)
+SLTextures::SLTextures(TexturePropertiesView* tpv, SLTexture3DDialog * t3d, QObject* parent) :
+    QObject(parent), m_textureView(tpv), m_texture3DDialog(t3d)
 {
    m_textureList.append(Texture());
-   m_textureView = new TexturePropertiesView(mw);
-   m_texture3DDialog = new SLTexture3DDialog(m_textureView);
-   m_texture3DDialog->setModal(true);
 
    connect(m_textureView, SIGNAL(loadTextureClicked()),
            this, SLOT(changeTexture()));
@@ -38,9 +36,7 @@ SLTextures::SLTextures(MainWindow* mw, QObject* parent) :
 
 SLTextures::~SLTextures()
 {
-    m_textureList.clear();
-    if(m_textureView)
-        delete m_textureView;
+    disconnect(this);
 }
 
 void SLTextures::changeTexture(void)
@@ -210,7 +206,7 @@ void SLTextures::viewUpdateList(void)
     m_textureView->setTextureList(list, textureContext);
 }
 
-void SLTextures::applyTextures(QGLShaderProgram* program)
+void SLTextures::applyTextures(SLShaderProgram* program)
 {
     for(int i = 0; i < m_textureList.size(); ++i)
     {
@@ -269,13 +265,4 @@ void SLTextures::setTextures(const QStringList& list)
     viewUpdateList();
     activateTexture();
     ShaderLab::instance()->glContext()->updateGL();
-}
-
-void SLTextures::closeView(MainWindow *mw)
-{
-    mw->menuViewRemoveAction(m_textureView->toggleViewAction());
-    mw->removeDockWidget(m_textureView);
-    disconnect(m_textureView, 0, 0, 0);
-    delete m_textureView;
-    m_textureView = NULL;
 }

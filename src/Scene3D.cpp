@@ -1,6 +1,5 @@
-#include "SLObject.h"
-#include <QtOpenGL>
 #include "Scene3D.h"
+#include "SLObject2.h"
 #include "Cube.h"
 #include "Sphere.h"
 
@@ -37,7 +36,7 @@ void Scene3D::drawGeometry(void) const
             objects[i]->draw();
 }
 
-void Scene3D::addSLObject(SLObject* obj)
+void Scene3D::addSLObject(SLObject2* obj)
 {
     objects.append(obj);
     current = obj;
@@ -49,7 +48,7 @@ void Scene3D::setObjectToCurrent(Object3D* obj)
         current->setObject(obj);
 }
 
-SLObject* Scene3D::currentSLObject(void)
+SLObject2* Scene3D::currentSLObject(void)
 {
     return current;
 }
@@ -63,9 +62,7 @@ void Scene3D::drawOrigin()const
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
-#ifdef GL_VERSION_2_0
-    //glUseProgram(0);
-#endif
+    glUseProgram(0);
 
     glBegin(GL_LINES);
     glColor3f(1.0, 0, 0);

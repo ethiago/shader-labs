@@ -14,9 +14,7 @@
 #include "EditorController.h"
 #include "SLTabWidget.h"
 #include "SLCodeContainer.h"
-
-#define DEFFRAG "void main (){gl_FragColor = gl_Color;}"
-
+#include "SLObjectController.h"
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */
@@ -31,9 +29,8 @@ MainController::MainController(MainWindow *mw, QObject *parent)
 
     tabWidget = mw->createTabWidget();
 
-    renderController = new RenderController(mainWindow);
-
-    renderController->addSLObject(new SLObject(mainWindow));
+    objectController = new SLObjectController(mainWindow, this);
+    renderController = new RenderController(mainWindow, objectController);
 
     glSetup();
 
@@ -237,7 +234,7 @@ void MainController::openProject(const QString& filename)
 void MainController::newObject()
 {
     renderController->closeObject();
-    renderController->addSLObject(new SLObject(mainWindow));
+    renderController->newSLObject();
     mainWindow->setSecondTitle();
 }
 

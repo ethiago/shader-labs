@@ -51,7 +51,7 @@ public:
     static QString shaderToStr(Shader s);
     static QString shaderToExt(Shader s);
 
-    static QGLShader::ShaderTypeBit shaderToQGLShader(Shader s);
+    //tatic QGLShader::ShaderTypeBit shaderToQGLShader(Shader s);
 
     static int shaderToInt(Shader s);
     static Shader intToShader(int v);

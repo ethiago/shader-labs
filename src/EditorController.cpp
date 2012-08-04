@@ -5,7 +5,7 @@
 
 EditorController::EditorController(ShaderLab::Shader shadertype,
                                    const QString& filepath, QObject *parent) :
-    QObject(parent)
+    QObject(parent), m_type(shadertype)
 {
     file = new SLFile(shadertype, filepath);
     m_codeContainer = new SLCodeContainer(shadertype, file->getFileName());
@@ -41,16 +41,16 @@ EditorController::~EditorController()
 void EditorController::slot_closeShaderCode()
 {
     if(closeShaderCode())
-        emit useless(this);
+        emit useless(m_type);
 }
 
 bool EditorController::closeShaderCode()
 {
 
-    if( (file->IsNew() || file->getChanged()) )
+    if( (file->isNew() || file->getChanged()) )
     {
         InterfaceRequests::OperationState st =
-                InterfaceRequests::saveRequestDialog(file->getFileName(), file->IsNew());
+                InterfaceRequests::saveRequestDialog(file->getFileName(), file->isNew());
 
         if(st == InterfaceRequests::Yes)
         {
@@ -83,7 +83,7 @@ void EditorController::saveAs()
 
 bool EditorController::saveFile(bool forceNew)
 {
-    if( file->IsNew() || forceNew)
+    if( file->isNew() || forceNew)
     {
         QString filepath = InterfaceRequests::saveAsRequestDialog( file->shaderType() );
 
@@ -132,4 +132,9 @@ QString EditorController::getContent()
 QString EditorController::getContentFile()
 {
     return file->getFileContent();
+}
+
+bool EditorController::isNew()
+{
+    return file->isNew();
 }

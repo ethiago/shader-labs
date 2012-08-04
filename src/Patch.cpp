@@ -1,5 +1,4 @@
 #include "Patch.h"
-#include <QtOpenGL>
 
 Patch::Patch() :
     Object3D()

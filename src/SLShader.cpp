@@ -93,9 +93,9 @@ void SLShader::compileAndLink(QGLShaderProgram* program, Object3D* obj)
     {
         thereIsCode = true;
 
-        if(program->addShaderFromSourceCode(
-                    QGLShader::TessellationCtrl, tessCtrlShader->getContent()))
-            atLeastOne = true;
+        //if(program->addShaderFromSourceCode(
+        //            QGLShader::TessellationCtrl, tessCtrlShader->getContent()))
+        //    atLeastOne = true;
 
         logProcess(program->log(), ShaderLab::TessellationCtrl);
     }
@@ -104,9 +104,9 @@ void SLShader::compileAndLink(QGLShaderProgram* program, Object3D* obj)
     {
         thereIsCode = true;
 
-        if(program->addShaderFromSourceCode(
-                    QGLShader::TessellationEval, tessEvalShader->getContent()))
-            atLeastOne = true;
+        //if(program->addShaderFromSourceCode(
+        //            QGLShader::TessellationEval, tessEvalShader->getContent()))
+        //    atLeastOne = true;
 
         logProcess(program->log(), ShaderLab::TessellationEval);
     }
@@ -246,15 +246,15 @@ void SLShader::unlessEditor(EditorController* editor)
 
 bool SLShader::isAnyNew()
 {
-    if(vertexShader && (vertexShader->getFile().IsNew()))
+    if(vertexShader && (vertexShader->getFile().isNew()))
         return true;
-    if(geometryShader && (geometryShader->getFile().IsNew()))
+    if(geometryShader && (geometryShader->getFile().isNew()))
         return true;
-    if(fragmentShader && (fragmentShader->getFile().IsNew()))
+    if(fragmentShader && (fragmentShader->getFile().isNew()))
         return true;
-    if(tessCtrlShader && (tessCtrlShader->getFile().IsNew()))
+    if(tessCtrlShader && (tessCtrlShader->getFile().isNew()))
         return true;
-    if(tessEvalShader && (tessEvalShader->getFile().IsNew()))
+    if(tessEvalShader && (tessEvalShader->getFile().isNew()))
         return true;
 
     return false;
@@ -309,26 +309,26 @@ bool SLShader::closeShader(EditorController** shader)
 
 QString SLShader::getAbsoluteFilePath(ShaderLab::Shader shaderType)
 {
-    if(shaderType == ShaderLab::Vertex && vertexShader && !(vertexShader->getFile().IsNew()))
+    if(shaderType == ShaderLab::Vertex && vertexShader && !(vertexShader->getFile().isNew()))
     {
         return vertexShader->getFile().getFilePath();
     }
 
-    if(shaderType == ShaderLab::Geometry && geometryShader && !(geometryShader->getFile().IsNew()))
+    if(shaderType == ShaderLab::Geometry && geometryShader && !(geometryShader->getFile().isNew()))
     {
         return geometryShader->getFile().getFilePath();
     }
 
-    if(shaderType == ShaderLab::Fragment && fragmentShader && !(fragmentShader->getFile().IsNew()))
+    if(shaderType == ShaderLab::Fragment && fragmentShader && !(fragmentShader->getFile().isNew()))
     {
         return fragmentShader->getFile().getFilePath();
     }
 
-    if(shaderType == ShaderLab::TessellationCtrl && tessCtrlShader && !(tessCtrlShader->getFile().IsNew()))
+    if(shaderType == ShaderLab::TessellationCtrl && tessCtrlShader && !(tessCtrlShader->getFile().isNew()))
     {
         return tessCtrlShader->getFile().getFilePath();
     }
-    if(shaderType == ShaderLab::TessellationEval && tessEvalShader && !(tessEvalShader->getFile().IsNew()))
+    if(shaderType == ShaderLab::TessellationEval && tessEvalShader && !(tessEvalShader->getFile().isNew()))
     {
         return tessEvalShader->getFile().getFilePath();
     }
