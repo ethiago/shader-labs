@@ -1,6 +1,4 @@
 #version 400 compatibility
-
-
 out vec2 texCoordIn;
 
 void main(void)
