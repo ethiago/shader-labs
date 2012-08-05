@@ -9,7 +9,7 @@
 #include "SLTextures.h"
 
 SLObjectController::SLObjectController(MainWindow* mw, QObject *parent) :
-    QObject(parent), mainWindow(mw), m_object(NULL)
+    QObject(parent), mainWindow(mw), object(NULL)
 {
     m_texturePropertiesView = new TexturePropertiesView(mainWindow);
     m_texture3dDialog = new SLTexture3DDialog(mainWindow);
@@ -20,8 +20,6 @@ SLObjectController::SLObjectController(MainWindow* mw, QObject *parent) :
 
 SLObjectController::~SLObjectController()
 {
-    if(m_object != NULL)
-        delete m_object;
     delete m_texturePropertiesView;
     delete m_texture3dDialog;
     delete m_primitivesDialog;
@@ -35,9 +33,9 @@ SLObject2 * SLObjectController::newObject(Object3D* obj)
     SLShaderProgram* shaderProgram = new SLShaderProgram(this);
     SLTextures * textures = new SLTextures(m_texturePropertiesView,m_texture3dDialog, this);
     m_programController->setShaderProgram(shaderProgram);
-    m_object = new SLObject2(mainWindow, shaderProgram, textures, this );
-    m_object->setObject(obj);
-    return m_object;
+    object = new SLObject2(mainWindow, shaderProgram, textures, this );
+    object->setObject(obj);
+    return object;
 }
 
 SLShaderProgramController* SLObjectController::programController()
@@ -47,23 +45,23 @@ SLShaderProgramController* SLObjectController::programController()
 
 void SLObjectController::setTexturesFromProject(const QStringList& list)
 {
-    m_object->setTexturesFromProject(list);
+    object->setTexturesFromProject(list);
 }
 
 QString SLObjectController::saveProject(bool as)
 {
-    return m_object->saveMerge(as);
+    return object->saveMerge(as);
 }
 
 void SLObjectController::closeObject()
 {
-    if(m_object != NULL)
+    if(object != NULL)
     {
-        SLTextures * textures = m_object->textures();
+        SLTextures * textures = object->textures();
         disconnect(m_texturePropertiesView, 0, textures, 0);
         disconnect(textures, 0, m_texturePropertiesView, 0);
         disconnect(m_texture3dDialog, 0, textures, 0);
         disconnect(textures, 0, m_texture3dDialog, 0);
-        m_object->close();
+        object->close();
     }
 }

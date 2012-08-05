@@ -18,9 +18,7 @@ SLShader2::SLShader2(const QString &filePath, ShaderLab::Shader shadertype, SLSh
 //destructors
 SLShader2::~SLShader2()
 {
-    m_editor->closeShaderCode();
     delete m_editor;
-
     glDeleteShader(m_shaderId);
 }
 

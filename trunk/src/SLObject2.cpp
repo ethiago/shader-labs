@@ -77,9 +77,8 @@ void SLObject2::setProject(Project *p)
 
 void SLObject2::close()
 {
-    closeProject();
-
-    m_object = m_object->copy();
+    saveMerge(false);
+    m_shader->setStandBy();
 
     disconnect(this);
     disconnect(this, 0, 0, 0);
