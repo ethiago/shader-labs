@@ -23,24 +23,17 @@ class SLObject2 : public QObject
 public:
     explicit SLObject2(MainWindow *mw, SLShaderProgram* slp, SLTextures* slt, QObject *parent = 0);
     virtual ~SLObject2();
-
     void setObject(Object3D *obj);
-    //SLShader* shader();
     void draw();
     void setTexturesFromProject(const QStringList&);
-
     QString shaderLog();
-
     void setProject(Project *);
     QString saveMerge(bool as);
-    void deleteObject3D();
-
-
     void close();
-
     void closeProject();
-
     SLTextures * textures();
+    void toggleWireframe();
+    Object3D * object3D();
 
 signals:
     void sendLog(const QString&);

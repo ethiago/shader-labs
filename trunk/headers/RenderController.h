@@ -32,12 +32,12 @@ class RenderController : public QObject
 
     GLDisplay *display;
     Scene3D * scene;
-    Object3D * model;
     ArcBall* arcBall;
     DirectionalLight* light;
     bool lightRotation;
     MainWindow *mainWindow;
     SLObjectController * objectController;
+    int selectedObject;
 
 
     QList< QPair<QAction*, Object3D*> > models;

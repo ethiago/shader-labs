@@ -13,10 +13,6 @@ Scene3D::~Scene3D()
 {
     for(int i = 0; i < objects.size(); ++i)
     {
-        if(objects[i] != current)
-        {
-            objects[i]->deleteObject3D();
-        }
         delete objects[i];
     }
     objects.clear();

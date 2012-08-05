@@ -17,25 +17,17 @@ SLObject2::~SLObject2()
 {
     if(m_project)
         delete m_project;
-}
-
-void SLObject2::deleteObject3D()
-{
     if(m_object)
         delete m_object;
 }
 
 void SLObject2::setObject(Object3D *obj)
 {
+    if(m_object)
+        delete m_object;
     m_object = obj;
     m_shader->setGeometryInputType(obj->inputType());
 }
-/*
-SLShader* SLObject2::shader()
-{
-    return m_shader;
-}
-*/
 
 void SLObject2::draw()
 {
@@ -142,8 +134,17 @@ QString SLObject2::saveMerge(bool as)
     return m_project->getAbsoluteFilePath();
 }
 
-
 SLTextures * SLObject2::textures()
 {
     return m_textures;
+}
+
+void SLObject2::toggleWireframe()
+{
+    m_object->setWireframe(!m_object->wireframe());
+}
+
+Object3D * SLObject2::object3D()
+{
+    return m_object;
 }
