@@ -16,7 +16,7 @@ class SLObjectController : public QObject
     Q_OBJECT
 
     MainWindow* mainWindow;
-    SLObject2* m_object;
+    SLObject2* object;
     TexturePropertiesView * m_texturePropertiesView;
     SLTexture3DDialog* m_texture3dDialog;
     PrimitivesDialog* m_primitivesDialog;

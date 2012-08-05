@@ -50,6 +50,7 @@ public:
     bool isAnyNew();
     QString getAbsoluteFilePath(ShaderLab::Shader);
     bool closeAllShaders();
+    void setStandBy();
 
 public slots:
     void uselessEditor(ShaderLab::Shader);

@@ -107,8 +107,9 @@ EditorController* SLShaderProgram::setShader(ShaderLab::Shader type, const QStri
         shader = m_shaders[ind];
         if(!shader->closeFile())
             return NULL;
-        delete shader;
+
         m_shaders.removeAt(ind);
+        delete shader;
     }
 
     shader = new SLShader2(filePath,type,this);
@@ -189,7 +190,10 @@ bool SLShaderProgram::isLinked()
 
 void SLShaderProgram::bind()
 {
-    glUseProgram(m_programId);
+    if(m_linked)
+        glUseProgram(m_programId);
+    else
+        glUseProgram(0);
 }
 
 void SLShaderProgram::setUniformValue(const char *name, const QVector2D& value)
@@ -265,10 +269,14 @@ QString SLShaderProgram::getAbsoluteFilePath(ShaderLab::Shader type)
 
 bool SLShaderProgram::closeAllShaders()
 {
-    for(int i = 0; i < m_shaders.size(); ++i)
+    for(QList<SLShader2*>::iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
     {
-        if(!m_shaders[i]->closeFile())
+        SLShader2* shader = *it;
+        if(!shader->closeFile())
             return false;
+
+        m_shaders.erase(it);
+        delete shader;
     }
     return true;
 }
@@ -278,11 +286,21 @@ void SLShaderProgram::uselessEditor(ShaderLab::Shader type)
 {
     int ind = getShaderIndex(type);
     SLShader2 * shader = m_shaders[ind];
-    delete shader;
     m_shaders.removeAt(ind);
+    delete shader;
 }
 
 QString SLShaderProgram::log()
 {
     return m_completeLog;
+}
+
+void SLShaderProgram::setStandBy()
+{
+    for(int i = 0; i < m_shaders.size(); ++i)
+    {
+        SLShader2 * shader = m_shaders[i];
+        delete shader;
+    }
+    m_shaders.clear();
 }
