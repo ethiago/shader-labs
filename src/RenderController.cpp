@@ -35,6 +35,7 @@ RenderController::RenderController(MainWindow *mainWindow,SLObjectController * o
     light = new DirectionalLight;
     arcBall = new ArcBall(500);
     lightRotation = false;
+    selectedObject = -1;
 
     this->display = new GLDisplay(new QGLContext(QGLFormat::defaultFormat()));
     mainWindow->setGLDisplay(display);
@@ -189,7 +190,8 @@ void RenderController::mouseCancel()
 
 void RenderController::wireFrameToggle()
 {
-    model->setWireframe(!model->wireframe());
+    SLObject2 * current = scene->currentSLObject();
+    current->toggleWireframe();
     display->updateGL();
 }
 
@@ -212,8 +214,8 @@ void RenderController::modelChanged(QAction* action)
         if(models[i].first == action)
         {
            models[i].first->setChecked(true);
-           model = models[i].second;
-           scene->setObjectToCurrent(models[i].second);
+           scene->setObjectToCurrent(models[i].second->copy());
+           selectedObject = i;
         }
     }
 
@@ -229,9 +231,9 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     act->setCheckable(true);
     model_tmp = new Sphere(50,50);
     act->setChecked(true);          // comeca pela esfera
-    model = model_tmp;            // comeca pela esfera
-    scene->setObjectToCurrent(model_tmp);
     model_tmp->setModelId(models.size());
+    selectedObject = 0;
+    scene->setObjectToCurrent(model_tmp->copy());
     models.append(qMakePair(act, model_tmp));
 
     act = menu->addAction(tr("&Plane"));
@@ -303,13 +305,7 @@ void RenderController::lightRotationToggle(bool lt)
 
 int RenderController::getModelId(void)
 {
-    for(int i = 0; i < models.size(); ++i)
-    {
-        if(models[i].second == model)
-            return i;
-    }
-
-    return -1;
+    return selectedObject;
 }
 
 void RenderController::setModelById(int ind)
@@ -323,8 +319,8 @@ void RenderController::setModelById(int ind)
     }
 
     models[ind].first->setChecked(true);
-    model = models[ind].second;
-    scene->setObjectToCurrent(models[ind].second);
+    selectedObject = ind;
+    scene->setObjectToCurrent(models[ind].second->copy());
 
     display->updateGL();
 }
@@ -336,7 +332,7 @@ QVector3D RenderController::getLightPosition() const
 
 void RenderController::newSLObject()
 {
-    scene->addSLObject(objectController->newObject(model));
+    scene->addSLObject(objectController->newObject(models[selectedObject].second->copy()));
 }
 
 EditorController* RenderController::setShader( ShaderLab::Shader shaderType, const QString& filePath)
