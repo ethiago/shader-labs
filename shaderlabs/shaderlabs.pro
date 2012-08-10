@@ -22,6 +22,7 @@ RCC_DIR = tmp
 UI_DIR = tmp
 DEPLOYDIR = ../../ShaderLabs
 DESTDIR = $$DEPLOYDIR/bin
+
 #QtSolutions_PropertyBrowser-head
 include(../3rd-party/qtpropertybrowser/src/qtpropertybrowser.pri)
 #QtSolutions_PropertyBrowser-head
