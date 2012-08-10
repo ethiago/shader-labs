@@ -1,5 +1,5 @@
-#include <QtOpenGL>
 #include "Sphere.h"
+#include <QtOpenGL>
 #include "Global.h"
 
 Sphere::Sphere(int stacks, int slices, float radius, const QVector3D& center, QObject *parent):

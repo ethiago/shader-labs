@@ -12,6 +12,7 @@
 #include <QtProperty>
 #include <QtVariantProperty>
 #include <QtTreePropertyBrowser>
+#include <GL/glu.h>
 
 #define NULLPOINT   QPoint(-1,-1)
 #define EPSILON     0.001
