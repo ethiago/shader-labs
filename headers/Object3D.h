@@ -1,6 +1,10 @@
 #ifndef OBJECT3D_H
 #define OBJECT3D_H
 
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <GL/glut.h>
+
 #include <QObject>
 #include <QVector3D>
 #include <QQuaternion>

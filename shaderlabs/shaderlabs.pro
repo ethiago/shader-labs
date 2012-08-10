@@ -12,7 +12,7 @@ win32 {
 }
 
 unix:TARGET = ShaderLab-unix32
-unix:LIBS += -lGL
+unix:LIBS += -lGL -lGLU
 TEMPLATE = app
 DEPENDPATH += ../src
 INCLUDEPATH += ../headers
