@@ -278,7 +278,7 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
-    act = menu->addAction(tr("P&ointPatch"));
+    act = menu->addAction(tr("T&rianglePatch"));
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new PointPatch();
