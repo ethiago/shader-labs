@@ -14,6 +14,7 @@ SLShaderProgram::SLShaderProgram(QObject *parent) :
 //destructor
 SLShaderProgram::~SLShaderProgram()
 {
+    removeAllShaders();
     glDeleteProgram(m_programId);
 
     for(int i = 0; i < m_shaders.size(); ++i)
@@ -35,12 +36,13 @@ int SLShaderProgram::getShaderIndex(ShaderLab::Shader type)
 
 void SLShaderProgram::removeAllShaders()
 {
-    for(int i = 0; i < m_shaders.size(); ++i)
+    for(int i = 0; i < m_attachedShaders.size(); ++i)
     {
-        glDetachShader(m_programId, m_shaders[i]->shaderId());
+        glDetachShader(m_programId, m_attachedShaders[i]);
     }
     geometryAttached = false;
     m_linked = false;
+    m_attachedShaders.clear();
 }
 
 void SLShaderProgram::release()
@@ -136,6 +138,7 @@ bool SLShaderProgram::compileAndLink()
             if(m_shaders[i]->compile())
             {
                 glAttachShader(m_programId, m_shaders[i]->shaderId());
+                m_attachedShaders.append(m_shaders[i]->shaderId());
                 atLeastOne = true;
                 if(m_shaders[i]->type() == ShaderLab::Geometry)
                     geometryAttached = true;

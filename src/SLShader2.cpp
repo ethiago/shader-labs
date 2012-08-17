@@ -3,11 +3,14 @@
 #include "SLFile.h"
 #include "SLShaderProgram.h"
 
+#include <QVarLengthArray>
+#include <QDebug>
+
 //constructors
 SLShader2::SLShader2(const QString &filePath, ShaderLab::Shader shadertype, SLShaderProgram *parent):
     QObject(parent), m_type(shadertype), m_compiled(false),
-    m_log(QString()), m_activated(true),
-    m_editor(new EditorController(shadertype, filePath, parent)), m_shaderId(0)
+    m_log(QString()),  m_editor(new EditorController(shadertype, filePath, parent)),
+    m_shaderId(0)
 {
     m_shaderId = glCreateShader(glShaderType());
 
@@ -42,8 +45,52 @@ GLenum SLShader2::glShaderType()
     }
 }
 
-//public methods
-bool SLShader2::compile()
+void printArr(const char ** strings, int * len, int count)
+{
+    qDebug() << "#######################################";
+    for(int i = 0; i < count; ++i)
+    {
+        QByteArray a(strings[i], len[i]);
+        qDebug() << QString(a);
+    }
+    qDebug() << "#######################################";
+}
+
+void SLShader2::bindShaderCode()
+{
+    QByteArray srcArr = m_editor->getContent().toLatin1();
+    const char * source = srcArr.constData();
+
+    QVarLengthArray<const char *, 4> src;
+    QVarLengthArray<GLint, 4> srclen;
+    int headerLen = 0;
+
+    while (source && source[headerLen] == '#') {
+        // Skip #version and #extension directives at the start of
+        // the shader code.  We need to insert the qualifierDefines
+        // and redefineHighp just after them.
+        if (qstrncmp(source + headerLen, "#version", 8) != 0 &&
+                qstrncmp(source + headerLen, "#extension", 10) != 0) {
+            break;
+        }
+        while (source[headerLen] != '\0' && source[headerLen] != '\n')
+            ++headerLen;
+        if (source[headerLen] == '\n')
+            ++headerLen;
+    }
+    if (headerLen > 0) {
+        src.append(source);
+        srclen.append(GLint(headerLen));
+    }
+
+    src.append(source + headerLen);
+    srclen.append(GLint(qstrlen(source + headerLen)));
+
+    //printArr(src.data(), srclen.data(), src.size());
+    glShaderSource(m_shaderId, src.size(), src.data(), srclen.data());
+}
+
+bool SLShader2::priv_compile()
 {
     m_compiled = false;
 
@@ -69,6 +116,13 @@ bool SLShader2::compile()
     return m_compiled;
 }
 
+//public methods
+bool SLShader2::compile()
+{
+    bindShaderCode();
+    return priv_compile();
+}
+
 const QString& SLShader2::log()
 {
     return m_log;
@@ -92,9 +146,8 @@ bool SLShader2::save()
 QString SLShader2::getAbsoluteFilePath()
 {
     if (!m_editor->getFile().isNew())
-    {
         return m_editor->getFile().getFilePath();
-    }
+
     return QString();
 }
 
@@ -103,14 +156,9 @@ EditorController* SLShader2::editor()
     return m_editor;
 }
 
-void SLShader2::setActivated(bool value)
-{
-    m_activated = value;
-}
-
 bool SLShader2::isActivated()
 {
-    return m_activated;
+    return m_editor->isActive();
 }
 
 ShaderLab::Shader SLShader2::type()
