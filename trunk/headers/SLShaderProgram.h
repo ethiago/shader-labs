@@ -24,6 +24,7 @@ class SLShaderProgram : public QObject
 
     bool geometryAttached;
     bool m_linked;
+    QList<GLuint> m_attachedShaders;
 
 
     int getShaderIndex(ShaderLab::Shader);
