@@ -1,6 +1,8 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include "Object3D.h"
 
 class Sphere : public Object3D
