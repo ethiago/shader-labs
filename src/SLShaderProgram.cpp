@@ -234,7 +234,7 @@ void SLShaderProgram::setUniformValue(const char *name, GLuint value)
         location = glGetUniformLocation(m_programId, name);
 
     if (location != 0)
-        glUniform1f(location, value);
+        glUniform1i(location, value);
 }
 
 bool SLShaderProgram::saveAllShaders()
