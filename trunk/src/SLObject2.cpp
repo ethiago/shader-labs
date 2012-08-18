@@ -31,12 +31,12 @@ void SLObject2::setObject(Object3D *obj)
 
 void SLObject2::draw()
 {
-    m_textures->activateTexture();
+    m_textures->activeTexture();
     if(m_shader->isLinked())
     {
-        m_textures->applyTextures(m_shader);
         m_shader->bind();
 
+        m_textures->setUniformTextureNames(m_shader);
         m_shader->setUniformValue("wsize", ShaderLab::instance()->glContext()->size());
     }
 

@@ -97,7 +97,7 @@ void SLTextures::addTexture3D(void)
         m_textureList[textureContext] = tx;
 
     m_textureList[textureContext].setVarName(SAMPLEPREFIX3D + QString::number(textureContext));
-    activateTexture();
+    activeTexture();
     viewUpdateList();
     ShaderLab::instance()->glContext()->updateGL();
 }
@@ -129,7 +129,7 @@ void SLTextures::setupTexture(const QString& imageFileName, bool add)
     m_textureList[textureContext].setGLTextureName(sl->glContext()->bindTexture(imageFileName, GL_TEXTURE_2D));
     m_textureList[textureContext].setVarName(SAMPLEPREFIX2D + QString::number(textureContext));
     m_textureList[textureContext].setFileName(imageFileName);
-    activateTexture();
+    activeTexture();
     viewUpdateList();
     sl->glContext()->updateGL();
 }
@@ -176,7 +176,7 @@ void SLTextures::removeTexture(void)
     }
 
     viewUpdateList();
-    activateTexture();
+    activeTexture();
     sl->glContext()->updateGL();
 }
 
@@ -188,7 +188,7 @@ void SLTextures::textureCurrentChange(int index)
 
     textureContext = index;
     m_textureView->setTexture(m_textureList[textureContext]);
-    activateTexture();
+    activeTexture();
     sl->glContext()->updateGL();
 }
 
@@ -206,7 +206,7 @@ void SLTextures::viewUpdateList(void)
     m_textureView->setTextureList(list, textureContext);
 }
 
-void SLTextures::applyTextures(SLShaderProgram* program)
+void SLTextures::setUniformTextureNames(SLShaderProgram* program)
 {
     for(int i = 0; i < m_textureList.size(); ++i)
     {
@@ -215,7 +215,7 @@ void SLTextures::applyTextures(SLShaderProgram* program)
     }
 }
 
-void SLTextures::activateTexture(void)
+void SLTextures::activeTexture(void)
 {
     for(int i = 0; i < m_textureList.size(); ++i)
     {
@@ -263,6 +263,6 @@ void SLTextures::setTextures(const QStringList& list)
     }
 
     viewUpdateList();
-    activateTexture();
+    activeTexture();
     ShaderLab::instance()->glContext()->updateGL();
 }
