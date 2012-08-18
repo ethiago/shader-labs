@@ -1,3 +1,4 @@
+#include <GL/glu.h>
 #include "GLDisplay.h"
 #include <QDebug>
 #include <QToolTip>
