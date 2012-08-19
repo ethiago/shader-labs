@@ -1,8 +1,11 @@
 #ifndef SLSHADERPROGRAM_H
 #define SLSHADERPROGRAM_H
 
-#include <Global.h>
 #include <QObject>
+
+#include "Global.h"
+#include "gl3w.h"
+#include <QVector2D>
 
 class SLShader2;
 class EditorController;

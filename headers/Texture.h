@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QImage>
-#include <QGLContext>
 
 class Texture : public QObject
 {

@@ -1,10 +1,8 @@
 #ifndef PRIMITIVESDIALOG_H
 #define PRIMITIVESDIALOG_H
 
-#include <GL/gl3.h>
-#include <GL/glext.h>
-#include <QtOpenGL>
 #include <QDialog>
+#include "gl3w.h"
 
 namespace Ui {
     class PrimitivesDialog;

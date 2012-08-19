@@ -1,7 +1,8 @@
-#include "gl3w.h"
-#include "Global.h"
 #include "SLShaderProgram.h"
 #include "SLShader2.h"
+
+#include <QSize>
+#include <QDebug>
 
 //constructors
 SLShaderProgram::SLShaderProgram(QObject *parent) :
@@ -9,6 +10,7 @@ SLShaderProgram::SLShaderProgram(QObject *parent) :
     m_geometryInputType(GL_TRIANGLES), m_geometryOutputType(GL_TRIANGLE_STRIP),
     m_geometryVertexCount(64), m_linked(false)
 {
+    //m_programId = gl3wCreateProgram();
     m_programId = glCreateProgram();
     geometryAttached = false;
 }
@@ -70,11 +72,11 @@ bool SLShaderProgram::programLink()
 {
     if(geometryAttached)
     {
-        glProgramParameteri(m_programId, GL_GEOMETRY_INPUT_TYPE_EXT,
+        glProgramParameteri(m_programId, GL_GEOMETRY_INPUT_TYPE,
                                m_geometryInputType);
-        glProgramParameteri(m_programId, GL_GEOMETRY_OUTPUT_TYPE_EXT,
+        glProgramParameteri(m_programId, GL_GEOMETRY_OUTPUT_TYPE,
                                m_geometryOutputType);
-        glProgramParameteri(m_programId, GL_GEOMETRY_VERTICES_OUT_EXT,
+        glProgramParameteri(m_programId, GL_GEOMETRY_VERTICES_OUT,
                                m_geometryVertexCount);
     }
 

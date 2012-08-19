@@ -1,11 +1,9 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include "gl3w.h"
-#include <QGLShaderProgram>
-#include <QGLContext>
 #include <QString>
-#include <cmath>
+
+class QGLWidget;
 
 #define QT47_CAPABLE
 

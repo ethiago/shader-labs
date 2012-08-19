@@ -19,7 +19,6 @@ public:
     QString getFileName() const;
     QString getFilePath(void) const;
 
-    QGLShader* getShader(void) const;
     bool getChanged(void) const;
     bool isNew(void) const;
     ShaderLab::Shader shaderType(void) const;
