@@ -2,6 +2,7 @@
 
 #include <QString>
 #include <QFile>
+#include <QTextStream>
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */

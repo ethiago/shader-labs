@@ -9,6 +9,7 @@
 #include "InterfaceRequests.h"
 #include "SLTexture3dDialog.h"
 #include "SLShaderProgram.h"
+#include <QGLWidget>
 
 SLTextures::SLTextures(TexturePropertiesView* tpv, SLTexture3DDialog * t3d, QObject* parent) :
     QObject(parent), m_textureView(tpv), m_texture3DDialog(t3d)

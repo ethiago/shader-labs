@@ -5,6 +5,7 @@
 #include "Object3D.h"
 #include "SLShaderProgram.h"
 #include "SLTextures.h"
+#include "QGLWidget"
 
 SLObject2::SLObject2(MainWindow *mw,  SLShaderProgram* slp, SLTextures* slt, QObject *parent) :
     QObject(parent), m_shader(slp), m_object(NULL), m_textures(slt), m_project(NULL)

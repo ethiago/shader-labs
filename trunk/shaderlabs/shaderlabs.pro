@@ -12,7 +12,7 @@ win32 {
 
 unix {
     TARGET = ShaderLab-unix32
-    LIBS += -lGL -lGLU -lGLUT
+    LIBS += -lGL -lGLU -ldl
 }
 
 TEMPLATE = app
@@ -35,8 +35,8 @@ SLFOR=../forms
 SLRES=../qresources
 
 SOURCES += $$SLSRC/gl3w.c \
-    $$SLSRC/SLShaderProgram.cpp \
     $$SLSRC/SLShader2.cpp \
+    $$SLSRC/SLShaderProgram.cpp \
     $$SLSRC/main.cpp \
     $$SLSRC/Sphere.cpp \
     $$SLSRC/SLTabWidget.cpp \

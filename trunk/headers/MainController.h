@@ -4,6 +4,7 @@
 #include "Global.h"
 #include <QObject>
 #include <QMap>
+#include <QCloseEvent>
 
 class MainWindow;
 class SLFile;

@@ -1,5 +1,4 @@
 #include "SLShader2.h"
-#include "Global.h"
 #include "EditorController.h"
 #include "SLFile.h"
 #include "SLShaderProgram.h"

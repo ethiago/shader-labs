@@ -1,10 +1,10 @@
 #ifndef SLSHADER2_H
 #define SLSHADER2_H
 
-#include <GL/gl3.h>
-#include <GL/glext.h>
 #include <QObject>
+
 #include "Global.h"
+#include "gl3w.h"
 
 class EditorController;
 class SLShaderProgram;

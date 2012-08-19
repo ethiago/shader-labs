@@ -1,4 +1,8 @@
+#include "gl3w.h"
+#include <QGLContext>
 #include "Global.h"
+#include <cmath>
+#include <QDebug>
 
 ShaderLab* ShaderLab::s_instance = 0;
 
@@ -45,23 +49,6 @@ QString ShaderLab::shaderToExt(Shader s)
 
 }
 
-/*
-QGLShader::ShaderTypeBit ShaderLab::shaderToQGLShader(Shader s)
-{
-    switch(s)
-    {
-        case Vertex: return QGLShader::Vertex;
-        case Fragment: return QGLShader::Fragment;
-        case Geometry: return QGLShader::Geometry;
-        //case TessellationCtrl: return QGLShader::TessellationCtrl;
-        //case TessellationEval: return QGLShader::TessellationEval;
-
-    }
-
-    return QGLShader::Vertex;
-}
-*/
-
 int ShaderLab::shaderToInt(Shader s)
 {
     return static_cast<int>(s);
@@ -102,19 +89,6 @@ void ShaderLab::extensionsAnalise()
             m_extensions |= ShaderLab::ShaderObjects;
     }   
 }
-
-//void ShaderLab::loadGLFunctions(const QGLContext *ctx)
-//{
-//     m_glActiveTexture = (PFNGLACTIVETEXTUREPROC) ctx->getProcAddress( "glActiveTexture" );
-//     m_glUseProgram = (PFNGLUSEPROGRAMPROC) ctx->getProcAddress( "glUseProgram" );
-//     m_glTexImage3D = (PFNGLTEXIMAGE3DPROC) ctx->getProcAddress( "glTexImage3D" );
-//     m_glCreateProgram = (PFNGLCREATEPROGRAMPROC) ctx->getProcAddress( "glCreateProgram" );
-//     m_glDeleteProgram = (PFNGLDELETEPROGRAMPROC) ctx->getProcAddress( "glDeleteProgram" );
-//     m_glProgramParameteri = (PFNGLPROGRAMPARAMETERIPROC) ctx->getProcAddress( "glProgramParameteri" );
-//     m_glLinkProgram = (PFNGLLINKPROGRAMPROC) ctx->getProcAddress( "glLinkProgram" );
-//     m_glGetProgramiv = (PFNGLGETPROGRAMIVPROC) ctx->getProcAddress( "glGetProgramiv" );
-//     m_glCreateShader = (PFNGLCREATESHADERPROC) ctx->getProcAddress("glCreateShader");
-//}
 
 ShaderLab::ShaderLab()
  {
@@ -175,7 +149,6 @@ bool ShaderLab::fragmentShaderEnabled()
 
 bool ShaderLab::geometryShaderEnabled()
 {
-//  return false;
     return (this->extensions() & ShaderLab::GeometryShader)  != 0;
 }
 
@@ -187,7 +160,6 @@ bool ShaderLab::tesselationShaderEnable()
 void ShaderLab::setContext(QGLWidget* context)
 {
     m_context = context;
-    //loadGLFunctions(m_context->context());
     gl3wInit();
 }
 
