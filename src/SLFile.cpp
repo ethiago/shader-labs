@@ -1,7 +1,7 @@
+#include "SLFile.h"
+
 #include <QString>
 #include <QFile>
-
-#include "SLFile.h"
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */

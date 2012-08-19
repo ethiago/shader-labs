@@ -1,5 +1,5 @@
-#include "Texture3D.h"
 #include "SLTextures.h"
+#include "Texture3D.h"
 #include "TexturePropertiesView.h"
 #include "Texture.h"
 #include "MainWindow.h"

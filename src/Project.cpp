@@ -1,11 +1,11 @@
+#include "Project.h"
+#include "InterfaceRequests.h"
+#include "Global.h"
+
 #include <QFile>
 #include <QDomDocument>
 #include <QDomNode>
 #include <QDebug>
-
-#include "Project.h"
-#include "InterfaceRequests.h"
-#include "Global.h"
 
 Project::Project(QObject *parent) :
     QObject(parent), modelId(-1)

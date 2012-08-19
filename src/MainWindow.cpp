@@ -1,13 +1,12 @@
-#include <QFile>
-#include <QVBoxLayout>
-#include <QMessageBox>
-#include <QSize>
-
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "GLDisplay.h"
 #include "SLTabWidget.h"
 
+#include <QFile>
+#include <QVBoxLayout>
+#include <QMessageBox>
+#include <QSize>
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */

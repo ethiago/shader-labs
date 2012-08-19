@@ -1,12 +1,11 @@
-#include <QFont>
-#include <QDebug>
-#include <QMouseEvent>
 #include "SLCodeContainer.h"
 #include "ui_ShaderCodeContainer.h"
 #include "HighLighter.h"
 #include "codeeditor.h"
 
-
+#include <QFont>
+#include <QDebug>
+#include <QMouseEvent>
 
 SLCodeContainer::SLCodeContainer(ShaderLab::Shader shadertype, const QString& title, QWidget *parent) :
     QWidget(parent), ui(new Ui::ShaderCodeContainer)

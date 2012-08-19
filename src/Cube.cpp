@@ -1,7 +1,7 @@
-#include <QtOpenGL>
-#include <QVector3D>
 #include "Cube.h"
 #include "Global.h"
+#include <QtOpenGL>
+#include <QVector3D>
 
 Cube::Cube(const QVector3D& center, QObject *parent):
     Object3D(center, parent)

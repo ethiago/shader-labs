@@ -1,6 +1,6 @@
-#include <QtOpenGL>
 #include "DirectionalLight.h"
 #include "Global.h"
+#include <QtOpenGL>
 
 DirectionalLight::DirectionalLight(QObject *parent)
     : QObject(parent),

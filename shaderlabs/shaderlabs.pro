@@ -7,12 +7,14 @@ QT += core \
     xml
 win32 { 
     TARGET = ../ShaderLab-win32
-    INCLUDEPATH += ../lib/GLee5_4
-    SOURCES += ../lib/GLee5_4/GLee.c
+    LIBS += -lfreeglut -lopengl32
 }
 
-unix:TARGET = ShaderLab-unix32
-unix:LIBS += -lGL -lGLU
+unix {
+    TARGET = ShaderLab-unix32
+    LIBS += -lGL -lGLU -lGLUT
+}
+
 TEMPLATE = app
 DEPENDPATH += ../src
 INCLUDEPATH += ../headers
