@@ -3,6 +3,8 @@
 #include <QToolTip>
 #include <QMatrix4x4>
 #include "Global.h"
+
+#include <GL/glext.h>
 #include <GL/glu.h>
 
 #define ZOOMSTEP 0.05
