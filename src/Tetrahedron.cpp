@@ -1,7 +1,5 @@
 #include "Tetrahedron.h"
-#include "Global.h"
-
-#include <QtOpenGL>
+#include <GL/gl.h>
 #include <QVector3D>
 
 Tetrahedron::Tetrahedron(const QVector3D& center, QObject *parent):

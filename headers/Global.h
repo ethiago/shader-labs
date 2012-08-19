@@ -1,6 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include "gl3w.h"
 #include <QGLShaderProgram>
 #include <QGLContext>
 #include <QString>
@@ -56,14 +57,12 @@ public:
     static int shaderToInt(Shader s);
     static Shader intToShader(int v);
 
-    static double degreeFromCos(double);
-
     static QList<ShaderLab::Shader> shaderTypeList(void);
     static QList<ShaderLab::Shader> enabledsShaderTypeList(void);
+
 };
 
 #define FORSHADERS(varname) foreach(ShaderLab::Shader varname, ShaderLab::shaderTypeList())
 #define FORENABLEDSHADERS(varname) foreach(ShaderLab::Shader varname, ShaderLab::enabledsShaderTypeList())
-
 
 #endif // GLOBAL_H

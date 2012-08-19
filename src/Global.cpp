@@ -72,11 +72,6 @@ ShaderLab::Shader ShaderLab::intToShader(int v)
     return static_cast<ShaderLab::Shader>(v);
 }
 
-double ShaderLab::degreeFromCos(double _cos)
-{
-    return (acos(_cos)*180.0)/M_PI;
-}
-
 void ShaderLab::extensionsAnalise()
 {
     m_extensions = 0;
@@ -107,6 +102,19 @@ void ShaderLab::extensionsAnalise()
             m_extensions |= ShaderLab::ShaderObjects;
     }   
 }
+
+//void ShaderLab::loadGLFunctions(const QGLContext *ctx)
+//{
+//     m_glActiveTexture = (PFNGLACTIVETEXTUREPROC) ctx->getProcAddress( "glActiveTexture" );
+//     m_glUseProgram = (PFNGLUSEPROGRAMPROC) ctx->getProcAddress( "glUseProgram" );
+//     m_glTexImage3D = (PFNGLTEXIMAGE3DPROC) ctx->getProcAddress( "glTexImage3D" );
+//     m_glCreateProgram = (PFNGLCREATEPROGRAMPROC) ctx->getProcAddress( "glCreateProgram" );
+//     m_glDeleteProgram = (PFNGLDELETEPROGRAMPROC) ctx->getProcAddress( "glDeleteProgram" );
+//     m_glProgramParameteri = (PFNGLPROGRAMPARAMETERIPROC) ctx->getProcAddress( "glProgramParameteri" );
+//     m_glLinkProgram = (PFNGLLINKPROGRAMPROC) ctx->getProcAddress( "glLinkProgram" );
+//     m_glGetProgramiv = (PFNGLGETPROGRAMIVPROC) ctx->getProcAddress( "glGetProgramiv" );
+//     m_glCreateShader = (PFNGLCREATESHADERPROC) ctx->getProcAddress("glCreateShader");
+//}
 
 ShaderLab::ShaderLab()
  {
@@ -179,6 +187,8 @@ bool ShaderLab::tesselationShaderEnable()
 void ShaderLab::setContext(QGLWidget* context)
 {
     m_context = context;
+    //loadGLFunctions(m_context->context());
+    gl3wInit();
 }
 
 QGLWidget* ShaderLab::glContext()

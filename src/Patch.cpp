@@ -1,5 +1,7 @@
 #include "Patch.h"
 
+#include <GL/gl.h>
+
 Patch::Patch() :
     Object3D()
 {

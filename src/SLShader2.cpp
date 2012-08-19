@@ -1,4 +1,5 @@
 #include "SLShader2.h"
+#include "Global.h"
 #include "EditorController.h"
 #include "SLFile.h"
 #include "SLShaderProgram.h"
@@ -12,6 +13,7 @@ SLShader2::SLShader2(const QString &filePath, ShaderLab::Shader shadertype, SLSh
     m_log(QString()),  m_editor(new EditorController(shadertype, filePath, parent)),
     m_shaderId(0)
 {
+
     m_shaderId = glCreateShader(glShaderType());
 
     connect(m_editor, SIGNAL(useless(ShaderLab::Shader)),

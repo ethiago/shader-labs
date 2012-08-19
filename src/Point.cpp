@@ -1,7 +1,6 @@
 #include "Point.h"
-#include "Global.h"
 
-#include <QtOpenGL>
+#include <GL/gl.h>
 #include <QVector3D>
 
 Point::Point(const QVector3D& center, QObject *parent):

@@ -1,11 +1,8 @@
 #ifndef SLSHADERPROGRAM_H
 #define SLSHADERPROGRAM_H
 
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glext.h>
-#include <QObject>
 #include <Global.h>
+#include <QObject>
 
 class SLShader2;
 class EditorController;

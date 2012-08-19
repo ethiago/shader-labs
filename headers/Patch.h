@@ -1,10 +1,6 @@
 #ifndef PATCH_H
 #define PATCH_H
 
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glext.h>
-
 #include "Object3D.h"
 
 class Patch : public Object3D
