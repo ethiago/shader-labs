@@ -1,7 +1,7 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include <GL/gl.h>
+#include <GL/gl3.h>
 #include <GL/glu.h>
 #include "Object3D.h"
 

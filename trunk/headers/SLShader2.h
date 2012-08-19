@@ -1,8 +1,10 @@
 #ifndef SLSHADER2_H
 #define SLSHADER2_H
 
+#define GL3_PROTOTYPES
+#include <GL/gl3.h>
 #define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
+#include <GL/glext.h>
 #include <QObject>
 #include "Global.h"
 

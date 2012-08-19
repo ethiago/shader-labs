@@ -1,12 +1,8 @@
+#include "MainController.h"
 #include "SLObject.h"
 #include "RenderController.h"
-#include <QDebug>
-#include <QMessageBox>
-#include <QFileDialog>
-
 #include "ChooseShaderDialog.h"
 #include "InterfaceRequests.h"
-#include "MainController.h"
 #include "MainWindow.h"
 #include "SLFile.h"
 #include "Sphere.h"
@@ -15,6 +11,10 @@
 #include "SLTabWidget.h"
 #include "SLCodeContainer.h"
 #include "SLObjectController.h"
+
+#include <QDebug>
+#include <QMessageBox>
+#include <QFileDialog>
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* +++++++++++++++++ Constructors and destructors ++++++++++++++++++ */

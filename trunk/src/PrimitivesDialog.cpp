@@ -1,6 +1,6 @@
 #include "PrimitivesDialog.h"
 #include "ui_PrimitivesDialog.h"
-#include <GL/glext.h>
+
 
 
 PrimitivesDialog::PrimitivesDialog(QWidget *parent) :
