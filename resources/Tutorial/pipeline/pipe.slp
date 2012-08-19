@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>pipe.vert</vertex>
+	</shaders>
+	<model>
+		<id>0</id>
+	</model>
+</ShaderLab>
