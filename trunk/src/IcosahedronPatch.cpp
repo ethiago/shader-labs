@@ -1,6 +1,7 @@
 #include "IcosahedronPatch.h"
-#include "Global.h"
-#include <QtOpenGL>
+
+#include <GL/gl.h>
+#include <GL/glext.h>
 #include <QVector3D>
 
 IcosahedronPatch::IcosahedronPatch():

@@ -1,5 +1,13 @@
 #include "Object3D.h"
-#include "Global.h"
+
+//#include "Global.h"
+#include <GL/gl.h>
+#include <qmath.h>
+
+double Object3D::degreeFromCos(double _cos)
+{
+    return (acos(_cos)*180.0)/M_PI;
+}
 
 Object3D::Object3D(const QVector3D& center, QObject *parent)
     : QObject(parent), m_center(center),
@@ -114,21 +122,23 @@ int Object3D::modelId(void) const
 void Object3D::addRotation(const QQuaternion& rotation)
 {
     QMatrix4x4 m;
-    m.rotate(ShaderLab::degreeFromCos(rotation.scalar()), rotation.x(), rotation.y(), rotation.z());
+    m.rotate(Object3D::degreeFromCos(rotation.scalar()), rotation.x(), rotation.y(), rotation.z());
     m_rotations = m*m_rotations;
 }
 
 void Object3D::draw(void) const
 {
-    glMatrixMode(GL_MODELVIEW_MATRIX);
+    glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
     glTranslatef(translation().x(), translation().y(), translation().z());
     glTranslatef(center().x(), center().y(), center().z());
 
     QQuaternion t = interactiveQuartenion();
-    glRotatef(ShaderLab::degreeFromCos(t.scalar()),
+    glRotatef(Object3D::degreeFromCos(t.scalar()),
               t.x(), t.y(), t.z());
+
+
 
     glMultMatrixd(rotations().constData());
 

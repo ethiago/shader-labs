@@ -1,6 +1,7 @@
 #ifndef RENDERCONTROLLER_H
 #define RENDERCONTROLLER_H
 
+#include "Global.h"
 
 #include <QObject>
 #include <QPoint>
@@ -9,7 +10,7 @@
 #include <QMap>
 #include <QList>
 #include <QPair>
-#include "Global.h"
+
 
 class DirectionalLight;
 class MainWindow;

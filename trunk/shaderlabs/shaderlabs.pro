@@ -34,7 +34,10 @@ SLHED=../headers
 SLFOR=../forms
 SLRES=../qresources
 
-SOURCES += $$SLSRC/main.cpp \
+SOURCES += $$SLSRC/gl3w.c \
+    $$SLSRC/SLShaderProgram.cpp \
+    $$SLSRC/SLShader2.cpp \
+    $$SLSRC/main.cpp \
     $$SLSRC/Sphere.cpp \
     $$SLSRC/SLTabWidget.cpp \
     $$SLSRC/SLTabBar.cpp \
@@ -61,7 +64,6 @@ SOURCES += $$SLSRC/main.cpp \
     $$SLSRC/Tetrahedron.cpp \
     $$SLSRC/Point.cpp \
     $$SLSRC/Scene3D.cpp \
-    $$SLSRC/SLShader.cpp \
     $$SLSRC/SLFile.cpp \
     $$SLSRC/SLTextures.cpp \
     $$SLSRC/EditorController.cpp \
@@ -72,13 +74,13 @@ SOURCES += $$SLSRC/main.cpp \
     $$SLSRC/PointPatch.cpp \
     $$SLSRC/IcosahedronPatch.cpp \
     $$SLSRC/Patch.cpp \
-    $$SLSRC/SLShaderProgram.cpp \
-    $$SLSRC/SLShader2.cpp \
     $$SLSRC/SLShaderProgramController.cpp \
     $$SLSRC/SLObject2.cpp \
     $$SLSRC/SLObjectController.cpp
 
-HEADERS += $$SLHED/Sphere.h \
+HEADERS += $$SLHED/gl3w.h \
+    $$SLHED/glcorearb.h \
+    $$SLHED/Sphere.h \
     $$SLHED/SLTabWidget.h \
     $$SLHED/SLTabBar.h \
     $$SLHED/Arcball.h \
@@ -104,7 +106,6 @@ HEADERS += $$SLHED/Sphere.h \
     $$SLHED/Tetrahedron.h \
     $$SLHED/Point.h \
     $$SLHED/Scene3D.h \
-    $$SLHED/SLShader.h \
     $$SLHED/SLFile.h \
     $$SLHED/SLTextures.h \
     $$SLHED/EditorController.h \

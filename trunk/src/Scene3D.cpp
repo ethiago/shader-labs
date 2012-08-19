@@ -3,6 +3,8 @@
 #include "Cube.h"
 #include "Sphere.h"
 
+#include <GL/glext.h>
+
 
 Scene3D::Scene3D(const QVector3D& center, QObject *parent) :
     Object3D(center, parent), current(NULL), origin(false), m_objectsVisibility(false)
@@ -58,7 +60,7 @@ void Scene3D::drawOrigin()const
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
-    glUseProgram(0);
+    //glUseProgram(0);
 
     glBegin(GL_LINES);
     glColor3f(1.0, 0, 0);

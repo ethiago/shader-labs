@@ -1,9 +1,7 @@
 #ifndef OBJECT3D_H
 #define OBJECT3D_H
 
-#include <GL/gl.h>
-#include <GL/glext.h>
-#include <GL/glut.h>
+//#include "Global.h"
 
 #include <QObject>
 #include <QVector3D>
@@ -70,6 +68,8 @@ public:
     void cleanTransformations();
 
     virtual Object3D* copy(void) const = 0;
+
+    static double degreeFromCos(double);
 
 protected:
 

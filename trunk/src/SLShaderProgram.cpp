@@ -1,3 +1,5 @@
+#include "gl3w.h"
+#include "Global.h"
 #include "SLShaderProgram.h"
 #include "SLShader2.h"
 
@@ -68,11 +70,11 @@ bool SLShaderProgram::programLink()
 {
     if(geometryAttached)
     {
-        glProgramParameteriARB(m_programId, GL_GEOMETRY_INPUT_TYPE_EXT,
+        glProgramParameteri(m_programId, GL_GEOMETRY_INPUT_TYPE_EXT,
                                m_geometryInputType);
-        glProgramParameteriARB(m_programId, GL_GEOMETRY_OUTPUT_TYPE_EXT,
+        glProgramParameteri(m_programId, GL_GEOMETRY_OUTPUT_TYPE_EXT,
                                m_geometryOutputType);
-        glProgramParameteriARB(m_programId, GL_GEOMETRY_VERTICES_OUT_EXT,
+        glProgramParameteri(m_programId, GL_GEOMETRY_VERTICES_OUT_EXT,
                                m_geometryVertexCount);
     }
 

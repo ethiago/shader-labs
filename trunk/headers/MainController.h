@@ -1,11 +1,9 @@
 #ifndef MAINCONTROLLER_H
 #define MAINCONTROLLER_H
 
+#include "Global.h"
 #include <QObject>
 #include <QMap>
-#include "qglshaderprogram.h"
-
-#include "Global.h"
 
 class MainWindow;
 class SLFile;
