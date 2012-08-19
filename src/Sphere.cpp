@@ -2,6 +2,7 @@
 #include "Global.h"
 
 #include <QtOpenGL>
+#include <GL/glu.h>
 
 Sphere::Sphere(int stacks, int slices, float radius, const QVector3D& center, QObject *parent):
     Object3D(center, parent), m_radius(radius)
