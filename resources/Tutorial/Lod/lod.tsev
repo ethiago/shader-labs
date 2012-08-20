@@ -1,0 +1,32 @@
+#version 400 compatibility
+layout(triangles, equal_spacing, ccw) in;
+
+uniform sampler2D sampler2d0;
+
+in vec2 texCoordOut[];
+
+float height(in vec2 tc)
+{
+	float d = texture2D(sampler2d0, tc).r;
+	d -= 0.4;
+	if(d < 0.0)
+		d = 0.0;
+	return d;
+}
+
+void main()
+{
+ float u = gl_TessCoord.x;
+ float v = gl_TessCoord.y;
+ float w = gl_TessCoord.z;
+
+ vec4 p0 = gl_in[0].gl_Position;
+ vec4 p1 = gl_in[1].gl_Position;
+ vec4 p2 = gl_in[2].gl_Position;
+
+ vec4 modelposition = p0*u + p1*v + p2*w;
+ vec2 tex = texCoordOut[0]*u + texCoordOut[1]*v + texCoordOut[2]*w;
+ modelposition.z += height(tex);
+
+ gl_Position = gl_ModelViewProjectionMatrix * modelposition;
+}

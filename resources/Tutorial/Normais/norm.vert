@@ -1,8 +1,8 @@
 uniform sampler2D sampler2d1;
 
-varying vec2 texCoordIn;
-varying vec3 nIn;
-varying vec3 lvIn;
+varying vec4 eye;
+varying vec3 N;
+
 
 float height(in vec2 tc)
 {
@@ -20,25 +20,26 @@ vec3 norm(float s, float t, float delta)
 	float yAnt = height(vec2(s, t-delta));
 	float yPos = height(vec2(s, t+delta));
 
-	vec3 x = vec3((xPos-xAnt)/(2.0*delta), 0.0, 0.0);
-	vec3 y = vec3(0.0, (yPos-yAnt)/(2.0*delta), 0.0);
+	vec3 x = vec3(1.0, 0.0, xPos-xAnt);
+	vec3 y = vec3(0.0, 1.0, yPos-yAnt);
 	
-	return (cross(x,y));
+	return normalize(cross(x,y));
 }
 
 void main()
 {
-	texCoordIn = gl_MultiTexCoord0.st;
-	float disp = height(texCoordIn);
+	vec2 texCoord = gl_MultiTexCoord0.st;
+	float disp = height(texCoord);
 	vec4 modelCoord = gl_Vertex;
 	modelCoord.z += disp;
 
 	vec4 eyeCoord = gl_ModelViewMatrix * modelCoord;
 
-	lvIn = normalize((gl_LightSource[0].position - eyeCoord).xyz);
-	
+	eye = eyeCoord;
+
 	gl_Position = gl_ProjectionMatrix * eyeCoord;
 	
-	nIn = norm(texCoordIn.s, texCoordIn.t, 0.02);
-	nIn = normalize(gl_NormalMatrix * nIn);
+	vec3 n = norm(texCoord.s, texCoord.t, 0.02);
+	N = normalize(gl_NormalMatrix * n);
+
 }
