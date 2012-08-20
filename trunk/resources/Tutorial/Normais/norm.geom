@@ -1,25 +1,21 @@
 #extension GL_EXT_geometry_shader4 : enable
 
-in vec2 texCoordIn[];
-in vec3 nIn[];
-in vec3 lvIn[];
-
-varying out vec2 texCoord;
-varying out vec3 n;
-varying out vec3 lv;
+in vec4 eye[];
+in vec3 N[];
 
 void main()
 {
-	
 
+	vec3 v1 = vec3(eye[1] - eye[0]);
+	vec3 v2 = vec3(eye[2] - eye[0]);
+	vec3 n = cross(v1,v2).xyz;
+	n = normalize(n);
+	vec4 p = eye[0]+eye[1]+eye[2];
 
-	for(int i = 0; i < 3; ++i)
-	{
-		gl_Position = gl_PositionIn[i];
-		texCoord = texCoordIn[i];
-		n = nIn[i];
-		lv = lvIn[i];
-		EmitVertex();
-	}
-	EndPrimitive();	
+	gl_FrontColor = vec4(n,1.0);
+	gl_Position = gl_ProjectionMatrix * p;
+	EmitVertex();
+	gl_Position = gl_ProjectionMatrix * (p + vec4(n*0.1,1.0));
+	EmitVertex();
+	EndPrimitive();
 }

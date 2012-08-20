@@ -2,13 +2,13 @@
 <ShaderLab>
 	<shaders>
 		<vertex>disp.vert</vertex>
-		<fragment>disp.frag</fragment>
+		<tessellation_evaluation>lod.tsev</tessellation_evaluation>
+		<tessellation_control>lod.tsct</tessellation_control>
 	</shaders>
 	<model>
-		<id>1</id>
+		<id>9</id>
 	</model>
 	<textures>
-		<filename>color.jpg</filename>
 		<filename>height.jpg</filename>
 	</textures>
 </ShaderLab>

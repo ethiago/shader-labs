@@ -1,13 +1,7 @@
 uniform sampler2D sampler2d1;
 
 varying vec2 texCoord;
-varying float diff;
-
-void calculaCor(in vec4 eyeCoord, in vec3 n)
-{
-	vec4 lv = normalize(gl_LightSource[0].position - eyeCoord);
-	diff = max(dot(n,lv.xyz),0.0);
-}
+varying vec3 n;
 
 float height(in vec2 tc)
 {
@@ -34,15 +28,13 @@ vec3 norm(float s, float t, float delta)
 void main()
 {
 	texCoord = gl_MultiTexCoord0.st;
-	float disp = height(texCoord);
 	vec4 modelCoord = gl_Vertex;
-	modelCoord.z += disp;
 
 	vec4 eyeCoord = gl_ModelViewMatrix * modelCoord;
-	gl_Position = gl_ProjectionMatrix * eyeCoord;
 	
-	vec3 n = norm(texCoord.s, texCoord.t, 0.02);
-	n = normalize(gl_NormalMatrix * n);
+	
+	n = norm(texCoord.s, texCoord.t, 0.02);
+	n = gl_NormalMatrix * n;
 
-	calculaCor(eyeCoord, n);
+	gl_Position = modelCoord;
 }
