@@ -4,8 +4,15 @@
 #include <QMatrix4x4>
 #include "Global.h"
 
-#include <GL/glext.h>
-#include <GL/glu.h>
+#ifdef __APPLE__
+    #include <OpenGL/glext.h>
+    #include <OpenGL/glu.h>
+#else
+    #include <GL/glext.h>
+    #include <GL/glu.h>
+#endif
+
+
 
 #define ZOOMSTEP 0.05
 

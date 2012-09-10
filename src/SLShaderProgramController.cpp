@@ -2,7 +2,6 @@
 #include "PrimitivesDialog.h"
 #include "SLShaderProgram.h"
 #include "MainWindow.h"
-#include <GL/glext.h>
 
 //constructors
 SLShaderProgramController::SLShaderProgramController(MainWindow* mw, PrimitivesDialog* pd,  QObject *parent) :

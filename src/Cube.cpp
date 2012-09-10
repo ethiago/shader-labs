@@ -1,6 +1,11 @@
 #include "Cube.h"
-#include <GL/gl.h>
 #include <QVector3D>
+
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+#else
+    #include <GL/gl.h>
+#endif
 
 Cube::Cube(const QVector3D& center, QObject *parent):
     Object3D(center, parent)

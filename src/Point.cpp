@@ -1,7 +1,11 @@
 #include "Point.h"
-
-#include <GL/gl.h>
 #include <QVector3D>
+
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+#else
+    #include <GL/gl.h>
+#endif
 
 Point::Point(const QVector3D& center, QObject *parent):
     Object3D(center, parent)
