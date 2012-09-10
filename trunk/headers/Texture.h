@@ -16,7 +16,7 @@ public:
     static bool isValid(const QString& filePath);
 
     explicit Texture(QObject *parent = 0);
-    explicit Texture(const Texture&);
+    Texture(const Texture&);
 
     void setImage(const QImage& image);
     const QImage& image(void) const;

@@ -12,8 +12,11 @@ win32 {
 
 unix {
     TARGET = ShaderLab-unix32
-    LIBS += -lGL -lGLU -ldl
+    #LIBS += -lGL -lGLU -ldl    #does't work on Mac
 }
+#MAC
+LIBS += -framework Carbon
+#/MAC
 
 TEMPLATE = app
 DEPENDPATH += ../src

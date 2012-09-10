@@ -1,7 +1,14 @@
 #include "IcosahedronPatch.h"
 
-#include <GL/gl.h>
-#include <GL/glext.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+    #include <OpenGL/glext.h>
+#else
+    #define GL_GLEXT_PROTOTYPES 1
+    #include <GL/gl.h>
+    #include <GL/glext.h>
+#endif
+
 #include <QVector3D>
 
 IcosahedronPatch::IcosahedronPatch():

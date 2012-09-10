@@ -1,9 +1,6 @@
 #ifndef POINTPATCH_H
 #define POINTPATCH_H
 
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glext.h>
 #include "Patch.h"
 
 class PointPatch : public Patch

@@ -1,7 +1,13 @@
 #include "Object3D.h"
 
 //#include "Global.h"
-#include <GL/gl.h>
+
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+#else
+    #include <GL/gl.h>
+#endif
+
 #include <qmath.h>
 
 double Object3D::degreeFromCos(double _cos)

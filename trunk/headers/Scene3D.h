@@ -1,9 +1,12 @@
 #ifndef SCENE3D_H
 #define SCENE3D_H
 
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glext.h>
+#ifdef __APPLE__
+    #include <OpenGL/gl.h>
+#else
+    #include <GL/gl.h>
+    #include <GL/glext.h>
+#endif
 
 #include "Object3D.h"
 #include <QVector>

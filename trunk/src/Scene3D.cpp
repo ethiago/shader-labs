@@ -3,7 +3,9 @@
 #include "Cube.h"
 #include "Sphere.h"
 
-#include <GL/glext.h>
+#ifndef __APPLE__
+    #include <GL/glext.h>
+#endif
 
 
 Scene3D::Scene3D(const QVector3D& center, QObject *parent) :
