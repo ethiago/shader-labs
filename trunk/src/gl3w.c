@@ -565,6 +565,9 @@ PFNGLCLEARDEPTHFPROC gl3wClearDepthf;
 PFNGLGETPROGRAMBINARYPROC gl3wGetProgramBinary;
 PFNGLPROGRAMBINARYPROC gl3wProgramBinary;
 PFNGLPROGRAMPARAMETERIPROC gl3wProgramParameteri;
+//<inseridoManualmente>
+PFNGLPROGRAMPARAMETERIEXTPROC gl3wProgramParameteriEXT;
+//</inseridoManualmente>
 PFNGLUSEPROGRAMSTAGESPROC gl3wUseProgramStages;
 PFNGLACTIVESHADERPROGRAMPROC gl3wActiveShaderProgram;
 PFNGLCREATESHADERPROGRAMVPROC gl3wCreateShaderProgramv;
@@ -1184,6 +1187,9 @@ static void load_procs(void)
 	gl3wGetProgramBinary = (PFNGLGETPROGRAMBINARYPROC) get_proc("glGetProgramBinary");
 	gl3wProgramBinary = (PFNGLPROGRAMBINARYPROC) get_proc("glProgramBinary");
 	gl3wProgramParameteri = (PFNGLPROGRAMPARAMETERIPROC) get_proc("glProgramParameteri");
+    //<inseridoManualmente>
+    gl3wProgramParameteriEXT = (PFNGLPROGRAMPARAMETERIEXTPROC) get_proc("glProgramParameteriEXT");
+    //</inseridoManualmente>
 	gl3wUseProgramStages = (PFNGLUSEPROGRAMSTAGESPROC) get_proc("glUseProgramStages");
 	gl3wActiveShaderProgram = (PFNGLACTIVESHADERPROGRAMPROC) get_proc("glActiveShaderProgram");
 	gl3wCreateShaderProgramv = (PFNGLCREATESHADERPROGRAMVPROC) get_proc("glCreateShaderProgramv");

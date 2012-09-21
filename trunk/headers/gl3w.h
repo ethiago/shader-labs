@@ -457,6 +457,9 @@ extern PFNGLCLEARDEPTHFPROC gl3wClearDepthf;
 extern PFNGLGETPROGRAMBINARYPROC gl3wGetProgramBinary;
 extern PFNGLPROGRAMBINARYPROC gl3wProgramBinary;
 extern PFNGLPROGRAMPARAMETERIPROC gl3wProgramParameteri;
+//<inserido manualmente>
+extern PFNGLPROGRAMPARAMETERIEXTPROC gl3wProgramParameteriEXT;
+//</inserido manualmente>
 extern PFNGLUSEPROGRAMSTAGESPROC gl3wUseProgramStages;
 extern PFNGLACTIVESHADERPROGRAMPROC gl3wActiveShaderProgram;
 extern PFNGLCREATESHADERPROGRAMVPROC gl3wCreateShaderProgramv;
@@ -1074,6 +1077,9 @@ extern PFNGLTEXTURESTORAGE3DMULTISAMPLEEXTPROC gl3wTextureStorage3DMultisampleEX
 #define glGetProgramBinary		gl3wGetProgramBinary
 #define glProgramBinary		gl3wProgramBinary
 #define glProgramParameteri		gl3wProgramParameteri
+//<inseridoManualmente>
+#define glProgramParameteriEXT		gl3wProgramParameteriEXT
+//</inseridoManualmente>
 #define glUseProgramStages		gl3wUseProgramStages
 #define glActiveShaderProgram		gl3wActiveShaderProgram
 #define glCreateShaderProgramv		gl3wCreateShaderProgramv

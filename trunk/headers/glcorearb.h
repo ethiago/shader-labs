@@ -3969,10 +3969,16 @@ typedef void (APIENTRYP PFNGLCLEARDEPTHFPROC) (GLfloat d);
 GLAPI void APIENTRY glGetProgramBinary (GLuint program, GLsizei bufSize, GLsizei *length, GLenum *binaryFormat, GLvoid *binary);
 GLAPI void APIENTRY glProgramBinary (GLuint program, GLenum binaryFormat, const GLvoid *binary, GLsizei length);
 GLAPI void APIENTRY glProgramParameteri (GLuint program, GLenum pname, GLint value);
+//<inseridoManualmente>
+GLAPI void APIENTRY glProgramParameteriEXT (GLuint program, GLenum pname, GLint value);
+//</inseridoManualmente>
 #endif /* GLCOREARB_PROTOTYPES */
 typedef void (APIENTRYP PFNGLGETPROGRAMBINARYPROC) (GLuint program, GLsizei bufSize, GLsizei *length, GLenum *binaryFormat, GLvoid *binary);
 typedef void (APIENTRYP PFNGLPROGRAMBINARYPROC) (GLuint program, GLenum binaryFormat, const GLvoid *binary, GLsizei length);
 typedef void (APIENTRYP PFNGLPROGRAMPARAMETERIPROC) (GLuint program, GLenum pname, GLint value);
+//<inseridoManualmente>
+typedef void (APIENTRYP PFNGLPROGRAMPARAMETERIEXTPROC) (GLuint program, GLenum pname, GLint value);
+//</inseridoManualmente>
 #endif
 
 #ifndef GL_ARB_separate_shader_objects

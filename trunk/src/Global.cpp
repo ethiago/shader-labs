@@ -82,7 +82,9 @@ void ShaderLab::extensionsAnalise()
         else if(ext == "GL_ARB_fragment_shader")
             m_extensions |= ShaderLab::FragmentShader;
         else if(ext == "GL_ARB_geometry_shader4")
-            m_extensions |= ShaderLab::GeometryShader;
+            m_extensions |= ShaderLab::GeometryShaderARB;
+        else if(ext == "GL_EXT_geometry_shader4")
+            m_extensions |= ShaderLab::GeometryShaderEXT;
         else if(ext == "GL_ARB_tessellation_shader")
             m_extensions |= ShaderLab::TessellationShader;
         else if(ext == "GL_ARB_shader_objects")
@@ -149,7 +151,14 @@ bool ShaderLab::fragmentShaderEnabled()
 
 bool ShaderLab::geometryShaderEnabled()
 {
-    return (this->extensions() & ShaderLab::GeometryShader)  != 0;
+    return (this->extensions() & ShaderLab::GeometryShaderARB  ||
+            this->extensions() & ShaderLab::GeometryShaderEXT) != 0;
+}
+
+bool ShaderLab::geometryShaderOnlyEXT()
+{
+    return (!(this->extensions() & ShaderLab::GeometryShaderARB) &&
+              this->extensions() & ShaderLab::GeometryShaderEXT) != 0;
 }
 
 bool ShaderLab::tesselationShaderEnable()

@@ -6,6 +6,10 @@
 #include <QVarLengthArray>
 #include <QDebug>
 
+#ifndef GL_GEOMETRY_SHADER_EXT
+#define GL_GEOMETRY_SHADER_EXT                      0x8DD9
+#endif
+
 //constructors
 SLShader2::SLShader2(const QString &filePath, ShaderLab::Shader shadertype, SLShaderProgram *parent):
     QObject(parent), m_type(shadertype), m_compiled(false),
@@ -36,7 +40,10 @@ GLenum SLShader2::glShaderType()
     case ShaderLab::Fragment:
         return GL_FRAGMENT_SHADER;
     case ShaderLab::Geometry:
-        return GL_GEOMETRY_SHADER;
+        if(ShaderLab::instance()->geometryShaderOnlyEXT())
+            return GL_GEOMETRY_SHADER_EXT;
+        else
+            return GL_GEOMETRY_SHADER;
     case ShaderLab::TessellationCtrl:
         return GL_TESS_CONTROL_SHADER;
     case ShaderLab::TessellationEval:
