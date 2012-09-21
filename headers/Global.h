@@ -31,16 +31,18 @@ public:
 
     enum ExtensionSupport{ FramebufferObject = 1,
                        VertexShader = 2,
-                       GeometryShader = 4,
-                       FragmentShader = 8,
-                       TessellationShader = 16,
-                       ShaderObjects = 32};
+                       GeometryShaderARB = 4,
+                       GeometryShaderEXT = 8,
+                       FragmentShader = 16,
+                       TessellationShader = 32,
+                       ShaderObjects = 64};
 
     void extensionsAnalise();
     bool criticalExtensionsEnabled();
     bool vertexShaderEnabled();
     bool fragmentShaderEnabled();
     bool geometryShaderEnabled();
+    bool geometryShaderOnlyEXT();
     bool tesselationShaderEnable();
     void setContext(QGLWidget*);
     QGLWidget* glContext();

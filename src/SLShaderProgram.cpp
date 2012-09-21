@@ -4,11 +4,39 @@
 #include <QSize>
 #include <QDebug>
 
+#ifndef GL_GEOMETRY_VERTICES_OUT_EXT
+#define GL_GEOMETRY_VERTICES_OUT_EXT                0x8DDA
+#endif
+
+#ifndef GL_GEOMETRY_INPUT_TYPE_EXT
+#define GL_GEOMETRY_INPUT_TYPE_EXT                  0x8DDB
+#endif
+
+#ifndef GL_GEOMETRY_OUTPUT_TYPE_EXT
+#define GL_GEOMETRY_OUTPUT_TYPE_EXT                    0x8DDC
+#endif
+
+#ifndef GL_LINES_ADJACENCY_EXT
+#define GL_LINES_ADJACENCY_EXT                         0xA
+#endif
+
+#ifndef GL_LINE_STRIP_ADJACENCY_EXT
+#define GL_LINE_STRIP_ADJACENCY_EXT                    0xB
+#endif
+
+#ifndef GL_TRIANGLES_ADJACENCY_EXT
+#define GL_TRIANGLES_ADJACENCY_EXT                     0xC
+#endif
+
+#ifndef GL_TRIANGLE_STRIP_ADJACENCY_EXT
+#define GL_TRIANGLE_STRIP_ADJACENCY_EXT                0xD
+#endif
+
 //constructors
 SLShaderProgram::SLShaderProgram(QObject *parent) :
     QObject(parent), m_programId(0), m_log(QString()),
     m_geometryInputType(GL_TRIANGLES), m_geometryOutputType(GL_TRIANGLE_STRIP),
-    m_geometryVertexCount(64), m_linked(false)
+    m_geometryVertexCount(16), m_linked(false)
 {
     //m_programId = gl3wCreateProgram();
     m_programId = glCreateProgram();
@@ -72,11 +100,11 @@ bool SLShaderProgram::programLink()
 {
     if(geometryAttached)
     {
-        glProgramParameteri(m_programId, GL_GEOMETRY_INPUT_TYPE,
+        glProgramParameteriEXT(m_programId, GL_GEOMETRY_INPUT_TYPE_EXT,
                                m_geometryInputType);
-        glProgramParameteri(m_programId, GL_GEOMETRY_OUTPUT_TYPE,
+        glProgramParameteriEXT(m_programId, GL_GEOMETRY_OUTPUT_TYPE_EXT,
                                m_geometryOutputType);
-        glProgramParameteri(m_programId, GL_GEOMETRY_VERTICES_OUT,
+        glProgramParameteriEXT(m_programId, GL_GEOMETRY_VERTICES_OUT_EXT,
                                m_geometryVertexCount);
     }
 
