@@ -101,6 +101,7 @@ void SLShader2::bindShaderCode()
 bool SLShader2::priv_compile()
 {
     m_compiled = false;
+    m_log = "";
 
     glCompileShader(m_shaderId);
     GLint value = 0;
