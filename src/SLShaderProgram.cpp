@@ -126,7 +126,8 @@ bool SLShaderProgram::programLink()
         else
             qWarning() << "SLShader::link[" << name << "]:" << m_log;
         delete [] logbuf;
-    }
+    }else
+        m_log = "Successfull.\n";
     return m_linked;
 }
 
