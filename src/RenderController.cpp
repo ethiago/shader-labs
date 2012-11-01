@@ -302,6 +302,8 @@ void RenderController::configureModelsAndActions(QMenu* menu)
 void RenderController::lightRotationToggle(bool lt)
 {
     lightRotation = lt;
+    light->setShowLine(lt);
+    display->updateGL();
 }
 
 int RenderController::getModelId(void)

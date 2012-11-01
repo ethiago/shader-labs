@@ -112,6 +112,8 @@ void GLDisplay::paintGL()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    emit lightSetup();
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
