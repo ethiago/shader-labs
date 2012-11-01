@@ -13,6 +13,8 @@ class DirectionalLight : public QObject
     QMatrix4x4 m_rotations;
     QQuaternion m_interactiveQuartenion;
 
+    bool showLine;
+
 public:
     explicit DirectionalLight(QObject *parent = 0);
 
@@ -24,6 +26,8 @@ public:
     const QQuaternion& interactiveQuartenion(void)const;
 
     QVector3D getLightPosition()const;
+
+    void setShowLine(bool);
 
     void draw(void) const;
 

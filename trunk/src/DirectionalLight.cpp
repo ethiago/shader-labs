@@ -10,7 +10,7 @@
 DirectionalLight::DirectionalLight(QObject *parent)
     : QObject(parent),
       m_rotations(QMatrix4x4()) ,
-      m_interactiveQuartenion(QQuaternion())
+      m_interactiveQuartenion(QQuaternion()), showLine(false)
 {
 }
 
@@ -52,6 +52,19 @@ void DirectionalLight::draw(void) const
     lightPosition[2] = lp.z();
     lightPosition[3] = 0;
 
+    glDisable(GL_LIGHTING);
+    glDisable(GL_TEXTURE_2D);
+    if(showLine)
+    {
+        glBegin(GL_LINES);
+        glColor3f(1.0,1.0,0.0);
+        glVertex3f(0.0,0.0,0.0);
+        glVertex3fv(lightPosition);
+        glEnd();
+    }
+    glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D);
+
     glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 }
 
@@ -71,4 +84,9 @@ QVector3D DirectionalLight::getLightPosition() const
 
     /* Ainda precisa de solução definitiva: a luz precisa ser passada para coordenadas de camera. */
     return m.mapVector(QVector3D(0,-1000000,0));
+}
+
+void DirectionalLight::setShowLine(bool value)
+{
+    showLine = value;
 }
