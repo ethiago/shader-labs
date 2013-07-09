@@ -293,6 +293,13 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
+    act = menu->addAction(tr("S&quare"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    model_tmp = new Plane(1,1);
+    model_tmp->setModelId(models.size());
+    models.append(qMakePair(act, model_tmp));
+
 
 
     connect(menu, SIGNAL(triggered(QAction*)),

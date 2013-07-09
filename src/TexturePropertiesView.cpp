@@ -31,8 +31,8 @@ TexturePropertiesView::TexturePropertiesView(MainWindow *parent) :
     connect(ui->textureList, SIGNAL(currentIndexChanged(int)),
             this, SIGNAL(textureCurrentChange(int)));
 
-    connect(ui->add3DButton, SIGNAL(clicked()),
-            this, SIGNAL(addTexture3DClicked()));
+//    connect(ui->add3DButton, SIGNAL(clicked()),
+//            this, SIGNAL(addTexture3DClicked()));
 
     setVisible(false);
 }
