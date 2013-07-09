@@ -1,5 +1,6 @@
 #include "InterfaceRequests.h"
 
+#include <QObject>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QFileInfo>
@@ -142,6 +143,20 @@ QString InterfaceRequests::openShader(ShaderLab::Shader shader)
                               "Open " + ShaderLab::shaderToStr(shader) + " shader",
                               dir,
                               "*" + ShaderLab::shaderToExt(shader));
+
+    if(!filepath.isEmpty())
+    {
+        QFileInfo fi(filepath);
+        dir = fi.absolutePath();
+    }
+
+    return filepath;
+}
+
+QString InterfaceRequests::openTexture()
+{
+    static QString dir = ".";
+    QString filepath = QFileDialog::getOpenFileName(0, "Open Image", dir, QObject::tr("Images (*.png *.jpg *.tiff *.svg)"));
 
     if(!filepath.isEmpty())
     {

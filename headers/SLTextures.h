@@ -39,7 +39,6 @@ public slots:
     void changeTexture(void);
     void addTexture(void);
     void textureCurrentChange(int);
-    void addTexture3D(void);
 
 private:
     void remakeVarNames();

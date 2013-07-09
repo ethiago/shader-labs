@@ -21,6 +21,7 @@ public:
     static bool createProject(void);
     static void openFileProblem(const QString& filename);
     static QString openShader(ShaderLab::Shader shader);
+    static QString openTexture();
     static QString openProject();
     static QString saveImage();
     static void notLoadProject(void);

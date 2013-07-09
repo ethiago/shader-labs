@@ -6,7 +6,6 @@
 Texture3D::Texture3D(QObject *parent): Texture(parent)
 {
     setImage(QImage(":/ico/tex3d"));
-    set3D();
     m_data = NULL;
 }
 
