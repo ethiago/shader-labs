@@ -10,7 +10,7 @@
 #include "Point.h"
 #include "Scene3D.h"
 #include "Tetrahedron.h"
-#include "PointPatch.h"
+#include "TrianglePatch.h"
 #include "IcosahedronPatch.h"
 #include "Arcball.h"
 #include "DirectionalLight.h"
@@ -282,7 +282,7 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     act = menu->addAction(tr("T&rianglePatch"));
     act->setCheckable(true);
     act->setChecked(false);
-    model_tmp = new PointPatch();
+    model_tmp = new TrianglePatch();
     model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 

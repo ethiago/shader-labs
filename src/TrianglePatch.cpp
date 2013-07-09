@@ -1,4 +1,4 @@
-#include "PointPatch.h"
+#include "TrianglePatch.h"
 
 #ifdef __APPLE__
     #include <OpenGL/gl.h>
@@ -9,32 +9,32 @@
     #include <GL/glext.h>
 #endif
 
-PointPatch::PointPatch() :
+TrianglePatch::TrianglePatch() :
     Patch()
 {
 }
 
-PointPatch::PointPatch(const PointPatch& p) :
+TrianglePatch::TrianglePatch(const TrianglePatch& p) :
     Patch(p)
 {
 
 }
 
-PointPatch::~PointPatch()
+TrianglePatch::~TrianglePatch()
 {
 }
 
-Object3D* PointPatch::copy() const
+Object3D* TrianglePatch::copy() const
 {
-    return new PointPatch(*this);
+    return new TrianglePatch(*this);
 }
 
-void PointPatch::drawGeometry(void) const
+void TrianglePatch::drawGeometry(void) const
 {
     //glPatchParameteri(GL_PATCH_VERTICES, 3);
 
     glBegin(GL_PATCHES);
-    glVertex3i(0,0,0);
+    glVertex3i(-1,0,0);
     glVertex3i(1,0,0);
     glVertex3i(0,1,0);
     glEnd();
