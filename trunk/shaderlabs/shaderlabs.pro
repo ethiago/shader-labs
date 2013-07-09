@@ -74,7 +74,7 @@ SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/codeeditor.cpp \
     $$SLSRC/Texture3D.cpp \
     $$SLSRC/SLTexture3dDialog.cpp \
-    $$SLSRC/PointPatch.cpp \
+    $$SLSRC/TrianglePatch.cpp \
     $$SLSRC/IcosahedronPatch.cpp \
     $$SLSRC/Patch.cpp \
     $$SLSRC/SLShaderProgramController.cpp \
@@ -116,7 +116,7 @@ HEADERS += $$SLHED/gl3w.h \
     $$SLHED/codeeditor.h \
     $$SLHED/Texture3D.h \
     $$SLHED/SLTexture3dDialog.h \
-    $$SLHED/PointPatch.h \
+    $$SLHED/TrianglePatch.h \
     $$SLHED/IcosahedronPatch.h \
     $$SLHED/Patch.h \
     $$SLHED/SLShaderProgram.h \

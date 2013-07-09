@@ -3,14 +3,14 @@
 
 #include "Patch.h"
 
-class PointPatch : public Patch
+class TrianglePatch : public Patch
 {
     Q_OBJECT
 public:
-    explicit PointPatch();
+    explicit TrianglePatch();
 
-    explicit PointPatch(const PointPatch& p);
-     ~PointPatch();
+    explicit TrianglePatch(const TrianglePatch& p);
+     ~TrianglePatch();
 
     virtual Object3D* copy() const;
 
