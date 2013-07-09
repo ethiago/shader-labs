@@ -42,65 +42,16 @@ SLTextures::~SLTextures()
 
 void SLTextures::changeTexture(void)
 {
-    QString filename = QFileDialog::getOpenFileName(m_textureView, "Open Image", ".", tr("Images (*.png *.jpg *.tiff *.svg)"));
+    QString filename = InterfaceRequests::openTexture();
 
     setupTexture(filename, false);
 }
 
 void SLTextures::addTexture(void)
 {
-    QString filename = QFileDialog::getOpenFileName(m_textureView, "Open Image", ".", tr("Images (*.png *.jpg *.tiff *.svg)"));
+    QString filename = InterfaceRequests::openTexture();
 
     setupTexture(filename, true);
-}
-
-void SLTextures::addTexture3D(void)
-{
-    QString filename = QFileDialog::getOpenFileName(m_textureView, "Open Raw File", ".", "*.raw");
-
-    if(filename.isEmpty())
-        return;
-
-    QFile f(filename);
-    int size = f.size();
-
-    m_texture3DDialog->setFileName(filename);
-    int ret = m_texture3DDialog->exec();
-    if(ret != QDialog::Accepted)
-        return;
-
-    int w = m_texture3DDialog->getFileWidth();
-    int h = m_texture3DDialog->getFileHeight();
-    int d = m_texture3DDialog->getFileDepth();
-    int l = m_texture3DDialog->getLengthData();
-    int informedSize = w * h * d * l;
-    if( informedSize != size)
-    {
-        InterfaceRequests::sizeFileNotMatch(size, informedSize);
-        return;
-    }
-
-    if(w*h*d > 5832000)
-    {
-        InterfaceRequests::fileTooLarge(w*h*d);
-        return;
-    }
-
-    Texture3D tex;
-    tex.loadFromRawFile(filename, w, h, d,l);
-    tex.openGLBind();
-    Texture tx(tex);
-    if(m_textureList[0].glTextureName() >= 0)
-    {
-            m_textureList.push_back(tx);
-            textureContext = m_textureList.size() - 1;
-    }else
-        m_textureList[textureContext] = tx;
-
-    m_textureList[textureContext].setVarName(SAMPLEPREFIX3D + QString::number(textureContext));
-    activeTexture();
-    viewUpdateList();
-    ShaderLab::instance()->glContext()->updateGL();
 }
 
 void SLTextures::setupTexture(const QString& imageFileName, bool add)
@@ -150,10 +101,7 @@ void SLTextures::remakeVarNames()
 {
     for(int i = 0; i < m_textureList.size(); i++)
     {
-        if(m_textureList[i].is2D())
             m_textureList[i].setVarName(SAMPLEPREFIX2D + QString::number(i));
-        else
-            m_textureList[i].setVarName(SAMPLEPREFIX3D + QString::number(i));
     }
 }
 
@@ -221,10 +169,7 @@ void SLTextures::activeTexture(void)
     for(int i = 0; i < m_textureList.size(); ++i)
     {
         glActiveTexture(GL_TEXTURE0 + i);
-        if(m_textureList[i].is2D())
-            glBindTexture(GL_TEXTURE_2D, m_textureList[i].glTextureName());
-        else
-            glBindTexture(GL_TEXTURE_3D, m_textureList[i].glTextureName());
+        glBindTexture(GL_TEXTURE_2D, m_textureList[i].glTextureName());
     }
 }
 
