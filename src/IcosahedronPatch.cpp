@@ -1,4 +1,5 @@
 #include "IcosahedronPatch.h"
+#include "slgl3w.h"
 
 #ifdef __APPLE__
     #include <OpenGL/gl.h>
@@ -82,6 +83,7 @@ void IcosahedronPatch::storeList()const
 
   glNewList(indexList, GL_COMPILE);
   {
+      SLGl3W::setPatchVertices(3);
       glBegin(GL_PATCHES);
       {
           for(int i = 0; i < 20; ++i)
