@@ -12,7 +12,7 @@ win32 {
 
 unix {
     TARGET = ShaderLab-unix32
-    LIBS += -lGL -lGLU -ldl    #does't work on Mac
+    LIBS += -lGLU -ldl    #does't work on Mac
 }
 #MAC
 #LIBS += -framework Carbon
@@ -79,7 +79,8 @@ SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/Patch.cpp \
     $$SLSRC/SLShaderProgramController.cpp \
     $$SLSRC/SLObject2.cpp \
-    $$SLSRC/SLObjectController.cpp
+    $$SLSRC/SLObjectController.cpp \
+    $$SLSRC/slgl3w.cpp
 
 HEADERS += $$SLHED/gl3w.h \
     $$SLHED/glcorearb.h \
@@ -123,7 +124,8 @@ HEADERS += $$SLHED/gl3w.h \
     $$SLHED/SLShader2.h \
     $$SLHED/SLShaderProgramController.h \
     $$SLHED/SLObject2.h \
-    $$SLHED/SLObjectController.h
+    $$SLHED/SLObjectController.h \
+    $$SLHED/slgl3w.h
 
 
 FORMS += $$SLFOR/MainWindow.ui \

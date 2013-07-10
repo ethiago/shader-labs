@@ -1,4 +1,5 @@
 #include "TrianglePatch.h"
+#include "slgl3w.h"
 
 #ifdef __APPLE__
     #include <OpenGL/gl.h>
@@ -31,12 +32,11 @@ Object3D* TrianglePatch::copy() const
 
 void TrianglePatch::drawGeometry(void) const
 {
-    //glPatchParameteri(GL_PATCH_VERTICES, 4);
+    SLGl3W::setPatchVertices(3);
 
     glBegin(GL_PATCHES);
     glVertex3i(-1,0,0);
     glVertex3i(1,0,0);
     glVertex3i(0,1,0);
-    glVertex3i(-1,1,0);
     glEnd();
 }
