@@ -65,6 +65,9 @@ void SLCodeContainer::setupCodeBox()
 
     connect(shaderCodeBox, SIGNAL(modificationChanged(bool)), this, SLOT(textChanged(bool)));
     connect(shaderCodeBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
+
+    shaderCodeBox->increaseFont();
+    shaderCodeBox->increaseFont();
 }
 
 void SLCodeContainer::setText(const QString& code)

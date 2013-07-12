@@ -70,6 +70,8 @@
      void updateLineNumberAreaWidth(int newBlockCount);
      void highlightCurrentLine();
      void updateLineNumberArea(const QRect &, int);
+
+ public slots:
      void increaseFont(void);
      void decreaseFont(void);
 
