@@ -26,6 +26,11 @@ GLDisplay::GLDisplay(QGLContext* context, QWidget *parent) :
     setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
     setupPropertiesList();
+
+    connect(&timer, SIGNAL(timeout()), this, SLOT(timeout()) );
+
+    timer.setInterval(10);
+    timer.start();
 }
 
 GLDisplay::~GLDisplay()
@@ -232,6 +237,14 @@ void GLDisplay::setupPropertiesList()
         properties.insert(Ortho, item);
     }
 
+    {
+        item = variantManager->addProperty(QVariant::Bool,
+                                           QLatin1String("Continuous"));
+        item->setValue(false);
+        topItem->addSubProperty(item);
+        properties.insert(Continuous, item);
+    }
+
     variantFactory = new QtVariantEditorFactory();
 
     variantEditor = new QtTreePropertyBrowser();
@@ -263,4 +276,11 @@ QtTreePropertyBrowser* GLDisplay::getPropertyBrowser()
 void GLDisplay::attributeChanged(QtBrowserItem *)
 {
     updateGL();
+}
+
+void GLDisplay::timeout()
+{
+    bool c = properties.find(Continuous).value()->value().value<bool>();
+    if(c)
+        updateGL();
 }

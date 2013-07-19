@@ -13,6 +13,7 @@
 #include <QtProperty>
 #include <QtVariantProperty>
 #include <QtTreePropertyBrowser>
+#include <QTimer>
 
 #define NULLPOINT   QPoint(-1,-1)
 #define EPSILON     0.001
@@ -21,6 +22,7 @@ class GLDisplay : public QGLWidget
 {
     Q_OBJECT
 
+    QTimer timer;
     QPoint rigthPressedPoint;
     QPoint leftPressedPoint;
     float zoom;
@@ -28,7 +30,8 @@ class GLDisplay : public QGLWidget
     enum Properties{
         BackGroundColor,
         ModelColor,
-        Ortho
+        Ortho,
+        Continuous
     };
 
 signals:
@@ -55,6 +58,7 @@ public:
 
 private slots:
     void attributeChanged(QtBrowserItem *);
+    void timeout();
 
 private:
 

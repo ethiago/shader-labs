@@ -8,6 +8,7 @@
 #include "Plane.h"
 #include "Cube.h"
 #include "Point.h"
+#include "squarepatch.h"
 #include "Scene3D.h"
 #include "Tetrahedron.h"
 #include "TrianglePatch.h"
@@ -300,7 +301,12 @@ void RenderController::configureModelsAndActions(QMenu* menu)
     model_tmp->setModelId(models.size());
     models.append(qMakePair(act, model_tmp));
 
-
+    act = menu->addAction(tr("SquarePatch"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    model_tmp = new SquarePatch();
+    model_tmp->setModelId(models.size());
+    models.append(qMakePair(act, model_tmp));
 
     connect(menu, SIGNAL(triggered(QAction*)),
             this, SLOT(modelChanged(QAction*)));
