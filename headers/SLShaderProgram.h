@@ -21,6 +21,10 @@ class SLShaderProgram : public QObject
     GLenum m_geometryOutputType;
     GLint m_geometryVertexCount;
     QString m_completeLog;
+    GLfloat time;
+
+    GLint wsizeLocation;
+    GLint timeLocation;
 
     bool geometryAttached;
     bool m_linked;
@@ -46,6 +50,13 @@ public:
     void setUniformValue(const char *name, const QVector2D& value);
     void setUniformValue(const char *name, const QSize& value);
     void setUniformValue(const char *name, GLuint value);
+    void setUniformValue(const char *name, GLfloat value);
+
+    void setUniformValue(GLuint location, const QVector2D& value);
+    void setUniformValue(GLuint location, const QSize& value);
+    void setUniformValue(GLuint location, GLuint value);
+    void setUniformValue(GLuint location, GLfloat value);
+
     void release();
     bool saveAllShaders();
     bool isAnyNew();

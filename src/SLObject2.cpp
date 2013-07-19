@@ -38,11 +38,11 @@ void SLObject2::draw()
         m_shader->bind();
 
         m_textures->setUniformTextureNames(m_shader);
-        m_shader->setUniformValue("wsize", ShaderLab::instance()->glContext()->size());
     }
 
     m_object->draw();
     m_shader->release();
+
 }
 
 void SLObject2::compileShaders()

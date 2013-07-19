@@ -80,7 +80,8 @@ SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/SLShaderProgramController.cpp \
     $$SLSRC/SLObject2.cpp \
     $$SLSRC/SLObjectController.cpp \
-    $$SLSRC/slgl3w.cpp
+    $$SLSRC/slgl3w.cpp \
+    ../src/squarepatch.cpp
 
 HEADERS += $$SLHED/gl3w.h \
     $$SLHED/glcorearb.h \
@@ -125,7 +126,8 @@ HEADERS += $$SLHED/gl3w.h \
     $$SLHED/SLShaderProgramController.h \
     $$SLHED/SLObject2.h \
     $$SLHED/SLObjectController.h \
-    $$SLHED/slgl3w.h
+    $$SLHED/slgl3w.h \
+    ../headers/squarepatch.h
 
 
 FORMS += $$SLFOR/MainWindow.ui \

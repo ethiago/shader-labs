@@ -3,6 +3,7 @@
 
 #include <QSize>
 #include <QDebug>
+#include <QGLWidget>
 
 #ifndef GL_GEOMETRY_VERTICES_OUT_EXT
 #define GL_GEOMETRY_VERTICES_OUT_EXT                0x8DDA
@@ -32,6 +33,8 @@
 #define GL_TRIANGLE_STRIP_ADJACENCY_EXT                0xD
 #endif
 
+#define TIMEINC 0.01
+
 //constructors
 SLShaderProgram::SLShaderProgram(QObject *parent) :
     QObject(parent), m_programId(0), m_log(QString()),
@@ -41,6 +44,9 @@ SLShaderProgram::SLShaderProgram(QObject *parent) :
     //m_programId = gl3wCreateProgram();
     m_programId = glCreateProgram();
     geometryAttached = false;
+
+    time = 0.0;
+
 }
 
 //destructor
@@ -128,6 +134,7 @@ bool SLShaderProgram::programLink()
         delete [] logbuf;
     }else
         m_log = "Successfull.\n";
+
     return m_linked;
 }
 
@@ -196,6 +203,15 @@ bool SLShaderProgram::compileAndLink()
         log = tr("No active shader code to compile.");
 
     m_completeLog = log;
+
+    if(isLinked())
+    {
+        wsizeLocation = glGetUniformLocation(m_programId, "wsize");
+        timeLocation  = glGetUniformLocation(m_programId, "time");
+
+        qDebug() << wsizeLocation << ", " << timeLocation;
+    }
+
     return ret;
 }
 
@@ -227,9 +243,21 @@ bool SLShaderProgram::isLinked()
 void SLShaderProgram::bind()
 {
     if(m_linked)
+    {
         glUseProgram(m_programId);
+
+        QSize value = ShaderLab::instance()->glContext()->size();
+        glUniform2f(wsizeLocation, value.width(), value.height());
+
+        glUniform1f(timeLocation, time);
+
+        time += TIMEINC;
+        time = time >= 1.0 ? 0.0 : time;
+    }
     else
+    {
         glUseProgram(0);
+    }
 }
 
 void SLShaderProgram::setUniformValue(const char *name, const QVector2D& value)
@@ -268,6 +296,21 @@ void SLShaderProgram::setUniformValue(const char *name, GLuint value)
 
     if (location != 0)
         glUniform1i(location, value);
+    else
+        qWarning() << "Can't get a uniform location";
+}
+
+void SLShaderProgram::setUniformValue(const char *name, GLfloat value)
+{
+    GLuint location = 0;
+
+    if (m_linked)
+        location = glGetUniformLocation(m_programId, name);
+
+    if (location != 0)
+        glUniform1f(location, value);
+    else
+        qWarning() << "Can't get a uniform location";
 }
 
 bool SLShaderProgram::saveAllShaders()
