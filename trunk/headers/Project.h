@@ -31,7 +31,7 @@ public:
     bool save(QString fileName = QString());
 
     QString getFileName(ShaderLab::Shader);
-    QString getRelativeFileName(ShaderLab::Shader);
+    QString getRelativeFilePathByShader(ShaderLab::Shader);
 
     QDir getProjectDir(void);
     QString getProjectFileName(void);
@@ -44,6 +44,8 @@ public:
 
     void setTextures(const QStringList&);
     QStringList getTextures(void) const;
+
+    QString getRelativeFilePath(QString filePath);
 
 private:
     bool loadFileTag(QDomElement);
