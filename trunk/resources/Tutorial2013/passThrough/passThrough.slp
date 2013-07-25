@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>../common/clippingSpace.vert</vertex>
+		<fragment>../common/defaultBlack.frag</fragment>
+		<tessellation_evaluation>primitive.tsev</tessellation_evaluation>
+		<tessellation_control>pass.tsct</tessellation_control>
+	</shaders>
+	<model>
+		<id>7</id>
+	</model>
+</ShaderLab>
