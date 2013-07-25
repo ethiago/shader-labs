@@ -147,7 +147,7 @@ QString Project::getFileName(ShaderLab::Shader shadertype)
     }
 }
 
-QString Project::getRelativeFileName(ShaderLab::Shader shadertype)
+QString Project::getRelativeFilePathByShader(ShaderLab::Shader shadertype)
 {
     ShaderIterator it = shaderFiles.find(shadertype);
 
@@ -155,12 +155,19 @@ QString Project::getRelativeFileName(ShaderLab::Shader shadertype)
         return QString();
     else
     {
-        QFileInfo fi(it.value());
-
-        QDir d = m_fileName.absoluteDir();
-
-        return d.relativeFilePath(fi.filePath());
+        return getRelativeFilePath(it.value());
     }
+}
+
+QString Project::getRelativeFilePath(QString filePath)
+{
+    QFileInfo fi(filePath);
+
+    QDir d = m_fileName.absoluteDir();
+
+    QString ret = d.relativeFilePath(fi.absoluteFilePath());
+
+    return ret;
 }
 
 QDir Project::getProjectDir(void)
@@ -245,7 +252,7 @@ QString Project::getXml(void)
         QString otag = "\t\t<" + ShaderLab::shaderToStr(it.key()) + ">";
         QString ctag = "</" + ShaderLab::shaderToStr(it.key()) + ">\n";
 
-        content += otag + getRelativeFileName(it.key()) + ctag;
+        content += otag + getRelativeFilePath(it.value()) + ctag;
     }
 
     content = content +  "\t</shaders>\n";
@@ -262,7 +269,7 @@ QString Project::getXml(void)
 
         for(int i = 0; i < textures.size(); ++i)
         {
-            content = content + "\t\t<filename>" + textures[i]+ "</filename>\n";
+            content = content + "\t\t<filename>" + getRelativeFilePath(textures[i]) + "</filename>\n";
         }
 
         content = content + "\t</textures>\n";
