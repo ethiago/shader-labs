@@ -10,6 +10,7 @@ class Texture : public QObject
     int m_glTextureName;
     QString m_varName;
     QString m_filename;
+    int m_glUniformId;
 
 public:
     static bool isValid(const QString& filePath);
@@ -29,6 +30,9 @@ public:
     const QString& fullFileName(void) const;
     QString fileName(void) const;
     void setFileName(const QString& fn);
+
+    void setUniformId(int id);
+    int uniformId(void)const;
 
     void clean(void);
 
