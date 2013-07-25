@@ -7,7 +7,7 @@
 		<id>0</id>
 	</model>
 	<textures>
-		<filename>./color.jpg</filename>
-		<filename>./height.jpg</filename>
+		<filename>color.jpg</filename>
+		<filename>height.jpg</filename>
 	</textures>
 </ShaderLab>
