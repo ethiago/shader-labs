@@ -3,14 +3,14 @@
 
 Texture::Texture(QObject *parent) :
     QObject(parent), m_image(QImage(":/ico/noImage")),
-    m_glTextureName(-1), m_varName(QString()), m_filename(QString())
+    m_glTextureName(-1), m_varName(QString()), m_filename(QString()), m_glUniformId(-1)
 {
 }
 
 Texture::Texture(const Texture& tex) :
     QObject(tex.parent()), m_image(tex.image()),
     m_glTextureName(tex.glTextureName()), m_varName(tex.varName()),
-    m_filename(tex.fullFileName())
+    m_filename(tex.fullFileName()), m_glUniformId(tex.uniformId())
 {
 
 }
@@ -35,12 +35,23 @@ void Texture::setGLTextureName(int texName)
     m_glTextureName = texName;
 }
 
+void Texture::setUniformId(int id)
+{
+    m_glUniformId = id;
+}
+
+int Texture::uniformId(void)const
+{
+    return m_glUniformId;
+}
+
 void Texture::clean(void)
 {
     m_image = QImage(":/ico/noImage");
     m_glTextureName = -1;
     m_varName = QString();
     m_filename = QString();
+    m_glUniformId = -1;
 }
 
 const QString& Texture::varName(void) const
@@ -80,6 +91,7 @@ const Texture& Texture::operator=(const Texture& tex)
     m_glTextureName = tex.glTextureName();
     m_varName = tex.varName();
     m_filename = tex.fullFileName();
+    m_glUniformId = tex.uniformId();
     return *this;
 }
 

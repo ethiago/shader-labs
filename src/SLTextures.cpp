@@ -81,7 +81,7 @@ void SLTextures::setupTexture(const QString& imageFileName, bool add)
     m_textureList[textureContext].setGLTextureName(sl->glContext()->bindTexture(imageFileName, GL_TEXTURE_2D));
     m_textureList[textureContext].setVarName(SAMPLEPREFIX2D + QString::number(textureContext));
     m_textureList[textureContext].setFileName(imageFileName);
-    activeTexture();
+    activeTextures();
     viewUpdateList();
     sl->glContext()->updateGL();
 }
@@ -125,7 +125,7 @@ void SLTextures::removeTexture(void)
     }
 
     viewUpdateList();
-    activeTexture();
+    activeTextures();
     sl->glContext()->updateGL();
 }
 
@@ -137,7 +137,7 @@ void SLTextures::textureCurrentChange(int index)
 
     textureContext = index;
     m_textureView->setTexture(m_textureList[textureContext]);
-    activeTexture();
+    activeTextures();
     sl->glContext()->updateGL();
 }
 
@@ -155,16 +155,24 @@ void SLTextures::viewUpdateList(void)
     m_textureView->setTextureList(list, textureContext);
 }
 
-void SLTextures::setUniformTextureNames(SLShaderProgram* program)
+void SLTextures::setUniformTexture(SLShaderProgram* program)
 {
     for(int i = 0; i < m_textureList.size(); ++i)
     {
-        const char * n = m_textureList[i].varName().toAscii();
-        program->setUniformValue(n, (GLint)i );
+        program->setUniformValue(m_textureList[i].uniformId(), (GLint)i );
     }
 }
 
-void SLTextures::activeTexture(void)
+void SLTextures::setupUniformTextureNames(SLShaderProgram* program)
+{
+    for(int i = 0; i < m_textureList.size(); ++i)
+    {
+        const char * name = m_textureList[i].varName().toAscii();
+        m_textureList[i].setUniformId(program->uniformLocation(name));
+    }
+}
+
+void SLTextures::activeTextures(void)
 {
     for(int i = 0; i < m_textureList.size(); ++i)
     {
@@ -209,6 +217,6 @@ void SLTextures::setTextures(const QStringList& list)
     }
 
     viewUpdateList();
-    activeTexture();
+    activeTextures();
     ShaderLab::instance()->glContext()->updateGL();
 }

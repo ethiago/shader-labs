@@ -47,15 +47,9 @@ public:
     void setGeometryVertexCount(GLuint n);
     bool isLinked();
     void bind();
-    void setUniformValue(const char *name, const QVector2D& value);
-    void setUniformValue(const char *name, const QSize& value);
-    void setUniformValue(const char *name, GLuint value);
-    void setUniformValue(const char *name, GLfloat value);
 
-    void setUniformValue(GLuint location, const QVector2D& value);
-    void setUniformValue(GLuint location, const QSize& value);
+    GLint uniformLocation(const char *name);
     void setUniformValue(GLuint location, GLuint value);
-    void setUniformValue(GLuint location, GLfloat value);
 
     void release();
     bool saveAllShaders();

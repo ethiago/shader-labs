@@ -29,10 +29,12 @@ public:
     explicit SLTextures(TexturePropertiesView*, SLTexture3DDialog *, QObject* parent = 0);
     virtual ~SLTextures();
 
-    void setUniformTextureNames(SLShaderProgram*);
-    void activeTexture(void);
+    void setUniformTexture(SLShaderProgram*);
+    void setupUniformTextureNames(SLShaderProgram*);
+    void activeTextures(void);
     QStringList getTextureFileNames();
     void setTextures(const QStringList&);
+
 
 public slots:
     void removeTexture(void);

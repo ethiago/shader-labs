@@ -32,12 +32,11 @@ void SLObject2::setObject(Object3D *obj)
 
 void SLObject2::draw()
 {
-    m_textures->activeTexture();
     if(m_shader->isLinked())
     {
         m_shader->bind();
 
-        m_textures->setUniformTextureNames(m_shader);
+        m_textures->setUniformTexture(m_shader);
     }
 
     m_object->draw();
@@ -47,7 +46,9 @@ void SLObject2::draw()
 
 void SLObject2::compileShaders()
 {
+   m_textures->activeTextures();
    m_shader->compileAndLink();
+   m_textures->setupUniformTextureNames(m_shader);
    emit sendLog(m_shader->log());
    ShaderLab::instance()->glContext()->updateGL();
 }

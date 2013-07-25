@@ -208,8 +208,6 @@ bool SLShaderProgram::compileAndLink()
     {
         wsizeLocation = glGetUniformLocation(m_programId, "wsize");
         timeLocation  = glGetUniformLocation(m_programId, "time");
-
-        qDebug() << wsizeLocation << ", " << timeLocation;
     }
 
     return ret;
@@ -260,57 +258,19 @@ void SLShaderProgram::bind()
     }
 }
 
-void SLShaderProgram::setUniformValue(const char *name, const QVector2D& value)
+GLint SLShaderProgram::uniformLocation(const char *name)
 {
     GLuint location = 0;
 
     if (m_linked)
         location = glGetUniformLocation(m_programId, name);
 
-    if (location != 0)
-        glUniform2fv(location, 1, reinterpret_cast<const GLfloat *>(&value));
+    return location;
 }
 
-void SLShaderProgram::setUniformValue(const char *name, const QSize& value)
+void SLShaderProgram::setUniformValue(GLuint name, GLuint value)
 {
-    GLuint location = 0;
-
-    if (m_linked)
-        location = glGetUniformLocation(m_programId, name);
-
-    if (location != 0)
-    {
-        GLfloat values[4] = {GLfloat(value.width()), GLfloat(value.height())};
-        glUniform2fv(location, 1, values);
-    }
-}
-
-
-
-void SLShaderProgram::setUniformValue(const char *name, GLuint value)
-{
-    GLuint location = 0;
-
-    if (m_linked)
-        location = glGetUniformLocation(m_programId, name);
-
-    if (location != 0)
-        glUniform1i(location, value);
-    else
-        qWarning() << "Can't get a uniform location";
-}
-
-void SLShaderProgram::setUniformValue(const char *name, GLfloat value)
-{
-    GLuint location = 0;
-
-    if (m_linked)
-        location = glGetUniformLocation(m_programId, name);
-
-    if (location != 0)
-        glUniform1f(location, value);
-    else
-        qWarning() << "Can't get a uniform location";
+    glUniform1i(name, value);
 }
 
 bool SLShaderProgram::saveAllShaders()
