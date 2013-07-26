@@ -26,12 +26,15 @@ class GLDisplay : public QGLWidget
     QPoint rigthPressedPoint;
     QPoint leftPressedPoint;
     float zoom;
+    float frustumZoom;
 
     enum Properties{
         BackGroundColor,
         ModelColor,
         Ortho,
-        Continuous
+        Continuous,
+        FrustumZoom,
+        BackfaceCulling
     };
 
 signals:
@@ -50,9 +53,6 @@ public:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
-
-    void setZoom(float z);
-    float getZoom(void)const;
 
     QtTreePropertyBrowser* getPropertyBrowser();
 

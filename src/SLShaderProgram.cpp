@@ -33,7 +33,7 @@
 #define GL_TRIANGLE_STRIP_ADJACENCY_EXT                0xD
 #endif
 
-#define TIMEINC 0.01
+#define TIMEINC 0.0005
 
 //constructors
 SLShaderProgram::SLShaderProgram(QObject *parent) :
