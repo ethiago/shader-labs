@@ -52,6 +52,8 @@ private:
     bool loadModelTag(QDomElement);
     bool loadTextureTag(QDomElement);
 
+    QString resolvePath(QString relativePath);
+
     QString getXml(void);
 
 };
