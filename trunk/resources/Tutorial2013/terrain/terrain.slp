@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>../common/modelSpace.vert</vertex>
+		<fragment>../common/defaultBlack.frag</fragment>
+		<tessellation_evaluation>terrain.tsev</tessellation_evaluation>
+		<tessellation_control>terrain.tsct</tessellation_control>
+	</shaders>
+	<model>
+		<id>10</id>
+	</model>
+	<textures>
+		<filename>height.jpg</filename>
+	</textures>
+</ShaderLab>
