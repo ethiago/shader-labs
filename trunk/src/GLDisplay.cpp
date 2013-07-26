@@ -12,14 +12,12 @@
     #include <GL/glu.h>
 #endif
 
-
-
 #define ZOOMSTEP 0.05
 
 GLDisplay::GLDisplay(QGLContext* context, QWidget *parent) :
     QGLWidget(context,parent),
     rigthPressedPoint(NULLPOINT),
-    leftPressedPoint(NULLPOINT), zoom(1.0)
+    leftPressedPoint(NULLPOINT), zoom(0.0), frustumZoom(1.0)
 {
     setStyleSheet("border: 2px solid black;");
 
@@ -29,22 +27,12 @@ GLDisplay::GLDisplay(QGLContext* context, QWidget *parent) :
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(timeout()) );
 
-    timer.setInterval(10);
+    timer.setInterval(30);
     timer.start();
 }
 
 GLDisplay::~GLDisplay()
 {
-}
-
-void GLDisplay::setZoom(float z)
-{
-    zoom = z;
-}
-
-float GLDisplay::getZoom(void)const
-{
-    return zoom;
 }
 
 void GLDisplay::initializeGL()
@@ -78,17 +66,17 @@ void GLDisplay::resizeGL(int width, int height)
 float GLDisplay::xDist(float aspect)
 {
     if(aspect < 1)
-        return (0.5)*zoom;
+        return (0.5)*frustumZoom;
     else
-        return (0.5*aspect)*zoom;
+        return (0.5*aspect)*frustumZoom;
 }
 
 float GLDisplay::yDist(float aspect)
 {
     if(aspect > 1)
-        return (0.5)*zoom;
+        return (0.5)*frustumZoom;
     else
-        return (0.5*(1/aspect))*zoom;
+        return (0.5*(1/aspect))*frustumZoom;
 }
 
 void GLDisplay::paintGL()
@@ -100,15 +88,22 @@ void GLDisplay::paintGL()
 
     emit lightSetup();
 
+    bool bFCulling = properties.find(BackfaceCulling).value()->value().value<bool>();
+
+    if(bFCulling)
+        glEnable(GL_CULL_FACE);
+    else
+        glDisable(GL_CULL_FACE);
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     bool o = properties.find(Ortho).value()->value().value<bool>();
 
     if(o)
-        glOrtho(-xdist*3.0, xdist*3.0, -ydist*3.0, +ydist*3.0, 5.0, 50);
+        glOrtho(-xdist*3.0, xdist*3.0, -ydist*3.0, +ydist*3.0, 5.0, 100);
     else
-        glFrustum(-xdist, xdist, -ydist, +ydist, 5.0, 50);
+        glFrustum(-xdist, xdist, -ydist, +ydist, 5.0, 100);
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -122,7 +117,7 @@ void GLDisplay::paintGL()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(0,0,-15, 0,0,0, 0,-1,0);
+    gluLookAt(0,0,-15-zoom, 0,0,-zoom, 0,-1,0);
 
     c = properties.find(ModelColor).value()->value().value<QColor>();
     glColor4f( c.redF(), c.greenF(), c.blueF(), c.alphaF());
@@ -171,6 +166,7 @@ void GLDisplay::mouseReleaseEvent ( QMouseEvent * event )
     {
         if(rigthPressedPoint != NULLPOINT)
         {
+            emit mouseRigthFinish(rigthPressedPoint, event->pos());
             rigthPressedPoint = NULLPOINT;
         }
         event->accept();
@@ -191,6 +187,7 @@ void GLDisplay::mouseMoveEvent(QMouseEvent *event)
     {
         if(rigthPressedPoint != NULLPOINT)
         {
+            emit mouseRigthMove(rigthPressedPoint, event->pos());
         }
         event->accept();
     }else if(event->buttons() == Qt::LeftButton)
@@ -245,6 +242,22 @@ void GLDisplay::setupPropertiesList()
         properties.insert(Continuous, item);
     }
 
+    {
+        item = variantManager->addProperty(QVariant::Bool,
+                                           QLatin1String("FrustumZoom"));
+        item->setValue(true);
+        topItem->addSubProperty(item);
+        properties.insert(FrustumZoom, item);
+    }
+
+    {
+        item = variantManager->addProperty(QVariant::Bool,
+                                           QLatin1String("BackfaceCulling"));
+        item->setValue(false);
+        topItem->addSubProperty(item);
+        properties.insert(BackfaceCulling, item);
+    }
+
     variantFactory = new QtVariantEditorFactory();
 
     variantEditor = new QtTreePropertyBrowser();
@@ -262,7 +275,12 @@ void GLDisplay::wheelEvent(QWheelEvent * event)
     int nsteps = event->delta() / (8*15);
 
     if (event->orientation() == Qt::Vertical) {
-        zoom += ZOOMSTEP * nsteps;
+        bool f = properties.find(FrustumZoom).value()->value().value<bool>();
+        if(f)
+            frustumZoom += ZOOMSTEP * nsteps;
+        else
+            zoom +=  nsteps/2.0;
+
         event->accept();
         updateGL();
     }else event->ignore();
