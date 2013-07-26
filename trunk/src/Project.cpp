@@ -94,7 +94,7 @@ bool Project::loadTextureTag(QDomElement root)
     {
         value = child.text();
         if(!value.isEmpty())
-            textures.append(value);
+            textures.append(resolvePath(value));
 
         child = child.nextSiblingElement("filename");
     }
@@ -120,7 +120,7 @@ bool Project::loadFileTag(QDomElement root)
         {
             value = child.text();
             if(!value.isEmpty())
-                shaderFiles[shaderType] = value;
+                shaderFiles[shaderType] = resolvePath(value);
         }
     }
 
@@ -157,6 +157,12 @@ QString Project::getRelativeFilePathByShader(ShaderLab::Shader shadertype)
     {
         return getRelativeFilePath(it.value());
     }
+}
+
+QString Project::resolvePath(QString relativePath)
+{
+    QDir d = m_fileName.absoluteDir();
+    return d.absoluteFilePath(relativePath);
 }
 
 QString Project::getRelativeFilePath(QString filePath)
@@ -316,11 +322,7 @@ void Project::setTextures(const QStringList& texturesNames)
 
     for(int i = 0; i < texturesNames.size(); ++i)
     {
-        QFileInfo fi(texturesNames[i]);
-
-        QDir d = m_fileName.absoluteDir();
-
-        textures.append(d.relativeFilePath(fi.filePath()));
+        textures.append(texturesNames[i]);
     }
 }
 
