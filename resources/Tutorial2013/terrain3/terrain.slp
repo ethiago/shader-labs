@@ -9,4 +9,7 @@
 	<model>
 		<id>10</id>
 	</model>
+	<textures>
+		<filename>height.jpg</filename>
+	</textures>
 </ShaderLab>

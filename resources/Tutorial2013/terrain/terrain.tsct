@@ -2,21 +2,16 @@
  
 layout(vertices=4) out;
 
-out data{
-	float dist;
-}Data[4];
-
 void main(void) {
-    gl_out[gl_InvocationID].gl_Position = vec4(gl_in[gl_InvocationID].gl_Position);
+    #define iD gl_InvocationID
+    gl_out[iD].gl_Position = gl_in[iD].gl_Position;
 		
-	vec4 eyeCoordinate = gl_ModelViewMatrix*gl_in[gl_InvocationID].gl_Position;
-	Data[gl_InvocationID].dist = 5.0/length(eyeCoordinate.xyz);
+    vec4 vertex = gl_in[iD].gl_Position;
+    vec4 eyeCoordinate = gl_ModelViewMatrix*vertex;
+    float dist = 5.0/length(eyeCoordinate.xyz);
 
-	gl_TessLevelOuter[gl_InvocationID] = gl_MaxTessGenLevel*Data[gl_InvocationID].dist;
+	gl_TessLevelOuter[iD] = gl_MaxTessGenLevel*dist;
 
-	barrier();
-
-	float maxDist = max(max(Data[0].dist,Data[1].dist),max(Data[2].dist,Data[3].dist));
-    gl_TessLevelInner[0] = gl_MaxTessGenLevel*maxDist;
-    gl_TessLevelInner[1] = gl_MaxTessGenLevel*maxDist;
+    gl_TessLevelInner[0] = 10.0;
+    gl_TessLevelInner[1] = 10.0;
 }

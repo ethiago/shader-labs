@@ -1,0 +1,28 @@
+#version 400 compatibility
+ 
+layout(vertices=4) out;
+
+out data{
+	vec2 texCoord;
+	float dist;
+}Data[4];
+
+void main(void) {
+	#define iD gl_InvocationID 
+    gl_out[iD].gl_Position = gl_in[iD].gl_Position;
+    
+	vec4 vertex = gl_in[iD].gl_Position;
+	Data[iD].texCoord = (vertex.xy + vec2(10.0))/20.0;
+    
+	vec4 eyeCoordinate = gl_ModelViewMatrix*vertex;
+	Data[iD].dist = 10.0/length(eyeCoordinate.xyz);
+
+	gl_TessLevelOuter[iD] = gl_MaxTessGenLevel*Data[iD].dist;
+
+	barrier();
+
+	float max13 = max(Data[1].dist,Data[3].dist);
+	float max02 = max(Data[0].dist,Data[2].dist);
+    gl_TessLevelInner[0] = gl_MaxTessGenLevel*max13;
+    gl_TessLevelInner[1] = gl_MaxTessGenLevel*max02;
+}
