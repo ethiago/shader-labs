@@ -4,9 +4,11 @@ layout(vertices=4) out;
 
 void main(void) {
     #define iD gl_InvocationID
-    gl_out[iD].gl_Position = gl_in[iD].gl_Position;
-		
     vec4 vertex = gl_in[iD].gl_Position;
+	vertex.xyz *= 10.0;
+    gl_out[iD].gl_Position = vertex;
+		
+
     vec4 eyeCoordinate = gl_ModelViewMatrix*vertex;
     float dist = 5.0/length(eyeCoordinate.xyz);
 
