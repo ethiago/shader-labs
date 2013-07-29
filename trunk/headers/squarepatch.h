@@ -7,7 +7,7 @@ class SquarePatch : public Patch
 {
     Q_OBJECT
 public:
-    explicit SquarePatch();
+    explicit SquarePatch(int stacks = 1, int slices = 1);
 
     explicit SquarePatch(const SquarePatch& p);
      ~SquarePatch();
