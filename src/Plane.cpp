@@ -47,13 +47,13 @@ void Plane::storeList() const
 
     glNormal3fv(norm);
 
+    glBegin(GL_QUADS);
     float cy = 0.0;
     for(float y = -1.0; y < 1.0; y += stepY, cy += stepCY)
     {
         float cx = 0.0;
         for(float x = -1.0; x < 1.0; x += stepX, cx += stepCX)
         {
-            glBegin(GL_QUADS);
 
             //Vert1
             glTexCoord2f(cx, cy);
@@ -71,11 +71,9 @@ void Plane::storeList() const
             glTexCoord2f(cx, cy + stepCY);
             glVertex3f(x,y + stepY,0.0);
 
-
-            glEnd();
         }
     }
-
-   glEndList();
+    glEnd();
+    glEndList();
 
 }
