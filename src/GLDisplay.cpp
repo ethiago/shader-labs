@@ -122,6 +122,8 @@ void GLDisplay::paintGL()
     c = properties.find(ModelColor).value()->value().value<QColor>();
     glColor4f( c.redF(), c.greenF(), c.blueF(), c.alphaF());
 
+    //glLineWidth(2.5);
+
     emit drawModel();
 
     glFlush();

@@ -198,6 +198,11 @@ void MainController::loadProject(void)
     openProject(InterfaceRequests::openProject());
 }
 
+void MainController::openFileFromArg(const QString&)
+{
+
+}
+
 void MainController::openProject(const QString& filename)
 {
     if(filename.isEmpty())

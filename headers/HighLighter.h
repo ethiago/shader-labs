@@ -33,6 +33,7 @@ private:
     QTextCharFormat modifier;
     QTextCharFormat precompiler;
     QTextCharFormat statement;
+    QTextCharFormat anotherKeys;
     QTextCharFormat singleLineCommentFormat;
     QTextCharFormat multiLineCommentFormat;
     QTextCharFormat quotationFormat;

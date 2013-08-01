@@ -8,7 +8,7 @@ Highlighter::Highlighter(QTextDocument *parent)
     precompiler.setForeground(Qt::darkGray);
     precompiler.setFontWeight(QFont::Bold);
     QStringList precompilerPatterns;
-    precompilerPatterns << "^#define\\b" << "^#undef\\b"
+    precompilerPatterns << "\\b#define\\b" << "^#undef\\b"
             << "^#if\\b" << "^#ifdef\\b" << "^#else\\b" << "^#elif\\b"
             << "^#endif\\b" << "^#error\\b" << "^#pragma\\b"
             << "^#extension\\b" << "^#version\\b" << "^#line\\b"
@@ -97,7 +97,8 @@ Highlighter::Highlighter(QTextDocument *parent)
             << "\\bgl_MaxTextureImageUnits\\b" << "\\bgl_MaxTextureUnits\\b"
             << "\\bgl_MaxVaryingFloats\\b" << "\\bgl_MaxVertexAttribs\\b"
             << "\\bgl_MaxVertexTextureImageUnits\\b"
-            << "\\bgl_MaxVertexUniformComponents\\b";
+            << "\\bgl_MaxVertexUniformComponents\\b"
+            << "\\bgl_MaxTessGenLevel\\b";
     foreach (const QString &pattern, globalConstantPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = globalConstant;
@@ -135,8 +136,10 @@ Highlighter::Highlighter(QTextDocument *parent)
             << "\\bgl_TexCoord\\b" << "\\bgl_FogFragCoord\\b" << "\\bgl_Position\\b"
             << "\\bgl_PointSize\\b" << "\\bgl_ClipVertex\\b"
             << "\\bgl_FragColor\\b" << "\\bgl_FrontFacing\\b"
-            << "\\bgl_FragData\\b" << "\\bgl_FragDepth\\b" <<
-               "\\bgl_MultiTexCoord[0-5]\\b";
+            << "\\bgl_FragData\\b" << "\\bgl_FragDepth\\b"
+            << "\\bgl_MultiTexCoord[0-5]\\b"
+            << "\\bgl_InvocationID\\b" << "\\bgl_in\\b" << "\\bgl_out\\b"
+            << "\\bgl_TessLevelOuter\\b" << "\\bgl_TessLevelInner\\b" << "\\bgl_TessCoord\\b";
     foreach (const QString &pattern, globalVarPatterns) {
         rule.pattern = QRegExp(pattern);
         rule.format = globalVarFormat;
@@ -177,6 +180,14 @@ Highlighter::Highlighter(QTextDocument *parent)
         highlightingRules.append(rule);
     }
 
+    anotherKeys.setForeground(QBrush(QColor(0,60,80)));
+    QStringList anotherPatterns;
+    anotherPatterns << "\\bcompatibility\\b" << "\\blayout\\b";
+    foreach (const QString &pattern, anotherPatterns) {
+        rule.pattern = QRegExp(pattern);
+        rule.format = anotherKeys;
+        highlightingRules.append(rule);
+    }
 
 
     singleLineCommentFormat.setForeground(Qt::darkGreen);
