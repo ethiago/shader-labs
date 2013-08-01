@@ -1,6 +1,8 @@
 #include <QtGui/QApplication>
+#include <QFileInfo>
 #include "MainController.h"
 #include "MainWindow.h"
+#include "Global.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,11 +13,19 @@ int main(int argc, char *argv[])
 
     if(argc == 2)
     {
-        QString fn(argv[1]);
+        QFileInfo fi(argv[1]);
 
-        if(fn.right(3) == "slp")
-            mc.openProject(fn);
-
+        if(fi.isFile())
+        {
+            if(fi.suffix() == "slp")
+            {
+                mc.openProject(fi.absoluteFilePath());
+            }
+            else
+            {
+                mc.openFileFromArg(fi.absoluteFilePath());
+            }
+        }
     }
 
     return app.exec();

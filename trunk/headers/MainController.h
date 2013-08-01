@@ -31,6 +31,7 @@ public:
     explicit MainController(MainWindow *mw, QObject *parent = 0);
     ~MainController();
     void openProject(const QString&);
+    void openFileFromArg(const QString&);
 
 public slots:
     void programCloseRequest(QCloseEvent* event);
