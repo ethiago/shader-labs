@@ -126,7 +126,7 @@ void GLDisplay::paintGL()
 
     emit drawModel();
 
-    glFlush();
+    swapBuffers();
 }
 
 void GLDisplay::mousePressEvent ( QMouseEvent * event )
