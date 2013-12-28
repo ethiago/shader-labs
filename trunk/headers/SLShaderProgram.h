@@ -47,6 +47,7 @@ public:
     void setGeometryVertexCount(GLuint n);
     bool isLinked();
     void bind();
+    int getProgramId();
 
     GLint uniformLocation(const char *name);
     void setUniformValue(GLuint location, GLuint value);

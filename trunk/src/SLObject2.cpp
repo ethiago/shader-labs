@@ -8,10 +8,10 @@
 #include "QGLWidget"
 
 SLObject2::SLObject2(MainWindow *mw,  SLShaderProgram* slp, SLTextures* slt, QObject *parent) :
-    QObject(parent), m_shader(slp), m_object(NULL), m_textures(slt), m_project(NULL)
+    QObject(parent), mainwindow(mw), m_shader(slp), m_object(NULL), m_textures(slt), m_project(NULL)
 {
-    connect(mw, SIGNAL(runShaders()), this, SLOT(compileShaders()));
-    connect(this, SIGNAL(sendLog(QString)), mw, SLOT(shaderLog(QString)));
+    connect(mainwindow, SIGNAL(runShaders()), this, SLOT(compileShaders()));
+    connect(this, SIGNAL(sendLog(QString)), mainwindow, SLOT(shaderLog(QString)));
 }
 
 SLObject2::~SLObject2()
@@ -82,8 +82,8 @@ void SLObject2::close()
     saveMerge(false);
     m_shader->setStandBy();
 
-    disconnect(this);
-    disconnect(this, 0, 0, 0);
+    disconnect(this, 0, mainwindow, 0);
+    disconnect(mainwindow, 0, this, 0);
 }
 
 QString SLObject2::saveMerge(bool as)
@@ -148,4 +148,9 @@ void SLObject2::toggleWireframe()
 Object3D * SLObject2::object3D()
 {
     return m_object;
+}
+
+int SLObject2::programId()
+{
+    return m_shader->getProgramId();
 }

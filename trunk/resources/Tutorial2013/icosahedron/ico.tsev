@@ -1,5 +1,5 @@
 #version 400 compatibility
-layout( triangles, fractional_even_spacing)  in;
+layout( triangles)  in;
 
 void main( )
 {
