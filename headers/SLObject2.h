@@ -13,6 +13,7 @@ class SLObject2 : public QObject
 {
     Q_OBJECT
 
+    MainWindow * mainwindow;
     SLShaderProgram *m_shader;
     Object3D *m_object;
     SLTextures *m_textures;
@@ -33,6 +34,7 @@ public:
     SLTextures * textures();
     void toggleWireframe();
     Object3D * object3D();
+    int programId();
 
 signals:
     void sendLog(const QString&);

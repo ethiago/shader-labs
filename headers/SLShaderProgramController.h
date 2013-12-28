@@ -15,6 +15,7 @@ class SLShaderProgramController : public QObject
 
     PrimitivesDialog * primitivesDialog;
     SLShaderProgram * shaderProgram;
+    MainWindow* mainwindow;
 
 public:
     explicit SLShaderProgramController(MainWindow* mw, PrimitivesDialog*, QObject *parent = 0);

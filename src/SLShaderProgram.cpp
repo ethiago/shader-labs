@@ -343,3 +343,8 @@ void SLShaderProgram::setStandBy()
     }
     m_shaders.clear();
 }
+
+int SLShaderProgram::getProgramId()
+{
+    return m_programId;
+}
