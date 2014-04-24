@@ -62,6 +62,11 @@ ShaderLab::Shader ShaderLab::intToShader(int v)
 void ShaderLab::extensionsAnalise()
 {
     m_extensions = 0;
+
+    QGLFormat::OpenGLVersionFlags oglvf =  QGLFormat::openGLVersionFlags ();
+
+    qDebug() << oglvf;
+
     const char *extensionString = reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS));
     const char *renderer = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
 
@@ -81,7 +86,7 @@ void ShaderLab::extensionsAnalise()
             m_extensions |= ShaderLab::VertexShader;
         else if(ext == "GL_ARB_fragment_shader")
             m_extensions |= ShaderLab::FragmentShader;
-        else if(ext == "GL_ARB_geometry_shader4")
+        else if(ext == "GL_ARB_geometry_shader4" || ext == "GL_EXT_geometry_shader4")
             m_extensions |= ShaderLab::GeometryShaderARB;
         else if(ext == "GL_EXT_geometry_shader4")
             m_extensions |= ShaderLab::GeometryShaderEXT;

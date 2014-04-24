@@ -10,7 +10,6 @@
 
 class MainWindow;
 class TexturePropertiesView;
-class SLTexture3DDialog;
 class SLShaderProgram;
 
 class SLTextures : public QObject
@@ -20,13 +19,12 @@ class SLTextures : public QObject
     QList<Texture> m_textureList;
     int textureContext;
     TexturePropertiesView* m_textureView;
-    SLTexture3DDialog *m_texture3DDialog;
 
 signals:
     void updateGL();
 
 public:
-    explicit SLTextures(TexturePropertiesView*, SLTexture3DDialog *, QObject* parent = 0);
+    explicit SLTextures(TexturePropertiesView*, QObject* parent = 0);
     virtual ~SLTextures();
 
     void setUniformTexture(SLShaderProgram*);

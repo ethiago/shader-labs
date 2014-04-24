@@ -27,12 +27,12 @@
 #include <QtOpenGL>
 #include <QPoint>
 
-RenderController::RenderController(MainWindow *mainWindow,SLObjectController * obj,
+RenderController::RenderController(MainWindow *mainWindow,
                                    QObject *parent):
     QObject(parent)
 {
     this->mainWindow = mainWindow;
-    objectController = obj;
+    objectController = new SLObjectController(mainWindow);
     scene = new Scene3D();
     light = new DirectionalLight;
     arcBall = new ArcBall(500);
@@ -103,7 +103,6 @@ RenderController::RenderController(MainWindow *mainWindow,SLObjectController * o
 
 RenderController::~RenderController()
 {
-    delete scene;
     for(int i = 0 ; i < models.size(); ++i)
     {
         Object3D* obj = models[i].second;
@@ -113,6 +112,10 @@ RenderController::~RenderController()
 
     delete display;
     delete arcBall;
+    delete light;
+    delete propertries;
+    delete objectController;
+    delete scene;
 }
 
 void RenderController::updateGL(void)

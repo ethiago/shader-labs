@@ -21,7 +21,7 @@ class SLObject2 : public QObject
     Project * m_project;
 
 public:
-    explicit SLObject2(MainWindow *mw, SLShaderProgram* slp, SLTextures* slt, QObject *parent = 0);
+    explicit SLObject2(MainWindow *mw, SLShaderProgram* slp, SLTextures* slt);
     virtual ~SLObject2();
     void setObject(Object3D *obj);
     void draw();

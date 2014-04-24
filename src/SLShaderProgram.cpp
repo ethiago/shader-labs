@@ -36,8 +36,8 @@
 #define TIMEINC 0.0005
 
 //constructors
-SLShaderProgram::SLShaderProgram(QObject *parent) :
-    QObject(parent), m_programId(0), m_log(QString()),
+SLShaderProgram::SLShaderProgram() :
+    QObject(0), m_programId(0), m_log(QString()),
     m_geometryInputType(GL_TRIANGLES), m_geometryOutputType(GL_TRIANGLE_STRIP),
     m_geometryVertexCount(16), m_linked(false)
 {

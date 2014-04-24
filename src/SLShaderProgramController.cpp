@@ -7,7 +7,7 @@
 SLShaderProgramController::SLShaderProgramController(MainWindow* mw, PrimitivesDialog* pd,  QObject *parent) :
     QObject(parent),mainwindow(mw), primitivesDialog(pd), shaderProgram(0)
 {
-    primitivesDialog->setMaxOutputVertexOut(/*GL_MAX_GEOMETRY_OUTPUT_VERTICES*/128);
+    primitivesDialog->setMaxOutputVertexOut(/*GL_MAX_GEOMETRY_OUTPUT_VERTICES*/32);
 
     connect(mainwindow, SIGNAL(newPrimitiveDialog()),
             this, SLOT(showPrimitive()));
@@ -21,8 +21,7 @@ SLShaderProgramController::SLShaderProgramController(MainWindow* mw, PrimitivesD
 //destructor
 SLShaderProgramController::~SLShaderProgramController()
 {
-    disconnect(mainwindow,0,this,0);
-    disconnect(primitivesDialog, 0, this,0);
+
 }
 
 //public methods
