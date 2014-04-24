@@ -48,7 +48,7 @@ class RenderController : public QObject
     GlobalProperties *propertries;
 
 public:
-    explicit RenderController(MainWindow *mainWindow, SLObjectController * obj,
+    explicit RenderController(MainWindow *mainWindow,
                               QObject *parent = 0);
     ~RenderController();
     void updateGL(void);

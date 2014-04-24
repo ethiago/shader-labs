@@ -30,8 +30,7 @@ MainController::MainController(MainWindow *mw, QObject *parent)
 
     tabWidget = mw->createTabWidget();
 
-    objectController = new SLObjectController(mainWindow, this);
-    renderController = new RenderController(mainWindow, objectController);
+    renderController = new RenderController(mainWindow);
 
     glSetup();
 

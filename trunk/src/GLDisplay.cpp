@@ -19,6 +19,7 @@ GLDisplay::GLDisplay(QGLContext* context, QWidget *parent) :
     rigthPressedPoint(NULLPOINT),
     leftPressedPoint(NULLPOINT), zoom(0.0), frustumZoom(1.0)
 {
+    setAutoBufferSwap(true);
     setStyleSheet("border: 2px solid black;");
 
     setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -125,8 +126,6 @@ void GLDisplay::paintGL()
     //glLineWidth(2.5);
 
     emit drawModel();
-
-    swapBuffers();
 }
 
 void GLDisplay::mousePressEvent ( QMouseEvent * event )

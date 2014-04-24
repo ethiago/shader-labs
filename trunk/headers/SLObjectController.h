@@ -6,7 +6,6 @@
 class MainWindow;
 class SLObject2;
 class TexturePropertiesView;
-class SLTexture3DDialog;
 class PrimitivesDialog;
 class Object3D;
 class SLShaderProgramController;
@@ -18,7 +17,6 @@ class SLObjectController : public QObject
     MainWindow* mainWindow;
     SLObject2* object;
     TexturePropertiesView * m_texturePropertiesView;
-    SLTexture3DDialog* m_texture3dDialog;
     PrimitivesDialog* m_primitivesDialog;
     SLShaderProgramController* m_programController;
 

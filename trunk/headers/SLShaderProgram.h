@@ -36,7 +36,7 @@ class SLShaderProgram : public QObject
     QString logProcess(SLShader2* shader);
     bool programLink();
 public:
-    explicit SLShaderProgram(QObject *parent = 0);
+    explicit SLShaderProgram();
     ~SLShaderProgram();
     EditorController* setShader(ShaderLab::Shader, const QString& fileName = QString());
     bool compileAndLink();

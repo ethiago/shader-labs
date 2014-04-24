@@ -7,8 +7,8 @@
 #include "SLTextures.h"
 #include "QGLWidget"
 
-SLObject2::SLObject2(MainWindow *mw,  SLShaderProgram* slp, SLTextures* slt, QObject *parent) :
-    QObject(parent), mainwindow(mw), m_shader(slp), m_object(NULL), m_textures(slt), m_project(NULL)
+SLObject2::SLObject2(MainWindow *mw,  SLShaderProgram* slp, SLTextures* slt) :
+    QObject(0), mainwindow(mw), m_shader(slp), m_object(NULL), m_textures(slt), m_project(NULL)
 {
     connect(mainwindow, SIGNAL(runShaders()), this, SLOT(compileShaders()));
     connect(this, SIGNAL(sendLog(QString)), mainwindow, SLOT(shaderLog(QString)));
@@ -20,6 +20,8 @@ SLObject2::~SLObject2()
         delete m_project;
     if(m_object)
         delete m_object;
+
+    delete m_shader;
 }
 
 void SLObject2::setObject(Object3D *obj)
@@ -82,8 +84,8 @@ void SLObject2::close()
     saveMerge(false);
     m_shader->setStandBy();
 
-    disconnect(this, 0, mainwindow, 0);
-    disconnect(mainwindow, 0, this, 0);
+    this->disconnect(mainwindow);
+    mainwindow->disconnect(this);
 }
 
 QString SLObject2::saveMerge(bool as)

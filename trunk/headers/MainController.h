@@ -22,7 +22,6 @@ class MainController : public QObject
 
     MainWindow *mainWindow;
     RenderController *renderController;
-    SLObjectController* objectController;
 
     ChooseShaderDialog *chooseShaderDialog;
     SLTabWidget *tabWidget;

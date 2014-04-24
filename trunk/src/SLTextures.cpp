@@ -7,12 +7,11 @@
 #include <QFileDialog>
 #include <QAction>
 #include "InterfaceRequests.h"
-#include "SLTexture3dDialog.h"
 #include "SLShaderProgram.h"
 #include <QGLWidget>
 
-SLTextures::SLTextures(TexturePropertiesView* tpv, SLTexture3DDialog * t3d, QObject* parent) :
-    QObject(parent), m_textureView(tpv), m_texture3DDialog(t3d)
+SLTextures::SLTextures(TexturePropertiesView* tpv, QObject* parent) :
+    QObject(parent), m_textureView(tpv)
 {
    m_textureList.append(Texture());
 
@@ -27,9 +26,6 @@ SLTextures::SLTextures(TexturePropertiesView* tpv, SLTexture3DDialog * t3d, QObj
 
    connect(m_textureView, SIGNAL(textureCurrentChange(int)),
            this,SLOT(textureCurrentChange(int)));
-
-   connect(m_textureView, SIGNAL(addTexture3DClicked()),
-           this, SLOT(addTexture3D()));
 
    textureCurrentChange(0);
    viewUpdateList();
