@@ -12,10 +12,10 @@ win32 {
 
 unix {
     TARGET = ShaderLab-unix32
-    #LIBS += -lGLU -ldl    #does't work on Mac
+    LIBS += -lGLU -ldl    #does't work on Mac
 }
 #MAC
-LIBS += -framework Carbon
+#LIBS += -framework Carbon
 #/MAC
 
 TEMPLATE = app
@@ -31,6 +31,8 @@ DESTDIR = $$DEPLOYDIR/bin
 #QtSolutions_PropertyBrowser-head
 include(../3rd-party/qtpropertybrowser/src/qtpropertybrowser.pri)
 #QtSolutions_PropertyBrowser-head
+
+QMAKE_LFLAGS += '-Wl,-rpath,\'\$$ORIGIN/../lib\''
 
 SLSRC=../src
 SLHED=../headers
