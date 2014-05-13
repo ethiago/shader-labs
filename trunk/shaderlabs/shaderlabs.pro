@@ -129,7 +129,8 @@ HEADERS += $$SLHED/gl3w.h \
     $$SLHED/SLObject2.h \
     $$SLHED/SLObjectController.h \
     $$SLHED/slgl3w.h \
-    ../headers/squarepatch.h
+    ../headers/squarepatch.h \
+    ../headers/SLVersion.h
 
 
 FORMS += $$SLFOR/MainWindow.ui \
