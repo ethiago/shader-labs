@@ -1,143 +1,102 @@
 #include "SLObject.h"
+#include "Object3D.h"
+#include "slShaderProgram2.h"
+#include "slShaderCodes.h"
+#include "slTexture2.h"
 #include "Project.h"
-#include "InterfaceRequests.h"
-#include "MainWindow.h"
 
-SLObject::SLObject(MainWindow *mw,  QObject *parent) :
-    QObject(parent), m_shader(new SLShader(mw)), m_object(NULL),
-    textures(0), m_project(NULL)
+SLObject::SLObject(Object3D *obj) :
+    QObject(NULL), m_program(new SLShaderProgram2), m_object(obj->copy()),
+    m_textures(new SLTextures2), m_shaderCodes(new SLShaderCodes),
+    m_project(new Project()), m_visible(true), m_color(QColor(255,255,255)),
+    m_wireframe(false)
 {
-    connect(mw, SIGNAL(runShaders()), this, SLOT(compileShaders()));
-    connect(this, SIGNAL(sendLog(QString)), mw, SLOT(shaderLog(QString)));
+
 }
 
 SLObject::~SLObject()
 {
-    if(m_project)
-        delete m_project;
-    if(m_shader)
-        delete m_shader;
+    delete m_program;
+    delete m_textures;
+
+    delete m_object;
+    delete m_shaderCodes;
 }
 
-void SLObject::deleteObject3D()
+void SLObject::changeObject(Object3D *obj)
 {
-    if(m_object)
-        delete m_object;
+    delete m_object;
+
+    m_object = obj->copy();
 }
 
-void SLObject::setObject(Object3D *obj)
+bool SLObject::isVisible()const
 {
-    m_object = obj;
+    return m_visible;
 }
-SLShader* SLObject::shader()
+
+void SLObject::setVisible(bool v)
 {
-    return m_shader;
+    m_visible = v;
+}
+
+void SLObject::setColor(const QColor& color)
+{
+    m_color = color;
+}
+
+const QColor& SLObject::color()const
+{
+    return m_color;
 }
 
 void SLObject::draw()
 {
-    textures.activateTexture();
-    if(program.isLinked())
+    if(m_visible)
     {
-        textures.applyTextures(&program);
-        program.bind();
+        m_program->bind();
 
-        program.setUniformValue("wsize", ShaderLab::instance()->glContext()->size());
+        m_textures->bind();
+
+        if(m_wireframe)
+            glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+        else
+            glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+
+        m_object->draw(m_color);
+
+        m_textures->release();
+
+        m_program->release();
     }
-
-    m_object->draw();
-    program.release();
 }
 
-void SLObject::compileShaders()
+void SLObject::toggleWireframe()
 {
-   m_shader->compileAndLink(&program, m_object);
-   emit sendLog(m_shader->log());
-   ShaderLab::instance()->glContext()->updateGL();
+    m_wireframe = !m_wireframe;
 }
 
-const QString& SLObject::shaderLog()
+SLShaderProgram2 * SLObject::shaderProgram()
 {
-    return m_shader->log();
+    return m_program;
 }
 
-void SLObject::setTexturesFromProject(const QStringList& list)
+SLShaderCodes * SLObject::shaderCodes()
 {
-   textures.setTextures(list);
+    return m_shaderCodes;
 }
 
-void SLObject::closeProject()
+SLTextures2* SLObject::textures()
 {
-    if(m_project)
-        delete m_project;
-    m_project = NULL;
+    return m_textures;
 }
 
-void SLObject::setProject(Project *p)
+Project *SLObject::project()
 {
-    if(m_project)
-        delete m_project;
-    m_project = p;
+    return m_project;
 }
 
-void SLObject::close(MainWindow* mw)
+int SLObject::modelId()const
 {
-    closeProject();
-    delete m_shader;
-    m_shader = NULL;
-
-    m_object = m_object->copy();
-
-    textures.closeView(mw);
-
-    disconnect(mw, 0, this, 0);
-    disconnect(this, 0, mw, 0);
-}
-
-QString SLObject::saveMerge(bool as)
-{
-    QString projectFileName;
-    if(as)
-    {
-        closeProject();
-    }else
-    {
-        if(m_project == NULL)
-        {
-            if(InterfaceRequests::createProject())
-                as = true;
-            else
-                return QString();
-        }
-    }
-    m_shader->saveAllShaders();
-    if(m_shader->isAnyNew())
-    {
-        if(!InterfaceRequests::projectSaveContinue())
-            return QString();
-    }
-
-    if(as)
-    {
-       projectFileName = InterfaceRequests::saveProjectAsRequestDialog();
-       if(projectFileName.isEmpty())
-           return QString();
-
-        m_project = new Project;
-    }
-    else
-        projectFileName = QString();
-
-    FORENABLEDSHADERS(shaderType)
-    {
-        QString filepath = m_shader->getAbsoluteFilePath(shaderType);
-        m_project->checkShader(filepath, shaderType);
-    }
-
-    m_project->setModel(m_object->modelId());
-    m_project->setTextures(textures.getTextureFileNames());
-
-    m_project->save(projectFileName);
-
-    return m_project->getAbsoluteFilePath();
+    return m_object->modelId();
 }

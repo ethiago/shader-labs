@@ -8,8 +8,8 @@
     #include <GL/glu.h>
 #endif
 
-Sphere::Sphere(int stacks, int slices, float radius, const QVector3D& center, QObject *parent):
-    Object3D(center, parent), m_radius(radius)
+Sphere::Sphere(int stacks, int slices, float radius, const QVector3D& center):
+    Object3D(center), m_radius(radius)
 {
     setStacks(stacks);
     setSlices(slices);

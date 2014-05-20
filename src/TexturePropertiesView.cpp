@@ -4,20 +4,18 @@
 #include "MainWindow.h"
 #include <QCloseEvent>
 
-TexturePropertiesView::TexturePropertiesView(MainWindow *parent) :
-    QDockWidget(parent),
+TexturePropertiesView::TexturePropertiesView(MainWindow *mw) :
+    QDockWidget(NULL),
     ui(new Ui::TexturePropertiesView)
 {
     ui->setupUi(this);
-
-    ui->add3DButton->setVisible(false);
 
     QAction *act = toggleViewAction();
     act->setText("Texture properties");
     act->setShortcut(QKeySequence::fromString("Ctrl+T"));
 
-    parent->menuViewInsertAction(act);
-    parent->addDockWidget(Qt::LeftDockWidgetArea, this);
+    mw->menuViewInsertAction(act);
+    mw->addDockWidget(Qt::RightDockWidgetArea, this);
 
     connect(ui->loadButton, SIGNAL(clicked()),
             this, SIGNAL(loadTextureClicked()));
@@ -30,9 +28,6 @@ TexturePropertiesView::TexturePropertiesView(MainWindow *parent) :
 
     connect(ui->textureList, SIGNAL(currentIndexChanged(int)),
             this, SIGNAL(textureCurrentChange(int)));
-
-//    connect(ui->add3DButton, SIGNAL(clicked()),
-//            this, SIGNAL(addTexture3DClicked()));
 
     setVisible(false);
 }
@@ -50,7 +45,7 @@ void TexturePropertiesView::setTexture(const Texture& texture)
     ui->imageContainer->setPixmap(QPixmap::fromImage(img));
 
     ui->textureName->setText(texture.fileName());
-    ui->textureName->setToolTip(texture.fullFileName());
+    ui->textureName->setToolTip(texture.filePath());
 }
 
 void TexturePropertiesView::setTextureList(const QList<QPair<QIcon, QString> >& textureList,
@@ -63,4 +58,35 @@ void TexturePropertiesView::setTextureList(const QList<QPair<QIcon, QString> >& 
     }
 
     ui->textureList->setCurrentIndex(currInd);
+}
+
+void TexturePropertiesView::removeItem(int idx)
+{
+    ui->textureList->removeItem(idx);
+}
+
+void TexturePropertiesView::addItem(const QIcon& ico, const QString& name)
+{
+    ui->textureList->addItem(ico,name);
+    ui->textureList->setCurrentIndex(ui->textureList->count()-1);
+}
+
+void TexturePropertiesView::clear()
+{
+    ui->textureList->clear();
+    ui->imageContainer->setPixmap(QPixmap::fromImage(QImage(":/ico/noImage")));
+    ui->textureName->setText("");
+    ui->textureName->setToolTip("");
+
+}
+
+int TexturePropertiesView::current()const
+{
+    return ui->textureList->currentIndex();
+}
+
+void TexturePropertiesView::setCurrent(int idx)
+{
+    if(idx < ui->textureList->count())
+        ui->textureList->setCurrentIndex(idx);
 }

@@ -38,6 +38,7 @@ signals:
     void openShaderActionClicked();
     void lightRotationToggle(bool);
     void loadProject();
+    void closeProject();
     void saveAsProject(void);
     void saveProject(void);
     void newPrimitiveDialog();
@@ -51,15 +52,16 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    bool setOutputText(const QString& );
     void setGLDisplay(GLDisplay *);
     QMenu* modelsMenu(void);
     void menuViewInsertAction(QAction* act);
     void menuViewRemoveAction(QAction* act);
-    QAction* menuChangeOutputPrimitive(void);
-    void setSecondTitle(const QString& title = QString());
-    void setEnableMenuGeometryShader(bool);
-    SLTabWidget* createTabWidget();
+    QAction *addSettingsMenu(QMenu* menu);
+
+    SLTabWidget* getTabWidget();
+
+public slots:
+    void setSecondTitle(const QString& title);
 
 private:
     Ui::MainWindow *ui;   /* The Main window. */
@@ -67,9 +69,11 @@ private:
 
     SLTabWidget *tabArea;  /* UI component for nesting tabs. */
 
+    void createTabWidget();
+
+
 protected:
     void closeEvent(QCloseEvent *event);
-
 };
 
 #endif // MAINWINDOW_H

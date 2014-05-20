@@ -1,5 +1,5 @@
-#ifndef RENDERCONTROLLER_H
-#define RENDERCONTROLLER_H
+#ifndef RENDERCONTROLLER2_H
+#define RENDERCONTROLLER2_H
 
 #include "Global.h"
 
@@ -19,48 +19,46 @@ class Object3D;
 class ArcBall;
 
 class GLDisplay;
-class PrimitivesDialog;
 class GlobalProperties;
 
 class SLObject;
-class EditorController;
+class SLShaderController;
+class SLTextureController;
 class Project;
-class SLObjectController;
+class ObjectController;
 
-class RenderController : public QObject
+class RenderController2 : public QObject
 {
     Q_OBJECT
 
-    GLDisplay *display;
-    Scene3D * scene;
-    ArcBall* arcBall;
-    DirectionalLight* light;
+    SLShaderController * e_shaderController;
+    SLTextureController * e_textureController;
+    ObjectController *m_objectController;
+    MainWindow* e_mainwindow;
+
+    GLDisplay *m_display;
+    Scene3D * m_scene;
+    ArcBall* m_arcBall;
+    DirectionalLight* m_light;
     bool lightRotation;
-    MainWindow *mainWindow;
-    SLObjectController * objectController;
+
     int selectedObject;
 
-
-    QList< QPair<QAction*, Object3D*> > models;
+    QList< QPair<QAction*, Object3D*> > m_models;
     typedef QMap<QAction*, Object3D*> MMap;
 
     QList<GLenum> primitives;
-    GlobalProperties *propertries;
+    GlobalProperties *m_propertries;
 
 public:
-    explicit RenderController(MainWindow *mainWindow,
-                              QObject *parent = 0);
-    ~RenderController();
+    explicit RenderController2(MainWindow *mainWindow, SLShaderController * shaderController,
+                              SLTextureController* texture);
+    ~RenderController2();
     void updateGL(void);
     int getModelId(void);
     void setModelById(int i);
     QVector3D getLightPosition()const;
-    void newSLObject();
-    EditorController* setShader( ShaderLab::Shader, const QString& filePath = QString());
-    void setTexturesFromProject(const QStringList& list);
-    bool closeAllFiles();
-    void setProject(Project*);
-    void closeObject();
+    Scene3D * getScene();
 
 public slots:
     void drawModel(void);
@@ -74,16 +72,20 @@ public slots:
     void modelChanged(QAction*);
     void lightSetup(void);
     void lightRotationToggle(bool);
-    void saveProjectAs(void);
-    void saveProject(void);
     void origin(bool);
     void objectsVisibility(bool);
-
+    bool newSLObject();
+    void projectOpened(Project*);
+    void objectChanged(int idx);
 
 private:
     void configureModelsAndActions(QMenu*);
+    void changeCurrent(Object3D*);
+
+signals:
+    void objectChanged();
 
 
 };
 
-#endif // RENDERCONTROLLER_H
+#endif // RENDERCONTROLLER2_H

@@ -67,5 +67,6 @@
         <file>../img/x.png</file>
         <file alias="origin">../img/origin.png</file>
         <file alias="tex3d">../img/tex3D.png</file>
+        <file alias="clean">../img/clean.jpg</file>
     </qresource>
 </RCC>

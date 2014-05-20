@@ -4,13 +4,6 @@
 #include <QDockWidget>
 #include "MainWindow.h"
 
-#include "qtpropertymanager.h"
-#include "qtvariantproperty.h"
-#include "qttreepropertybrowser.h"
-
-#include <QtVariantProperty>
-#include <QtTreePropertyBrowser>
-
 namespace Ui {
     class GlobalProperties;
 }
@@ -20,7 +13,7 @@ class GlobalProperties : public QDockWidget
     Q_OBJECT
 
 public:
-    explicit GlobalProperties(MainWindow *parent = 0);
+    explicit GlobalProperties(MainWindow *mw);
     ~GlobalProperties();
 
 private:

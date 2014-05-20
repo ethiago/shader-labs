@@ -4,6 +4,12 @@
 #include <cmath>
 #include <QDebug>
 
+#ifndef GL_GEOMETRY_SHADER_EXT
+#define GL_GEOMETRY_SHADER_EXT                      0x8DD9
+#endif
+
+#define TIMEINC 0.0005
+
 ShaderLab* ShaderLab::s_instance = 0;
 
 QString ShaderLab::shaderToStr(Shader s)
@@ -18,6 +24,28 @@ QString ShaderLab::shaderToStr(Shader s)
     }
 
     return QString();
+}
+
+int ShaderLab::shaderToGLShader(Shader s)
+{
+    switch(s)
+    {
+    case Vertex:
+        return GL_VERTEX_SHADER;
+    case Fragment:
+        return GL_FRAGMENT_SHADER;
+    case Geometry:
+        if(geometryShaderOnlyEXT())
+            return GL_GEOMETRY_SHADER_EXT;
+        else
+            return GL_GEOMETRY_SHADER;
+    case TessellationCtrl:
+        return GL_TESS_CONTROL_SHADER;
+    case TessellationEval:
+        return GL_TESS_EVALUATION_SHADER;
+    }
+
+    return -1;
 }
 
 QString ShaderLab::shaderToStrCap(Shader s)
@@ -49,12 +77,12 @@ QString ShaderLab::shaderToExt(Shader s)
 
 }
 
-int ShaderLab::shaderToInt(Shader s)
+unsigned int ShaderLab::shaderToIndex(Shader s)
 {
-    return static_cast<int>(s);
+    return static_cast<unsigned int>(s);
 }
 
-ShaderLab::Shader ShaderLab::intToShader(int v)
+ShaderLab::Shader ShaderLab::indexToShader(unsigned int v)
 {
     return static_cast<ShaderLab::Shader>(v);
 }
@@ -100,7 +128,19 @@ void ShaderLab::extensionsAnalise()
 ShaderLab::ShaderLab()
  {
     m_context = NULL;
+    m_time = 0.0;
  }
+
+void ShaderLab::incTime()
+{
+    m_time += TIMEINC;
+    m_time = m_time >= 1.0 ? 0.0 : m_time;
+}
+
+float ShaderLab::time()const
+{
+    return m_time;
+}
 
 int ShaderLab::extensions()
 {
@@ -180,4 +220,24 @@ void ShaderLab::setContext(QGLWidget* context)
 QGLWidget* ShaderLab::glContext()
 {
     return m_context;
+}
+
+QString ShaderLab::toHtmlFormatParagraph(const QString& plainText)
+{
+    QString out;
+    int ant = 0;
+
+    for(int i = 0; i < plainText.size(); ++i)
+    {
+        if(plainText.at(i) == '\n')
+        {
+            QString tmp;
+            for(int j = ant; j < i; ++j)
+                tmp.append(plainText[j]);
+
+            out += "<p>" + tmp + "</p>";
+            ant = i + 1;
+        }
+    }
+    return out;
 }

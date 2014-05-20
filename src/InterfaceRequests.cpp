@@ -35,80 +35,129 @@ InterfaceRequests::OperationState InterfaceRequests::saveRequestDialog(const QSt
     else
         return Cancel;
 }
+void InterfaceRequests::notSavedCode()
+{
+    QMessageBox::warning(0, "Unsaved Codes", "There are some unsaved codes.");
+}
 
-bool InterfaceRequests::removeFileFromProject(const QString& fileName)
+InterfaceRequests::OperationState InterfaceRequests::notSavedCodeContinueAsk()
+{
+    QMessageBox::StandardButton ok = QMessageBox::Yes;
+    QMessageBox::StandardButton cancel = QMessageBox::Cancel;
+    QMessageBox::StandardButton bt;
+
+    QString msg = "There are some unsaved codes.\n Do you want to continue?";
+
+    bt = QMessageBox::question(0, "Unsaved Codes", msg,
+                               ok | cancel,
+                               cancel);
+
+    if(bt == ok)
+        return Yes;
+    else
+        return Cancel;
+}
+
+InterfaceRequests::OperationState InterfaceRequests::projectDifferences()
 {
     QMessageBox::StandardButton ok = QMessageBox::Yes;
     QMessageBox::StandardButton no = QMessageBox::No;
+    QMessageBox::StandardButton cancel = QMessageBox::Cancel;
+    QMessageBox::StandardButton bt;
+
+    QString msg = "There are some diferences between project and opened codes.\n Don't you prefer save your project?";
+
+    bt = QMessageBox::question(0, "Project Diffences", msg,
+                               no | ok | cancel,
+                               ok);
+
+    if(bt == ok)
+        return Yes;
+    else if(bt == no)
+        return No;
+    else
+        return Cancel;
+}
+
+InterfaceRequests::OperationState InterfaceRequests::openedProjectContinueAsk()
+{
+    QMessageBox::StandardButton ok = QMessageBox::Yes;
+    QMessageBox::StandardButton cancel = QMessageBox::Cancel;
+    QMessageBox::StandardButton bt;
+
+    QString msg = "There is a opened project.\n Do you want to continue?";
+
+    bt = QMessageBox::question(0, "Project", msg,
+                               ok | cancel,
+                               cancel);
+
+    if(bt == ok)
+        return Yes;
+    else
+        return Cancel;
+}
+
+InterfaceRequests::OperationState InterfaceRequests::removeFileFromProject(const QString& fileName)
+{
+    QMessageBox::StandardButton ok = QMessageBox::Yes;
+    QMessageBox::StandardButton no = QMessageBox::No;
+    QMessageBox::StandardButton cancel = QMessageBox::Cancel;
     QMessageBox::StandardButton bt;
 
     QString msg = "The file " + fileName + " is not open.\n Do you want to remove from project?";
 
     bt = QMessageBox::question(0, "Remove File", msg,
-                               no | ok,
+                               no | ok | cancel,
                                ok);
 
     if(bt == ok)
-        return true;
+        return InterfaceRequests::Yes;
+    else if(bt == no)
+        return InterfaceRequests::No;
     else
-        return false;
+        return InterfaceRequests::Cancel;
 }
 
-bool InterfaceRequests::includeFileIntoProject(const QString& fileName)
+InterfaceRequests::OperationState InterfaceRequests::includeFileIntoProject(const QString& fileName)
 {
     QMessageBox::StandardButton ok = QMessageBox::Yes;
     QMessageBox::StandardButton no = QMessageBox::No;
+    QMessageBox::StandardButton cancel = QMessageBox::Cancel;
     QMessageBox::StandardButton bt;
 
     QString msg = "The file " + fileName + " is not within the project.\n Do you want to include it?";
 
     bt = QMessageBox::question(0, "Include File", msg,
-                               no | ok,
+                               no | ok | cancel,
                                ok);
 
     if(bt == ok)
-        return true;
+        return InterfaceRequests::Yes;
+    else if(bt == no)
+        return InterfaceRequests::No;
     else
-        return false;
+        return InterfaceRequests::Cancel;
 }
 
-QString InterfaceRequests::includeNewFileIntoProject(ShaderLab::Shader shaderType)
+InterfaceRequests::OperationState InterfaceRequests::replaceFileIntoProject(const QString& fileName)
 {
     QMessageBox::StandardButton ok = QMessageBox::Yes;
     QMessageBox::StandardButton no = QMessageBox::No;
-    QMessageBox::StandardButton bt;
-
-    QString msg = "The new " + ShaderLab::shaderToStr(shaderType) +
-            " file is not within the project.\n Do you want to include it?";
-
-    bt = QMessageBox::question(0, "Include File", msg,
-                               no | ok,
-                               ok);
-
-    if(bt == ok)
-    {
-        return InterfaceRequests::saveAsRequestDialog(shaderType);
-    }
-    else
-        return QString();
-}
-
-bool InterfaceRequests::replaceFileIntoProject(const QString& fileName)
-{
-    QMessageBox::StandardButton ok = QMessageBox::Yes;
-    QMessageBox::StandardButton no = QMessageBox::No;
+    QMessageBox::StandardButton cancel = QMessageBox::Cancel;
     QMessageBox::StandardButton bt;
 
     QString msg = "The file " + fileName + " is diferent within the project.\n Do you want to replace it?";
 
     bt = QMessageBox::question(0, "Replace File", msg,
-                               no | ok,
+                               no | ok | cancel,
                                ok);
 
     if(bt == ok)
-        return true;
+        return InterfaceRequests::Yes;
+    else if(bt == no)
+        return InterfaceRequests::No;
     else
-        return false;
+        return InterfaceRequests::Cancel;
 }
 
 bool InterfaceRequests::createProject(void)
@@ -287,4 +336,23 @@ void InterfaceRequests::fileTooLarge(int texelQuantity)
     QMessageBox::warning(0, "Open file error",
                          "The number of texels (" + QString::number(texelQuantity) +
                          ") is too large. It must be at most "+ QString::number(5832000) +".");
+}
+
+void InterfaceRequests::thereIsAlreadyAnOpenedShader(ShaderLab::Shader shader)
+{
+    QMessageBox::warning(0, "Open shader problem",
+                         "There is already an opened "
+                         + ShaderLab::shaderToStr(shader) +".");
+}
+
+void InterfaceRequests::thereIsAlreadyAnOpenedProject()
+{
+    QMessageBox::warning(0, "Open project problem",
+                         "There is already an opened project.");
+}
+
+void InterfaceRequests::openedCode_Project()
+{
+    QMessageBox::warning(0, "Open project problem",
+                         "There are any opened shader code.");
 }

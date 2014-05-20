@@ -1,5 +1,5 @@
 #include "Scene3D.h"
-#include "SLObject2.h"
+#include "SLObject.h"
 #include "Cube.h"
 #include "Sphere.h"
 
@@ -8,8 +8,8 @@
 #endif
 
 
-Scene3D::Scene3D(const QVector3D& center, QObject *parent) :
-    Object3D(center, parent), current(NULL), origin(false), m_objectsVisibility(false)
+Scene3D::Scene3D(const QVector3D& center) :
+    Object3D(center), current(NULL), origin(false), m_objectsVisibility(false)
 {
 }
 
@@ -32,11 +32,11 @@ void Scene3D::drawGeometry(void) const
     if(origin)
         drawOrigin();
     for(int i = 0; i < objects.size(); ++i)
-        if(m_objectsVisibility || objects[i] == current)
+        if( m_objectsVisibility || objects[i] == current)
             objects[i]->draw();
 }
 
-void Scene3D::addSLObject(SLObject2* obj)
+void Scene3D::addSLObject(SLObject *obj)
 {
     objects.append(obj);
     current = obj;
@@ -45,10 +45,10 @@ void Scene3D::addSLObject(SLObject2* obj)
 void Scene3D::setObjectToCurrent(Object3D* obj)
 {
     if(current)
-        current->setObject(obj);
+        current->changeObject(obj);
 }
 
-SLObject2* Scene3D::currentSLObject(void)
+SLObject *Scene3D::currentSLObject(void)
 {
     return current;
 }
@@ -92,4 +92,14 @@ void Scene3D::changeOrigin(bool v)
 void Scene3D::objectsVisibility(bool v)
 {
     m_objectsVisibility = v;
+}
+
+SLObject* Scene3D::changeCurrent(int idx)
+{
+    if(idx >=0 && idx < objects.size())
+    {
+        current = objects[idx];
+        return current;
+    }else
+        return NULL;
 }

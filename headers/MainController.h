@@ -6,44 +6,40 @@
 #include <QMap>
 #include <QCloseEvent>
 
+
 class MainWindow;
 class SLFile;
 class Object3D;
 class ChooseShaderDialog;
-class RenderController;
-class Project;
-class EditorController;
+class RenderController2;
 class SLTabWidget;
-class SLObjectController;
+class SLShaderController;
+class SLTextureController;
+class SLProjectController;
 
 class MainController : public QObject
 {
     Q_OBJECT
 
-    MainWindow *mainWindow;
-    RenderController *renderController;
+    MainWindow *e_mainWindow;
+    RenderController2 *m_renderController;
+    SLShaderController *m_shaderController;
+    SLTextureController *m_textureController;
+    SLProjectController *m_projectController;
 
-    ChooseShaderDialog *chooseShaderDialog;
-    SLTabWidget *tabWidget;
+
+    ChooseShaderDialog *m_chooseShaderDialog;
 
 public:
     explicit MainController(MainWindow *mw, QObject *parent = 0);
     ~MainController();
-    void openProject(const QString&);
-    void openFileFromArg(const QString&);
 
 public slots:
     void programCloseRequest(QCloseEvent* event);
-    void newShaderActionClicked(void);
-    void openShaderActionClicked(void);
-    void loadProject(void);
-    void saveShader();
-    void saveShaderAs();
     void newObject();
 
 private:
     void glSetup(void);
-    void configureShader(ShaderLab::Shader shaderType, const QString& filePath = QString());
 
 };
 

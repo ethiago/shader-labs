@@ -1,3 +1,5 @@
+uniform float time;
+
 varying float LightIntensity;
 varying vec2 MCposition;
 
@@ -5,7 +7,9 @@ void main()
 {
 	vec3 BrickColor = vec3 (1.0,0.3, 0.2);
 	vec3 MortarColor = vec3 (0.85, 0.86, 0.84);
-	vec2 BrickSize = vec2(0.3, 0.15);
+	vec2 BrickSize1 = vec2(0.15, 0.075);
+	vec2 BrickSize2 = vec2(0.3, 0.15);
+	vec2 BrickSize = mix(BrickSize1,BrickSize2, time);
 	vec2 BrickPct = vec2(0.9, 0.85);
 
 	vec3 color = vec3(1.0,1.0,1.0);
@@ -23,5 +27,5 @@ void main()
 	color = mix(MortarColor, BrickColor, useBrick.x * useBrick.y);
 	color *= (0.1 + LightIntensity);
 
-	gl_FragColor = vec4(MortarColor, 1.0);	
+	gl_FragColor = vec4(color, 1.0);	
 }

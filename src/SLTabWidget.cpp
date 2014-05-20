@@ -3,7 +3,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include "SLTabBar.h"
-#include "SLCodeContainer.h"
+#include "slCodeContainer2.h"
 
 
 SLTabWidget::SLTabWidget(QWidget *parent) :
@@ -15,10 +15,7 @@ SLTabWidget::SLTabWidget(QWidget *parent) :
     SLTabBar *tabBar = new SLTabBar();
     setTabBar(tabBar);
 
-    connect(this, SIGNAL(tabCloseRequested(int)),
-            this, SLOT(tabCloseRequested(int)));
-
-    connect(tabBar, SIGNAL(signal_TabClicked()),
+    connect(tabBar, SIGNAL(doubleClicked()),
             this, SLOT(changeActivationStatus()));
 
     connect(next, SIGNAL(activated()),
@@ -30,42 +27,36 @@ SLTabWidget::~SLTabWidget()
     delete next;
 }
 
-void SLTabWidget::tabCloseRequested(int index)
-{
-    SLCodeContainer* cc = (SLCodeContainer*)widget(index);
-    cc->closeRequest();
-}
-
 void SLTabWidget::changeActivationStatus()
 {
-    SLCodeContainer* cc = (SLCodeContainer*)currentWidget();
+    SLCodeContainer2* cc = (SLCodeContainer2*)currentWidget();
     cc->changeActivatedStatus();
 }
 
 void SLTabWidget::findNext(const QString& s)
 {
-    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    SLCodeContainer2 * cc = (SLCodeContainer2 *)currentWidget();
     if(cc != NULL)
         cc->findNext(s);
 }
 
 void SLTabWidget::findBack(const QString& s)
 {
-    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    SLCodeContainer2 * cc = (SLCodeContainer2 *)currentWidget();
     if(cc != NULL)
         cc->findBack(s);
 }
 
 void SLTabWidget::replaceNext(const QString& s, const QString& r)
 {
-    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    SLCodeContainer2 * cc = (SLCodeContainer2 *)currentWidget();
     if(cc != NULL)
         cc->replaceNext(s,r);
 }
 
 void SLTabWidget::replaceAll(const QString& s, const QString& r)
 {
-    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    SLCodeContainer2 * cc = (SLCodeContainer2 *)currentWidget();
     if(cc != NULL)
         cc->replaceAll(s,r);
 }
@@ -79,14 +70,18 @@ void SLTabWidget::nextTab(void)
 
 void SLTabWidget::setFocus()
 {
-    SLCodeContainer * cc = (SLCodeContainer *)currentWidget();
+    SLCodeContainer2 * cc = (SLCodeContainer2 *)currentWidget();
     if(cc != NULL)
         cc->setFocus();
 }
 
 void SLTabWidget::closeTab(QWidget* w)
 {
-    removeTab(indexOf(w));
+    int idx = -1;
+    idx = indexOf(w);
+    if(idx < 0)
+        return;
+    removeTab(idx);
     if(count() == 0)
     {
         setVisible(false);
@@ -94,18 +89,14 @@ void SLTabWidget::closeTab(QWidget* w)
     }
 }
 
-int SLTabWidget::addTab ( EditorController * controller, const QIcon & icon, const QString & label )
+int SLTabWidget::addTab ( SLCodeContainer2 * container, const QIcon & icon, const QString & label )
 {
     if(count() == 0)
     {
         setVisible(true);
         emit changeVisibility(true);
     }
-    SLCodeContainer *cc = (SLCodeContainer *)controller->codeContainer();
-    connect(cc, SIGNAL(closeSignal(QWidget*)), this, SLOT(closeTab(QWidget*)));
-    connect(cc, SIGNAL(setTabIcon(QIcon,QWidget*)), this, SLOT(setTabIcon(QIcon,QWidget*)));
-    connect(cc, SIGNAL(setTabTitle(QString,QWidget*)), this, SLOT(setTabTitle(QString,QWidget*)));
-    return QTabWidget::addTab(cc, icon, label);
+    return QTabWidget::addTab(container, icon, label);
 }
 
 void SLTabWidget::setTabTitle(const QString& title, QWidget*w)

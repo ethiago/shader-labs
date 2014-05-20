@@ -14,10 +14,9 @@ public:
     static OperationState saveRequestDialog(const QString& filename, bool newFile);
     static QString saveAsRequestDialog(ShaderLab::Shader shader);
     static QString saveProjectAsRequestDialog(void);
-    static bool removeFileFromProject(const QString& fileName);
-    static bool includeFileIntoProject(const QString& fileName);
-    static QString includeNewFileIntoProject(ShaderLab::Shader);
-    static bool replaceFileIntoProject(const QString& fileName);
+    static OperationState removeFileFromProject(const QString& fileName);
+    static OperationState includeFileIntoProject(const QString& fileName);
+    static OperationState replaceFileIntoProject(const QString& fileName);
     static bool createProject(void);
     static void openFileProblem(const QString& filename);
     static QString openShader(ShaderLab::Shader shader);
@@ -28,6 +27,13 @@ public:
     static bool projectSaveContinue(void);
     static void sizeFileNotMatch(int size, int inf);
     static void fileTooLarge(int texelQuantity);
+    static void thereIsAlreadyAnOpenedShader(ShaderLab::Shader shader);
+    static void thereIsAlreadyAnOpenedProject();
+    static OperationState notSavedCodeContinueAsk();
+    static void notSavedCode();
+    static OperationState openedProjectContinueAsk();
+    static void openedCode_Project();
+    static OperationState projectDifferences();
 
 
 };

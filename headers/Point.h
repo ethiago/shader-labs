@@ -7,8 +7,7 @@ class Point : public Object3D
 {
 
 public:
-    explicit Point(const QVector3D& center = QVector3D(),
-                    QObject *parent = 0);
+    explicit Point(const QVector3D& center = QVector3D());
     explicit Point(const Point& p);
      ~Point();
 

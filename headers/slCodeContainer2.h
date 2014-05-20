@@ -1,5 +1,5 @@
-#ifndef SLCODECONTAINER_H
-#define SLCODECONTAINER_H
+#ifndef SLCODECONTAINER2_H
+#define SLCODECONTAINER2_H
 
 #include <QWidget>
 #include <QTimer>
@@ -8,25 +8,30 @@
 #include "Global.h"
 
 namespace Ui {
-    class ShaderCodeContainer;
+    class ShaderCodeContainer2;
 }
 
 class Highlighter;
 class CodeEditor;
+class SLTabWidget;
 
-class SLCodeContainer : public QWidget
+class SLCodeContainer2 : public QWidget
 {
     Q_OBJECT
 
-    QShortcut * m_save;
     bool m_active;
+    ShaderLab::Shader m_shaderType;
+    CodeEditor *shaderCodeBox;
+
+    bool m_disableNextEvent;
+
 public:
-    explicit SLCodeContainer(ShaderLab::Shader shadertype, const QString& title = QString(), QWidget *parent = 0);
-    ~SLCodeContainer();
-    void setText(const QString&);
+    explicit SLCodeContainer2(ShaderLab::Shader shadertype, SLTabWidget *parent, const QString& title = QString());
+    ~SLCodeContainer2();
+    void setText(const QString&, bool disableNextEvent = true);
     QString getText(void);
-    ShaderLab::Shader getShaderType(void);
-    bool activateCode();
+    ShaderLab::Shader shaderType(void);
+
     void changeActivatedStatus();
 
     void findNext(const QString&);
@@ -34,21 +39,25 @@ public:
     void replaceNext(const QString&, const QString&);
     void replaceAll(const QString&, const QString&);
     void closeRequest();
-    void close();
-    void changeActivationStatus();
+
     void setTabTitle(const QString& title);
     void setTabIcon(const QIcon& icon);
     void updateTabBar();
-    void saveShader();
-    void saveShaderAs();
+
+    void hideTab();
+    void showTab();
+
+    void setActive(bool v);
 
 private:
-    Ui::ShaderCodeContainer *ui;
-    CodeEditor *shaderCodeBox;
+    Ui::ShaderCodeContainer2 *ui;
+
     QPalette activePalette;
     QPalette inactivePalette;
-    ShaderLab::Shader shaderType;
     Highlighter * highLighter;
+    QShortcut * m_save;
+    SLTabWidget *e_parent;
+
 
     QPoint getCursorPosition(const QString& text, int pos);
     void setupCodeBox();
@@ -59,24 +68,19 @@ private slots:
 public slots:
     void setFocus();
     void textChanged(bool);
+    void saveFromShotcut();
 
 signals:
+    void closeRequestSignal(ShaderLab::Shader);
+    void save(ShaderLab::Shader);
     void textChanged(ShaderLab::Shader);
-    void textChanged();
-    void clicked(Qt::MouseButton, ShaderLab::Shader);
-    void doubleClicked(ShaderLab::Shader);
+    void activateStatusChanged(ShaderLab::Shader, bool);
+    //
     void closeSignal(QWidget*);
-    void closeRequestSignal();
-    void save();
-    void activateStatusChanged();
     void setTabTitle(const QString& title, QWidget*);
     void setTabIcon(const QIcon& icon, QWidget*);
-    void saveAs();
 
-protected:
-    void mouseReleaseEvent(QMouseEvent *);
-    void mouseDoubleClickEvent(QMouseEvent *);
 
 };
 
-#endif // SLCODECONTAINER_H
+#endif // SLCODECONTAINER2_H

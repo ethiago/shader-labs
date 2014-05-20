@@ -1,8 +1,8 @@
 #include "GlobalProperties.h"
 #include "ui_GlobalProperties.h"
 
-GlobalProperties::GlobalProperties(MainWindow *parent) :
-    QDockWidget(parent),
+GlobalProperties::GlobalProperties(MainWindow *mw) :
+    QDockWidget(NULL),
     ui(new Ui::GlobalProperties)
 {
     ui->setupUi(this);
@@ -10,7 +10,7 @@ GlobalProperties::GlobalProperties(MainWindow *parent) :
     QAction *act = toggleViewAction();
     act->setText("Global properties");
     act->setShortcut(QKeySequence::fromString("Ctrl+G"));
-    parent->menuViewInsertAction(act);
+    mw->menuViewInsertAction(act);
 }
 
 GlobalProperties::~GlobalProperties()

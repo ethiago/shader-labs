@@ -63,6 +63,13 @@ QString SLFile::getFileName() const
     }
 }
 
+QString SLFile::getFileName(const QString& filepath)
+{
+
+    QFileInfo fp(filepath);
+    return fp.fileName();
+}
+
 /* Getter for the changed attribute. */
 bool SLFile::getChanged(void) const
 {

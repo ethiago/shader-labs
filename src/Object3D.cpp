@@ -15,24 +15,26 @@ double Object3D::degreeFromCos(double _cos)
     return (acos(_cos)*180.0)/M_PI;
 }
 
-Object3D::Object3D(const QVector3D& center, QObject *parent)
-    : QObject(parent), m_center(center),
+Object3D::Object3D(const QVector3D& center)
+    : QObject(NULL), m_center(center),
       m_translation(QVector3D()), m_rotations(QMatrix4x4()) ,
       m_interactiveQuartenion(QQuaternion()),
-      m_slices(50), m_stacks (50), m_texture(-1),
-      m_inputType(GL_TRIANGLES), m_wireframe(false),
-      m_modelId(-1)
+      m_slices(50), m_stacks (50),
+      m_inputType(GL_TRIANGLES), m_modelId(-1)
 {
 }
 
 Object3D::Object3D(const Object3D& obj)
-    : QObject(obj.parent()), m_center(obj.center()),
+    : QObject(NULL), m_center(obj.center()),
       m_translation(obj.translation()), m_rotations(obj.rotations()),
       m_interactiveQuartenion(obj.interactiveQuartenion()),
       m_slices(obj.slices()), m_stacks(obj.stacks()),
-      m_texture(obj.texture()), m_inputType(obj.inputType()),
-      m_wireframe(obj.wireframe()), m_modelId(obj.modelId())
+      m_inputType(obj.inputType()), m_modelId(obj.modelId())
 
+{
+}
+
+Object3D::~Object3D()
 {
 }
 
@@ -95,26 +97,6 @@ const QVector3D& Object3D::translation(void)const
     return m_translation;
 }
 
-void Object3D::setTexture(int texture)
-{
-    m_texture = texture;
-}
-
-int Object3D::texture(void)const
-{
-    return m_texture;
-}
-
-void Object3D::setWireframe(bool wire)
-{
-    m_wireframe = wire;
-}
-
-bool Object3D::wireframe(void)const
-{
-    return m_wireframe;
-}
-
 void Object3D::setModelId(int id)
 {
     m_modelId = id;
@@ -132,7 +114,7 @@ void Object3D::addRotation(const QQuaternion& rotation)
     m_rotations = m*m_rotations;
 }
 
-void Object3D::draw(void) const
+void Object3D::draw(const QColor &cor) const
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -148,10 +130,7 @@ void Object3D::draw(void) const
 
     glMultMatrixd(rotations().constData());
 
-    if(m_wireframe)
-        glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-    else
-        glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+    glColor4f(cor.redF(), cor.greenF(), cor.blueF(), cor.alphaF());
 
     drawGeometry();
 

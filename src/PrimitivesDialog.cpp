@@ -3,11 +3,18 @@
 
 
 
-PrimitivesDialog::PrimitivesDialog(QWidget *parent) :
-    QDialog(parent),
+PrimitivesDialog::PrimitivesDialog() :
+    QDialog(NULL),
     ui(new Ui::PrimitivesDialog)
 {
     ui->setupUi(this);
+
+    m_toogleView = new QAction(QString("Primitives Dialog"), NULL);
+    m_toogleView->setCheckable(true);
+    m_toogleView->setChecked(false);
+
+    connect(m_toogleView, SIGNAL(triggered(bool)),
+            this, SLOT(viewAction(bool)));
 
     primitiveSetup();
 }
@@ -15,6 +22,11 @@ PrimitivesDialog::PrimitivesDialog(QWidget *parent) :
 PrimitivesDialog::~PrimitivesDialog()
 {
     delete ui;
+}
+
+QAction * PrimitivesDialog::toogleViewAction()
+{
+    return m_toogleView;
 }
 
 int PrimitivesDialog::getCurrentOutputPrimitiveIndex(void)
@@ -45,4 +57,22 @@ void PrimitivesDialog::primitiveSetup()
 void PrimitivesDialog::setMaxOutputVertexOut(int value)
 {
     ui->vertexCount->setMaximum(value);
+}
+
+void PrimitivesDialog::viewAction(bool v)
+{
+    if(v)
+        show();
+    else
+        hide();
+}
+
+void PrimitivesDialog::showEvent(QShowEvent *e)
+{
+    m_toogleView->setChecked(true);
+}
+
+void PrimitivesDialog::hideEvent(QHideEvent *e)
+{
+    m_toogleView->setChecked(false);
 }

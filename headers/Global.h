@@ -10,6 +10,7 @@ class QGLWidget;
 class ShaderLab {
 
     int m_extensions;
+    float m_time;
 
     QGLWidget *m_context;
 
@@ -21,11 +22,16 @@ public:
     static ShaderLab *instance()
     {
         if (!s_instance)
+        {
             s_instance = new ShaderLab;
+        }
         return s_instance;
     }
 
     int extensions();
+
+    void incTime();
+    float time()const;
 
     enum Shader{ Vertex, Fragment, Geometry, TessellationEval, TessellationCtrl };
 
@@ -51,14 +57,17 @@ public:
     static QString shaderToStrCap(Shader s);
     static QString shaderToStr(Shader s);
     static QString shaderToExt(Shader s);
+    int shaderToGLShader(Shader s);
 
-    //tatic QGLShader::ShaderTypeBit shaderToQGLShader(Shader s);
+    //static QGLShader::ShaderTypeBit shaderToQGLShader(Shader s);
 
-    static int shaderToInt(Shader s);
-    static Shader intToShader(int v);
+    static unsigned int shaderToIndex(Shader s);
+    static Shader indexToShader(unsigned int v);
 
     static QList<ShaderLab::Shader> shaderTypeList(void);
     static QList<ShaderLab::Shader> enabledsShaderTypeList(void);
+
+    static QString toHtmlFormatParagraph(const QString& plainText);
 
 };
 

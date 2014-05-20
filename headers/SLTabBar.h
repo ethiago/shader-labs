@@ -10,7 +10,7 @@ public:
     explicit SLTabBar(QWidget *parent = 0);
 
 signals:
-    void signal_TabClicked();
+    void doubleClicked();
 
 public slots:
 
