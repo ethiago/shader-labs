@@ -11,6 +11,7 @@ class SLFile : public QObject
 
 public:
     static bool isValid(QString filepath);
+    static QString getFileName(const QString& filepath);
 
     explicit SLFile(ShaderLab::Shader shadertype,const QString& filepath = QString(), QObject *parent = 0);
     ~SLFile();
@@ -36,7 +37,7 @@ private:
     QFileInfo filePath; /* Path to the file which the current instance is responsible for. */
 
     bool changed;       /* Indicates that the content of a file has been changed. */
-    bool m_new;         /* Indicates that the current instance has been crated for a new file. */
+    bool m_new;         /* Indicates that the current instance has been created for a new file. */
     bool active;
 
     ShaderLab::Shader m_shaderType; /* The kind of shader that the instance will manage. */

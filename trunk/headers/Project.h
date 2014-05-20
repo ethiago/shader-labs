@@ -7,7 +7,6 @@
 #include <QMap>
 
 #include "Global.h"
-#include "SLFile.h"
 
 class Project : public QObject
 {
@@ -19,14 +18,26 @@ class Project : public QObject
 
     QFileInfo m_fileName;
 
+    bool m_opened;
+
 public:
-    explicit Project(QObject *parent = 0);
+
+    enum FileStatus{
+        OK,
+        IsDifferent,
+        NotHave,
+        Have
+    };
+
+    explicit Project();
+
+    bool isOpened()const;
 
     bool load(const QString& fileName);
+    void close();
 
-    bool includeShader(const SLFile& fileController);
     bool includeShader(const QString& filePath, ShaderLab::Shader shaderType);
-    void checkShader(const QString& filePath, ShaderLab::Shader shaderType);
+    FileStatus checkShader(const QString& filePath, ShaderLab::Shader shaderType);
 
     bool save(QString fileName = QString());
 

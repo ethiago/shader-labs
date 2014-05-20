@@ -24,6 +24,6 @@ void main()
 
 	LightIntensity = DiffuseContribution * diffuse + SpecularContribution * spec;
 
-	MCposition = gl_Vertex.xy;
+	MCposition = gl_MultiTexCoord0.st;// gl_Vertex.xy;
 	gl_Position = ftransform();
 }

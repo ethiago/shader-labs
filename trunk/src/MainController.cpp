@@ -1,17 +1,13 @@
 #include "gl3w.h"
 #include "MainController.h"
-#include "SLObject.h"
-#include "RenderController.h"
+#include "rendercontroller2.h"
 #include "ChooseShaderDialog.h"
 #include "InterfaceRequests.h"
 #include "MainWindow.h"
-#include "SLFile.h"
-#include "Sphere.h"
-#include "Project.h"
-#include "EditorController.h"
-#include "SLTabWidget.h"
-#include "SLCodeContainer.h"
-#include "SLObjectController.h"
+#include "slshadercontroller.h"
+#include "slTextureController.h"
+#include "slProjectController.h"
+#include "objectcontroller.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -23,39 +19,61 @@
 MainController::MainController(MainWindow *mw, QObject *parent)
     : QObject(parent)
 {
-    mainWindow = mw;
+    e_mainWindow = mw;
 
-    chooseShaderDialog = new ChooseShaderDialog(mainWindow);
-    chooseShaderDialog->setModal(true);
+    m_chooseShaderDialog = new ChooseShaderDialog(e_mainWindow);
+    m_chooseShaderDialog->setModal(true);
 
-    tabWidget = mw->createTabWidget();
+    m_shaderController = new SLShaderController(e_mainWindow, m_chooseShaderDialog);
+    m_textureController = new SLTextureController(e_mainWindow);
 
-    renderController = new RenderController(mainWindow);
+    connect( m_shaderController, SIGNAL(beforeUnLink(GLuint)),
+             m_textureController, SLOT(beforeUnLink(GLuint)) );
+    connect( m_shaderController, SIGNAL(afterLink(GLuint)),
+             m_textureController, SLOT(afterLink(GLuint)) );
+
+    m_renderController = new RenderController2(e_mainWindow, m_shaderController, m_textureController);
+    m_projectController = new SLProjectController(m_renderController->getScene(),
+                                                  m_shaderController,
+                                                  m_textureController,
+                                                  m_renderController);
+
+    connect(e_mainWindow, SIGNAL(loadProject()),
+            m_projectController, SLOT(open()) );
+    connect(e_mainWindow, SIGNAL(saveProject()) ,
+            m_projectController, SLOT(save()));
+    connect(e_mainWindow, SIGNAL(saveAsProject()),
+            m_projectController, SLOT(saveAs()));
+    connect(e_mainWindow, SIGNAL(closeProject()),
+            m_projectController, SLOT(close()) );
+    connect(m_projectController, SIGNAL(projectNameChanged(QString)),
+            e_mainWindow, SLOT(setSecondTitle(QString)) );
+    connect(m_renderController, SIGNAL(objectChanged()),
+            m_projectController, SLOT(currentChanged()));
 
     glSetup();
 
-    connect(mainWindow, SIGNAL(programClose(QCloseEvent*)),
+    connect(e_mainWindow, SIGNAL(programClose(QCloseEvent*)),
             this, SLOT(programCloseRequest(QCloseEvent*)));
 
-    connect(mainWindow, SIGNAL(newShaderActionClicked()),
-            this, SLOT(newShaderActionClicked()));
 
-    connect(mainWindow, SIGNAL(openShaderActionClicked()),
-            this, SLOT(openShaderActionClicked()));
+//    connect(mainWindow, SIGNAL(loadProject()),
+//            this, SLOT(loadProject()));
 
-    connect(mainWindow, SIGNAL(loadProject()),
-            this, SLOT(loadProject()));
 
-    connect(mainWindow, SIGNAL(saveShader()),
-            this, SLOT(saveShader()));
-
-    connect(mainWindow, SIGNAL(saveShaderAs()),
-            this, SLOT(saveShaderAs()));
-
-    connect(mainWindow, SIGNAL(newObject()),
+    connect(e_mainWindow, SIGNAL(newObject()),
             this, SLOT(newObject()));
 
-    mainWindow->showMaximized();
+    e_mainWindow->showMaximized();
+}
+
+MainController::~MainController()
+{
+    delete m_chooseShaderDialog;
+    delete m_renderController;
+    delete m_shaderController;
+    delete m_textureController;
+    delete m_projectController;
 }
 
 void MainController::glSetup(void)
@@ -65,7 +83,7 @@ void MainController::glSetup(void)
 
     if(!sl->criticalExtensionsEnabled())
     {
-            QMessageBox::critical(mainWindow, tr("OpenGL features missing"),
+            QMessageBox::critical(e_mainWindow, tr("OpenGL features missing"),
                 tr("The OpenGL extensions required to run this application are missing.\n") +
                 tr("The program will now exit."));
             exit(0);
@@ -73,173 +91,70 @@ void MainController::glSetup(void)
 
     if(!sl->vertexShaderEnabled())
     {
-        QMessageBox::warning(mainWindow, tr("OpenGL Vertex extension missing"),
+        QMessageBox::warning(e_mainWindow, tr("OpenGL Vertex extension missing"),
             tr("The OpenGL Fragment extension required to run this application is missing.\n") +
             tr("The program will run without this feature."));
     }else
     {
-        chooseShaderDialog->addButton(ShaderLab::Vertex);
+        m_chooseShaderDialog->addButton(ShaderLab::Vertex);
     }
 
     if(!sl->fragmentShaderEnabled())
     {
-        QMessageBox::warning(mainWindow, tr("OpenGL Fragment extension missing"),
+        QMessageBox::warning(e_mainWindow, tr("OpenGL Fragment extension missing"),
             tr("The OpenGL Fragment extension required to run this application is missing.\n") +
             tr("The program will run without this feature."));
     }else
     {
-        chooseShaderDialog->addButton(ShaderLab::Fragment);
+        m_chooseShaderDialog->addButton(ShaderLab::Fragment);
     }
 
     if(!sl->geometryShaderEnabled())
     {
-        QMessageBox::warning(mainWindow, tr("OpenGL Geometry extension missing"),
+        QMessageBox::warning(e_mainWindow, tr("OpenGL Geometry extension missing"),
             tr("The OpenGL Geometry extension required to run this application is missing.\n") +
             tr("The program will run without this feature."));
-        mainWindow->setEnableMenuGeometryShader(false);
+        //mainWindow->setEnableMenuGeometryShader(false);
     }else
     {
-        chooseShaderDialog->addButton(ShaderLab::Geometry);
-        mainWindow->setEnableMenuGeometryShader(true);
+        m_chooseShaderDialog->addButton(ShaderLab::Geometry);
+        //mainWindow->setEnableMenuGeometryShader(true);
     }
 
     if(!sl->tesselationShaderEnable())
     {
-        QMessageBox::warning(mainWindow, tr("OpenGL Tessellation extension missing"),
+        QMessageBox::warning(e_mainWindow, tr("OpenGL Tessellation extension missing"),
             tr("The OpenGL Tessellation extension required to run this application is missing.\n") +
             tr("The program will run without this feature."));
     }else
     {
-        chooseShaderDialog->addButton(ShaderLab::TessellationCtrl);
-        chooseShaderDialog->addButton(ShaderLab::TessellationEval);
+        m_chooseShaderDialog->addButton(ShaderLab::TessellationCtrl);
+        m_chooseShaderDialog->addButton(ShaderLab::TessellationEval);
     }
 }
-
-MainController::~MainController()
-{
-    delete chooseShaderDialog;
-    delete renderController;
-}
-
 
 /* Associated with the 'programClose' signal. */
 /* Before ending the application, checks and manages all unsaved files. */
 void MainController::programCloseRequest(QCloseEvent* event)
 {
-    if(!renderController->closeAllFiles())
+    if(m_projectController->isOpened())
+    {
+         InterfaceRequests::OperationState st;
+         st = InterfaceRequests::openedProjectContinueAsk();
+         if(st == InterfaceRequests::Cancel)
+         {
+             event->ignore();
+             return;
+         }
+    }
+
+    if(!m_shaderController->canChangeObject())
         event->ignore();
-}
-
-void MainController::configureShader(ShaderLab::Shader shaderType, const QString& filePath)
-{
-    EditorController * editor = renderController->setShader(shaderType, filePath);
-    if(editor == NULL)
-        return;
-
-    connect(mainWindow, SIGNAL(saveAll()), editor, SLOT(slot_saveFile()));
-
-    tabWidget->addTab(editor);
-    editor->codeContainer()->updateTabBar();
-}
-
-void MainController::newShaderActionClicked()
-{
-    int ret = chooseShaderDialog->exec();
-    if(ret != QDialog::Accepted)
-        return;
-
-    configureShader(chooseShaderDialog->lastChosenShader());
-}
-
-void MainController::openShaderActionClicked()
-{
-    int ret = chooseShaderDialog->exec();
-    if(ret != QDialog::Accepted)
-        return;
-
-    ShaderLab::Shader shaderType = chooseShaderDialog->lastChosenShader();
-
-    QString filepath = InterfaceRequests::openShader(shaderType);
-
-    if(filepath.isEmpty())
-        return;
-
-    if(!SLFile::isValid(filepath))
-    {
-        InterfaceRequests::openFileProblem(filepath);
-        return;
-    }
-
-    configureShader(shaderType, filepath);
-
-}
-
-void MainController::saveShaderAs()
-{
-    if(tabWidget->count() > 0)
-    {
-        SLCodeContainer *cc = (SLCodeContainer *)tabWidget->currentWidget();
-        cc->saveShaderAs();
-    }
-}
-
-void MainController::saveShader()
-{
-    if(tabWidget->count() > 0)
-    {
-        SLCodeContainer *cc = (SLCodeContainer *)tabWidget->currentWidget();
-        cc->saveShader();
-    }
-}
-
-void MainController::loadProject(void)
-{
-    openProject(InterfaceRequests::openProject());
-}
-
-void MainController::openFileFromArg(const QString&)
-{
-
-}
-
-void MainController::openProject(const QString& filename)
-{
-    if(filename.isEmpty())
-        return;
-
-    Project *project = new Project;
-    if(!project->load(filename))
-    {
-        InterfaceRequests::notLoadProject();
-        delete project;
-        return;
-    }
-
-    renderController->setModelById(project->getModelId());
-
-    FORENABLEDSHADERS(shadertype)
-    {
-        QString fn = project->getFileName(shadertype);
-        if(!fn.isEmpty())
-        {
-            if(!SLFile::isValid(fn))
-                InterfaceRequests::openFileProblem(fn);
-            else
-                configureShader(shadertype,fn);
-        }
-    }
-
-    renderController->setTexturesFromProject(project->getTextures());
-
-    mainWindow->setSecondTitle(project->getAbsoluteFilePath());
-
-    renderController->setProject(project);
 }
 
 void MainController::newObject()
 {
-    renderController->closeObject();
-    renderController->newSLObject();
-    mainWindow->setSecondTitle();
+    m_renderController->newSLObject();
+    e_mainWindow->setSecondTitle("");
 }
 

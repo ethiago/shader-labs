@@ -7,8 +7,8 @@
     #include <GL/gl.h>
 #endif
 
-Point::Point(const QVector3D& center, QObject *parent):
-    Object3D(center, parent)
+Point::Point(const QVector3D& center):
+    Object3D(center)
 {
     setInputType(GL_POINTS);
 }

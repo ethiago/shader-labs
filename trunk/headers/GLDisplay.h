@@ -30,7 +30,6 @@ class GLDisplay : public QGLWidget
 
     enum Properties{
         BackGroundColor,
-        ModelColor,
         Ortho,
         Continuous,
         FrustumZoom,
@@ -58,6 +57,7 @@ public:
 
 private slots:
     void attributeChanged(QtBrowserItem *);
+    void valueChanged(QtProperty*,QVariant);
     void timeout();
 
 private:

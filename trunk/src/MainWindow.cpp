@@ -79,6 +79,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionSave_project, SIGNAL(triggered()),
             this, SIGNAL(saveProject()));
 
+    connect(ui->actionClose_Project, SIGNAL(triggered()),
+            this, SIGNAL(closeProject()) );
+
     connect(ui->actionChange_output_primitive, SIGNAL(triggered()),
             this, SIGNAL(newPrimitiveDialog()));
 
@@ -94,8 +97,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->originButton, SIGNAL(toggled(bool)),
             this, SIGNAL(origin(bool)));
 
-    connect(ui->objectsVisibility, SIGNAL(toggled(bool)),
+    connect(ui->othersVisibility, SIGNAL(toggled(bool)),
             this, SIGNAL(objectsVisibility(bool)));
+
+    createTabWidget();
 
 }
 
@@ -103,19 +108,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete tabArea;
-}
-
-
-/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-/* ++++++++++++++++++++++ Getters and setters ++++++++++++++++++++++ */
-
-/* Setter for the output text on the screen. */
-bool MainWindow::setOutputText(const QString& s)
-{
-    ui->outputTextBox->clear();
-    ui->outputTextBox->setPlainText(s);
-
-    return true;
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -159,9 +151,9 @@ void MainWindow::menuViewRemoveAction(QAction* act)
     ui->menuView->removeAction(act);
 }
 
-QAction* MainWindow::menuChangeOutputPrimitive(void)
+QAction* MainWindow::addSettingsMenu(QMenu* menu)
 {
-    return ui->actionChange_output_primitive;
+    return ui->menuSettin->addMenu(menu);
 }
 
 void MainWindow::setSecondTitle(const QString& title)
@@ -172,12 +164,7 @@ void MainWindow::setSecondTitle(const QString& title)
         setWindowTitle("ShaderLabs - " + title);
 }
 
-void MainWindow::setEnableMenuGeometryShader(bool v)
-{
-    ui->menu_Geometry_Shader->setEnabled(v);
-}
-
-SLTabWidget* MainWindow::createTabWidget()
+void MainWindow::createTabWidget()
 {
     tabArea = new SLTabWidget(this);
     tabArea->setTabsClosable(true);
@@ -199,17 +186,32 @@ SLTabWidget* MainWindow::createTabWidget()
 
     connect(tabArea, SIGNAL(changeVisibility(bool)),
             this, SLOT(tabVisibilityChanged(bool)));
-
-    return tabArea;
 }
 
 void MainWindow::shaderLog(const QString& log)
 {
+    QString old = ui->outputTextBox->toPlainText();
     ui->outputTextBox->clear();
-    ui->outputTextBox->setPlainText(log);
+
+    old = "<font color='black'>"+
+                ShaderLab::toHtmlFormatParagraph(old)
+                +"</font>";
+
+    QString htmlLog = "<font color='red'>"+
+            ShaderLab::toHtmlFormatParagraph(log)
+            +"</font>";
+
+    ui->outputTextBox->appendHtml(old + htmlLog);
+
+    //ui->outputTextBox->scroll(old.size(),0);
 }
 
 void MainWindow::tabVisibilityChanged(bool v)
 {
     find->setOkVisible(v);
+}
+
+SLTabWidget* MainWindow::getTabWidget()
+{
+    return tabArea;
 }

@@ -43,14 +43,12 @@ void GLDisplay::initializeGL()
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
-    glEnable(GL_TEXTURE_3D);
     glEnable( GL_LIGHT0 );
     glEnable(GL_LIGHTING);
     glShadeModel( GL_SMOOTH );
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable( GL_BLEND );
 
     glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 
@@ -119,11 +117,6 @@ void GLDisplay::paintGL()
     glLoadIdentity();
 
     gluLookAt(0,0,-15-zoom, 0,0,-zoom, 0,-1,0);
-
-    c = properties.find(ModelColor).value()->value().value<QColor>();
-    glColor4f( c.redF(), c.greenF(), c.blueF(), c.alphaF());
-
-    //glLineWidth(2.5);
 
     emit drawModel();
 }
@@ -219,15 +212,6 @@ void GLDisplay::setupPropertiesList()
     }
 
     {
-        QColor c = QColor(255, 255, 255);
-        item = variantManager->addProperty(QVariant::Color,
-                                           QLatin1String("Model Color"));
-        item->setValue(c);
-        topItem->addSubProperty(item);
-        properties.insert(ModelColor, item);
-    }
-
-    {
         item = variantManager->addProperty(QVariant::Bool,
                                            QLatin1String("Ortho"));
         item->setValue(false);
@@ -269,6 +253,9 @@ void GLDisplay::setupPropertiesList()
 
     connect(variantEditor, SIGNAL(currentItemChanged(QtBrowserItem*)),
             this, SLOT(attributeChanged(QtBrowserItem*)));
+
+    connect(variantManager, SIGNAL(valueChanged(QtProperty*,QVariant)),
+            this, SLOT(valueChanged(QtProperty*,QVariant)) );
 }
 
 void GLDisplay::wheelEvent(QWheelEvent * event)
@@ -296,10 +283,18 @@ void GLDisplay::attributeChanged(QtBrowserItem *)
 {
     updateGL();
 }
+void GLDisplay::valueChanged(QtProperty*,QVariant)
+{
+    updateGL();
+}
 
 void GLDisplay::timeout()
 {
     bool c = properties.find(Continuous).value()->value().value<bool>();
     if(c)
+    {
         updateGL();
+        ShaderLab * sl = ShaderLab::instance();
+        sl->incTime();
+    }
 }

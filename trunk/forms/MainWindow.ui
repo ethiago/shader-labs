@@ -14,7 +14,7 @@
    <string>ShaderLabs</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../shaderlab.qrc">
+   <iconset resource="../qresources/shaderlab.qrc">
     <normaloff>:/ico/img/1303588878_laboratory.png</normaloff>:/ico/img/1303588878_laboratory.png</iconset>
   </property>
   <property name="windowOpacity">
@@ -59,7 +59,7 @@
      <x>0</x>
      <y>0</y>
      <width>743</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -72,6 +72,7 @@
     <addaction name="actionLoad_Project"/>
     <addaction name="actionSave_project"/>
     <addaction name="actionSave_as_project"/>
+    <addaction name="actionClose_Project"/>
     <addaction name="separator"/>
     <addaction name="actionNew_Object"/>
     <addaction name="separator"/>
@@ -103,22 +104,15 @@
     </property>
     <addaction name="actionRunAll"/>
    </widget>
-   <widget class="QMenu" name="menuSettin_gs">
+   <widget class="QMenu" name="menuSettin">
     <property name="title">
      <string>Settin&amp;gs</string>
     </property>
-    <widget class="QMenu" name="menu_Geometry_Shader">
-     <property name="title">
-      <string>&amp;Geometry Shader</string>
-     </property>
-     <addaction name="actionChange_output_primitive"/>
-    </widget>
-    <addaction name="menu_Geometry_Shader"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menu_Build"/>
-   <addaction name="menuSettin_gs"/>
+   <addaction name="menuSettin"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="movable">
@@ -144,7 +138,7 @@
   <widget class="QDockWidget" name="dockRenderWidget">
    <property name="minimumSize">
     <size>
-     <width>186</width>
+     <width>296</width>
      <height>160</height>
     </size>
    </property>
@@ -177,12 +171,30 @@
      <property name="spacing">
       <number>2</number>
      </property>
-     <property name="margin">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
       <number>0</number>
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="margin">
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="topMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <property name="bottomMargin">
         <number>9</number>
        </property>
        <item>
@@ -206,7 +218,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../shaderlab.qrc">
+             <iconset resource="../qresources/shaderlab.qrc">
               <normaloff>:/ico/img/1303587978_3floppy_unmount.png</normaloff>:/ico/img/1303587978_3floppy_unmount.png</iconset>
             </property>
            </widget>
@@ -217,7 +229,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../shaderlab.qrc">
+             <iconset resource="../qresources/shaderlab.qrc">
               <normaloff>:/ico/origin</normaloff>:/ico/origin</iconset>
             </property>
             <property name="checkable">
@@ -251,11 +263,11 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QToolButton" name="objectsVisibility">
+           <widget class="QCheckBox" name="othersVisibility">
             <property name="text">
-             <string>Old Objects</string>
+             <string>Hide Others Objects</string>
             </property>
-            <property name="checkable">
+            <property name="checked">
              <bool>true</bool>
             </property>
            </widget>
@@ -284,8 +296,8 @@
   <widget class="QDockWidget" name="dockOutPutWidget">
    <property name="minimumSize">
     <size>
-     <width>97</width>
-     <height>121</height>
+     <width>157</width>
+     <height>163</height>
     </size>
    </property>
    <property name="autoFillBackground">
@@ -318,12 +330,48 @@
       <number>3</number>
      </property>
      <item>
+      <widget class="QWidget" name="toolBar" native="true">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QToolButton" name="toolButton">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../qresources/shaderlab.qrc">
+            <normaloff>:/ico/clean</normaloff>:/ico/clean</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="QPlainTextEdit" name="outputTextBox">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="readOnly">
         <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+       </property>
+       <property name="centerOnScroll">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -335,7 +383,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../shaderlab.qrc">
+    <iconset resource="../qresources/shaderlab.qrc">
      <normaloff>:/ico/img/1302039979_Folder.png</normaloff>:/ico/img/1302039979_Folder.png</iconset>
    </property>
    <property name="text">
@@ -353,7 +401,7 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="../shaderlab.qrc">
+    <iconset resource="../qresources/shaderlab.qrc">
      <normaloff>:/ico/img/1302043859_Log Out.png</normaloff>:/ico/img/1302043859_Log Out.png</iconset>
    </property>
    <property name="text">
@@ -365,7 +413,7 @@
   </action>
   <action name="actionRunAll">
    <property name="icon">
-    <iconset resource="../shaderlab.qrc">
+    <iconset resource="../qresources/shaderlab.qrc">
      <normaloff>:/ico/img/1302039654_buttons_20.png</normaloff>:/ico/img/1302039654_buttons_20.png</iconset>
    </property>
    <property name="text">
@@ -383,7 +431,7 @@
   </action>
   <action name="actionSaveFile">
    <property name="icon">
-    <iconset resource="../shaderlab.qrc">
+    <iconset resource="../qresources/shaderlab.qrc">
      <normaloff>:/ico/img/1303587978_3floppy_unmount.png</normaloff>:/ico/img/1303587978_3floppy_unmount.png</iconset>
    </property>
    <property name="text">
@@ -392,7 +440,7 @@
   </action>
   <action name="actionNewFile">
    <property name="icon">
-    <iconset resource="../shaderlab.qrc">
+    <iconset resource="../qresources/shaderlab.qrc">
      <normaloff>:/ico/img/1303588715_document-new.png</normaloff>:/ico/img/1303588715_document-new.png</iconset>
    </property>
    <property name="text">
@@ -409,7 +457,7 @@
   </action>
   <action name="actionSaveAll">
    <property name="icon">
-    <iconset resource="../shaderlab.qrc">
+    <iconset resource="../qresources/shaderlab.qrc">
      <normaloff>:/ico/img/1303588015_save_all.png</normaloff>:/ico/img/1303588015_save_all.png</iconset>
    </property>
    <property name="text">
@@ -418,7 +466,7 @@
   </action>
   <action name="actionWireframe">
    <property name="icon">
-    <iconset resource="../shaderlab.qrc">
+    <iconset resource="../qresources/shaderlab.qrc">
      <normaloff>:/ico/img/wireframe_icon.jpg</normaloff>:/ico/img/wireframe_icon.jpg</iconset>
    </property>
    <property name="text">
@@ -435,7 +483,7 @@
   </action>
   <action name="actionLoad_Project">
    <property name="icon">
-    <iconset resource="../shaderlab.qrc">
+    <iconset resource="../qresources/shaderlab.qrc">
      <normaloff>:/ico/img/Project-icon.png</normaloff>:/ico/img/Project-icon.png</iconset>
    </property>
    <property name="text">
@@ -468,10 +516,32 @@
     <string>Point</string>
    </property>
   </action>
+  <action name="actionClose_Project">
+   <property name="text">
+    <string>Close Project</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../shaderlab.qrc"/>
+  <include location="../qresources/shaderlab.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>toolButton</sender>
+   <signal>clicked()</signal>
+   <receiver>outputTextBox</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>23</x>
+     <y>302</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>70</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

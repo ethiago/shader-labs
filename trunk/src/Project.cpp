@@ -7,9 +7,23 @@
 #include <QDomNode>
 #include <QDebug>
 
-Project::Project(QObject *parent) :
-    QObject(parent), modelId(-1)
+Project::Project() :
+    QObject(NULL), modelId(-1), m_opened(false)
 {
+}
+
+bool Project::isOpened()const
+{
+    return m_opened;
+}
+
+void Project::close()
+{
+    m_fileName = QFileInfo();
+    shaderFiles.clear();
+    textures.clear();
+    modelId = -1;
+    m_opened = false;
 }
 
 bool Project::load(const QString& fileName)
@@ -47,7 +61,10 @@ bool Project::load(const QString& fileName)
 
     loadTextureTag(root);
 
-    return loadFileTag(root);
+
+    m_opened = loadFileTag(root);
+
+    return m_opened;
 }
 
 bool Project::loadModelTag(QDomElement root)
@@ -181,11 +198,6 @@ QDir Project::getProjectDir(void)
     return m_fileName.absoluteDir();
 }
 
-bool Project::includeShader(const SLFile& fileController)
-{
-    return includeShader(fileController.getFilePath(), fileController.shaderType());
-}
-
 bool Project::includeShader(const QString& filePath, ShaderLab::Shader shaderType)
 {
     shaderFiles[shaderType] = filePath;
@@ -193,34 +205,27 @@ bool Project::includeShader(const QString& filePath, ShaderLab::Shader shaderTyp
     return true;
 }
 
-void Project::checkShader(const QString& filePath, ShaderLab::Shader shaderType)
+Project::FileStatus Project::checkShader(const QString& filePath, ShaderLab::Shader shaderType)
 {
     ShaderIterator it = shaderFiles.find(shaderType);
     if(it == shaderFiles.end() && filePath.isEmpty())
-        return;
+        return OK;
 
     if(filePath.isEmpty())
     {
-        //does remove?
-        if(InterfaceRequests::removeFileFromProject(it.value()))
-            removeShader(shaderType);
-        return;
+        return Have;
     }
 
     if(it == shaderFiles.end())
     {
-        //does include?
-        if(InterfaceRequests::includeFileIntoProject(filePath))
-            includeShader(filePath, shaderType);
-        return;
+        return NotHave;
     }
 
     if(getFileName(shaderType) != filePath)
     {
-        if(InterfaceRequests::replaceFileIntoProject(filePath))
-            includeShader(filePath, shaderType);
-        return;
-    }
+        return IsDifferent;
+    }else
+        return OK;
 }
 
 bool Project::save(QString fileName)
@@ -233,6 +238,7 @@ bool Project::save(QString fileName)
     if(file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
         m_fileName = QFileInfo(fileName);
+        m_opened = true;
 
         QTextStream out(&file);
         out << getXml();

@@ -7,8 +7,8 @@
     #include <GL/gl.h>
 #endif
 
-Cube::Cube(const QVector3D& center, QObject *parent):
-    Object3D(center, parent)
+Cube::Cube(const QVector3D& center):
+    Object3D(center)
 {
     indexList = glGenLists(1);
     setInputType(GL_TRIANGLES);

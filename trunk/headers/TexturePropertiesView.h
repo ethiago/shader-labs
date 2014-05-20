@@ -21,15 +21,24 @@ signals:
     void removeTextureClicked(void);
     void addTextureClicked(void);
     void textureCurrentChange(int);
-    void addTexture3DClicked(void);
 
 public:
-    explicit TexturePropertiesView(MainWindow *parent = 0);
+    explicit TexturePropertiesView(MainWindow *mw);
     ~TexturePropertiesView();
 
     void setTexture(const Texture& texture);
 
-    void setTextureList(const QList<QPair<QIcon, QString> >&, int);
+    void setTextureList(const QList<QPair<QIcon, QString> >&, int currInd = 0);
+
+    void removeItem(int idx);
+
+    void addItem(const QIcon&, const QString&);
+
+    void clear();
+
+    int current()const;
+
+    void setCurrent(int idx);
 
 private:
     Ui::TexturePropertiesView *ui;

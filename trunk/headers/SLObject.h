@@ -1,52 +1,51 @@
 #ifndef SLOBJECT_H
 #define SLOBJECT_H
 
-#include "SLTextures.h"
-#include "SLShader.h"
-#include "Object3D.h"
-#include "qglshaderprogram.h"
 #include <QObject>
+#include <QColor>
 
+class SLShaderProgram2;
+class Object3D;
+class SLTextures2;
+class SLShaderCodes;
 class Project;
-class MainWindow;
 
 class SLObject : public QObject
 {
     Q_OBJECT
 
-    SLShader *m_shader;
+    SLShaderProgram2 * m_program;
     Object3D *m_object;
-    SLTextures textures;
+    SLTextures2 *m_textures;
+    SLShaderCodes *m_shaderCodes;
+    Project *m_project;
 
-    Project * m_project;
+    bool m_visible;
 
-    QGLShaderProgram program;
+    QColor m_color;
+
+    bool m_wireframe;
 
 public:
-    explicit SLObject(MainWindow *mw, QObject *parent = 0);
+    explicit SLObject(Object3D *obj);
     virtual ~SLObject();
 
-    void setObject(Object3D *obj);
-    SLShader* shader();
+    void changeObject(Object3D *obj);
+    void toggleWireframe();
     void draw();
-    void setTexturesFromProject(const QStringList&);
 
-    const QString& shaderLog();
+    bool isVisible()const;
+    void setVisible(bool v);
 
-    void setProject(Project *);
-    QString saveMerge(bool as);
-    void deleteObject3D();
+    int modelId()const;
 
+    void setColor(const QColor& color);
+    const QColor& color()const;
 
-    void close(MainWindow* mw);
-
-    void closeProject();
-
-signals:
-    void sendLog(const QString&);
-
-public slots:
-    void compileShaders();
+    SLShaderProgram2 * shaderProgram();
+    SLShaderCodes * shaderCodes();
+    SLTextures2* textures();
+    Project *project();
 
 
 };

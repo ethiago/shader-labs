@@ -1,13 +1,12 @@
 #ifndef OBJECT3D_H
 #define OBJECT3D_H
 
-//#include "Global.h"
-
 #include <QObject>
 #include <QVector3D>
 #include <QQuaternion>
 #include <QMatrix4x4>
 #include <QVector>
+#include <QColor>
 
 class Object3D : public QObject
 {
@@ -20,20 +19,16 @@ class Object3D : public QObject
     int m_slices;
     int m_stacks;
 
-    int m_texture;
-
     int m_inputType;
-
-    bool m_wireframe;
 
     int m_modelId;
 
     virtual void drawGeometry(void) const = 0;
 
 public:
-    explicit Object3D(const QVector3D& center = QVector3D(0.0,0.0,0.0),
-                      QObject *parent = 0);
+    explicit Object3D(const QVector3D& center = QVector3D(0.0,0.0,0.0));
     explicit Object3D(const Object3D& obj);
+    virtual ~Object3D();
 
 
     int slices(void)const;
@@ -52,18 +47,12 @@ public:
     void setTraslation(const QVector3D& translation);
     const QVector3D& translation(void)const;
 
-    void setTexture(int texture);
-    int texture(void)const;
-
-    void setWireframe(bool wire);
-    bool wireframe(void)const;
-
     void setModelId(int id);
     int modelId(void) const;
 
     int inputType(void)const;
 
-    void draw(void) const;
+    void draw(const QColor& cor = QColor()) const;
 
     void cleanTransformations();
 

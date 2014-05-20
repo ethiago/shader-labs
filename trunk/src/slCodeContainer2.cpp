@@ -1,19 +1,22 @@
-#include "SLCodeContainer.h"
-#include "ui_ShaderCodeContainer.h"
+#include "slCodeContainer2.h"
+#include "ui_ShaderCodeContainer2.h"
 #include "HighLighter.h"
 #include "codeeditor.h"
+#include "SLTabWidget.h"
 
 #include <QFont>
 #include <QDebug>
 #include <QMouseEvent>
 
-SLCodeContainer::SLCodeContainer(ShaderLab::Shader shadertype, const QString& title, QWidget *parent) :
-    QWidget(parent), ui(new Ui::ShaderCodeContainer)
+SLCodeContainer2::SLCodeContainer2(ShaderLab::Shader shadertype, SLTabWidget *parent, const QString& title) :
+    QWidget(parent), ui(new Ui::ShaderCodeContainer2)
 {
 
+    m_disableNextEvent = false;
+    e_parent = parent;
     m_save = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_S), this);
     m_active = true;
-    shaderType = shadertype;
+    m_shaderType = shadertype;
 
     ui->setupUi(this);
     setupCodeBox();
@@ -30,19 +33,19 @@ SLCodeContainer::SLCodeContainer(ShaderLab::Shader shadertype, const QString& ti
     brush1.setStyle(Qt::SolidPattern);
     inactivePalette.setBrush(QPalette::Disabled, QPalette::Text, brush1);
 
-    connect(m_save, SIGNAL(activated()), this, SIGNAL(save()));
+    connect(m_save, SIGNAL(activated()), this, SLOT(saveFromShotcut()));
 
     setWindowTitle(title);
     setWindowIcon(QIcon(":/ico/running"));
 }
 
-SLCodeContainer::~SLCodeContainer()
+SLCodeContainer2::~SLCodeContainer2()
 {
     delete ui;
     delete shaderCodeBox;
 }
 
-void SLCodeContainer::setupCodeBox()
+void SLCodeContainer2::setupCodeBox()
 {
     shaderCodeBox = new CodeEditor(this);
     shaderCodeBox->setObjectName(QString::fromUtf8("shaderCodeBox"));
@@ -68,47 +71,40 @@ void SLCodeContainer::setupCodeBox()
 
     shaderCodeBox->increaseFont();
     shaderCodeBox->increaseFont();
+    shaderCodeBox->increaseFont();
+    shaderCodeBox->increaseFont();
 }
 
-void SLCodeContainer::setText(const QString& code)
+void SLCodeContainer2::setText(const QString& code, bool disableNextEvent)
 {
+    m_disableNextEvent = disableNextEvent;
     shaderCodeBox->setPlainText(code);
 }
 
-QString SLCodeContainer::getText()
+QString SLCodeContainer2::getText()
 {
     return shaderCodeBox->toPlainText();
 }
 
-ShaderLab::Shader SLCodeContainer::getShaderType(void)
+ShaderLab::Shader SLCodeContainer2::shaderType(void)
 {
-    return shaderType;
+    return m_shaderType;
 }
 
-void SLCodeContainer::textChanged(bool v)
+void SLCodeContainer2::textChanged(bool v)
 {
-    if(v)
+    if(v && !m_disableNextEvent)
     {
-        emit textChanged(shaderType);
-        emit textChanged();
+        emit textChanged(m_shaderType);
         shaderCodeBox->document()->setModified(false);
     }
+
+    m_disableNextEvent = false;
 }
 
-void SLCodeContainer::mouseReleaseEvent(QMouseEvent *e)
+void SLCodeContainer2::setActive(bool v)
 {
-    emit clicked(e->button(), shaderType);
-}
-
-void SLCodeContainer::mouseDoubleClickEvent(QMouseEvent *e)
-{
-    if(e->button() == Qt::LeftButton)
-        emit doubleClicked(shaderType);
-}
-
-void SLCodeContainer::changeActivatedStatus()
-{
-    m_active = !m_active;
+    m_active = v;
     if(m_active)
     {
         highLighter->setDocument(shaderCodeBox->document());
@@ -120,15 +116,33 @@ void SLCodeContainer::changeActivatedStatus()
         shaderCodeBox->setPalette(inactivePalette);
         setTabIcon(QIcon(":/ico/stopped"));
     }
-    emit activateStatusChanged();
 }
 
-void SLCodeContainer::closeRequest()
+void SLCodeContainer2::changeActivatedStatus()
 {
-    emit closeRequestSignal();
+    m_active = !m_active;
+    if(m_active)
+    {
+        highLighter->setDocument(shaderCodeBox->document());
+        shaderCodeBox->setPalette(activePalette);
+        setTabIcon(QIcon(":/ico/running"));
+        emit activateStatusChanged(m_shaderType, true);
+    }else
+    {
+        highLighter->setDocument(NULL);
+        shaderCodeBox->setPalette(inactivePalette);
+        setTabIcon(QIcon(":/ico/stopped"));
+        emit activateStatusChanged(m_shaderType, false);
+    }
+
 }
 
-QPoint SLCodeContainer::getCursorPosition(const QString& text, int pos)
+void SLCodeContainer2::closeRequest()
+{
+    emit closeRequestSignal(m_shaderType);
+}
+
+QPoint SLCodeContainer2::getCursorPosition(const QString& text, int pos)
 {
     int lineCount = 0;
     int columnCount = 0;
@@ -146,71 +160,69 @@ QPoint SLCodeContainer::getCursorPosition(const QString& text, int pos)
     return QPoint(lineCount+1, columnCount+1);
 }
 
-void SLCodeContainer::cursorPositionChanged(void)
+void SLCodeContainer2::cursorPositionChanged(void)
 {
     QTextCursor tc = shaderCodeBox->textCursor();
     QPoint p = getCursorPosition(shaderCodeBox->toPlainText(), tc.position());
     ui->cursorPositionLabel->setText(QString::number(p.x()) + ":" + QString::number(p.y()));
 }
 
-void SLCodeContainer::findNext(const QString& s)
+void SLCodeContainer2::findNext(const QString& s)
 {
     shaderCodeBox->find(s);
 }
 
-void SLCodeContainer::findBack(const QString& s)
+void SLCodeContainer2::findBack(const QString& s)
 {
     shaderCodeBox->find(s, QTextDocument::FindBackward);
 }
 
-void SLCodeContainer::setFocus()
+void SLCodeContainer2::setFocus()
 {
     shaderCodeBox->setFocus();
 }
 
-void SLCodeContainer::replaceNext(const QString&, const QString&)
+void SLCodeContainer2::replaceNext(const QString&, const QString&)
 {
 }
 
-void SLCodeContainer::replaceAll(const QString&, const QString&)
+void SLCodeContainer2::replaceAll(const QString&, const QString&)
 {
 
 }
 
-void SLCodeContainer::close()
-{
-    emit closeSignal(this);
-}
-
-bool SLCodeContainer::activateCode()
-{
-    return m_active;
-}
-
-void SLCodeContainer::setTabTitle(const QString& title)
+void SLCodeContainer2::setTabTitle(const QString& title)
 {
     setWindowTitle(title);
-    emit setTabTitle(title, this);
+    e_parent->setTabTitle(title,this);
 }
 
-void SLCodeContainer::setTabIcon(const QIcon& icon)
+void SLCodeContainer2::setTabIcon(const QIcon& icon)
 {
     setWindowIcon(icon);
-    emit setTabIcon(icon, this);
+    e_parent->setTabIcon(icon,this);
 }
 
-void SLCodeContainer::updateTabBar()
+void SLCodeContainer2::updateTabBar()
 {
-    emit setTabTitle(windowTitle(), this);
-    emit setTabIcon(windowIcon(), this);
+    e_parent->setTabIcon(windowIcon(), this);
+    e_parent->setTabTitle(windowTitle(), this);
 }
 
-void SLCodeContainer::saveShader()
+void SLCodeContainer2::saveFromShotcut()
 {
-    emit save();
+    emit save(m_shaderType);
 }
 
-void SLCodeContainer::saveShaderAs()
+void SLCodeContainer2::hideTab()
 {
-    emit saveAs();
+    e_parent->closeTab(this);
+    hide();
+}
+
+void SLCodeContainer2::showTab()
+{
+    e_parent->addTab(this, windowIcon(), windowTitle());
+    updateTabBar();
+    show();
 }

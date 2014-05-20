@@ -5,21 +5,18 @@ QT += core \
     gui \
     opengl \
     xml
-
 win32 { 
     TARGET = ../ShaderLab-win32
     LIBS += -lfreeglut -lopengl32
 }
 
-unix:!macx {
-    TARGET = ShaderLab-linux
-    LIBS += -lGLU -ldl
+unix {
+    TARGET = ShaderLab-unix32
+    LIBS += -lGLU -ldl    #does't work on Mac
 }
-
-macx {
-    TARGET = ShaderLab-mac
-    LIBS += -framework Carbon
-}
+#MAC
+#LIBS += -framework Carbon
+#/MAC
 
 TEMPLATE = app
 DEPENDPATH += ../src
@@ -35,7 +32,7 @@ DESTDIR = $$DEPLOYDIR/bin
 include(../3rd-party/qtpropertybrowser/src/qtpropertybrowser.pri)
 #QtSolutions_PropertyBrowser-head
 
-QMAKE_LFLAGS += '-Wl,-rpath,\'\$$ORIGIN/../lib\''
+QMAKE_LFLAGS = '-Wl,-rpath,\'\$$ORIGIN/../lib\''
 
 SLSRC=../src
 SLHED=../headers
@@ -43,8 +40,6 @@ SLFOR=../forms
 SLRES=../qresources
 
 SOURCES += $$SLSRC/gl3w.c \
-    $$SLSRC/SLShader2.cpp \
-    $$SLSRC/SLShaderProgram.cpp \
     $$SLSRC/main.cpp \
     $$SLSRC/Sphere.cpp \
     $$SLSRC/SLTabWidget.cpp \
@@ -60,7 +55,6 @@ SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/MainController.cpp \
     $$SLSRC/MainWindow.cpp \
     $$SLSRC/Object3D.cpp \
-    $$SLSRC/RenderController.cpp \
     $$SLSRC/InterfaceRequests.cpp \
     $$SLSRC/Find.cpp \
     $$SLSRC/HighLighter.cpp \
@@ -73,20 +67,24 @@ SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/Point.cpp \
     $$SLSRC/Scene3D.cpp \
     $$SLSRC/SLFile.cpp \
-    $$SLSRC/SLTextures.cpp \
-    $$SLSRC/EditorController.cpp \
-    $$SLSRC/SLCodeContainer.cpp \
     $$SLSRC/codeeditor.cpp \
-    $$SLSRC/Texture3D.cpp \
-    $$SLSRC/SLTexture3dDialog.cpp \
     $$SLSRC/TrianglePatch.cpp \
     $$SLSRC/IcosahedronPatch.cpp \
     $$SLSRC/Patch.cpp \
-    $$SLSRC/SLShaderProgramController.cpp \
-    $$SLSRC/SLObject2.cpp \
-    $$SLSRC/SLObjectController.cpp \
     $$SLSRC/slgl3w.cpp \
-    ../src/squarepatch.cpp
+    $$SLSRC/squarepatch.cpp \
+    $$SLSRC/slShader.cpp \
+    $$SLSRC/slshadercontroller.cpp \
+    $$SLSRC/SLObject.cpp \
+    $$SLSRC/slShaderProgram2.cpp \
+    $$SLSRC/slShaderCodes.cpp \
+    $$SLSRC/slCodeContainer2.cpp \
+    $$SLSRC/rendercontroller2.cpp \
+    $$SLSRC/slTexture2.cpp \
+    $$SLSRC/slTextureController.cpp \
+    $$SLSRC/slProjectController.cpp \
+    $$SLSRC/vertexproperties.cpp \
+    $$SLSRC/objectcontroller.cpp
 
 HEADERS += $$SLHED/gl3w.h \
     $$SLHED/glcorearb.h \
@@ -104,7 +102,6 @@ HEADERS += $$SLHED/gl3w.h \
     $$SLHED/MainController.h \
     $$SLHED/MainWindow.h \
     $$SLHED/Object3D.h \
-    $$SLHED/RenderController.h \
     $$SLHED/InterfaceRequests.h \
     $$SLHED/Find.h \
     $$SLHED/HighLighter.h \
@@ -117,33 +114,33 @@ HEADERS += $$SLHED/gl3w.h \
     $$SLHED/Point.h \
     $$SLHED/Scene3D.h \
     $$SLHED/SLFile.h \
-    $$SLHED/SLTextures.h \
-    $$SLHED/EditorController.h \
-    $$SLHED/SLCodeContainer.h \
     $$SLHED/codeeditor.h \
-    $$SLHED/Texture3D.h \
-    $$SLHED/SLTexture3dDialog.h \
     $$SLHED/TrianglePatch.h \
     $$SLHED/IcosahedronPatch.h \
     $$SLHED/Patch.h \
-    $$SLHED/SLShaderProgram.h \
-    $$SLHED/SLShader2.h \
-    $$SLHED/SLShaderProgramController.h \
-    $$SLHED/SLObject2.h \
-    $$SLHED/SLObjectController.h \
     $$SLHED/slgl3w.h \
-    ../headers/squarepatch.h \
-    ../headers/SLVersion.h
+    $$SLHED/squarepatch.h \
+    $$SLHED/slShader.h \
+    $$SLHED/slshadercontroller.h \
+    $$SLHED/SLObject.h \
+    $$SLHED/slShaderProgram2.h \
+    $$SLHED/slShaderCodes.h \
+    $$SLHED/slCodeContainer2.h \
+    $$SLHED/rendercontroller2.h \
+    $$SLHED/slTexture2.h \
+    $$SLHED/slTextureController.h \
+    $$SLHED/slProjectController.h \
+    $$SLHED/vertexproperties.h \
+    $$SLHED/objectcontroller.h
 
 
 FORMS += $$SLFOR/MainWindow.ui \
-    $$SLFOR/ShaderCodeContainer.ui \
     $$SLFOR/ChooseShaderDialog.ui \
     $$SLFOR/TexturePropertiesView.ui \
     $$SLFOR/Find.ui \
     $$SLFOR/PrimitivesDialog.ui \
     $$SLFOR/GlobalProperties.ui \
-    $$SLFOR/SLTexture3dDialog.ui
+    $$SLFOR/ShaderCodeContainer2.ui
     
 RESOURCES += $$SLRES/shaderlab.qrc
 OTHER_FILES += 

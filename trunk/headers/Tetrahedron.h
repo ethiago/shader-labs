@@ -7,8 +7,7 @@ class Tetrahedron : public Object3D
 {
     int indexList;
 public:
-    explicit Tetrahedron(const QVector3D& center = QVector3D(),
-                    QObject *parent = 0);
+    explicit Tetrahedron(const QVector3D& center = QVector3D());
     explicit Tetrahedron(const Tetrahedron& tt);
     ~Tetrahedron();
 

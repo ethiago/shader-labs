@@ -7,8 +7,7 @@ class Cube : public Object3D
 {
     int indexList;
 public:
-    explicit Cube(const QVector3D& center = QVector3D(),
-                    QObject *parent = 0);
+    explicit Cube(const QVector3D& center = QVector3D());
     explicit Cube(const Cube& sph);
     ~Cube();
 
