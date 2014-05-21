@@ -11,7 +11,7 @@ win32 {
 }
 
 unix {
-    TARGET = ShaderLab-unix32
+    TARGET = ShaderLab-unix
     LIBS += -lGLU -ldl    #does't work on Mac
 }
 #MAC
@@ -88,6 +88,7 @@ SOURCES += $$SLSRC/gl3w.c \
 
 HEADERS += $$SLHED/gl3w.h \
     $$SLHED/glcorearb.h \
+    $$SLHED/SLVersion.h \
     $$SLHED/Sphere.h \
     $$SLHED/SLTabWidget.h \
     $$SLHED/SLTabBar.h \
