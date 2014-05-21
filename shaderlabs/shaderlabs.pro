@@ -6,19 +6,20 @@ QT += core \
     opengl \
     xml
 win32 { 
-    TARGET = ../ShaderLab-win32
+    TARGET = ../ShaderLabs-win32
     LIBS += -lfreeglut -lopengl32
 }
 
-unix {
-    TARGET = ShaderLab-unix
-    LIBS += -lGLU -ldl    #does't work on Mac
+unix:!macx {
+TARGET = ShaderLabs-linux
+LIBS += -lGLU -ldl
 }
-#MAC
-#LIBS += -framework Carbon
-#/MAC
 
-TEMPLATE = app
+macx {
+TARGET = ShaderLabs-mac
+LIBS += -framework Carbon
+}
+
 DEPENDPATH += ../src
 INCLUDEPATH += ../headers
 OBJECTS_DIR = tmp
