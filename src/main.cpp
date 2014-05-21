@@ -48,7 +48,5 @@ int main(int argc, char *argv[])
     MainWindow mw;
     MainController mc(&mw);
 
-
-
     return app.exec();
 }
