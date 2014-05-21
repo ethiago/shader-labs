@@ -5,7 +5,9 @@
     #include <OpenGL/gl.h>
 #else
     #include <GL/gl.h>
-    #include <GL/glext.h>
+    #ifdef _WIN32
+        #include <GL/glext.h>
+    #endif
 #endif
 
 #include "Object3D.h"
