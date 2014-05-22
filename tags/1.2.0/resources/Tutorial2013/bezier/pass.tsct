@@ -1,0 +1,10 @@
+#version 400
+ 
+layout(vertices=4) out;
+ 
+void main(void) {
+	#define iD gl_InvocationID
+    gl_out[iD].gl_Position = gl_in[iD].gl_Position;
+ 
+	gl_TessLevelOuter[1] = 10.0;
+}

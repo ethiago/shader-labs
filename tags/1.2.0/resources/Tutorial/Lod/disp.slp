@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>disp.vert</vertex>
+		<tessellation_evaluation>lod.tsev</tessellation_evaluation>
+		<tessellation_control>lod.tsct</tessellation_control>
+	</shaders>
+	<model>
+		<id>9</id>
+	</model>
+	<textures>
+		<filename>height.jpg</filename>
+	</textures>
+</ShaderLab>

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>brick.vert</vertex>
+		<fragment>brick.frag</fragment>
+	</shaders>
+	<model>
+		<id>4</id>
+	</model>
+</ShaderLab>

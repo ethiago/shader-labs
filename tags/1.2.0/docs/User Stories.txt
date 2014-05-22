@@ -1,0 +1,93 @@
+***** Quem seria o principal usuário?
+
+Descrição das personnas:
+
+- ALUNO: Aluno de computação (graduação)
+- PESQUISADOR: Aluno ou professor de pós-graduação em Computação Gráfica.
+- PROFISSIONAL: Programador da indústria de Games / Visualização Científica
+
+- havia uma 4ª persona. Quem se lembra?????
+
+
+  
+/* ============================ PESQUISADOR ================================= */
+
+User Story 1: 
+   "Eu, enquanto pesquisador, gostaria de visualizar os resultados de um código 
+    GLSL com o bjetivo de fazer testes e experimentos com algoritmos de forma 
+    simples."
+    
+    
+    User Story 1.1:
+       "Eu, enquanto pesquisador, gostaria de testar código para Vertex Shader".
+    
+        
+        - User Story 1.1.1:
+             "Eu, enquanto pesquisador, gostaria de abrir um arquivo com código 
+              GLSL com o objetivo de testá-lo."
+
+              --> User Story 1.1.1.1:
+                     "Eu, enquanto pesquisador, gostaria de selecionar um arquivo através 
+                      de uma interface amigável com o objetivo de encontrá-lo mais facilmente."
+        
+              --> User Story 1.1.1.2:
+                     "Eu, enquanto pesquisador, gostaria que o código fosse mostrado com o 
+                      objetivo de editá-lo."
+                      
+              --> User Story 1.1.1.3:
+                     "Eu, enquanto pesquisador, gostaria de poder criar um novo arquivo 
+                      para código de dentro do programa, com o objetivo de testar novas
+                      idéias."
+
+              --> User Story 1.1.1.4:
+                     "Eu, enquanto pesquisador, gostaria de poder salvar um arquivo 
+                      criado ou editado dentro do programa."
+ 
+        - User Story 1.1.2:
+             "Eu, enquanto pesquisador, gostaria de carregar um modelo qualquer com
+              objetivo de submeter o meu código a uma situação específica."
+            
+        - User Story 1.1.3:
+             "Eu, enquanto pesquisador, gostaria de executar o código GLSL sobre um 
+              modelo carregado com o objetivo de gerar um resultado." 
+            
+        - User Story 1.1.4:
+             "Eu, enquanto pesquisador, gostaria de vizualizar o resultado de um 
+              código atuando sobre um modelo com o objetivo de conferir o resultado."
+            
+
+    User Story 1.2:
+        "Eu, enquanto pesquisador, gostaria de testar código para Hull Shader".
+
+
+    User Story 1.3:
+        "Eu, enquanto pesquisador, gostaria de testar código para Domain Shader".
+
+
+    User Story 1.4:
+        "Eu, enquanto pesquisador, gostaria de testar código para Geometry Shader".
+           
+            
+    User Story 1.5:
+        "Eu, enquanto pesquisador, gostaria de testar código para Fragment Shader".
+
+
+User Story 2:
+   "Eu enquanto pesquisador, gostara deobter estatísticas sobra a execução do meu 
+    código GLSL com o objetivo de levantar dados para pesquisas científicas." 
+    
+    
+/* ================================ ALUNO =================================== */
+
+User Story 3: (fix)
+   "Eu, enquanto aluno, gostaria de dispor de um ambiente onde eu pudesse "brincar" 
+    com as opções e funcionalidades disponíveis no GLSL e no OpenGL com o objetivo 
+    de aprender."
+    
+/* ============================= PROFISSIONAL =============================== */
+
+User Story 4:
+    "Eu, enquanto profissional, gostaria de dispor de uma IDE para GLSL com o 
+     objetivo de melhorar minha produtividade."
+     
+

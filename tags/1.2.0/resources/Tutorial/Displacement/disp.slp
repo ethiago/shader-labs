@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>disp.vert</vertex>
+		<fragment>disp.frag</fragment>
+	</shaders>
+	<model>
+		<id>1</id>
+	</model>
+	<textures>
+		<filename>color.jpg</filename>
+		<filename>height.jpg</filename>
+	</textures>
+</ShaderLab>

@@ -1,0 +1,36 @@
+#version 400 compatibility
+layout(triangles, fractional_odd_spacing, ccw) in;
+
+// texture coordinates, to be used in the pixel shader
+in vec2 texCoord[];
+
+// depth value, to be used in the pixel shader
+out float depth;
+
+// texture with the height values
+uniform sampler2D sampler2d0;
+
+void main(){
+    float u = gl_TessCoord.x;
+    float v = gl_TessCoord.y;
+		float w = gl_TessCoord.z;
+
+	vec4 p0 = gl_in[0].gl_Position;
+	vec4 p1 = gl_in[1].gl_Position;
+	vec4 p2 = gl_in[2].gl_Position;
+
+
+	vec4 point = p0*u + p1*v + p2*w;
+	vec2 texC = texCoord[0]*u + texCoord[1]*v + texCoord[2]*w;
+
+
+    float height = texture2D(sampler2d0, texC).r;
+	point.z = height*0.4;
+  
+  // projects to screen coordinates
+    gl_Position = gl_ModelViewProjectionMatrix * vec4(point);
+  
+  // simply copies as depth value
+    depth = gl_Position.z;
+  
+}

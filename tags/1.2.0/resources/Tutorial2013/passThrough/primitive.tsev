@@ -1,0 +1,10 @@
+#version 400 compatibility
+ 
+layout(triangles,equal_spacing) in;
+ 
+void main(void) {
+
+    vec4 p = vec4(gl_TessCoord.xyz,  1.0);
+ 
+    gl_Position = gl_ModelViewProjectionMatrix *p;
+}

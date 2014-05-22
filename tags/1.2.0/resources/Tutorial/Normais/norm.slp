@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>norm.vert</vertex>
+		<geometry>norm.geom</geometry>
+	</shaders>
+	<model>
+		<id>1</id>
+	</model>
+	<textures>
+		<filename>height.jpg</filename>
+	</textures>
+</ShaderLab>

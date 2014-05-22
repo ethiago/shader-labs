@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>tess.vert</vertex>
+		<fragment>tess.frag</fragment>
+		<tessellation_evaluation>tess.tsev</tessellation_evaluation>
+		<tessellation_control>tess.tsct</tessellation_control>
+	</shaders>
+	<model>
+		<id>8</id>
+	</model>
+</ShaderLab>

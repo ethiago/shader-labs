@@ -1,0 +1,23 @@
+#version 400 compatibility
+layout( vertices = 3 )  out;
+
+void main( )
+{
+	#define iD  gl_InvocationID
+
+    vec4 p = gl_in[ iD ].gl_Position;
+    gl_out[ iD ].gl_Position = p;
+    
+    float z  = normalize(gl_NormalMatrix*p.xyz).z;
+    float cosin = 1.0 - z*z;
+    
+    gl_TessLevelOuter[iD] =  15.0 * cosin;
+    
+    gl_TessLevelInner[0] =  4.0;
+
+    gl_TessLevelOuter[0] =  10.0;
+	gl_TessLevelOuter[1] =  10.0;
+	gl_TessLevelOuter[2] =  10.0;
+    
+    gl_TessLevelInner[0] =  10.0;
+}

@@ -1,0 +1,42 @@
+#version 400 compatibility
+layout(vertices=3)out;
+
+in vec2 texCoord[];
+out vec2 texCoordOut[];
+
+in vec3 n[];
+
+vec3 N[4];
+
+void calcN()
+{
+	N[0] = normalize((n[1] + n[2])/2.0);
+	N[1] = normalize((n[0] + n[2])/2.0);
+	N[2] = normalize((n[0] + n[1])/2.0);
+	N[3] = normalize((n[0] + n[1] + n[2])/3.0);
+}
+
+void main()
+{
+#define id gl_InvocationID
+    gl_out[id].gl_Position = gl_in[id].gl_Position;
+	texCoordOut[id] = texCoord[id];
+
+	calcN();
+	vec3 lv = normalize(gl_LightSource[0].position.xyz);
+
+    gl_TessLevelOuter[0] = 1.0;
+    gl_TessLevelOuter[1] = 1.0;
+    gl_TessLevelOuter[2] = 1.0;
+    gl_TessLevelInner[0] = 1.0;
+
+	if(dot(lv, N[0]) > 0.5)
+		    gl_TessLevelOuter[0] = 5.0;
+	if(dot(lv, N[1]) > 0.5)
+		    gl_TessLevelOuter[1] = 5.0;
+	if(dot(lv, N[2]) > 0.5)
+		    gl_TessLevelOuter[2] = 5.0;
+	if(dot(lv, N[3]) > 0.5)
+		    gl_TessLevelInner[0] = 5.0;
+	
+}

@@ -1,0 +1,32 @@
+#version 400 compatibility
+
+uniform sampler2D sampler2d0;
+
+in data{
+    vec2 texCoord;
+}Data[4];
+
+layout(quads,fractional_odd_spacing) in;
+ 
+void main(void) {
+    vec4 p0 = gl_in[0].gl_Position;
+    vec4 p1 = gl_in[1].gl_Position;
+    vec4 p2 = gl_in[2].gl_Position;
+    vec4 p3 = gl_in[3].gl_Position;
+    vec2 t0 = Data[0].texCoord;
+    vec2 t1 = Data[1].texCoord;
+    vec2 t2 = Data[2].texCoord;
+    vec2 t3 = Data[3].texCoord;
+        
+    vec4 px0 = mix(p0, p1, gl_TessCoord.s);
+    vec4 px1 = mix(p3, p2, gl_TessCoord.s);
+    vec2 tx0 = mix(t0, t1, gl_TessCoord.s);
+    vec2 tx1 = mix(t3, t2, gl_TessCoord.s);
+    
+    vec4 p = mix(px0, px1, gl_TessCoord.t);
+    vec2 tc= mix(tx0, tx1, gl_TessCoord.t);
+    
+    p.z += texture2D(sampler2d0, tc).r*5.0;
+    
+    gl_Position = gl_ModelViewProjectionMatrix *p;
+}

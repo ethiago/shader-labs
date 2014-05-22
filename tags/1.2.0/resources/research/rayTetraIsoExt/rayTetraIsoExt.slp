@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ShaderLab>
+	<shaders>
+		<vertex>rayTetraIsoExt.vert</vertex>
+		<fragment>rayTetraIsoExt.frag</fragment>
+		<geometry>rayTetraIsoExt.geom</geometry>
+	</shaders>
+	<model>
+		<id>6</id>
+	</model>
+</ShaderLab>
