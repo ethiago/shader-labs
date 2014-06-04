@@ -2,6 +2,7 @@
 #define FACE_H
 
 #include "halfedge.h"
+#include <QVector3D>
 
 namespace heds{
 
@@ -20,10 +21,13 @@ public:
 
     int numberOfVertices()const;
 
+    QVector3D getNormal()const;
+
     class iterator{
         HalfEdge * e_first;
         HalfEdge * base;
     public:
+        iterator(){ e_first = NULL; base = NULL; }
         iterator(HalfEdge * f, HalfEdge * b){ e_first = f; base = b; }
         iterator(const iterator & it) { e_first = it.e_first; base = it.base; }
 
@@ -37,8 +41,8 @@ public:
         iterator & operator++(){ base = base->next(); if(base==e_first) base = (HalfEdge*)0; return *this; }
     };
 
-    iterator begin();
-    iterator end();
+    iterator begin()const;
+    iterator end()const;
 };
 
 }
