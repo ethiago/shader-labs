@@ -18,6 +18,11 @@
 #include "slshadercontroller.h"
 #include "slTextureController.h"
 #include "Project.h"
+#include "plyio.h"
+#include "meshextraction.h"
+#include "slMesh.h"
+#include "slMeshContainer.h"
+#include "SLFile.h"
 
 #include "GlobalProperties.h"
 #include "InterfaceRequests.h"
@@ -27,6 +32,7 @@
 #include <QDebug>
 #include <QtOpenGL>
 #include <QPoint>
+#include <QAction>
 
 RenderController2::RenderController2(MainWindow *mainWindow, SLShaderController * shaderController,
                                    SLTextureController * texture):
@@ -65,6 +71,10 @@ RenderController2::RenderController2(MainWindow *mainWindow, SLShaderController 
         m_propertries->close();
     }
 
+    m_loadModel = new QAction(QString("Load Model ..."), NULL);
+    m_loadModel->setShortcut(QKeySequence::fromString("Ctrl+L"));
+    e_mainwindow->menuViewInsertAction(m_loadModel);
+
     connect(m_display, SIGNAL(mouseLefthFinish(QPoint,QPoint)),
             this, SLOT(mouseLefthFinish(QPoint,QPoint)));
 
@@ -94,6 +104,9 @@ RenderController2::RenderController2(MainWindow *mainWindow, SLShaderController 
 
     connect(e_mainwindow, SIGNAL(objectsVisibility(bool)),
             this, SLOT(objectsVisibility(bool)));
+
+    connect(m_loadModel, SIGNAL(triggered()),
+            this, SLOT(loadModel()) );
 
     Object3D *obj = m_models[selectedObject].second;
     SLObject *slobj = new SLObject(obj);
@@ -245,6 +258,40 @@ void RenderController2::modelChanged(QAction* action)
     }
 
     m_display->updateGL();
+}
+
+void RenderController2::loadModel()
+{
+    QString fn = InterfaceRequests::loadModel();
+
+    if(fn.isEmpty())
+        return;
+
+    PLYIO plyio;
+
+    if(!plyio.load(fn))
+        return;
+
+    SLMeshContainer mesh;
+    MeshExtraction extractor(plyio.getData(), &mesh);
+
+    if(!extractor.extract())
+        return;
+
+    QMenu* menu = e_mainwindow->modelsMenu();
+
+    QAction* act = NULL;
+    SLMesh *model_tmp = new SLMesh();
+    model_tmp->setVertices( mesh.vertices() );
+    model_tmp->setFaces( mesh.faces() );
+    model_tmp->storeList();
+
+    act = menu->addAction( SLFile::fileNameWithoutExt(fn) );
+    act->setCheckable(true);
+    act->setChecked(false);          // comeca pela esfera
+    model_tmp->setModelId(m_models.size());
+    m_models.append(qMakePair(act, (Object3D*)model_tmp));
+    modelChanged(act);
 }
 
 void RenderController2::configureModelsAndActions(QMenu* menu)

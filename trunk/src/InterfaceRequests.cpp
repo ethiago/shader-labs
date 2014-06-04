@@ -356,3 +356,19 @@ void InterfaceRequests::openedCode_Project()
     QMessageBox::warning(0, "Open project problem",
                          "There are any opened shader code.");
 }
+
+QString InterfaceRequests::loadModel()
+{
+    static QString dir = ".";
+    QString filename = QFileDialog::getOpenFileName(0,
+                                                    "Open Model",
+                                                    dir,
+                                                    "*.ply");
+    if(!filename.isEmpty())
+    {
+        QFileInfo fi(filename);
+        dir = fi.absolutePath();
+    }
+
+    return filename;
+}

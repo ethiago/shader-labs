@@ -36,6 +36,8 @@ class RenderController2 : public QObject
     ObjectController *m_objectController;
     MainWindow* e_mainwindow;
 
+    QAction * m_loadModel;
+
     GLDisplay *m_display;
     Scene3D * m_scene;
     ArcBall* m_arcBall;
@@ -77,6 +79,7 @@ public slots:
     bool newSLObject();
     void projectOpened(Project*);
     void objectChanged(int idx);
+    void loadModel();
 
 private:
     void configureModelsAndActions(QMenu*);

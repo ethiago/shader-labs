@@ -70,6 +70,12 @@ QString SLFile::getFileName(const QString& filepath)
     return fp.fileName();
 }
 
+QString SLFile::fileNameWithoutExt(const QString& filepath)
+{
+    QFileInfo fp(filepath);
+    return fp.baseName();
+}
+
 /* Getter for the changed attribute. */
 bool SLFile::getChanged(void) const
 {

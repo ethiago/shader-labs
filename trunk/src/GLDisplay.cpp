@@ -3,6 +3,7 @@
 #include <QToolTip>
 #include <QMatrix4x4>
 #include "Global.h"
+#include "qmath.h"
 
 #ifdef __APPLE__
     #include <OpenGL/glext.h>
@@ -17,7 +18,7 @@
 GLDisplay::GLDisplay(QGLContext* context, QWidget *parent) :
     QGLWidget(context,parent),
     rigthPressedPoint(NULLPOINT),
-    leftPressedPoint(NULLPOINT), zoom(0.0), frustumZoom(1.0)
+    leftPressedPoint(NULLPOINT), zoom(0.0), frustumZoom(0.0)
 {
     setAutoBufferSwap(true);
     setStyleSheet("border: 2px solid black;");
@@ -65,17 +66,17 @@ void GLDisplay::resizeGL(int width, int height)
 float GLDisplay::xDist(float aspect)
 {
     if(aspect < 1)
-        return (0.5)*frustumZoom;
+        return (0.5)*expf(frustumZoom);
     else
-        return (0.5*aspect)*frustumZoom;
+        return (0.5*aspect)*expf(frustumZoom);
 }
 
 float GLDisplay::yDist(float aspect)
 {
     if(aspect > 1)
-        return (0.5)*frustumZoom;
+        return (0.5)*expf(frustumZoom);
     else
-        return (0.5*(1/aspect))*frustumZoom;
+        return (0.5*(1/aspect))*expf(frustumZoom);
 }
 
 void GLDisplay::paintGL()
@@ -99,10 +100,13 @@ void GLDisplay::paintGL()
 
     bool o = properties.find(Ortho).value()->value().value<bool>();
 
+    float n = properties.find(Near).value()->value().value<float>();
+    float f = properties.find(Far).value()->value().value<float>();
+
     if(o)
-        glOrtho(-xdist*3.0, xdist*3.0, -ydist*3.0, +ydist*3.0, 5.0, 100);
+        glOrtho(-xdist*3.0, xdist*3.0, -ydist*3.0, +ydist*3.0, n, f);
     else
-        glFrustum(-xdist, xdist, -ydist, +ydist, 5.0, 100);
+        glFrustum(-xdist, xdist, -ydist, +ydist, n, f);
 
     glMatrixMode(GL_MODELVIEW);
 
@@ -241,6 +245,22 @@ void GLDisplay::setupPropertiesList()
         item->setValue(false);
         topItem->addSubProperty(item);
         properties.insert(BackfaceCulling, item);
+    }
+
+    {
+        item = variantManager->addProperty(QVariant::Double,
+                                           QLatin1String("Near"));
+        item->setValue(5.0);
+        topItem->addSubProperty(item);
+        properties.insert(Near, item);
+    }
+
+    {
+        item = variantManager->addProperty(QVariant::Double,
+                                           QLatin1String("Far"));
+        item->setValue(100.0);
+        topItem->addSubProperty(item);
+        properties.insert(Far, item);
     }
 
     variantFactory = new QtVariantEditorFactory();

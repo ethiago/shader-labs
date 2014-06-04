@@ -12,6 +12,7 @@ class SLFile : public QObject
 public:
     static bool isValid(QString filepath);
     static QString getFileName(const QString& filepath);
+    static QString fileNameWithoutExt(const QString& filepath);
 
     explicit SLFile(ShaderLab::Shader shadertype,const QString& filepath = QString(), QObject *parent = 0);
     ~SLFile();
