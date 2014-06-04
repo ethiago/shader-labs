@@ -33,7 +33,9 @@ class GLDisplay : public QGLWidget
         Ortho,
         Continuous,
         FrustumZoom,
-        BackfaceCulling
+        BackfaceCulling,
+        Near,
+        Far
     };
 
 signals:

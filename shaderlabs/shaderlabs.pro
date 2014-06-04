@@ -40,6 +40,15 @@ SLHED=../headers
 SLFOR=../forms
 SLRES=../qresources
 
+PLYSRC=../plymodule/src
+PLYHED=../plymodule/headers
+
+HESRC=../hedsmodule/src
+HEHED=../hedsmodule/headers
+
+INCLUDEPATH += $$PLYHED
+INCLUDEPATH += $$HEHED
+
 SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/main.cpp \
     $$SLSRC/Sphere.cpp \
@@ -85,7 +94,19 @@ SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/slTextureController.cpp \
     $$SLSRC/slProjectController.cpp \
     $$SLSRC/vertexproperties.cpp \
-    $$SLSRC/objectcontroller.cpp
+    $$SLSRC/objectcontroller.cpp \
+    $$PLYSRC/meshextraction.cpp \
+    $$PLYSRC/plydata.cpp \
+    $$PLYSRC/plydataitens.cpp \
+    $$PLYSRC/plyio.cpp \
+    $$SLSRC/slMesh.cpp \
+    $$SLSRC/slMeshContainer.cpp \
+    $$SLSRC/slMeshContainer.cpp \
+    $$SLSRC/slhemeshconstructor.cpp \
+    $$HESRC/vertex.cpp \
+    $$HESRC/face.cpp \
+    $$HESRC/halfedge.cpp \
+    $$HESRC/halfedgedata.cpp
 
 HEADERS += $$SLHED/gl3w.h \
     $$SLHED/glcorearb.h \
@@ -133,8 +154,20 @@ HEADERS += $$SLHED/gl3w.h \
     $$SLHED/slTextureController.h \
     $$SLHED/slProjectController.h \
     $$SLHED/vertexproperties.h \
-    $$SLHED/objectcontroller.h
-
+    $$SLHED/objectcontroller.h \
+    $$PLYHED/meshcontainer.h \
+    $$PLYHED/meshextraction.h \
+    $$PLYHED/plydata.h \
+    $$PLYHED/plydataitens.h \
+    $$PLYHED/plyio.h \
+    $$SLHED/slMesh.h \
+    $$SLHED/slMeshContainer.h \
+    $$SLHED/slhemeshconstructor.h \
+    $$SLHED/slhemesh.h \
+    $$HEHED/vertex.h \
+    $$HEHED/face.h \
+    $$HEHED/halfedge.h \
+    $$HEHED/halfedgedata.h
 
 FORMS += $$SLFOR/MainWindow.ui \
     $$SLFOR/ChooseShaderDialog.ui \

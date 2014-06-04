@@ -41,7 +41,6 @@ signals:
     void closeProject();
     void saveAsProject(void);
     void saveProject(void);
-    void newPrimitiveDialog();
     void saveShader();
     void saveShaderAs();
     void newObject();

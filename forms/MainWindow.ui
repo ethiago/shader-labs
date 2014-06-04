@@ -476,11 +476,6 @@
     <string>Ctrl+W</string>
    </property>
   </action>
-  <action name="actionChange_output_primitive">
-   <property name="text">
-    <string>Change default primitives...</string>
-   </property>
-  </action>
   <action name="actionLoad_Project">
    <property name="icon">
     <iconset resource="../qresources/shaderlab.qrc">
@@ -509,11 +504,6 @@
   <action name="actionNew_Object">
    <property name="text">
     <string>New Object</string>
-   </property>
-  </action>
-  <action name="actionPoint">
-   <property name="text">
-    <string>Point</string>
    </property>
   </action>
   <action name="actionClose_Project">

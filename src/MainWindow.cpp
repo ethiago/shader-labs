@@ -82,9 +82,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     connect(ui->actionClose_Project, SIGNAL(triggered()),
             this, SIGNAL(closeProject()) );
 
-    connect(ui->actionChange_output_primitive, SIGNAL(triggered()),
-            this, SIGNAL(newPrimitiveDialog()));
-
     connect(ui->actionSaveFile, SIGNAL(triggered()),
             this, SIGNAL(saveShader()));
 
