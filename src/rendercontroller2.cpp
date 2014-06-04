@@ -20,8 +20,10 @@
 #include "Project.h"
 #include "plyio.h"
 #include "meshextraction.h"
-#include "slMesh.h"
-#include "slMeshContainer.h"
+//#include "slMesh.h"
+//#include "slMeshContainer.h"
+#include "slhemesh.h"
+#include "slhemeshconstructor.h"
 #include "SLFile.h"
 
 #include "GlobalProperties.h"
@@ -272,8 +274,8 @@ void RenderController2::loadModel()
     if(!plyio.load(fn))
         return;
 
-    SLMeshContainer mesh;
-    MeshExtraction extractor(plyio.getData(), &mesh);
+    SLHEMeshConstructor constructor;
+    MeshExtraction extractor(plyio.getData(), &constructor);
 
     if(!extractor.extract())
         return;
@@ -281,9 +283,7 @@ void RenderController2::loadModel()
     QMenu* menu = e_mainwindow->modelsMenu();
 
     QAction* act = NULL;
-    SLMesh *model_tmp = new SLMesh();
-    model_tmp->setVertices( mesh.vertices() );
-    model_tmp->setFaces( mesh.faces() );
+    SLHEMesh *model_tmp = new SLHEMesh( constructor.getMesh() );
     model_tmp->storeList();
 
     act = menu->addAction( SLFile::fileNameWithoutExt(fn) );

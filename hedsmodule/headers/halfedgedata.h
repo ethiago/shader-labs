@@ -32,7 +32,7 @@ public:
     Vertex* getVertex(int i);
     const Vertex* getVertex(int i)const;
 
-    Face* addFace(const QList<int>& vertexIndices);
+    int addFace(const QList<int>& vertexIndices);
     Face* getFace(int i);
     const Face* getFace(int i)const;
 

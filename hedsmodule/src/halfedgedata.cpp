@@ -89,21 +89,22 @@ const Face* HalfEdgeData::getFace(int i)const
     return NULL;
 }
 
-Face* HalfEdgeData::addFace(const QList<int>& vertexIndices)
+int HalfEdgeData::addFace(const QList<int>& vertexIndices)
 {
     static QMap<QPair<Vertex*, Vertex*>, HalfEdge*> edges;
     QMap<QPair<Vertex*, Vertex*>, HalfEdge*>::iterator it;
 
-    Face *ret = NULL;
+    Face *face = NULL;
 
     if(vertexIndices.size() < 3)
-        return ret;
+        return -1;
 
-    ret = new Face();
+    face = new Face();
+    m_faces.append(face);
 
     HalfEdge *first = new HalfEdge();
-    ret->setOuterEdge(first);
-    first->setFace(ret);
+    face->setOuterEdge(first);
+    first->setFace(face);
     first->setOrigin( getVertex(vertexIndices[0]) );
 
 
@@ -126,7 +127,7 @@ Face* HalfEdgeData::addFace(const QList<int>& vertexIndices)
     {
         int iN = (i+1)%vertexIndices.size();
         HalfEdge *he = new HalfEdge();
-        he->setFace(ret);
+        he->setFace(face);
         he->setOrigin( getVertex(vertexIndices[i]) );
 
         it = edges.find(qMakePair( getVertex(vertexIndices[iN]),
@@ -149,7 +150,7 @@ Face* HalfEdgeData::addFace(const QList<int>& vertexIndices)
 
     prev->setNext(first);
 
-    return ret;
+    return m_faces.size()-1;
 
 }
 

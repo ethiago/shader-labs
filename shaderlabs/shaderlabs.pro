@@ -99,10 +99,10 @@ SOURCES += $$SLSRC/gl3w.c \
     $$PLYSRC/plydata.cpp \
     $$PLYSRC/plydataitens.cpp \
     $$PLYSRC/plyio.cpp \
-    $$SLSRC/slMesh.cpp \
-    $$SLSRC/slMeshContainer.cpp \
-    $$SLSRC/slMeshContainer.cpp \
+#    $$SLSRC/slMesh.cpp \
+#    $$SLSRC/slMeshContainer.cpp \
     $$SLSRC/slhemeshconstructor.cpp \
+    $$SLSRC/slhemesh.cpp \
     $$HESRC/vertex.cpp \
     $$HESRC/face.cpp \
     $$HESRC/halfedge.cpp \
@@ -160,8 +160,8 @@ HEADERS += $$SLHED/gl3w.h \
     $$PLYHED/plydata.h \
     $$PLYHED/plydataitens.h \
     $$PLYHED/plyio.h \
-    $$SLHED/slMesh.h \
-    $$SLHED/slMeshContainer.h \
+#    $$SLHED/slMesh.h \
+#    $$SLHED/slMeshContainer.h \
     $$SLHED/slhemeshconstructor.h \
     $$SLHED/slhemesh.h \
     $$HEHED/vertex.h \
