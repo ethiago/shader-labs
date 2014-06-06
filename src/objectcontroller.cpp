@@ -5,6 +5,8 @@
 #include "Global.h"
 #include "attributeview.h"
 #include <QGLWidget>
+#include "Object3D.h"
+#include "slgl3w.h"
 
 ObjectController::ObjectController(MainWindow *mw, SLObject* obj) :
     QObject(NULL), m_vertexProperties(new VertexProperties(mw)),
@@ -107,9 +109,48 @@ void ObjectController::updateView()
 
     m_attributeView->clear();
 
-    QList<PLYDataHeader::Property> attributes = e_object->getAttributeInfos();
-    for(int i = 0; i < attributes.size(); ++i)
+    const Object3D * obj = e_object->object();
+
+    QList<PLYDataHeader::Property> infos = obj->getAttributeInfos();
+    for(int i = 0; i < infos.size(); ++i)
     {
-        m_attributeView->addAttribute( (QVariant::Type)attributes[i].type(), attributes[i].name(), attributes[i].isList() );
+        m_attributeView->addAttribute( (QVariant::Type)infos[i].type(), infos[i].name(), infos[i].isList() );
+    }
+
+    infos = obj->getFaceUniformInfos();
+    for(int i = 0; i < infos.size(); ++i)
+    {
+        m_attributeView->addFaceUniform((QVariant::Type)infos[i].type(), infos[i].name(), infos[i].isList() );
+    }
+
+    infos = obj->getUniformInfos();
+    for(int i = 0; i < infos.size(); ++i)
+    {
+        m_attributeView->addFaceUniform((QVariant::Type)infos[i].type(), infos[i].name(), infos[i].isList() );
+    }
+}
+
+void ObjectController::afterLink(unsigned int programId)
+{
+    Object3D * obj = e_object->object();
+    QList<PLYDataHeader::Property> infos = obj->getAttributeInfos();
+    for(int i = 0; i < infos.size(); ++i)
+    {
+        int loc = SLGl3W::getAttributeLocation(programId, infos[i].name());
+        obj->setAttributeLocation(i, loc);
+    }
+
+    infos = obj->getFaceUniformInfos();
+    for(int i = 0; i < infos.size(); ++i)
+    {
+        int loc = SLGl3W::getUniformLocation(programId, infos[i].name());
+        obj->setFaceUniformLocation(i, loc);
+    }
+
+    infos = obj->getUniformInfos();
+    for(int i = 0; i < infos.size(); ++i)
+    {
+        int loc = SLGl3W::getUniformLocation(programId, infos[i].name());
+        obj->setUniformLocation(i, loc);
     }
 }

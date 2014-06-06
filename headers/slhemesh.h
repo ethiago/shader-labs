@@ -14,10 +14,9 @@ class SLHEMesh : public Object3D
 
     void drawGeometry(void) const;
 
-    void bindAttrValue(unsigned int attrLoc, const QList<QVariant>& list, PLYDataHeader::Property::Type type)const;
-
 public:
-    SLHEMesh(heds::HalfEdgeData * data, bool mydata = true);
+    SLHEMesh(heds::HalfEdgeData * data = NULL, bool mydata = true);
+
     SLHEMesh(const SLHEMesh& cp);
     ~SLHEMesh();
 
@@ -25,11 +24,7 @@ public:
 
     void storeList();
 
-    QList<PLYDataHeader::Property> getAttributeInfos()const;
-
-private slots:
-    void afterLink(GLuint programID);
-
+    void setData(heds::HalfEdgeData * data);
 };
 
 #endif // SLHEMESH_H

@@ -1,4 +1,5 @@
 #include "Object3D.h"
+#include "slgl3w.h"
 
 //#include "Global.h"
 
@@ -154,4 +155,177 @@ int Object3D::inputType(void)const
 void Object3D::setInputType(int input)
 {
     m_inputType = input;
+}
+
+int Object3D::addAttribute(const PLYDataHeader::Property& p)
+{
+    m_attributeInfo.append(p);
+    m_attLocation.append(0);
+    return m_attributeInfo.size()-1;
+}
+
+int Object3D::addFaceUniform(const PLYDataHeader::Property& p)
+{
+    m_faceInfo.append(p);
+    m_faceLocation.append(0);
+    return m_faceInfo.size()-1;
+}
+
+int Object3D::addUniform(const PLYDataHeader::Property& p)
+{
+    m_uniformInfo.append(p);
+    m_uniformLocation.append(0);
+    return m_uniformInfo.size()-1;
+}
+
+const QList<PLYDataHeader::Property>& Object3D::getAttributeInfos()const
+{
+    return m_attributeInfo;
+}
+
+const QList<PLYDataHeader::Property>& Object3D::getFaceUniformInfos()const
+{
+    return m_faceInfo;
+}
+const QList<PLYDataHeader::Property>& Object3D::getUniformInfos()const
+{
+    return m_uniformInfo;
+}
+
+void Object3D::setAttributeLocation(int idx, int location)
+{
+    Q_ASSERT(idx >=0 && idx < m_attLocation.size());
+
+    m_attLocation[idx] = location;
+}
+
+void Object3D::setFaceUniformLocation(int idx, int location)
+{
+    Q_ASSERT(idx >=0 && idx < m_attLocation.size());
+
+    m_faceLocation[idx] = location;
+}
+
+void Object3D::setUniformLocation(int idx, int location)
+{
+    Q_ASSERT(idx >=0 && idx < m_attLocation.size());
+
+    m_uniformLocation[idx] = location;
+}
+
+void Object3D::bindAttribute(int i, const QList<QVariant>& list )
+{
+    Q_ASSERT(i >= 0 && i < m_attributeInfo.size());
+
+    int attrLoc = m_attLocation[i];
+    PLYDataHeader::Property::Type type = m_attributeInfo[i].type();
+
+    if(attrLoc <= 0)
+        return;
+
+    if(type != PLYDataHeader::Property::INT && type != PLYDataHeader::Property::FLOAT)
+        return;
+
+    if(list.size() == 0 || list.size() > 4)
+        return;
+
+    QVector4D values;
+
+    if(type == PLYDataHeader::Property::INT)
+    {
+        switch(list.size())
+        {
+        case 1:
+            SLGl3W::vertexAttrib(attrLoc, list[0].value<int>(), true);
+            break;
+        case 2:
+            values = QVector4D(list[0].value<int>(),list[1].value<int>(), 0.0, 0.0);
+            SLGl3W::vertexAttrib(attrLoc, values.toVector2D(), true);
+            break;
+        case 3:
+            values = QVector4D(list[0].value<int>(),list[1].value<int>(), list[2].value<int>(), 0.0 );
+            SLGl3W::vertexAttrib(attrLoc, values.toVector3D(), true);
+            break;
+        case 4:
+            values = QVector4D(list[0].value<int>(),list[1].value<int>(), list[2].value<int>(), list[3].value<int>() );
+            SLGl3W::vertexAttrib(attrLoc, values, true);
+            break;
+        }
+    }else
+    {
+        switch(list.size())
+        {
+        case 1:
+            SLGl3W::vertexAttrib(attrLoc, list[0].value<float>());
+            break;
+        case 2:
+            values = QVector4D(list[0].value<float>(),list[1].value<float>(), 0.0, 0.0);
+            SLGl3W::vertexAttrib(attrLoc, values.toVector2D());
+            break;
+        case 3:
+            values = QVector4D(list[0].value<float>(),list[1].value<float>(), list[2].value<float>(), 0.0 );
+            SLGl3W::vertexAttrib(attrLoc, values.toVector3D());
+            break;
+        case 4:
+            values = QVector4D(list[0].value<float>(),list[1].value<float>(), list[2].value<float>(), list[3].value<float>() );
+            SLGl3W::vertexAttrib(attrLoc, values);
+            break;
+        }
+    }
+}
+
+void Object3D::bindUniform(int attrLoc, const QList<QVariant>&list, PLYDataHeader::Property::Type type )
+{
+    if(attrLoc <= 0)
+        return;
+
+    if(type != PLYDataHeader::Property::INT && type != PLYDataHeader::Property::FLOAT)
+        return;
+
+    if(list.size() == 0 || list.size() > 4)
+        return;
+
+    QVector4D values;
+
+    if(type == PLYDataHeader::Property::INT)
+    {
+        switch(list.size())
+        {
+        case 1:
+            SLGl3W::uniform(attrLoc, list[0].value<int>(), true);
+            break;
+        case 2:
+            values = QVector4D(list[0].value<int>(),list[1].value<int>(), 0.0, 0.0);
+            SLGl3W::uniform(attrLoc, values.toVector2D(), true);
+            break;
+        case 3:
+            values = QVector4D(list[0].value<int>(),list[1].value<int>(), list[2].value<int>(), 0.0 );
+            SLGl3W::uniform(attrLoc, values.toVector3D(), true);
+            break;
+        case 4:
+            values = QVector4D(list[0].value<int>(),list[1].value<int>(), list[2].value<int>(), list[3].value<int>() );
+            SLGl3W::uniform(attrLoc, values, true);
+            break;
+        }
+    }else
+    {
+        switch(list.size())
+        {
+        case 1:
+            SLGl3W::uniform(attrLoc, list[0].value<float>());
+            break;
+        case 2:
+            values = QVector4D(list[0].value<float>(),list[1].value<float>(), 0.0, 0.0);
+            SLGl3W::uniform(attrLoc, values.toVector2D());
+            break;
+        case 3:
+            values = QVector4D(list[0].value<float>(),list[1].value<float>(), list[2].value<float>(), 0.0 );
+            SLGl3W::uniform(attrLoc, values.toVector3D());
+            break;
+        case 4:
+            values = QVector4D(list[0].value<float>(),list[1].value<float>(), list[2].value<float>(), list[3].value<float>() );
+            SLGl3W::uniform(attrLoc, values);
+            break;
+        }
+    }
 }

@@ -24,10 +24,6 @@ class HalfEdgeData
     Face * m_ext;
     QList<HalfEdge*> e_boundary;
 
-    QList<PLYDataHeader::Property> m_attributeInfos;
-
-    QList<unsigned int> m_attributeLocations;
-
 public:
     HalfEdgeData();
     ~HalfEdgeData();
@@ -47,12 +43,6 @@ public:
     HalfEdge* getHalfEdge(int i);
     const HalfEdge* getHalfEdge(int i)const;
 
-    int addAttribute(const PLYDataHeader::Property&);
-    QList< QPair<GLuint, PLYDataHeader::Property::Type> > getAttribInfo()const;
-    QStringList getAttribNames()const;
-    void setAttribLocation(int idx, GLuint location);
-
-    const QList<PLYDataHeader::Property>& getAttributeInfo()const;
     void endMesh();
 
 private:

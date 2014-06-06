@@ -3,10 +3,14 @@
 
 #include "meshcontainer.h"
 #include "halfedgedata.h"
+#include "Object3D.h"
+#include "slhemesh.h"
 
 class SLHEMeshConstructor : public MeshContainer
 {
     heds::HalfEdgeData * e_mesh;
+
+    SLHEMesh * e_obj;
 
 public:
     SLHEMeshConstructor();
@@ -16,13 +20,13 @@ public:
     void setAttribute(int vertexId, int attributeId, const QList<QVariant>& data);
 
     int addFace(const QList<int>& vertexIndices);
-    int addFaceUniform(const QString& name, QVariant::Type type);
+    int addFaceUniform(const QString& name, QVariant::Type type, bool isList = false);
     void setFaceUniform(int faceId, int uniformId, const QList<QVariant>& data );
 
-    int addUniform(const QString& name, QVariant::Type type);
+    int addUniform(const QString& name, QVariant::Type type, bool isList = false);
     void setUniform(int uniformId, const QList<QVariant>& data );
 
-    heds::HalfEdgeData * getMesh();
+    SLHEMesh * getObject();
 };
 
 #endif // SLHEMESHCONSTRUCTOR_H
