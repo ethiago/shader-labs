@@ -203,6 +203,7 @@ void HalfEdgeData::endMesh()
     while(nullTwin != NULL)
     {
         HalfEdge *twinF = new HalfEdge();
+        e_boundary.append(twinF);
         twinF->setOrigin( nullTwin->getDestiny() );
         twinF->setFace( m_ext );
         twinF->setTwin( nullTwin );
@@ -234,4 +235,42 @@ void HalfEdgeData::endMesh()
             }
         }
     }
+}
+
+QList< QPair<GLuint, QVariant::Type> > HalfEdgeData::getAttribInfo()const
+{
+    QList< QPair<GLuint, QVariant::Type> > ret;
+
+    for(int i = 0; i < m_attributeInfo.size(); ++i)
+    {
+        ret.append( qMakePair( m_attributeInfo[i].attLocation, m_attributeInfo[i].attType ) );
+    }
+
+    return ret;
+}
+
+QStringList HalfEdgeData::getAttribNames()const
+{
+    QStringList l;
+
+    for(int i = 0; i < m_attributeInfo.size(); ++i)
+        l.append(m_attributeInfo[i].attName);
+
+    return l;
+}
+
+void HalfEdgeData::setAttribLocation(int idx, GLuint location)
+{
+    Q_ASSERT(idx >= 0 && idx < m_attributeInfo.size());
+
+    m_attributeInfo[idx].attLocation = location;
+}
+
+int HalfEdgeData::addAttribute(const QString& name, QVariant::Type type)
+{
+    ATTRIBUTEINFO info;
+    info.attName = name;
+    info.attType = type;
+    m_attributeInfo.append(info);
+    return m_attributeInfo.size()-1;
 }

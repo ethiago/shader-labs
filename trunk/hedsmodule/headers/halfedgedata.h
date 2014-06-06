@@ -4,6 +4,8 @@
 #include <QList>
 #include <QMap>
 #include <QPair>
+#include <QVariant>
+#include <QtOpenGL>
 
 namespace heds{
 
@@ -19,6 +21,15 @@ class HalfEdgeData
 
     Face * m_ext;
     QList<HalfEdge*> e_boundary;
+
+    typedef struct _ATTRIBUTEINFO
+    {
+        QString attName;
+        QVariant::Type attType;
+        GLuint attLocation;
+    }ATTRIBUTEINFO;
+
+    QList<ATTRIBUTEINFO> m_attributeInfo;
 
 public:
     HalfEdgeData();
@@ -39,10 +50,16 @@ public:
     HalfEdge* getHalfEdge(int i);
     const HalfEdge* getHalfEdge(int i)const;
 
+    int addAttribute(const QString& name, QVariant::Type type);
+    QList< QPair<GLuint, QVariant::Type> > getAttribInfo()const;
+    QStringList getAttribNames()const;
+    void setAttribLocation(int idx, GLuint location);
+
     void endMesh();
 
 private:
     HalfEdge * nextNull(HalfEdge *);
+
 };
 
 }

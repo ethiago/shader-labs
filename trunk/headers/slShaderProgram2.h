@@ -34,8 +34,6 @@ public:
 
     const QString& log()const;
 
-    static GLint getUniformLocation(GLuint program, const QString& name);
-
     void setGeometrySettings(GLint inputType, GLint outputType, GLint vertexCount)const;
 
 };

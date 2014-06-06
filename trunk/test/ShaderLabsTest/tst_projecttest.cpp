@@ -8,7 +8,7 @@ class ProjectTest : public QObject
 public:
     ProjectTest();
 
-private Q_SLOTS:
+private slots:
     void testCase1();
     void testCase1_data();
 };
@@ -33,6 +33,6 @@ void ProjectTest::testCase1_data()
     QTest::newRow("0") << QString() << QString("");
 }
 
-QTEST_APPLESS_MAIN(ProjectTest);
+QTEST_MAIN(ProjectTest);
 
 #include "tst_projecttest.moc"

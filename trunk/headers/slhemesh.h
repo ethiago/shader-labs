@@ -14,6 +14,8 @@ class SLHEMesh : public Object3D
 
     void drawGeometry(void) const;
 
+    void bindAttrValue(unsigned int attrLoc, const QList<QVariant>& list, QVariant::Type type)const;
+
 public:
     SLHEMesh(heds::HalfEdgeData * data, bool mydata = true);
     SLHEMesh(const SLHEMesh& cp);
@@ -22,6 +24,10 @@ public:
     Object3D* copy(void) const;
 
     void storeList();
+
+
+private slots:
+    void afterLink(GLuint programID);
 
 };
 

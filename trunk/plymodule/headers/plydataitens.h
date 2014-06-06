@@ -11,7 +11,6 @@ class Property
 {
 public:
     enum Type{
-        CHAR = QVariant::Char,
         INT = QVariant::Int,
         FLOAT = QVariant::Double
     };
