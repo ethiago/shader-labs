@@ -12,7 +12,7 @@ public:
     SLHEMeshConstructor();
 
     int addVertex(float x, float y, float z);
-    int addAttribute(const QString& name, QVariant::Type type);
+    int addAttribute(const QString& name, QVariant::Type type, bool isList = false);
     void setAttribute(int vertexId, int attributeId, const QList<QVariant>& data);
 
     int addFace(const QList<int>& vertexIndices);

@@ -106,7 +106,8 @@ SOURCES += $$SLSRC/gl3w.c \
     $$HESRC/vertex.cpp \
     $$HESRC/face.cpp \
     $$HESRC/halfedge.cpp \
-    $$HESRC/halfedgedata.cpp
+    $$HESRC/halfedgedata.cpp \
+    ../src/attributeview.cpp
 
 HEADERS += $$SLHED/gl3w.h \
     $$SLHED/glcorearb.h \
@@ -167,7 +168,8 @@ HEADERS += $$SLHED/gl3w.h \
     $$HEHED/vertex.h \
     $$HEHED/face.h \
     $$HEHED/halfedge.h \
-    $$HEHED/halfedgedata.h
+    $$HEHED/halfedgedata.h \
+    ../headers/attributeview.h
 
 FORMS += $$SLFOR/MainWindow.ui \
     $$SLFOR/ChooseShaderDialog.ui \
@@ -175,7 +177,8 @@ FORMS += $$SLFOR/MainWindow.ui \
     $$SLFOR/Find.ui \
     $$SLFOR/PrimitivesDialog.ui \
     $$SLFOR/GlobalProperties.ui \
-    $$SLFOR/ShaderCodeContainer2.ui
+    $$SLFOR/ShaderCodeContainer2.ui \
+    ../forms/attributeview.ui
     
 RESOURCES += $$SLRES/shaderlab.qrc
 OTHER_FILES += 

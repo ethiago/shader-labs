@@ -7,6 +7,8 @@
 #include <QVariant>
 #include <QtOpenGL>
 
+#include "plydataitens.h"
+
 namespace heds{
 
 class Vertex;
@@ -22,14 +24,9 @@ class HalfEdgeData
     Face * m_ext;
     QList<HalfEdge*> e_boundary;
 
-    typedef struct _ATTRIBUTEINFO
-    {
-        QString attName;
-        QVariant::Type attType;
-        GLuint attLocation;
-    }ATTRIBUTEINFO;
+    QList<PLYDataHeader::Property> m_attributeInfos;
 
-    QList<ATTRIBUTEINFO> m_attributeInfo;
+    QList<unsigned int> m_attributeLocations;
 
 public:
     HalfEdgeData();
@@ -50,11 +47,12 @@ public:
     HalfEdge* getHalfEdge(int i);
     const HalfEdge* getHalfEdge(int i)const;
 
-    int addAttribute(const QString& name, QVariant::Type type);
-    QList< QPair<GLuint, QVariant::Type> > getAttribInfo()const;
+    int addAttribute(const PLYDataHeader::Property&);
+    QList< QPair<GLuint, PLYDataHeader::Property::Type> > getAttribInfo()const;
     QStringList getAttribNames()const;
     void setAttribLocation(int idx, GLuint location);
 
+    const QList<PLYDataHeader::Property>& getAttributeInfo()const;
     void endMesh();
 
 private:

@@ -7,6 +7,7 @@
 #include <QMatrix4x4>
 #include <QVector>
 #include <QColor>
+#include "plydataitens.h"
 
 class Object3D : public QObject
 {
@@ -59,6 +60,8 @@ public:
     virtual Object3D* copy(void) const = 0;
 
     static double degreeFromCos(double);
+
+    virtual QList<PLYDataHeader::Property> getAttributeInfos()const{return QList<PLYDataHeader::Property>();}
 
 protected:
 

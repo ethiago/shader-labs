@@ -4,6 +4,7 @@
 #include "slShaderCodes.h"
 #include "slTexture2.h"
 #include "Project.h"
+#include "slhemesh.h"
 
 SLObject::SLObject(Object3D *obj) :
     QObject(NULL), m_program(new SLShaderProgram2), m_object(obj->copy()),
@@ -99,4 +100,9 @@ Project *SLObject::project()
 int SLObject::modelId()const
 {
     return m_object->modelId();
+}
+
+QList<PLYDataHeader::Property> SLObject::getAttributeInfos()const
+{
+    return m_object->getAttributeInfos();
 }

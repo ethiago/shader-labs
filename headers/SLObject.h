@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QColor>
+#include "plydataitens.h"
 
 class SLShaderProgram2;
 class Object3D;
@@ -47,6 +48,9 @@ public:
     SLTextures2* textures();
     Project *project();
 
+
+
+    QList<PLYDataHeader::Property> getAttributeInfos()const;
 
 };
 

@@ -3,11 +3,12 @@
 #include "MainWindow.h"
 #include "SLObject.h"
 #include "Global.h"
+#include "attributeview.h"
 #include <QGLWidget>
 
 ObjectController::ObjectController(MainWindow *mw, SLObject* obj) :
     QObject(NULL), m_vertexProperties(new VertexProperties(mw)),
-    e_object(obj)
+    e_object(obj), m_attributeView(new AttributeView)
 {
     mw->addDockWidget(Qt::RightDockWidgetArea, m_vertexProperties);
     setupPropertiesList();
@@ -15,8 +16,12 @@ ObjectController::ObjectController(MainWindow *mw, SLObject* obj) :
     m_vertexProperties->addItem();
     m_vertexProperties->hide();
 
+    m_vertexProperties->addWidget(m_attributeView);
+
     connect(m_vertexProperties, SIGNAL(objectChanged(int)),
             this, SIGNAL(objectChanged(int)));
+
+    updateView();
 }
 
 ObjectController::~ObjectController()
@@ -99,4 +104,12 @@ void ObjectController::updateView()
 {
     properties.value(Visibible)->setValue(e_object->isVisible());
     properties.value(ModelColor)->setValue(e_object->color());
+
+    m_attributeView->clear();
+
+    QList<PLYDataHeader::Property> attributes = e_object->getAttributeInfos();
+    for(int i = 0; i < attributes.size(); ++i)
+    {
+        m_attributeView->addAttribute( (QVariant::Type)attributes[i].type(), attributes[i].name(), attributes[i].isList() );
+    }
 }
