@@ -14,6 +14,8 @@ class Vertex
 
     HalfEdge * e_edge;
 
+    QList<QList<QVariant> > m_attribValues;
+
 public:
     Vertex();
     ~Vertex();
@@ -24,6 +26,9 @@ public:
     const HalfEdge * edge()const;
     HalfEdge * edge();
     void setEdge(HalfEdge * edge);
+
+    const QList<QVariant>& attribValue(int i)const;
+    void setAttribValue(int i, const QList<QVariant>& value);
 
     class iterator{
         HalfEdge * e_first;

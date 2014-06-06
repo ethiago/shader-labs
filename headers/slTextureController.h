@@ -27,7 +27,6 @@ private:
     void updateView();
 
 public slots:
-    void beforeUnLink(GLuint programId);
     void afterLink(GLuint programId);
 
     void changeTexture();

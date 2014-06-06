@@ -27,8 +27,6 @@ MainController::MainController(MainWindow *mw, QObject *parent)
     m_shaderController = new SLShaderController(e_mainWindow, m_chooseShaderDialog);
     m_textureController = new SLTextureController(e_mainWindow);
 
-    connect( m_shaderController, SIGNAL(beforeUnLink(GLuint)),
-             m_textureController, SLOT(beforeUnLink(GLuint)) );
     connect( m_shaderController, SIGNAL(afterLink(GLuint)),
              m_textureController, SLOT(afterLink(GLuint)) );
 

@@ -284,11 +284,15 @@ void RenderController2::loadModel()
 
     QAction* act = NULL;
     SLHEMesh *model_tmp = new SLHEMesh( constructor.getMesh() );
+
+    connect(e_shaderController, SIGNAL(afterLink(GLuint)),
+            model_tmp, SLOT(afterLink(GLuint)) );
+
     model_tmp->storeList();
 
     act = menu->addAction( SLFile::fileNameWithoutExt(fn) );
     act->setCheckable(true);
-    act->setChecked(false);          // comeca pela esfera
+    act->setChecked(false);
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, (Object3D*)model_tmp));
     modelChanged(act);

@@ -8,9 +8,6 @@
 void debugVariant(PLYDataHeader::Property::Type t, const QVariant& v)
 {
     switch (t) {
-    case PLYDataHeader::Property::CHAR:
-        qDebug() << v.value<char>();
-        break;
     case PLYDataHeader::Property::INT:
         qDebug() << v.value<int>();
         break;
@@ -70,21 +67,15 @@ bool PLYIO::readProperty(PLYDataHeader::Property *p)
 
 PLYDataHeader::Property::Type PLYIO::convertType(const QString& type)
 {
-    // char uchar
-    if(type == "char" || type == "uchar")
-        return PLYDataHeader::Property::CHAR;
-
-    // short ushort int uint int8 uint8 int16 uint16 int32 uint32
-    if(type == "short" || type == "ushort" || type == "int" || type == "uint" ||
-            type == "int8" || type == "uint8" || type == "int16" ||
-            type == "uint16" || type == "int32" || type == "uint32")
+    // char uchar short ushort int uint int8 uint8 int16 uint16 int32 uint32
+    if(type == "char" || type == "uchar" || type == "short" || type == "ushort" ||
+            type == "int" || type == "uint" || type == "int8" || type == "uint8" ||
+            type == "int16" || type == "uint16" || type == "int32" || type == "uint32")
         return PLYDataHeader::Property::INT;
 
     // float double float32 float64
     //if(type == "float" || type == "double" || type == "float32" || type == "float64")
         return PLYDataHeader::Property::FLOAT;
-
-
 }
 
 bool PLYIO::readElement(PLYDataHeader::Element *e)
@@ -305,9 +296,6 @@ bool PLYIO::readVariant(PLYDataHeader::Property::Type t, QVariant* v)
         return false;
 
     switch (t) {
-    case PLYDataHeader::Property::CHAR:
-        *v = QVariant(w[0]);
-        break;
     case PLYDataHeader::Property::INT:
         *v = QVariant(w.toInt(&b));
         if(!b)
@@ -332,9 +320,6 @@ bool PLYIO::readVariant(PLYDataHeader::Property::Type t, QVariant* v)
 void PLYIO::writeVariant(QTextStream& s, PLYDataHeader::Property::Type t, const QVariant& v)const
 {
     switch (t) {
-    case PLYDataHeader::Property::CHAR:
-        s << v.value<char>();
-        break;
     case PLYDataHeader::Property::INT:
         s << v.value<int>();
         break;
@@ -347,9 +332,6 @@ void PLYIO::writeVariant(QTextStream& s, PLYDataHeader::Property::Type t, const 
 void PLYIO::writeVariantType(QTextStream& s, PLYDataHeader::Property::Type t)const
 {
     switch (t) {
-    case PLYDataHeader::Property::CHAR:
-        s << "char";
-        break;
     case PLYDataHeader::Property::INT:
         s << "int";
         break;

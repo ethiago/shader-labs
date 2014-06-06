@@ -4,15 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += opengl xml testlib
+CONFIG   += qtestlib
+#CONFIG   -= app_bundle
 
-TARGET = tst_projecttest
-CONFIG   += console
-CONFIG   -= app_bundle
+TARGET = ShaderLabsTests
 
-TEMPLATE = app
-
-unix:TARGET = ShaderLabTest
 INCLUDEPATH += ../../headers
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
@@ -20,5 +16,9 @@ RCC_DIR = tmp
 UI_DIR = tmp
 DESTDIR = bin
 
-SOURCES += tst_projecttest.cpp
+SOURCES += tst_projecttest.cpp \
+    plytest.cpp
+
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+HEADERS += plytest.h

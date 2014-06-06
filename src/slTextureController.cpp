@@ -6,6 +6,7 @@
 #include "slShaderProgram2.h"
 #include "QGLWidget"
 #include "Project.h"
+#include "slgl3w.h"
 
 #include <QDebug>
 #include <QIcon>
@@ -38,16 +39,12 @@ void SLTextureController::setTextures(SLTextures2 * textures)
     updateView();
 }
 
-void SLTextureController::beforeUnLink(GLuint programId)
-{
-}
-
 void SLTextureController::afterLink(GLuint programId)
 {
     for(int i = 0; i < e_textures->size(); ++i)
     {
         QString varName = e_textures->at(i).varName();
-        int location = SLShaderProgram2::getUniformLocation(programId, varName);
+        int location = SLGl3W::getUniformLocation(programId, varName);
         e_textures->at(i).setUniformLocation(location);
     }
 }

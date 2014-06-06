@@ -1,5 +1,6 @@
 #include "slShaderProgram2.h"
 #include "slShaderCodes.h"
+#include "slgl3w.h"
 
 #include <QDebug>
 #include <QSize>
@@ -84,17 +85,7 @@ GLuint SLShaderProgram2::programId()const
     return m_programId;
 }
 
-GLint SLShaderProgram2::getUniformLocation(GLuint program, const QString& name)
-{
-    GLint location = -1;
-    int value = 0;
-    const char * cname = name.toAscii();
-    glGetProgramiv(program, GL_LINK_STATUS, &value);
-    if(value != 0)
-        location = glGetUniformLocation(program, cname);
 
-    return location;
-}
 
 bool SLShaderProgram2::link(const QList<GLuint>& shaders)
 {
@@ -119,8 +110,8 @@ bool SLShaderProgram2::link(const QList<GLuint>& shaders)
 
     if(isLinked())
     {
-        m_sizeLocation = SLShaderProgram2::getUniformLocation(m_programId, "wsize");
-        m_timeLocation = SLShaderProgram2::getUniformLocation(m_programId,  "time");
+        m_sizeLocation = SLGl3W::getUniformLocation(m_programId, "wsize");
+        m_timeLocation = SLGl3W::getUniformLocation(m_programId,  "time");
     }
 
     return m_linked;

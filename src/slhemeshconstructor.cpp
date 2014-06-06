@@ -21,12 +21,13 @@ int SLHEMeshConstructor::addVertex(float x, float y, float z)
 
 int SLHEMeshConstructor::addAttribute(const QString& name, QVariant::Type type)
 {
-    return 0;
+    return e_mesh->addAttribute(name, type);
 }
 
 void SLHEMeshConstructor::setAttribute(int vertexId, int attributeId, const QList<QVariant>& data)
 {
-
+    Vertex *v = e_mesh->getVertex(vertexId);
+    v->setAttribValue(attributeId, data);
 }
 
 int SLHEMeshConstructor::addFace(const QList<int>& vertexIndices)
