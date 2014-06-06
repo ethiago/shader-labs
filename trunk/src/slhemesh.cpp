@@ -40,7 +40,7 @@ void SLHEMesh::storeList()
     if(indexList > 0)
         glDeleteLists(indexList, 1);
 
-    QList<QPair<GLuint, QVariant::Type> > attInfo = m_data->getAttribInfo();
+    QList<QPair<GLuint, PLYDataHeader::Property::Type> > attInfo = m_data->getAttribInfo();
 
     indexList = glGenLists(1);
 
@@ -85,18 +85,18 @@ void SLHEMesh::storeList()
     glEndList();
 }
 
-void SLHEMesh::bindAttrValue(unsigned int attrLoc, const QList<QVariant>& list, QVariant::Type type)const
+void SLHEMesh::bindAttrValue(unsigned int attrLoc, const QList<QVariant>& list, PLYDataHeader::Property::Type type)const
 {
     if(attrLoc <= 0)
         return;
 
-    if(type != QVariant::Int && type != QVariant::Double)
+    if(type != PLYDataHeader::Property::INT && type != PLYDataHeader::Property::FLOAT)
         return;
 
     if(list.size() == 0 || list.size() > 4)
         return;
 
-    if(type == QVariant::Int)
+    if(type == PLYDataHeader::Property::INT)
     {
         switch(list.size())
         {
@@ -141,4 +141,9 @@ void SLHEMesh::afterLink(GLuint programID)
         int loc = SLGl3W::getAttributeLocation(programID, attNames[i]);
         m_data->setAttribLocation(i, loc);
     }
+}
+
+QList<PLYDataHeader::Property> SLHEMesh::getAttributeInfos()const
+{
+    return m_data->getAttributeInfo();
 }

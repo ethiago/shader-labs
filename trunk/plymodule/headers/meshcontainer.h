@@ -11,7 +11,7 @@ public:
     virtual ~MeshContainer(){}
 
     virtual int addVertex(float x, float y, float z) = 0;
-    virtual int addAttribute(const QString& name, QVariant::Type type) = 0;
+    virtual int addAttribute(const QString& name, QVariant::Type type, bool isList = false) = 0;
     virtual void setAttribute(int vertexId, int attributeId, const QList<QVariant>& data) = 0;
 
     virtual int addFace(const QList<int>& vertexIndices) = 0;

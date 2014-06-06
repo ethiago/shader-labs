@@ -9,6 +9,7 @@
 class VertexProperties;
 class MainWindow;
 class SLObject;
+class AttributeView;
 
 class ObjectController : public QObject
 {
@@ -16,13 +17,15 @@ class ObjectController : public QObject
 
     VertexProperties * m_vertexProperties;
     SLObject * e_object;
+    AttributeView * m_attributeView;
+
 
 public:
     explicit ObjectController(MainWindow * mw, SLObject* obj);
     ~ObjectController();
     void newObject(SLObject *obj);
     void setObject(SLObject *obj);
-    void updateView();
+
     
 private:
 
@@ -44,9 +47,13 @@ private:
 signals:
     void objectChanged(int);
 
+
 private slots:
     void attributeChanged(QtBrowserItem*);
     void valueChanged(QtProperty*,QVariant);
+
+public slots:
+    void updateView();
     
 };
 

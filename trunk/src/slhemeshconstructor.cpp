@@ -1,6 +1,7 @@
 #include "slhemeshconstructor.h"
 #include "vertex.h"
 #include "face.h"
+#include "plydataitens.h"
 
 #include <QVector4D>
 
@@ -19,9 +20,14 @@ int SLHEMeshConstructor::addVertex(float x, float y, float z)
     return iV;
 }
 
-int SLHEMeshConstructor::addAttribute(const QString& name, QVariant::Type type)
+int SLHEMeshConstructor::addAttribute(const QString& name, QVariant::Type type, bool isList)
 {
-    return e_mesh->addAttribute(name, type);
+    PLYDataHeader::Property p;
+    p.name(name);
+    p.type((PLYDataHeader::Property::Type) type);
+    p.setList(isList);
+
+    return e_mesh->addAttribute(p);
 }
 
 void SLHEMeshConstructor::setAttribute(int vertexId, int attributeId, const QList<QVariant>& data)

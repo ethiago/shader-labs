@@ -136,6 +136,7 @@ RenderController2::~RenderController2()
     delete m_light;
     delete m_propertries;
     delete m_scene;
+    delete m_objectController;
 }
 
 void RenderController2::changeCurrent(Object3D* obj)
@@ -145,6 +146,7 @@ void RenderController2::changeCurrent(Object3D* obj)
     {
         current->changeObject(obj);
         e_shaderController->setInputPrimitive(obj->inputType());
+        m_objectController->updateView();
     }
 }
 

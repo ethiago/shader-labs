@@ -237,13 +237,13 @@ void HalfEdgeData::endMesh()
     }
 }
 
-QList< QPair<GLuint, QVariant::Type> > HalfEdgeData::getAttribInfo()const
+QList< QPair<GLuint, PLYDataHeader::Property::Type> > HalfEdgeData::getAttribInfo()const
 {
-    QList< QPair<GLuint, QVariant::Type> > ret;
+    QList< QPair<GLuint, PLYDataHeader::Property::Type> > ret;
 
-    for(int i = 0; i < m_attributeInfo.size(); ++i)
+    for(int i = 0; i < m_attributeInfos.size(); ++i)
     {
-        ret.append( qMakePair( m_attributeInfo[i].attLocation, m_attributeInfo[i].attType ) );
+        ret.append( qMakePair( m_attributeLocations[i], m_attributeInfos[i].type() ) );
     }
 
     return ret;
@@ -253,24 +253,27 @@ QStringList HalfEdgeData::getAttribNames()const
 {
     QStringList l;
 
-    for(int i = 0; i < m_attributeInfo.size(); ++i)
-        l.append(m_attributeInfo[i].attName);
+    for(int i = 0; i < m_attributeInfos.size(); ++i)
+        l.append(m_attributeInfos[i].name());
 
     return l;
 }
 
 void HalfEdgeData::setAttribLocation(int idx, GLuint location)
 {
-    Q_ASSERT(idx >= 0 && idx < m_attributeInfo.size());
+    Q_ASSERT(idx >= 0 && idx < m_attributeLocations.size());
 
-    m_attributeInfo[idx].attLocation = location;
+    m_attributeLocations[idx] = location;
 }
 
-int HalfEdgeData::addAttribute(const QString& name, QVariant::Type type)
+int HalfEdgeData::addAttribute(const PLYDataHeader::Property& p)
 {
-    ATTRIBUTEINFO info;
-    info.attName = name;
-    info.attType = type;
-    m_attributeInfo.append(info);
-    return m_attributeInfo.size()-1;
+    m_attributeInfos.append(p);
+    m_attributeLocations.append(0);
+    return m_attributeInfos.size()-1;
+}
+
+const QList<PLYDataHeader::Property>& HalfEdgeData::getAttributeInfo()const
+{
+    return m_attributeInfos;
 }
