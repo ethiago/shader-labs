@@ -61,13 +61,37 @@ public:
 
     static double degreeFromCos(double);
 
-    virtual QList<PLYDataHeader::Property> getAttributeInfos()const{return QList<PLYDataHeader::Property>();}
+    int addAttribute(const PLYDataHeader::Property& p);
+    int addFaceUniform(const PLYDataHeader::Property& p);
+    int addUniform(const PLYDataHeader::Property& p);
+
+    const QList<PLYDataHeader::Property>& getAttributeInfos()const;
+    const QList<PLYDataHeader::Property>& getFaceUniformInfos()const;
+    const QList<PLYDataHeader::Property>& getUniformInfos()const;
+
+    void setAttributeLocation(int idx, int location);
+    void setFaceUniformLocation(int idx, int location);
+    void setUniformLocation(int idx, int location);
+
+
 
 protected:
 
     void setInputType(int input);
     void setStacks(int stacks);
     void setSlices(int slices);
+
+    QList<PLYDataHeader::Property> m_attributeInfo;
+    QList<PLYDataHeader::Property> m_faceInfo;
+    QList<PLYDataHeader::Property> m_uniformInfo;
+
+    QList<int> m_attLocation;
+    QList<int> m_faceLocation;
+    QList<int> m_uniformLocation;
+
+    void bindAttribute(int i, const QList<QVariant>& list );
+
+    void bindUniform(int i, const QList<QVariant>& list, PLYDataHeader::Property::Type type);
 
 };
 

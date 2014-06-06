@@ -54,6 +54,7 @@ private slots:
 
 public slots:
     void updateView();
+    void afterLink(unsigned int programId);
     
 };
 

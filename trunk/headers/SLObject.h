@@ -48,9 +48,7 @@ public:
     SLTextures2* textures();
     Project *project();
 
-
-
-    QList<PLYDataHeader::Property> getAttributeInfos()const;
+    Object3D *object()const;
 
 };
 

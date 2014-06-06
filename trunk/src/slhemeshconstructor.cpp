@@ -7,7 +7,7 @@
 
 using namespace heds;
 
-SLHEMeshConstructor::SLHEMeshConstructor() : e_mesh(new heds::HalfEdgeData())
+SLHEMeshConstructor::SLHEMeshConstructor() : e_mesh(new heds::HalfEdgeData()), e_obj(new SLHEMesh)
 {
 }
 
@@ -27,7 +27,7 @@ int SLHEMeshConstructor::addAttribute(const QString& name, QVariant::Type type, 
     p.type((PLYDataHeader::Property::Type) type);
     p.setList(isList);
 
-    return e_mesh->addAttribute(p);
+    return e_obj->addAttribute(p);
 }
 
 void SLHEMeshConstructor::setAttribute(int vertexId, int attributeId, const QList<QVariant>& data)
@@ -41,9 +41,14 @@ int SLHEMeshConstructor::addFace(const QList<int>& vertexIndices)
     return e_mesh->addFace(vertexIndices);
 }
 
-int SLHEMeshConstructor::addFaceUniform(const QString& name, QVariant::Type type)
+int SLHEMeshConstructor::addFaceUniform(const QString& name, QVariant::Type type, bool isList)
 {
-    return 0;
+    PLYDataHeader::Property p;
+    p.name(name);
+    p.type((PLYDataHeader::Property::Type) type);
+    p.setList(isList);
+
+    return e_obj->addFaceUniform(p);
 }
 
 void SLHEMeshConstructor::setFaceUniform(int faceId, int uniformId, const QList<QVariant>& data )
@@ -51,9 +56,14 @@ void SLHEMeshConstructor::setFaceUniform(int faceId, int uniformId, const QList<
 
 }
 
-int SLHEMeshConstructor::addUniform(const QString& name, QVariant::Type type)
+int SLHEMeshConstructor::addUniform(const QString& name, QVariant::Type type, bool isList)
 {
-    return 0;
+    PLYDataHeader::Property p;
+    p.name(name);
+    p.type((PLYDataHeader::Property::Type) type);
+    p.setList(isList);
+
+    return e_obj->addUniform(p);
 }
 
 void SLHEMeshConstructor::setUniform(int uniformId, const QList<QVariant>& data )
@@ -61,8 +71,9 @@ void SLHEMeshConstructor::setUniform(int uniformId, const QList<QVariant>& data 
 
 }
 
-heds::HalfEdgeData * SLHEMeshConstructor::getMesh()
+SLHEMesh * SLHEMeshConstructor::getObject()
 {
     e_mesh->endMesh();
-    return e_mesh;
+    e_obj->setData(e_mesh);
+    return e_obj;
 }

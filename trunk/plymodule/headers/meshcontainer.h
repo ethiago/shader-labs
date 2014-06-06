@@ -15,10 +15,10 @@ public:
     virtual void setAttribute(int vertexId, int attributeId, const QList<QVariant>& data) = 0;
 
     virtual int addFace(const QList<int>& vertexIndices) = 0;
-    virtual int addFaceUniform(const QString& name, QVariant::Type type) = 0;
+    virtual int addFaceUniform(const QString& name, QVariant::Type type, bool isList = false) = 0;
     virtual void setFaceUniform(int faceId, int uniformId, const QList<QVariant>& data ) = 0;
 
-    virtual int addUniform(const QString& name, QVariant::Type type) = 0;
+    virtual int addUniform(const QString& name, QVariant::Type type, bool isList = false) = 0;
     virtual void setUniform(int uniformId, const QList<QVariant>& data ) = 0;
 
 };

@@ -285,10 +285,10 @@ void RenderController2::loadModel()
     QMenu* menu = e_mainwindow->modelsMenu();
 
     QAction* act = NULL;
-    SLHEMesh *model_tmp = new SLHEMesh( constructor.getMesh() );
+    SLHEMesh *model_tmp = constructor.getObject();
 
     connect(e_shaderController, SIGNAL(afterLink(GLuint)),
-            model_tmp, SLOT(afterLink(GLuint)) );
+            m_objectController, SLOT(afterLink(GLuint)) );
 
     model_tmp->storeList();
 

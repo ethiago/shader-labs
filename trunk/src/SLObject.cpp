@@ -102,7 +102,7 @@ int SLObject::modelId()const
     return m_object->modelId();
 }
 
-QList<PLYDataHeader::Property> SLObject::getAttributeInfos()const
+Object3D* SLObject::object()const
 {
-    return m_object->getAttributeInfos();
+    return m_object;
 }
