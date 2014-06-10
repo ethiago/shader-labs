@@ -11,6 +11,8 @@ class MainWindow;
 class SLObject;
 class AttributeView;
 
+typedef unsigned int GLuint;
+
 class ObjectController : public QObject
 {
     Q_OBJECT
@@ -54,7 +56,7 @@ private slots:
 
 public slots:
     void updateView();
-    void afterLink(unsigned int programId);
+    void afterLink(GLuint programId);
     
 };
 

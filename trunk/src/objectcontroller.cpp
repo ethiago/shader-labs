@@ -153,4 +153,6 @@ void ObjectController::afterLink(unsigned int programId)
         int loc = SLGl3W::getUniformLocation(programId, infos[i].name());
         obj->setUniformLocation(i, loc);
     }
+
+    obj->afterLink(programId);
 }

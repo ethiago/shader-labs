@@ -35,6 +35,13 @@ void SLHEMesh::drawGeometry(void) const
     glCallList(indexList);
 }
 
+void SLHEMesh::afterLink(unsigned int programId)
+{
+    glUseProgram(programId);
+    storeList();
+    glUseProgram(0);
+}
+
 void SLHEMesh::storeList()
 {
     if(indexList > 0)

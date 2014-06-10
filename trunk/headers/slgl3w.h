@@ -13,6 +13,8 @@ public:
     static void setPatchVertices(int );
     static int getUniformLocation(unsigned int program, const QString& name);
     static int getAttributeLocation(unsigned int program, const QString& name);
+    static void debugAttribs(unsigned int program);
+
     static void vertexAttrib(int loc, float value, bool isInt = false);
     static void vertexAttrib(int loc, const QVector2D& v, bool isInt = false);
     static void vertexAttrib(int loc, const QVector3D& v, bool isInt = false);
