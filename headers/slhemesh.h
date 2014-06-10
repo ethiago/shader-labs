@@ -24,6 +24,8 @@ public:
 
     void storeList();
 
+    void afterLink(unsigned int programId);
+
     void setData(heds::HalfEdgeData * data);
 };
 

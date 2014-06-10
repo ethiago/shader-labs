@@ -74,6 +74,7 @@ public:
     void setUniformLocation(int idx, int location);
 
 
+    virtual void afterLink(unsigned int programId);
 
 protected:
 

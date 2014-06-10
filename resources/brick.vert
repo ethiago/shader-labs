@@ -4,6 +4,9 @@ const float DiffuseContribution = 1.0 - SpecularContribution;
 varying float LightIntensity;
 varying vec2 MCposition;
 
+attribute float confidence;
+attribute float intensity;
+
 void main()
 {
 	vec3 LightPosition = gl_LightSource[0].position.xyz;
@@ -23,6 +26,8 @@ void main()
 	}
 
 	LightIntensity = DiffuseContribution * diffuse + SpecularContribution * spec;
+
+	gl_FrontColor = vec4(confidence, intensity, 0.0, 1.0 );
 
 	MCposition = gl_MultiTexCoord0.st;// gl_Vertex.xy;
 	gl_Position = ftransform();

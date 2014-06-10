@@ -10,6 +10,7 @@
 #include "SLTabWidget.h"
 #include "PrimitivesDialog.h"
 #include "Project.h"
+#include "slgl3w.h"
 #include <QDebug>
 #include <QDateTime>
 #include <QGLContext>
@@ -241,6 +242,7 @@ void SLShaderController::run()
 
     if(e_shaderProgram->link(e_shaderCodes->listForLink()))
     {
+        //SLGl3W::debugAttribs(e_shaderProgram->programId());
         emit afterLink(e_shaderProgram->programId());
     }
 

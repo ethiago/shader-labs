@@ -1,5 +1,6 @@
 #include "gl3w.h"
 #include "slgl3w.h"
+#include <QDebug>
 
 SLGl3W::SLGl3W()
 {
@@ -20,6 +21,34 @@ int SLGl3W::getUniformLocation(unsigned int program, const QString& name)
         location = glGetUniformLocation(program, cname);
 
     return location;
+}
+
+void SLGl3W::debugAttribs(unsigned int program)
+{
+    GLint numberOfAttribs = 0;
+
+    glGetProgramiv(program,
+        GL_ACTIVE_ATTRIBUTES,
+        &numberOfAttribs);
+
+    qDebug() << "There are " << numberOfAttribs << " attributes";
+
+    GLchar buff[100];
+    GLenum type;
+    GLint size;
+    GLsizei length;
+
+    for(int i = 0; i < numberOfAttribs; ++i)
+    {
+        glGetActiveAttrib(program,
+                i,
+                100,
+                &length,
+                &size,
+                &type,
+                buff);
+        qDebug() << "Attrib: " << QString(buff) << "type: " << type;
+    }
 }
 
 int SLGl3W::getAttributeLocation(unsigned int program, const QString& name)

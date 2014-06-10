@@ -30,7 +30,10 @@ Object3D::Object3D(const Object3D& obj)
       m_translation(obj.translation()), m_rotations(obj.rotations()),
       m_interactiveQuartenion(obj.interactiveQuartenion()),
       m_slices(obj.slices()), m_stacks(obj.stacks()),
-      m_inputType(obj.inputType()), m_modelId(obj.modelId())
+      m_inputType(obj.inputType()), m_modelId(obj.modelId()),
+      m_attributeInfo(obj.m_attributeInfo), m_faceInfo(obj.m_faceInfo),
+      m_uniformInfo(obj.m_uniformInfo), m_attLocation(obj.m_attLocation),
+      m_faceLocation(obj.m_faceLocation), m_uniformLocation(obj.m_uniformLocation)
 
 {
 }
@@ -201,16 +204,21 @@ void Object3D::setAttributeLocation(int idx, int location)
 
 void Object3D::setFaceUniformLocation(int idx, int location)
 {
-    Q_ASSERT(idx >=0 && idx < m_attLocation.size());
+    Q_ASSERT(idx >=0 && idx < m_faceLocation.size());
 
     m_faceLocation[idx] = location;
 }
 
 void Object3D::setUniformLocation(int idx, int location)
 {
-    Q_ASSERT(idx >=0 && idx < m_attLocation.size());
+    Q_ASSERT(idx >=0 && idx < m_uniformLocation.size());
 
     m_uniformLocation[idx] = location;
+}
+
+void Object3D::afterLink(unsigned int programId)
+{
+
 }
 
 void Object3D::bindAttribute(int i, const QList<QVariant>& list )
