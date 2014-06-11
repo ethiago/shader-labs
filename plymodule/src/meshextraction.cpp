@@ -6,6 +6,11 @@ MeshExtraction::MeshExtraction(const PLYData &data, MeshContainer *container) :
     m_xPropertyName(QString("x")),
     m_yPropertyName(QString("y")),
     m_zPropertyName(QString("z")),
+    m_normalXPropertyName(QString("nx")),
+    m_normalYPropertyName(QString("ny")),
+    m_normalZPropertyName(QString("nz")),
+    m_texUPropertyName(QString("u")),
+    m_texVPropertyName(QString("v")),
     m_faceElementName(QString("face")),
     m_facePropertyName(QString("vertex_indices")),
     m_uniformElementName(QString("uniform"))
@@ -37,6 +42,31 @@ void MeshExtraction::setZPropertyName(const QString& value)
     m_zPropertyName = value;
 }
 
+void MeshExtraction::setNormalXName(const QString& value)
+{
+    m_normalXPropertyName = value;
+}
+
+void MeshExtraction::setNormalYName(const QString& value)
+{
+    m_normalYPropertyName = value;
+}
+
+void MeshExtraction::setNormalZName(const QString& value)
+{
+    m_normalZPropertyName = value;
+}
+
+void MeshExtraction::setTexUName(const QString& value)
+{
+    m_texUPropertyName = value;
+}
+
+void MeshExtraction::setTexVName(const QString& value)
+{
+    m_texVPropertyName = value;
+}
+
 void MeshExtraction::setFaceElementName(const QString& value)
 {
     m_faceElementName = value;
@@ -66,31 +96,31 @@ bool MeshExtraction::extractGeometry()
     if(xL < 0)
         return false;
 
-    PLYDataHeader::Property x = v[xL];
-    if(x.isList())
+    if(v[xL].isList())
         return false;
 
     int yL = v.propertyLocation(m_yPropertyName);
     if(yL < 0)
         return false;
 
-    PLYDataHeader::Property y = v[yL];
-    if(y.isList())
+    if(v[yL].isList())
         return false;
 
     int zL = v.propertyLocation(m_zPropertyName);
-    if(zL < 0)
-        return false;
+    if(zL >= 0)
+    {
+        if(v[zL].isList())
+            return false;
+    }
 
-    PLYDataHeader::Property z = v[zL];
-    if(z.isList())
-        return false;
 
     for(unsigned int i = 0; i < v.count(); ++i)
     {
         float xValue = m_data.getData(vL, xL, i).at(0).value<float>();
         float yValue = m_data.getData(vL, yL, i).at(0).value<float>();
-        float zValue = m_data.getData(vL, zL, i).at(0).value<float>();
+        float zValue = 0.0;
+        if(zL >= 0)
+            zValue = m_data.getData(vL, zL, i).at(0).value<float>();
 
         vI.append( e_container->addVertex(xValue, yValue, zValue) );
     }
@@ -111,8 +141,7 @@ bool MeshExtraction::extractTopology()
     if(idxL < 0)
         return false;
 
-    PLYDataHeader::Property idx = f[idxL];
-    if(!idx.isList())
+    if(!f[idxL].isList())
         return false;
 
     for(unsigned int i = 0; i< f.count(); ++i)
@@ -133,6 +162,65 @@ bool MeshExtraction::extractTopology()
     return true;
 }
 
+void MeshExtraction::extractNormals()
+{
+    int vL = m_data.elementLocation(m_vertexElementName);
+    PLYDataHeader::Element v = m_data[vL];
+
+    int xL = v.propertyLocation(m_normalXPropertyName);
+    if(xL < 0)
+        return;
+    if(v[xL].isList())
+        return;
+
+    int yL = v.propertyLocation(m_normalYPropertyName);
+    if(yL < 0)
+        return;
+    if(v[yL].isList())
+        return;
+
+    int zL = v.propertyLocation(m_normalZPropertyName);
+    if(zL < 0)
+        return;
+    if(v[zL].isList())
+        return;
+
+    for(unsigned int i = 0; i < v.count(); ++i)
+    {
+        float xValue = m_data.getData(vL, xL, i).at(0).value<float>();
+        float yValue = m_data.getData(vL, yL, i).at(0).value<float>();
+        float zValue = m_data.getData(vL, zL, i).at(0).value<float>();
+
+        e_container->setNormal(vI[i], xValue, yValue, zValue);
+    }
+}
+
+void MeshExtraction::extractTextureCoordinates()
+{
+    int vertexL = m_data.elementLocation(m_vertexElementName);
+    PLYDataHeader::Element v = m_data[vertexL];
+
+    int uL = v.propertyLocation(m_texUPropertyName);
+    if(uL < 0)
+        return;
+    if(v[uL].isList())
+        return;
+
+    int vL = v.propertyLocation(m_texVPropertyName);
+    if(vL < 0)
+        return;
+    if(v[vL].isList())
+        return;
+
+    for(unsigned int i = 0; i < v.count(); ++i)
+    {
+        float uValue = m_data.getData(vertexL, uL, i).at(0).value<float>();
+        float vValue = m_data.getData(vertexL, vL, i).at(0).value<float>();
+
+        e_container->setTexCoord(vI[i], uValue, vValue);
+    }
+}
+
 void MeshExtraction::extractAttributes()
 {
     int vL = m_data.elementLocation(m_vertexElementName);
@@ -142,9 +230,19 @@ void MeshExtraction::extractAttributes()
     int yL = v.propertyLocation(m_yPropertyName);
     int zL = v.propertyLocation(m_zPropertyName);
 
+    int xnL = v.propertyLocation(m_normalXPropertyName);
+    int ynL = v.propertyLocation(m_normalYPropertyName);
+    int znL = v.propertyLocation(m_normalZPropertyName);
+
+    int tuL = v.propertyLocation(m_texUPropertyName);
+    int tvL = v.propertyLocation(m_texVPropertyName);
+
+
     for(int i = 0; i < v.getNumberOfProperties(); ++i )
     {
-        if(i == xL || i == yL || i == zL)
+        if(i == xL || i == yL || i == zL ||
+                i == xnL || i == ynL || i == znL ||
+                i == tuL || i == tvL)
             continue;
 
         int attIdx = e_container->addAttribute(v[i].name(), QVariant::Type(v[i].type()) );
@@ -202,6 +300,10 @@ bool MeshExtraction::extract()
         return false;
     if(!extractTopology())
         return false;
+
+    extractNormals();
+
+    extractTextureCoordinates();
 
     extractAttributes();
 
