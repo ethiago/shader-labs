@@ -13,6 +13,10 @@ AttributeView::AttributeView(QWidget *parent) :
     typesView.append("float");
     typesView.append("ivec");
     typesView.append("vec");
+
+    ui->attributeGroup->setVisible(false);
+    ui->faceGroup->setVisible(false);
+    ui->uniformGroup->setVisible(false);
 }
 
 AttributeView::~AttributeView()
@@ -23,16 +27,19 @@ AttributeView::~AttributeView()
 void AttributeView::addAttribute(QVariant::Type type, const QString& name, bool isList)
 {
     addItem(type, name, isList, ui->attributeLayout, &attTypes, &attNames);
+    ui->attributeGroup->setVisible(true);
 }
 
 void AttributeView::addFaceUniform(QVariant::Type type, const QString& name, bool isList)
 {
     addItem(type, name, isList, ui->uniformFaceLayout, &faceTypes, &faceNames);
+    ui->faceGroup->setVisible(true);
 }
 
 void AttributeView::addUniform(QVariant::Type type, const QString& name, bool isList)
 {
     addItem(type, name, isList, ui->uniformLayout, &uniformsTypes, &uniformsNames);
+    ui->uniformGroup->setVisible(true);
 }
 
 void AttributeView::addItem(QVariant::Type type, const QString& name, bool isList, QFormLayout* layout, QList<QComboBox *> * c, QList<QLineEdit *> * l)
@@ -101,4 +108,8 @@ void AttributeView::clear()
 
     uniformsTypes.clear();
     uniformsNames.clear();
+
+    ui->attributeGroup->setVisible(false);
+    ui->faceGroup->setVisible(false);
+    ui->uniformGroup->setVisible(false);
 }

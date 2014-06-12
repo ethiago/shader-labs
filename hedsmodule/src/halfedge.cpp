@@ -6,6 +6,12 @@ using namespace heds;
 HalfEdge::HalfEdge() : e_origin(NULL), e_next(NULL), e_twin(NULL), e_face(NULL)
 {
 }
+
+HalfEdge::HalfEdge(const HalfEdge& h) : e_origin(NULL), e_next(NULL), e_twin(NULL), e_face(NULL)
+{
+
+}
+
 HalfEdge::~HalfEdge()
 {
     e_origin = NULL;
@@ -60,7 +66,7 @@ HalfEdge * HalfEdge::twin()
 
 bool HalfEdge::hasTwin()const
 {
-    return (e_twin == NULL);
+    return (e_twin != NULL);
 }
 
 Face const * HalfEdge::face()const

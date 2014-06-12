@@ -2,6 +2,8 @@
 #define VERTEX_H
 
 #include <QVector4D>
+#include <QVector3D>
+#include <QVector2D>
 
 #include "halfedge.h"
 
@@ -12,16 +14,27 @@ class Vertex
 {
     QVector4D m_geometry;
 
+    QVector3D m_normal;
+
+    QVector2D m_texCoord;
+
     HalfEdge * e_edge;
 
     QList<QList<QVariant> > m_attribValues;
 
 public:
     Vertex();
+    Vertex(const Vertex& v);
     ~Vertex();
 
     const QVector4D& geometry()const;
     void setGeometry(const QVector4D& geometry);
+
+    const QVector3D& normal()const;
+    void setNormal(const QVector3D& normal);
+
+    const QVector2D& texCoord()const;
+    void setTexCoord(const QVector2D& texCoord);
 
     const HalfEdge * edge()const;
     HalfEdge * edge();

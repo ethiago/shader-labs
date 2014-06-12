@@ -38,8 +38,6 @@ public:
     bool isVisible()const;
     void setVisible(bool v);
 
-    int modelId()const;
-
     void setColor(const QColor& color);
     const QColor& color()const;
 

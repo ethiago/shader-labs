@@ -20,8 +20,6 @@
 #include "Project.h"
 #include "plyio.h"
 #include "meshextraction.h"
-//#include "slMesh.h"
-//#include "slMeshContainer.h"
 #include "slhemesh.h"
 #include "slhemeshconstructor.h"
 #include "SLFile.h"
@@ -43,6 +41,7 @@ RenderController2::RenderController2(MainWindow *mainWindow, SLShaderController 
     e_shaderController = shaderController;
     e_textureController = texture;
     e_mainwindow = mainWindow;
+    maxStaticModels = 0;
 
     m_scene = new Scene3D();
     m_light = new DirectionalLight;
@@ -120,6 +119,9 @@ RenderController2::RenderController2(MainWindow *mainWindow, SLShaderController 
 
     connect(m_objectController, SIGNAL(objectChanged(int)),
             this, SLOT(objectChanged(int)));
+
+    connect(e_shaderController, SIGNAL(afterLink(GLuint)),
+            m_objectController, SLOT(afterLink(GLuint)) );
 }
 
 RenderController2::~RenderController2()
@@ -271,12 +273,20 @@ void RenderController2::loadModel()
     if(fn.isEmpty())
         return;
 
+    loadModel(fn);
+}
+
+void RenderController2::loadModel(const QString& fn)
+{
+    if(fn.isEmpty())
+        return;
+
     PLYIO plyio;
 
     if(!plyio.load(fn))
         return;
 
-    SLHEMeshConstructor constructor;
+    SLHEMeshConstructor constructor(fn);
     MeshExtraction extractor(plyio.getData(), &constructor);
 
     if(!extractor.extract())
@@ -287,10 +297,7 @@ void RenderController2::loadModel()
     QAction* act = NULL;
     SLHEMesh *model_tmp = constructor.getObject();
 
-    connect(e_shaderController, SIGNAL(afterLink(GLuint)),
-            m_objectController, SLOT(afterLink(GLuint)) );
 
-    model_tmp->storeList();
 
     act = menu->addAction( SLFile::fileNameWithoutExt(fn) );
     act->setCheckable(true);
@@ -313,6 +320,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     selectedObject = 0;
     changeCurrent(model_tmp);
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("&Plane"));
     act->setCheckable(true);
@@ -320,6 +328,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new Plane(50,50);
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("ST Sp&here"));
     act->setCheckable(true);
@@ -327,6 +336,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new Sphere(500,500);
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("ST P&lane"));
     act->setCheckable(true);
@@ -334,6 +344,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new Plane(500,500);
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("&Cube"));
     act->setCheckable(true);
@@ -341,6 +352,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new Cube();
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("&Tetrahedron"));
     act->setCheckable(true);
@@ -348,6 +360,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new Tetrahedron();
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("&Point"));
     act->setCheckable(true);
@@ -355,6 +368,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new Point();
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("T&rianglePatch"));
     act->setCheckable(true);
@@ -362,6 +376,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new TrianglePatch();
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("&IcosahedronPatch"));
     act->setCheckable(true);
@@ -369,6 +384,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new IcosahedronPatch();
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("S&quare"));
     act->setCheckable(true);
@@ -376,6 +392,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new Plane(1,1);
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     act = menu->addAction(tr("SquarePatch"));
     act->setCheckable(true);
@@ -383,6 +400,7 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     model_tmp = new SquarePatch();
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
 
     connect(menu, SIGNAL(triggered(QAction*)),
             this, SLOT(modelChanged(QAction*)));
@@ -452,7 +470,16 @@ void RenderController2::objectsVisibility(bool v)
 
 void RenderController2::projectOpened(Project* p)
 {
-    setModelById(p->getModelId());
+    int ind = p->getModelId();
+    if(ind < 0)
+        return;
+
+    if( ind < maxStaticModels )
+    {
+        setModelById(ind);
+    }
+
+    loadModel(p->getModelFileName());
 }
 
 void RenderController2::objectChanged(int idx)
@@ -465,7 +492,7 @@ void RenderController2::objectChanged(int idx)
     e_textureController->setTextures(obj->textures());
     m_objectController->setObject(obj);
 
-    setModelById(obj->modelId());
+    setModelById(obj->object()->modelId());
 
     emit objectChanged();
 

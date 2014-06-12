@@ -8,8 +8,72 @@
 
 using namespace heds;
 
-HalfEdgeData::HalfEdgeData() : m_ext(new Face())
+HalfEdgeData::HalfEdgeData():needEnd(true)
 {
+}
+
+HalfEdgeData::HalfEdgeData(const HalfEdgeData &hed):needEnd(false)
+{
+    QMap< Vertex*, Vertex* > vmap;
+    QMap< Face* , Face* > fmap;
+    QMap<HalfEdge*, HalfEdge*> hmap;
+
+    m_uniformValues = hed.m_uniformValues;
+
+    for(int i = 0; i < hed.m_vertices.size(); ++i)
+    {
+        Vertex * v = new Vertex(*hed.m_vertices[i]);
+        vmap.insert(hed.m_vertices[i], v);
+        m_vertices.append(v);
+    }
+
+    for(int i = 0; i < hed.m_edges.size(); ++i)
+    {
+        HalfEdge * h = new HalfEdge(*hed.m_edges[i]);
+        hmap.insert(hed.m_edges[i],h);
+        m_edges.append(h);
+    }
+
+    for(int i = 0; i < hed.m_faces.size(); ++i)
+    {
+        Face * f = new Face(*hed.m_faces[i]);
+        fmap.insert(hed.m_faces[i], f);
+        m_faces.append(f);
+    }
+
+    for(int i = 0; i < m_vertices.size(); ++i)
+    {
+        HalfEdge * h = hed.m_vertices[i]->edge();
+        m_vertices[i]->setEdge( hmap[ h ] );
+    }
+
+    for(int i = 0; i < m_faces.size(); ++i)
+    {
+        HalfEdge * h = hed.m_faces[i]->outerEdge();
+        m_faces[i]->setOuterEdge( hmap[ h ] );
+    }
+
+    for(int i = 0; i < m_edges.size(); ++i)
+    {
+        Vertex * v = hed.m_edges[i]->origin();
+        m_edges[i]->setOrigin( vmap[ v ] );
+
+        Face * f = hed.m_edges[i]->face();
+        if(f != NULL)
+            m_edges[i]->setFace( fmap[ f ] );
+
+        HalfEdge * h = hed.m_edges[i]->next();
+        m_edges[i]->setNext( hmap[ h ] );
+
+        h = hed.m_edges[i]->twin();
+        m_edges[i]->setTwin( hmap[ h ] );
+    }
+
+    for(int i = 0; i < hed.e_boundary.size(); ++i)
+    {
+        e_boundary.append( hmap[ hed.e_boundary[i] ] );
+    }
+
 }
 HalfEdgeData::~HalfEdgeData()
 {
@@ -31,7 +95,7 @@ HalfEdgeData::~HalfEdgeData()
     }
     m_faces.clear();
 
-    delete m_ext;
+    e_boundary.clear();
 }
 
 int HalfEdgeData::numberOfVertices()const
@@ -45,6 +109,11 @@ int HalfEdgeData::numberOfHalfEdges()const
 int HalfEdgeData::numberOfFaces()const
 {
     return m_faces.size();
+}
+
+int HalfEdgeData::numberOfBondaries()const
+{
+    return e_boundary.size();
 }
 
 Vertex* HalfEdgeData::getVertex(int i)
@@ -62,6 +131,14 @@ const Vertex* HalfEdgeData::getVertex(int i)const
     {
         return m_vertices[i];
     }
+    return NULL;
+}
+
+const HalfEdge* HalfEdgeData::getBoundaryReferenceEdge(int i)
+{
+    if(i >= 0 && i < e_boundary.size())
+        return e_boundary[i];
+
     return NULL;
 }
 
@@ -103,6 +180,7 @@ int HalfEdgeData::addFace(const QList<int>& vertexIndices)
     m_faces.append(face);
 
     HalfEdge *first = new HalfEdge();
+    m_edges.append(first);
     face->setOuterEdge(first);
     first->setFace(face);
     first->setOrigin( getVertex(vertexIndices[0]) );
@@ -127,6 +205,7 @@ int HalfEdgeData::addFace(const QList<int>& vertexIndices)
     {
         int iN = (i+1)%vertexIndices.size();
         HalfEdge *he = new HalfEdge();
+        m_edges.append(he);
         he->setFace(face);
         he->setOrigin( getVertex(vertexIndices[i]) );
 
@@ -173,14 +252,15 @@ const HalfEdge* HalfEdgeData::getHalfEdge(int i)const
 HalfEdge * HalfEdgeData::nextNull(HalfEdge * first)
 {
     HalfEdge *he = first->next();
-    if(!he->hasTwin())
+    if(!he->hasTwin() || he->twin()->face() == NULL)
         return he;
     he = he->twin();
+
 
     while( he != first  )
     {
         he = he->next();
-        if(!he->hasTwin())
+        if( !he->hasTwin() || he->twin()->face() == NULL)
             return he;
         he = he->twin();
     }
@@ -190,6 +270,9 @@ HalfEdge * HalfEdgeData::nextNull(HalfEdge * first)
 
 void HalfEdgeData::endMesh()
 {
+    if(!needEnd)
+        return;
+
     HalfEdge * nullTwin = NULL;
     for(int i = 0; i < m_edges.size(); ++i)
     {
@@ -203,9 +286,9 @@ void HalfEdgeData::endMesh()
     while(nullTwin != NULL)
     {
         HalfEdge *twinF = new HalfEdge();
+        m_edges.append(twinF);
         e_boundary.append(twinF);
-        twinF->setOrigin( nullTwin->getDestiny() );
-        twinF->setFace( m_ext );
+        twinF->setFace( NULL );
         twinF->setTwin( nullTwin );
         nullTwin->setTwin( twinF );
 
@@ -214,16 +297,20 @@ void HalfEdgeData::endMesh()
         while( next != nullTwin )
         {
             HalfEdge *twin = new HalfEdge();
-            twin->setOrigin( next->getDestiny() );
-            twin->setFace( m_ext );
+            m_edges.append(twin);
+            twin->setFace( NULL );
             twin->setTwin( next );
             next->setTwin( twinF );
 
-            next->setNext(prev);
-            prev = next;
+            twin->setNext(prev);
+            prev->setOrigin(next->origin());
+
+            prev = twin;
             next = nextNull(next);
         }
         twinF->setNext(prev);
+        prev->setOrigin(nullTwin->origin());
+
 
         nullTwin = NULL;
         for(int i = 0; i < m_edges.size(); ++i)
@@ -235,4 +322,23 @@ void HalfEdgeData::endMesh()
             }
         }
     }
+}
+
+const QList<QVariant>& HalfEdgeData::uniformValue(int uniformId)const
+{
+    Q_ASSERT(uniformId >=0 && uniformId < m_uniformValues.size());
+    return m_uniformValues[uniformId];
+}
+
+void HalfEdgeData::setUniform(int uniformId, const QList<QVariant>& data)
+{
+    Q_ASSERT(uniformId >=0);
+
+    if( uniformId >= m_uniformValues.size())
+    {
+        QList<QVariant> t;
+        for(int j = 0; j <= uniformId-m_uniformValues.size() ; ++j)
+            m_uniformValues.append(t);
+    }
+    m_uniformValues[uniformId] = data;
 }

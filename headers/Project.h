@@ -18,6 +18,8 @@ class Project : public QObject
 
     QFileInfo m_fileName;
 
+    QString modelFileName;
+
     bool m_opened;
 
 public:
@@ -52,6 +54,9 @@ public:
 
     void setModel(int);
     int getModelId(void);
+
+    void setModelFileName(const QString& filename);
+    QString getModelFileName(void);
 
     void setTextures(const QStringList&);
     QStringList getTextures(void) const;

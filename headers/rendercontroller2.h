@@ -52,6 +52,8 @@ class RenderController2 : public QObject
     QList<GLenum> primitives;
     GlobalProperties *m_propertries;
 
+    int maxStaticModels;
+
 public:
     explicit RenderController2(MainWindow *mainWindow, SLShaderController * shaderController,
                               SLTextureController* texture);
@@ -61,6 +63,7 @@ public:
     void setModelById(int i);
     QVector3D getLightPosition()const;
     Scene3D * getScene();
+    void loadModel(const QString& fn);
 
 public slots:
     void drawModel(void);

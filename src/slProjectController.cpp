@@ -8,6 +8,7 @@
 #include "slshadercontroller.h"
 #include "Scene3D.h"
 #include "rendercontroller2.h"
+#include "slhemesh.h"
 
 #include <QDebug>
 
@@ -159,7 +160,12 @@ bool SLProjectController::save()
     }
 
     p->setTextures( tex->getTextureFileNames() );
-    p->setModel( e_renderController->getModelId() );
+    p->setModel( obj->object()->modelId() );
+
+    SLHEMesh * mesh = dynamic_cast<SLHEMesh *>(obj->object());
+    if(mesh != NULL)
+        p->setModelFileName( mesh->fileName() );
+
 
     return p->save();
 }
@@ -200,7 +206,11 @@ bool SLProjectController::saveAs()
     }
 
     p->setTextures( tex->getTextureFileNames() );
-    p->setModel( e_renderController->getModelId() );
+    p->setModel( obj->object()->modelId() );
+
+    SLHEMesh * mesh = dynamic_cast<SLHEMesh *>(obj->object());
+    if(mesh != NULL)
+        p->setModelFileName( mesh->fileName() );
 
     if(!p->save(proFile))
     {

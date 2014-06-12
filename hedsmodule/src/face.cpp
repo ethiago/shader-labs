@@ -7,6 +7,12 @@ using namespace heds;
 Face::Face() : e_outer( (HalfEdge *)0 )
 {
 }
+
+Face::Face(const Face& f): e_outer( (HalfEdge *)0 )
+{
+    m_uniformValues = f.m_uniformValues;
+}
+
 Face::~Face()
 {
     e_outer = (HalfEdge *)0;
@@ -38,6 +44,25 @@ int Face::numberOfVertices()const
         he = he->next();
     }
     return ++count;
+}
+
+const QList<QVariant>& Face::uniformValue(int uniformId)const
+{
+    Q_ASSERT(uniformId >=0 && uniformId < m_uniformValues.size());
+    return m_uniformValues[uniformId];
+}
+
+void Face::setUniform(int uniformId, const QList<QVariant>& data)
+{
+    Q_ASSERT(uniformId >=0);
+
+    if( uniformId >= m_uniformValues.size())
+    {
+        QList<QVariant> t;
+        for(int j = 0; j <= uniformId-m_uniformValues.size() ; ++j)
+            m_uniformValues.append(t);
+    }
+    m_uniformValues[uniformId] = data;
 }
 
 Face::iterator Face::begin()const
