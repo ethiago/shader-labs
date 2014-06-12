@@ -8,14 +8,16 @@
 
 class SLHEMeshConstructor : public MeshContainer
 {
-    heds::HalfEdgeData * e_mesh;
-
     SLHEMesh * e_obj;
 
 public:
-    SLHEMeshConstructor();
+    SLHEMeshConstructor(const QString& fileName);
 
     int addVertex(float x, float y, float z);
+
+    void setNormal(int vertexId, float nx, float ny, float nz);
+    void setTexCoord(int vertexId, float u, float v);
+
     int addAttribute(const QString& name, QVariant::Type type, bool isList = false);
     void setAttribute(int vertexId, int attributeId, const QList<QVariant>& data);
 

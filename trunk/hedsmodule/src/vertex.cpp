@@ -9,6 +9,14 @@ Vertex::Vertex(): e_edge(NULL)
 {
 }
 
+Vertex::Vertex(const Vertex& v) : e_edge(NULL)
+{
+    m_geometry = v.m_geometry;
+    m_normal = v.m_normal;
+    m_texCoord = v.m_texCoord;
+    m_attribValues = v.m_attribValues;
+}
+
 Vertex::~Vertex()
 {
     e_edge = NULL;
@@ -22,6 +30,25 @@ const QVector4D& Vertex::geometry()const
 void Vertex::setGeometry(const QVector4D& geometry)
 {
     m_geometry = geometry;
+}
+
+const QVector3D& Vertex::normal()const
+{
+    return m_normal;
+}
+
+void Vertex::setNormal(const QVector3D& normal)
+{
+    m_normal = normal;
+}
+
+const QVector2D& Vertex::texCoord()const
+{
+    return m_texCoord;
+}
+void Vertex::setTexCoord(const QVector2D& texCoord)
+{
+    m_texCoord = texCoord;
 }
 
 const HalfEdge * Vertex::edge()const

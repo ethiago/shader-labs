@@ -17,6 +17,7 @@ class HalfEdge
 
 public:
     HalfEdge();
+    HalfEdge(const HalfEdge& h);
     ~HalfEdge();
 
     void setOrigin(Vertex * v);

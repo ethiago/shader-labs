@@ -7,18 +7,21 @@
 
 class SLHEMesh : public Object3D
 {
+    const QString m_fileName;
+
     int indexList;
 
-    heds::HalfEdgeData * m_data;
-    const bool myData;
+    heds::HalfEdgeData m_data;
 
     void drawGeometry(void) const;
 
 public:
-    SLHEMesh(heds::HalfEdgeData * data = NULL, bool mydata = true);
+    SLHEMesh(const QString& fileName);
 
     SLHEMesh(const SLHEMesh& cp);
     ~SLHEMesh();
+
+    const QString& fileName()const;
 
     Object3D* copy(void) const;
 
@@ -26,7 +29,7 @@ public:
 
     void afterLink(unsigned int programId);
 
-    void setData(heds::HalfEdgeData * data);
+    heds::HalfEdgeData * data();
 };
 
 #endif // SLHEMESH_H

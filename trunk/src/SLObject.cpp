@@ -97,11 +97,6 @@ Project *SLObject::project()
     return m_project;
 }
 
-int SLObject::modelId()const
-{
-    return m_object->modelId();
-}
-
 Object3D* SLObject::object()const
 {
     return m_object;

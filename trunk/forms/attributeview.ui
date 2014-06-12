@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="attributeGroup">
      <property name="title">
       <string>Attribute Infos</string>
      </property>
@@ -38,7 +38,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="faceGroup">
      <property name="title">
       <string>Uniform Faces Infos</string>
      </property>
@@ -61,7 +61,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_3">
+    <widget class="QGroupBox" name="uniformGroup">
      <property name="title">
       <string>Uniforms</string>
      </property>

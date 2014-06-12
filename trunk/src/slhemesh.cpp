@@ -7,22 +7,26 @@
 
 using namespace heds;
 
-SLHEMesh::SLHEMesh(HalfEdgeData * data, bool mydata) : Object3D(), indexList(0), m_data(data), myData(mydata)
+SLHEMesh::SLHEMesh(const QString &fileName) :
+    Object3D(), m_fileName(fileName), indexList(0)
 {
 }
 
-SLHEMesh::SLHEMesh(const SLHEMesh& cp) : Object3D(cp), indexList(cp.indexList), m_data(cp.m_data), myData(false)
+SLHEMesh::SLHEMesh(const SLHEMesh& cp) :
+    Object3D(cp), m_fileName(cp.fileName()), indexList(0), m_data(cp.m_data)
 {
+    storeList();
 }
 
 SLHEMesh::~SLHEMesh()
 {
-    if(myData)
-    {
-        delete m_data;
-        if(indexList > 0)
-            glDeleteLists(indexList, 1);
-    }
+    if(indexList > 0)
+        glDeleteLists(indexList, 1);
+}
+
+const QString& SLHEMesh::fileName()const
+{
+    return m_fileName;
 }
 
 Object3D* SLHEMesh::copy(void) const
@@ -37,9 +41,9 @@ void SLHEMesh::drawGeometry(void) const
 
 void SLHEMesh::afterLink(unsigned int programId)
 {
-    glUseProgram(programId);
+    //glUseProgram(programId);
     storeList();
-    glUseProgram(0);
+    //glUseProgram(0);
 }
 
 void SLHEMesh::storeList()
@@ -51,10 +55,19 @@ void SLHEMesh::storeList()
 
     glNewList(indexList, GL_COMPILE);
 
-
-    for(int i = 0; i < m_data->numberOfFaces(); ++i)
+    for(int i = 0; i < m_uniformInfo.size(); ++i)
     {
-        Face *f = m_data->getFace(i);
+        bindUniform(m_uniformLocation[i], m_data.uniformValue(i), m_uniformInfo[i].type());
+    }
+
+    for(int i = 0; i < m_data.numberOfFaces(); ++i)
+    {
+        Face *f = m_data.getFace(i);
+
+        for(int j = 0; j < m_faceInfo.size(); ++j)
+        {
+            bindUniform(m_faceLocation[j], f->uniformValue(j), m_faceInfo[j].type());
+        }
 
         int nV = f->numberOfVertices();
 
@@ -68,29 +81,60 @@ void SLHEMesh::storeList()
         else
             glBegin(GL_POLYGON);
 
-        Face::iterator it;
         QVector3D n = f->getNormal();
-        glNormal3fv(reinterpret_cast<const GLfloat*>(&n));
+
+        Face::iterator it;
         for(it = f->begin(); it != f->end(); ++it)
         {
             const Vertex *v = (*it)->origin();
-            QVector4D p = v->geometry();
 
             for(int j = 0; j < m_attributeInfo.size(); ++j)
             {
                 bindAttribute(j, v->attribValue(j));
             }
 
+            QVector2D tc = v->texCoord();
+            glTexCoord2fv(reinterpret_cast<const GLfloat*>(&tc));
+
+            QVector3D nv = v->normal();
+            if(!nv.isNull())
+                glNormal3fv(reinterpret_cast<const GLfloat*>(&nv));
+            else
+                glNormal3fv(reinterpret_cast<const GLfloat*>(&n));
+
+            QVector4D p = v->geometry();
             glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
         }
 
         glEnd();
     }
 
+//    glDisable(GL_LIGHTING);
+//    glColor3i(115,255,8);
+//    for(int i = 0; i < m_data.numberOfBondaries(); ++i)
+//    {
+//        glBegin(GL_LINE_STRIP);
+
+//        const HalfEdge * he = m_data.getBoundaryReferenceEdge(i);
+//        QVector4D p = he->origin()->geometry();
+//        glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
+//        const HalfEdge * next = he->next();
+//        while(next != he)
+//        {
+//            QVector4D p = next->origin()->geometry();
+//            glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
+//            next = next->next();
+//        }
+//        glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
+
+//        glEnd();
+//    }
+//    glEnable(GL_LIGHTING);
+
     glEndList();
 }
 
-void SLHEMesh::setData(heds::HalfEdgeData * data)
+heds::HalfEdgeData * SLHEMesh::data()
 {
-    m_data = data;
+    return &m_data;
 }

@@ -6,6 +6,7 @@
 #include <QPair>
 #include <QVariant>
 #include <QtOpenGL>
+#include <QVariant>
 
 #include "plydataitens.h"
 
@@ -21,16 +22,22 @@ class HalfEdgeData
     QList<HalfEdge*> m_edges;
     QList<Face*> m_faces;
 
-    Face * m_ext;
     QList<HalfEdge*> e_boundary;
+
+    QList< QList< QVariant > > m_uniformValues;
+
+    const bool needEnd;
 
 public:
     HalfEdgeData();
+    HalfEdgeData(const HalfEdgeData& hed);
     ~HalfEdgeData();
 
     int numberOfVertices()const;
     int numberOfHalfEdges()const;
     int numberOfFaces()const;
+
+    int numberOfBondaries()const;
 
     int addVertex();
     Vertex* getVertex(int i);
@@ -40,10 +47,15 @@ public:
     Face* getFace(int i);
     const Face* getFace(int i)const;
 
+    const HalfEdge* getBoundaryReferenceEdge(int i);
+
     HalfEdge* getHalfEdge(int i);
     const HalfEdge* getHalfEdge(int i)const;
 
     void endMesh();
+
+    const QList<QVariant>& uniformValue(int uniformId)const;
+    void setUniform(int uniformId, const QList<QVariant>& data);
 
 private:
     HalfEdge * nextNull(HalfEdge *);

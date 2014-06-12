@@ -3,6 +3,7 @@
 
 #include "halfedge.h"
 #include <QVector3D>
+#include <QVariant>
 
 namespace heds{
 
@@ -10,8 +11,11 @@ class Face
 {
     HalfEdge * e_outer;
 
+    QList<QList<QVariant> > m_uniformValues;
+
 public:
     Face();
+    Face(const Face& f);
     ~Face();
 
     void setOuterEdge(HalfEdge* edge);
@@ -22,6 +26,9 @@ public:
     int numberOfVertices()const;
 
     QVector3D getNormal()const;
+
+    const QList<QVariant>& uniformValue(int uniformId)const;
+    void setUniform(int uniformId, const QList<QVariant>& data);
 
     class iterator{
         HalfEdge * e_first;

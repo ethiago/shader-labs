@@ -126,7 +126,7 @@ void ObjectController::updateView()
     infos = obj->getUniformInfos();
     for(int i = 0; i < infos.size(); ++i)
     {
-        m_attributeView->addFaceUniform((QVariant::Type)infos[i].type(), infos[i].name(), infos[i].isList() );
+        m_attributeView->addUniform((QVariant::Type)infos[i].type(), infos[i].name(), infos[i].isList() );
     }
 }
 

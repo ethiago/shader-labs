@@ -92,6 +92,21 @@ bool Project::loadModelTag(QDomElement root)
     }
     //**************//
 
+    if(modelId >= 0)
+    {
+        //******fileName******//
+        child = child.nextSiblingElement("filename");
+        if(!child.isNull())
+        {
+            value = child.text();
+            if(!value.isEmpty())
+            {
+                modelFileName = value;
+            }
+        }
+        //**************//
+    }
+
     return true;
 }
 
@@ -272,7 +287,14 @@ QString Project::getXml(void)
     if(modelId >= 0)
     {
         content = content + "\t<model>\n"+
-                "\t\t<id>" + QString::number(modelId) + "</id>\n\t</model>\n";
+                "\t\t<id>" + QString::number(modelId) + "</id>\n";
+        if(!modelFileName.isEmpty())
+        {
+            content = content +
+                    "\t\t<filename>" + getRelativeFilePath(modelFileName) + "</filename>\n";
+
+        }
+        content = content + "\t</model>\n";
     }
 
     if(textures.size() > 0)
@@ -320,6 +342,26 @@ void Project::setModel(int ind)
 int Project::getModelId(void)
 {
     return modelId;
+}
+
+void Project::setModelFileName(const QString& filename)
+{
+    modelFileName = filename;
+}
+
+QString Project::getModelFileName(void)
+{
+    QFileInfo fi(modelFileName);
+
+    if(fi.isAbsolute())
+    {
+        return fi.absoluteFilePath();
+    }
+    else
+    {
+        QDir d = m_fileName.absoluteDir();
+        return d.absoluteFilePath(fi.filePath());
+    }
 }
 
 void Project::setTextures(const QStringList& texturesNames)
