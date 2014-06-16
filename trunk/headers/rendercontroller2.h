@@ -34,6 +34,7 @@ class RenderController2 : public QObject
     SLShaderController * e_shaderController;
     SLTextureController * e_textureController;
     ObjectController *m_objectController;
+
     MainWindow* e_mainwindow;
 
     QAction * m_loadModel;

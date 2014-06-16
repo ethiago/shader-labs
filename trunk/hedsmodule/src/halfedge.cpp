@@ -80,16 +80,21 @@ Face * HalfEdge::face()
 
 Vertex const * HalfEdge::getDestiny()const
 {
-    if(e_next == NULL)
-        return NULL;
+    if(e_next != NULL)
+        return e_next->origin();
 
-    return e_next->next()->origin();
+    if(e_twin != NULL)
+        return e_twin->origin();
 
+    return NULL;
 }
 Vertex * HalfEdge::getDestiny()
 {
-    if(e_next == NULL)
-        return NULL;
+    if(e_next != NULL)
+        return e_next->origin();
 
-    return e_next->next()->origin();
+    if(e_twin != NULL)
+        return e_twin->origin();
+
+    return NULL;
 }

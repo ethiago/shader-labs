@@ -5,10 +5,7 @@
 #include <QMap>
 #include <QPair>
 #include <QVariant>
-#include <QtOpenGL>
 #include <QVariant>
-
-#include "plydataitens.h"
 
 namespace heds{
 
@@ -56,6 +53,9 @@ public:
 
     const QList<QVariant>& uniformValue(int uniformId)const;
     void setUniform(int uniformId, const QList<QVariant>& data);
+
+    bool check()const;
+    void clearVertex();
 
 private:
     HalfEdge * nextNull(HalfEdge *);

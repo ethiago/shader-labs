@@ -4,13 +4,15 @@
 #include "SLObject.h"
 #include "Global.h"
 #include "attributeview.h"
+#include "plugincontroller.h"
 #include <QGLWidget>
 #include "Object3D.h"
 #include "slgl3w.h"
 
 ObjectController::ObjectController(MainWindow *mw, SLObject* obj) :
     QObject(NULL), m_vertexProperties(new VertexProperties(mw)),
-    e_object(obj), m_attributeView(new AttributeView)
+    e_object(obj), m_attributeView(new AttributeView),
+    m_pluginController(new PluginController(mw->pluginMenu(),obj))
 {
     mw->addDockWidget(Qt::RightDockWidgetArea, m_vertexProperties);
     setupPropertiesList();
@@ -29,11 +31,13 @@ ObjectController::ObjectController(MainWindow *mw, SLObject* obj) :
 ObjectController::~ObjectController()
 {
     delete m_vertexProperties;
+    delete m_pluginController;
 }
 
 void ObjectController::setObject(SLObject *obj)
 {
     e_object = obj;
+    m_pluginController->changeObject(obj);
     updateView();
 }
 

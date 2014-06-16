@@ -138,6 +138,11 @@ QMenu* MainWindow::modelsMenu(void)
     return ui->menu_Models;
 }
 
+QMenu* MainWindow::pluginMenu(void)
+{
+    return ui->menuPlugins;
+}
+
 void MainWindow::menuViewInsertAction( QAction* act)
 {
     ui->menuView->insertAction(0, act);

@@ -167,6 +167,17 @@ int Object3D::addAttribute(const PLYDataHeader::Property& p)
     return m_attributeInfo.size()-1;
 }
 
+int Object3D::findAttribute(const QString& p)
+{
+    for(int i = 0; i < m_attributeInfo.size(); ++i)
+    {
+        if(p == m_attributeInfo[i].name())
+            return i;
+    }
+
+    return -1;
+}
+
 int Object3D::addFaceUniform(const PLYDataHeader::Property& p)
 {
     m_faceInfo.append(p);

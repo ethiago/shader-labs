@@ -88,7 +88,7 @@ QVector3D Face::getNormal()const
         ++it;
         QVector3D v3 = (*it)->origin()->geometry().toVector3DAffine();
 
-        n = QVector3D::normal(v1,v2,v3);
+        n = QVector3D::crossProduct(v3-v2, v1-v2);
     }
 
     return n;

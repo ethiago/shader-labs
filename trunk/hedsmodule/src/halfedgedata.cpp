@@ -5,6 +5,7 @@
 
 #include <QPair>
 #include <QMap>
+#include <QDebug>
 
 using namespace heds;
 
@@ -73,8 +74,77 @@ HalfEdgeData::HalfEdgeData(const HalfEdgeData &hed):needEnd(false)
     {
         e_boundary.append( hmap[ hed.e_boundary[i] ] );
     }
-
 }
+
+bool HalfEdgeData::check()const
+{
+    for(int i = 0; i < m_vertices.size(); ++i)
+    {
+        if(m_vertices[i]->edge() == NULL)
+        {
+            qWarning() << "Vertex Problem " << i;
+            return false;
+        }
+    }
+
+    for(int i = 0; i < m_faces.size(); ++i)
+    {
+        if(m_faces[i]->outerEdge() == NULL)
+        {
+            qWarning() << "Face Problem " << i;
+            return false;
+        }
+    }
+
+    for(int i = 0; i < m_edges.size(); ++i)
+    {
+        if(m_edges[i]->twin() == NULL)
+        {
+            qWarning() << "Twin Problem " << i;
+            return false;
+        }
+        if(m_edges[i]->twin()->twin() == NULL)
+        {
+            qWarning() << "Twin Twin NULL " << i;
+            return false;
+        }
+        if(m_edges[i]->twin()->twin() != m_edges[i])
+        {
+            qWarning() << "Twin Twin does not match" << i;
+            return false;
+        }
+        if(m_edges[i]->next() == NULL)
+        {
+            qWarning() << "Next Problem " << i;
+            return false;
+        }
+        if(m_edges[i]->origin() == NULL)
+        {
+            qWarning() << "Origin Problem " << i;
+            return false;
+        }
+        if(m_edges[i]->getDestiny() == NULL)
+        {
+            qWarning() << "destiny Problem " << i;
+            return false;
+        }
+    }
+    return true;
+}
+
+void HalfEdgeData::clearVertex()
+{
+    QList<Vertex*>::iterator it;
+    for(it = m_vertices.begin(); it != m_vertices.end(); ++it)
+    {
+        if( (*it)->edge() == NULL )
+        {
+            it = m_vertices.erase(it);
+            it--;
+        }
+    }
+}
+
 HalfEdgeData::~HalfEdgeData()
 {
     for(int i = 0; i < m_vertices.size(); ++i)
@@ -174,7 +244,10 @@ int HalfEdgeData::addFace(const QList<int>& vertexIndices)
     Face *face = NULL;
 
     if(vertexIndices.size() < 3)
+    {
+        qWarning() << "Face with " << vertexIndices.size() << " indices";
         return -1;
+    }
 
     face = new Face();
     m_faces.append(face);
@@ -183,7 +256,9 @@ int HalfEdgeData::addFace(const QList<int>& vertexIndices)
     m_edges.append(first);
     face->setOuterEdge(first);
     first->setFace(face);
-    first->setOrigin( getVertex(vertexIndices[0]) );
+    Vertex * v = getVertex(vertexIndices[0]);
+    first->setOrigin( v );
+    v->setEdge(first);
 
 
     it = edges.find(qMakePair( getVertex(vertexIndices[1]),
@@ -207,7 +282,10 @@ int HalfEdgeData::addFace(const QList<int>& vertexIndices)
         HalfEdge *he = new HalfEdge();
         m_edges.append(he);
         he->setFace(face);
-        he->setOrigin( getVertex(vertexIndices[i]) );
+        Vertex *v = getVertex(vertexIndices[i]);
+        he->setOrigin( v );
+        v->setEdge(he);
+
 
         it = edges.find(qMakePair( getVertex(vertexIndices[iN]),
                               getVertex(vertexIndices[i])));
@@ -273,6 +351,8 @@ void HalfEdgeData::endMesh()
     if(!needEnd)
         return;
 
+    clearVertex();
+
     HalfEdge * nullTwin = NULL;
     for(int i = 0; i < m_edges.size(); ++i)
     {
@@ -291,6 +371,7 @@ void HalfEdgeData::endMesh()
         twinF->setFace( NULL );
         twinF->setTwin( nullTwin );
         nullTwin->setTwin( twinF );
+        twinF->setOrigin(nullTwin->getDestiny());
 
         HalfEdge * prev = twinF;
         HalfEdge * next = nextNull(nullTwin);
@@ -300,17 +381,15 @@ void HalfEdgeData::endMesh()
             m_edges.append(twin);
             twin->setFace( NULL );
             twin->setTwin( next );
-            next->setTwin( twinF );
+            next->setTwin( twin );
+            twin->setOrigin( next->getDestiny() );
 
             twin->setNext(prev);
-            prev->setOrigin(next->origin());
 
             prev = twin;
             next = nextNull(next);
         }
         twinF->setNext(prev);
-        prev->setOrigin(nullTwin->origin());
-
 
         nullTwin = NULL;
         for(int i = 0; i < m_edges.size(); ++i)
