@@ -41,6 +41,7 @@ RenderController2::RenderController2(MainWindow *mainWindow, SLShaderController 
     e_shaderController = shaderController;
     e_textureController = texture;
     e_mainwindow = mainWindow;
+
     maxStaticModels = 0;
 
     m_scene = new Scene3D();
@@ -297,7 +298,11 @@ void RenderController2::loadModel(const QString& fn)
     QAction* act = NULL;
     SLHEMesh *model_tmp = constructor.getObject();
 
-
+    if(!model_tmp->data()->check())
+    {
+        delete model_tmp;
+        return;
+    }
 
     act = menu->addAction( SLFile::fileNameWithoutExt(fn) );
     act->setCheckable(true);

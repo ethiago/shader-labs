@@ -86,12 +86,12 @@ void Vertex::setAttribValue(int i, const QList<QVariant>& value)
     m_attribValues[i] = value;
 }
 
-Vertex::iterator Vertex::begin()
+Vertex::iterator Vertex::begin() const
 {
     return iterator(e_edge, e_edge);
 }
 
-Vertex::iterator Vertex::end()
+Vertex::iterator Vertex::end() const
 {
     return iterator(e_edge, NULL);
 }

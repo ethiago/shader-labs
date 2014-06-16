@@ -106,12 +106,18 @@
    </widget>
    <widget class="QMenu" name="menuSettin">
     <property name="title">
-     <string>Settin&amp;gs</string>
+     <string>&amp;Settings</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuPlugins">
+    <property name="title">
+     <string>&amp;Plugins</string>
     </property>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menu_Build"/>
+   <addaction name="menuPlugins"/>
    <addaction name="menuSettin"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">

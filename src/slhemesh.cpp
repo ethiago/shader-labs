@@ -3,6 +3,7 @@
 #include "halfedge.h"
 #include "vertex.h"
 #include "slgl3w.h"
+#include <QtOpenGL>
 
 
 using namespace heds;
@@ -82,6 +83,7 @@ void SLHEMesh::storeList()
             glBegin(GL_POLYGON);
 
         QVector3D n = f->getNormal();
+        n.normalize();
 
         Face::iterator it;
         for(it = f->begin(); it != f->end(); ++it)
@@ -109,27 +111,27 @@ void SLHEMesh::storeList()
         glEnd();
     }
 
-//    glDisable(GL_LIGHTING);
-//    glColor3i(115,255,8);
-//    for(int i = 0; i < m_data.numberOfBondaries(); ++i)
-//    {
-//        glBegin(GL_LINE_STRIP);
+    glDisable(GL_LIGHTING);
+    glColor3f(0.451,1.0,0.031);
+    for(int i = 0; i < m_data.numberOfBondaries(); ++i)
+    {
+        glBegin(GL_LINE_STRIP);
 
-//        const HalfEdge * he = m_data.getBoundaryReferenceEdge(i);
-//        QVector4D p = he->origin()->geometry();
-//        glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
-//        const HalfEdge * next = he->next();
-//        while(next != he)
-//        {
-//            QVector4D p = next->origin()->geometry();
-//            glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
-//            next = next->next();
-//        }
-//        glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
+        const HalfEdge * he = m_data.getBoundaryReferenceEdge(i);
+        QVector4D p = he->origin()->geometry();
+        glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
+        const HalfEdge * next = he->next();
+        while(next != he)
+        {
+            QVector4D p = next->origin()->geometry();
+            glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
+            next = next->next();
+        }
+        glVertex4fv(reinterpret_cast<const GLfloat*>(&p));
 
-//        glEnd();
-//    }
-//    glEnable(GL_LIGHTING);
+        glEnd();
+    }
+    glEnable(GL_LIGHTING);
 
     glEndList();
 }

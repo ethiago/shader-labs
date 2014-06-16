@@ -46,8 +46,11 @@ PLYHED=../plymodule/headers
 HESRC=../hedsmodule/src
 HEHED=../hedsmodule/headers
 
+PLUGINS=../pluginsInterfaces
+
 INCLUDEPATH += $$PLYHED
 INCLUDEPATH += $$HEHED
+INCLUDEPATH += $$PLUGINS
 
 SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/main.cpp \
@@ -105,7 +108,8 @@ SOURCES += $$SLSRC/gl3w.c \
     $$HESRC/face.cpp \
     $$HESRC/halfedge.cpp \
     $$HESRC/halfedgedata.cpp \
-    $$SLSRC/attributeview.cpp
+    $$SLSRC/attributeview.cpp \
+    $$SLSRC/plugincontroller.cpp
 
 HEADERS += $$SLHED/gl3w.h \
     $$SLHED/glcorearb.h \
@@ -165,7 +169,9 @@ HEADERS += $$SLHED/gl3w.h \
     $$HEHED/face.h \
     $$HEHED/halfedge.h \
     $$HEHED/halfedgedata.h \
-    $$SLHED/attributeview.h
+    $$SLHED/attributeview.h \
+    $$SLHED/plugincontroller.h \
+    $$PLUGINS/PerVertexInterface.h
 
 FORMS += $$SLFOR/MainWindow.ui \
     $$SLFOR/ChooseShaderDialog.ui \

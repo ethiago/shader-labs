@@ -47,10 +47,10 @@ public:
         HalfEdge * e_first;
         HalfEdge * base;
     public:
-        iterator(){ e_first = NULL; base = NULL; }
-        iterator(HalfEdge * f, HalfEdge * b){ e_first = f; base = b; }
+        iterator():e_first(NULL), base(NULL){  }
+        iterator(HalfEdge * f, HalfEdge * b) : e_first(f), base(b) {}
         iterator(const iterator & it) { e_first = it.e_first; base = it.base; }
-        const HalfEdge * operator*(){ return base; }
+        const HalfEdge * operator*()const{ return base; }
 
         bool operator==(const iterator& it){ return (e_first == it.e_first && base == it.base); }
         bool operator!=(const iterator& it){ return (e_first != it.e_first || base != it.base); }
@@ -62,8 +62,8 @@ public:
                                  return *this; }
     };
 
-    iterator begin();
-    iterator end();
+    iterator begin() const;
+    iterator end() const;
 };
 
 }

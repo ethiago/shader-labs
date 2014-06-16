@@ -65,6 +65,8 @@ public:
     int addFaceUniform(const PLYDataHeader::Property& p);
     int addUniform(const PLYDataHeader::Property& p);
 
+    int findAttribute(const QString& p);
+
     const QList<PLYDataHeader::Property>& getAttributeInfos()const;
     const QList<PLYDataHeader::Property>& getFaceUniformInfos()const;
     const QList<PLYDataHeader::Property>& getUniformInfos()const;

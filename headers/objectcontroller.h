@@ -10,6 +10,7 @@ class VertexProperties;
 class MainWindow;
 class SLObject;
 class AttributeView;
+class PluginController;
 
 typedef unsigned int GLuint;
 
@@ -21,6 +22,7 @@ class ObjectController : public QObject
     SLObject * e_object;
     AttributeView * m_attributeView;
 
+    PluginController *m_pluginController;
 
 public:
     explicit ObjectController(MainWindow * mw, SLObject* obj);

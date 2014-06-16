@@ -53,6 +53,7 @@ public:
 
     void setGLDisplay(GLDisplay *);
     QMenu* modelsMenu(void);
+    QMenu* pluginMenu(void);
     void menuViewInsertAction(QAction* act);
     void menuViewRemoveAction(QAction* act);
     QAction *addSettingsMenu(QMenu* menu);
