@@ -1,0 +1,156 @@
+svn checkout http://shader-lab.googlecode.com/svn/trunk/hedsmodule/
+svn checkout http://shader-lab.googlecode.com/svn/trunk/pluginsInterfaces/
+
+working directory:
+plugin.cpp  plugin.h  plugin.pro  hedsmodule  pluginsInterfaces
+
+.pro example
+##############################################
+TEMPLATE        = lib
+CONFIG         += plugin
+
+HESRC= hedsmodule/src
+HEHED= hedsmodule/headers
+
+INCLUDEPATH    += pluginsInterfaces $$HEHED
+
+HEADERS += plugin.h \
+       $$HEHED/vertex.h \
+       $$HEHED/face.h \
+       $$HEHED/halfedge.h
+
+SOURCES += plugin.cpp \
+       $$HESRC/vertex.cpp \
+       $$HESRC/face.cpp \
+       $$HESRC/halfedge.cpp
+
+TARGET          = $$qtLibraryTarget(pluginxpto8812)
+##############################################
+
+plugin.h example
+##############################################
+#ifndef MYPLUGIN_H
+#define MYPLUGIN_H
+
+#include <QObject>
+#include <PerVertexInterface.h>
+
+class MyPlugin : public QObject, PerVertexInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(PerVertexInterface)
+
+    QVector3D center;
+    int qtd;
+    float max;
+
+public:
+    MyPlugin();
+
+    QStringList perVertexPlugins() const;
+
+    /******Special Attribute Names**********
+     *geometry: must be Vec3 and changes the x,y,z vertex position
+     *normal: must be Vec3 and changes the x,y,z normal coordinates
+     *texCoord: must be Vec2 and changes the u,v texture coordinates
+     *null: does not generate any attributes data/
+     * Attribute names can't start with gl_ */
+    QList< QPair<QString, DataType> > attributes(const QString& plugin) const;
+
+    QList<QVariant> attributeValue(const QString& plugin, int attIndex, const heds::Vertex* vertex);
+    void endOfVertices(const QString& plugin, int attIndex);
+};
+
+#endif // MYPLUGIN_H
+##############################################
+
+plugin.cpp example
+##############################################
+#include "plugin.h"
+#include <QStringList>
+#include <QVariant>
+#include "vertex.h"
+
+MyPlugin::MyPlugin()
+{
+    qtd = 0;
+    max = 0.0;
+}
+
+
+QStringList MyPlugin::perVertexPlugins()const
+{
+    QStringList st;
+    st.append(QString("Mesh Normalize"));
+    return st;
+}
+
+QList< QPair<QString, DataType> > MyPlugin::attributes(const QString& plugin) const
+{
+    QList< QPair<QString, DataType> > list;
+    list.append( qMakePair(QString("null"), Float) );
+    list.append( qMakePair(QString("null"), Float) );
+    list.append( qMakePair(QString("geometry"), Vec3) );
+    return list;
+}
+
+QList<QVariant> MyPlugin::attributeValue(const QString& plugin, int attIndex, const heds::Vertex *vertex)
+{
+    QList<QVariant> list;
+
+    if(attIndex == 0)
+    {
+        center += vertex->geometry().toVector3DAffine();
+        qtd++;
+        return list;
+    }else if(attIndex == 1)
+    {
+        QVector3D vec = vertex->geometry().toVector3DAffine() - center;
+        if(vec.length() > max)
+            max = vec.length();
+        return list;
+    }else
+    {
+        QVector3D position = (vertex->geometry().toVector3DAffine() - center)*(max);
+
+        list.append(QVariant(position.x()));
+        list.append(QVariant(position.y()));
+        list.append(QVariant(position.z()));
+
+        return list;
+    }
+}
+
+void MyPlugin::endOfVertices(const QString& plugin, int attIndex)
+{
+    if(attIndex == 0)
+    {
+        center = center*(1.0/qtd);
+    }
+    else if( attIndex == 1)
+    {
+        max = (1.0/max);
+    }else
+    {
+        center = QVector3D();
+        qtd = 0;
+        max = 0.0;
+    }
+}
+
+Q_EXPORT_PLUGIN2(pluginxpto8812, MyPlugin)
+##############################################
+
+Build the project
+copy pluginxpto8812.so to ShaderLabs plugin directory
+
+The ShaderLabs directory tree should be like this
+<ShaderLabsRootDirectory>
+    <bin>
+         <ShaderLabsBinary>
+    <lib>
+	 < QtSolutions_PropertyBrowser-head libs >
+    <plugins>
+         ...  here  ...
+
+
