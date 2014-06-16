@@ -23,4 +23,4 @@ SOURCES += defaultnormal.cpp \
        $$HESRC/halfedge.cpp
 
 TARGET          = $$qtLibraryTarget(defaultnormalplugin)
-DESTDIR         = ../plugins
+DESTDIR         = ../../../ShaderLabs/plugins
