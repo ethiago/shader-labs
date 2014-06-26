@@ -34,6 +34,9 @@ public:
     HalfEdge const * next()const;
     HalfEdge * next();
 
+    HalfEdge const * getPrev()const;
+    HalfEdge * getPrev();
+
     HalfEdge const * twin()const;
     HalfEdge * twin();
 

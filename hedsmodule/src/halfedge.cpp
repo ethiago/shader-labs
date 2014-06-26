@@ -55,6 +55,21 @@ HalfEdge * HalfEdge::next()
     return e_next;
 }
 
+HalfEdge const * HalfEdge::getPrev()const
+{
+    const HalfEdge * he = this;
+    while(he->next() != this)
+        he = he->next();
+    return he;
+}
+HalfEdge * HalfEdge::getPrev()
+{
+    HalfEdge * he = this;
+    while(he->next() != this)
+        he = he->next();
+    return he;
+}
+
 HalfEdge const * HalfEdge::twin()const
 {
     return e_twin;
