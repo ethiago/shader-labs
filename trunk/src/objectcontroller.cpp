@@ -25,6 +25,9 @@ ObjectController::ObjectController(MainWindow *mw, SLObject* obj) :
     connect(m_vertexProperties, SIGNAL(objectChanged(int)),
             this, SIGNAL(objectChanged(int)));
 
+    connect(m_pluginController, SIGNAL(pluginRunned()),
+            this, SLOT(updateView()));
+
     updateView();
 }
 
