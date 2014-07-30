@@ -39,6 +39,9 @@ public:
 
     void changeObject(SLObject * object);
     
+signals:
+    void pluginRunned(void);
+
 public slots:
     void updatePluginList();
     void perVertexAction(QAction* act);

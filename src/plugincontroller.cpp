@@ -22,7 +22,16 @@ PluginController::PluginController(QMenu* pluginMenu, SLObject * obj) :
 
     pluginsDir = QDir(qApp->applicationDirPath());
 
-    pluginsDir.cd("../plugins");
+#if defined(Q_OS_MAC)
+    if (pluginsDir.dirName() == "MacOS") {
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+    }
+#endif
+
+    pluginsDir.cdUp();
+    pluginsDir.cd("plugins");
 
     updatePluginList();
 }
@@ -153,6 +162,8 @@ void PluginController::perVertexAction(QAction* act)
     diag->close();
     delete pro;
     delete diag;
+
+    emit pluginRunned();
 
     mesh->storeList();
 }
