@@ -6,7 +6,7 @@ QT += core \
     opengl \
     xml
 win32 { 
-    TARGET = ../ShaderLabs-win32
+    TARGET = ShaderLabs-win32
     LIBS += -lfreeglut -lopengl32
 }
 

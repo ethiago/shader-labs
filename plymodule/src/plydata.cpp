@@ -34,7 +34,8 @@ const PLYData& PLYData::operator=(const PLYData& cp)
         {
             for(int p = 0; p < cp[e].getNumberOfProperties(); ++p)
             {
-                Q_ASSERT(setData(e,p,i, cp.getData(e,p,i) ));
+                bool ret = setData(e,p,i, cp.getData(e,p,i) );
+                Q_ASSERT( ret == true );
             }
         }
     }
