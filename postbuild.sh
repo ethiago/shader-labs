@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DEBPATH="build/app/DEBIAN"
+APPPATH="buuild/app"
+DEBPATH="$APPPATH/DEBIAN"
 
 mkdir $DEBPATH
 
@@ -21,3 +22,12 @@ Description: ShaderLabs is a IDE for GLSL experimentation
 EOF 
 
 echo "Version: $version\n$control" >> $DEBPATH/control
+
+read -d '' post <<- EOF
+echo "Instalation success"
+EOF
+
+echo "$post" >> $DEBPATH/postinst
+chmod +x $DEBPATH/postinst
+
+dpkg-deb --build $APPPATH
