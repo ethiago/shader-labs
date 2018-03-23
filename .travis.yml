@@ -38,11 +38,10 @@ jobs:
       before_install:
       - export DISPLAY=:99.0
       - sh -e /etc/init.d/xvfb start
-      - sudo apt-get update
-      - sudo apt-get install wget -y
       - wget "https://s3.amazonaws.com/$ARTIFACTS_BUCKET/$BUCKETPATH/$TARFILENAME"
       - tar -xzf $TARFILENAME
       - ./beforepack.sh 0.0.1
+      - sudo apt-get update -q
 
       install:
       - sudo dpkg -i ./$TARFILENAME
