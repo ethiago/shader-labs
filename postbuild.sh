@@ -1,15 +1,16 @@
 #!/bin/bash
 
-APPPATH="buuild/app"
+APPPATH="build/app"
 DEBPATH="$APPPATH/DEBIAN"
 
 mkdir $DEBPATH
 
-version="$1"
+VERSION=$1
 
-read -d '' control <<- EOF
+cat > "$DEBPATH/control" << EOM
 Source: ShaderLabs
 Package: ShaderLabs
+Version: $VERSION
 Maintainer: Thiago Gomes <thiagoegomes@gmail.com>
 Section: graphics
 Priority: optional
@@ -19,15 +20,12 @@ Description: ShaderLabs is a IDE for GLSL experimentation
  ShaderLabs provides a abstraction over a OpenGL aplication so you can 
  focus on learn or propotype your OpenGL vertex, fragment, geometry 
  or tessellation shaders.
-EOF 
+EOM
 
-echo "Version: $version\n$control" >> $DEBPATH/control
-
-read -d '' post <<- EOF
+cat > "$DEBPATH/postinst" << EOM
 echo "Instalation success"
-EOF
+EOM
 
-echo "$post" >> $DEBPATH/postinst
 chmod +x $DEBPATH/postinst
 
 dpkg-deb --build $APPPATH
