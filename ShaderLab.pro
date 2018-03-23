@@ -1,4 +1,10 @@
 TEMPLATE=subdirs
-CONFIG += ordered
-SUBDIRS=3rd-party/qtpropertybrowser/buildlib
-SUBDIRS+=shaderlabs
+
+SUBDIRS = \
+    qtpropertybrowser \
+    shaderlabs
+
+qtpropertybrowser.subdir = 3rd-party/qtpropertybrowser/buildlib
+shaderlabs.subdir = shaderlabs
+
+shaderlabs.depends = qtpropertybrowser

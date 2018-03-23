@@ -26,8 +26,9 @@ OBJECTS_DIR = tmp
 MOC_DIR = tmp
 RCC_DIR = tmp
 UI_DIR = tmp
-DEPLOYDIR = ../../ShaderLabs
-DESTDIR = $$DEPLOYDIR/bin
+
+include(../build.pri)
+DESTDIR = $$OUTPUT_APP_DIR/bin
 
 #QtSolutions_PropertyBrowser-head
 include(../3rd-party/qtpropertybrowser/src/qtpropertybrowser.pri)
