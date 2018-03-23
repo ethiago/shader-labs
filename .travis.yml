@@ -22,10 +22,10 @@ script:
 - mv $TARFILENAME ./build/app/
 
 addons:
-  artifacts: true
+  artifacts:
     working_dir: build/app
     target_paths:
-      - /travisci/shader-labs/$TRAVIS_OS_NAME
+    - /travisci/shader-labs/$TRAVIS_OS_NAME
     debug: true
 
 before_deploy:
