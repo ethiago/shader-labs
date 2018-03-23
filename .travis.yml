@@ -16,6 +16,16 @@ before_script:
 script:
 - ./build.sh
 - ./build/app/bin/ShaderLabs-linux &
+- export TARFILENAME="ShaderLabs-linux-$TRAVIS_COMMIT.tar.gz"
+- tar --create --gzip --file $TARFILENAME ./build/app/bin ./build/app/lib
+
+addons:
+  artifacts: true
+  paths:
+    - ./$TARFILENAME
+  target_paths:
+    - /${TRAVIS_REPO_SLUG}
+  debug: true
 
 before_deploy:
 - ./postbuild.sh `expr match "$TRAVIS_TAG" '.*\([0-9]\.[0-9]\.[0-9]\)'`
