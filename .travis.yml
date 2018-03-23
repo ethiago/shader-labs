@@ -17,18 +17,19 @@ script:
 - ./build.sh
 - ./build/app/bin/ShaderLabs-linux &
 - export TARFILENAME="ShaderLabs-linux-$TRAVIS_COMMIT.tar.gz"
-- tar --create --gzip --file $TARFILENAME ./build/app/bin ./build/app/lib
+- tar --create --gzip --file $TARFILENAME ./build/app
+- rm -rf ./build/app/*
+- mv $TARFILENAME ./build/app/
 
 addons:
   artifacts: true
-  paths:
-    - ./$TARFILENAME
-  target_paths:
-    - /${TRAVIS_REPO_SLUG}
-  debug: true
+    working_dir: build/app
+    target_paths:
+      - /travisci/shader-labs/$TRAVIS_OS_NAME
+    debug: true
 
 before_deploy:
-- ./postbuild.sh `expr match "$TRAVIS_TAG" '.*\([0-9]\.[0-9]\.[0-9]\)'`
+- ./beforepack.sh `expr match "$TRAVIS_TAG" '.*\([0-9]\.[0-9]\.[0-9]\)'`
 - mv build/app.deb "build/ShaderLabs-linux-`expr match "$TRAVIS_TAG" '.*\([0-9]\.[0-9]\.[0-9]\)'`.deb"
 
 deploy:
