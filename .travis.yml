@@ -12,7 +12,7 @@ install:
 
 script:
 - ./build.sh
-- .build/app/bin/ShaderLabs-linux &
+- ./build/app/bin/ShaderLabs-linux &
 
 before_deploy:
 - ./postbuild.sh `expr match "$TRAVIS_TAG" '.*\([0-9]\.[0-9]\.[0-9]\)'`
