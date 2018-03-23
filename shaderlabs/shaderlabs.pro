@@ -11,7 +11,7 @@ win32 {
 }
 
 unix:!macx {
-TARGET = ShaderLabs-linux
+TARGET = shaderlabs
 LIBS += -lGLU -ldl
 }
 
