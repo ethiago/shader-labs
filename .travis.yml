@@ -7,7 +7,7 @@ env:
     - TAR_FILE_NAME="$BINNAME-$TRAVIS_OS_NAME-$TRAVIS_COMMIT.tar.gz"
     - BUCKETPATH="travisci/shader-labs/$TRAVIS_OS_NAME"
     - VER=`expr match "$TRAVIS_TAG" '.*\([0-9]\.[0-9]\.[0-9]\)'`
-    - PACK_FILE_NAME="$BINNAME\_$VER.deb"
+    - PACK_FILE_NAME="${BINNAME}_${VER}.deb"
 
 jobs:
   include:
@@ -46,8 +46,7 @@ jobs:
       - sh -e /etc/init.d/xvfb start
       - sudo apt-get update -q
       - wget "https://s3.amazonaws.com/$ARTIFACTS_BUCKET/$BUCKETPATH/$PACK_FILE_NAME"
-      - sudo dpkg -i ./$TAR_FILE_NAME
-      - sudo apt-get install -f
+      - sudo dpkg -i ./$PACK_FILE_NAME && sudo apt-get install -fy
       - shaderlabs &
 
       deploy:

@@ -2,7 +2,7 @@
 
 APPPATH="build/app"
 DEBPATH="$APPPATH/DEBIAN"
-BINPATH=usr/$BINNAME/$BINNAME-$VERSION/
+BINPATH=usr/$BINNAME/$BINNAME-$VER
 
 mkdir $DEBPATH
 
@@ -22,7 +22,7 @@ Description: ShaderLabs is a IDE for GLSL experimentation
 EOM
 
 cat > "$DEBPATH/postinst" << EOM
-ln -sf /$BINPATH/$BINNAME /usr/$BINNAME
+ln -sf /$BINPATH/bin/$BINNAME /usr/bin/$BINNAME
 EOM
 
 chmod +x $DEBPATH/postinst
