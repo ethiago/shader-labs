@@ -53,8 +53,9 @@ jobs:
         provider: releases
         api_key:
           secure: lGP3gN+xarNpVa2pmLFBgurSrT6YFfphlZR5Nd7YJi93/ZqVHCdPbm6guzXvQkhtQGf6G5UeVHDFUpvfMT4Yx+K6Yqb3KyilkZ2PZFWQ38fZe2dgaBF1gz7o5XARVufLM1447GpN8a8f9YsJ8Xp+ODRNsoJob6GD3JegKmR3rBuzTVJUWLFASTYKBI7rdMSN7Q6uPbFXofYKdO7yWP6uQV97XA+wLc+lFZHvqD0GA/1+TI03nZSBTBtXnbA7gtquC4pki+1RNeyJVtirhgfg1myx+g9q3a/rtIpQwbgsqRLN7XFGWNS8dddhNb3aJ9oiBa/Cgh/ZrVZTGl9caX9GeydIJ208ZzjCOWXw0PguiylV81aIP7IySAkzT4EcWTB1KEFhaSNTQD7DWIty7MD/1ok++84rlYokYmKXiDWgWWbn/A/8fq+asiZVkigb4QUjE+zEnj8V2xfsI/vevJSA4FPewMgdc7/j0r/jnbGND4QTbpE9w4nKx0U8PWB7MTIOixwmMFnZkQQx87KArMqgl7oAgYCBNBiL9mkbKZXGZniDCwtebVsF77XVhbh4iTEEXs1XQM4AsCmfNYER4iBfe0Np0SJminL3g1K/y8yjeMP/sMVpeJi8daaM9iws+Mauz7a5nTGUXaH2Lc3/0kW4cv3hi0ZUW3gAx//5ZvVgYgY=
-        file: $TAR_FILE_NAME
+        file: $PACK_FILE_NAME
         skip_cleanup: true
         on:
           tags: true
+          branch: master
 
