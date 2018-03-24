@@ -2,7 +2,7 @@
 
 APPPATH="build/app"
 DEBPATH="$APPPATH/DEBIAN"
-BINPATH=usr/shaderlabs/shaderlabs-$VERSION/
+BINPATH=usr/$BINNAME/$BINNAME-$VERSION/
 
 mkdir $DEBPATH
 

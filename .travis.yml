@@ -28,7 +28,7 @@ jobs:
       - ./build.sh
       - ./build/app/bin/$BINNAME &
       - tar --create --gzip --file $TAR_FILE_NAME ./build/app
-      - if [[ -z  "$VER" ]]; then ./pack.sh; fi
+      - if [[ ! -z  "$VER" ]]; then ./pack.sh; fi
       - rm -rf ./build
 
       addons:
