@@ -35,6 +35,6 @@ mv $APPPATH/lib $APPPATH/$BINPATH/
 dpkg-deb --build $APPPATH
 EXC=$?
 
-mv app.deb $BINNAME\_$VER.deb
+mv ./build/app.deb ./$BINNAME\_$VER.deb
 
 exit $EXC
