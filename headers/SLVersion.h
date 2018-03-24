@@ -3,6 +3,6 @@
 
 #define SL_VERSION_MAJOR        1
 #define SL_VERSION_MINOR        2
-#define SL_VERSION_REV          3
+#define SL_VERSION_REV          4
 
 #endif // SLVERSION_H
