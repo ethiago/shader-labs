@@ -31,6 +31,10 @@ First you need to get Qt4. The installation of Qt is beyond the porpose of this 
 
 On Linux, it also needs libGLU, so install (libglu1-mesa).
 
+In case you have Qt4 and Qt5 installed (e.g. when installed through meta package qt-sdk) it also good to specify which version qmake will use:
+
+`$ export QT_SELECT=qt4`
+
 ### Build
 
 1. Get the source `$ git clone https://github.com/ethiago/shader-labs.git ShaderLabs`
