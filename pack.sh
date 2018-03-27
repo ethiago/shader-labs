@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APPPATH="build/app"
+APPPATH="build"
 DEBPATH="$APPPATH/DEBIAN"
 BINPATH=usr/$BINNAME/$BINNAME-$VER
 

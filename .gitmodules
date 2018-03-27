@@ -1,0 +1,3 @@
+[submodule "3rd-party/qt-solutions"]
+	path = 3rd-party/qt-solutions
+	url = git@github.com:ethiago/qt-solutions.git

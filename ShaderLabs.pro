@@ -1,11 +1,10 @@
-# -------------------------------------------------
-# Project created by QtCreator 2011-03-26T13:25:06
-# -------------------------------------------------
+greaterThan(QT_MAJOR_VERSION, 4): QT *= widgets
+
 QT += core \
     gui \
     opengl \
     xml
-win32 { 
+win32 {
     TARGET = ShaderLabs-win32
     LIBS += -lfreeglut -lopengl32
 }
@@ -20,37 +19,27 @@ TARGET = ShaderLabs-mac
 LIBS += -framework Carbon
 }
 
-DEPENDPATH += ../src
-INCLUDEPATH += ../headers
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
+
+DEPENDPATH += src
+INCLUDEPATH += headers
 OBJECTS_DIR = tmp
 MOC_DIR = tmp
 RCC_DIR = tmp
 UI_DIR = tmp
 
-include(../build.pri)
-DESTDIR = $$OUTPUT_APP_DIR/bin
+DESTDIR = $$PWD/build/bin
+include(plymodule/plymodule.pri)
+include(hedsmodule/hedsmodule.pri)
+include(3rd-party/qtpropertybrowser.pri)
 
-#QtSolutions_PropertyBrowser-head
-include(../3rd-party/qtpropertybrowser/src/qtpropertybrowser.pri)
-#QtSolutions_PropertyBrowser-head
+SLSRC=src
+SLHED=headers
+SLFOR=forms
+SLRES=qresources
 
-QMAKE_LFLAGS = '-Wl,-rpath,\'\$$ORIGIN/../lib\''
+PLUGINS=pluginsInterfaces
 
-SLSRC=../src
-SLHED=../headers
-SLFOR=../forms
-SLRES=../qresources
-
-PLYSRC=../plymodule/src
-PLYHED=../plymodule/headers
-
-HESRC=../hedsmodule/src
-HEHED=../hedsmodule/headers
-
-PLUGINS=../pluginsInterfaces
-
-INCLUDEPATH += $$PLYHED
-INCLUDEPATH += $$HEHED
 INCLUDEPATH += $$PLUGINS
 
 SOURCES += $$SLSRC/gl3w.c \
@@ -99,16 +88,8 @@ SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/slProjectController.cpp \
     $$SLSRC/vertexproperties.cpp \
     $$SLSRC/objectcontroller.cpp \
-    $$PLYSRC/meshextraction.cpp \
-    $$PLYSRC/plydata.cpp \
-    $$PLYSRC/plydataitens.cpp \
-    $$PLYSRC/plyio.cpp \
     $$SLSRC/slhemeshconstructor.cpp \
     $$SLSRC/slhemesh.cpp \
-    $$HESRC/vertex.cpp \
-    $$HESRC/face.cpp \
-    $$HESRC/halfedge.cpp \
-    $$HESRC/halfedgedata.cpp \
     $$SLSRC/attributeview.cpp \
     $$SLSRC/plugincontroller.cpp
 
@@ -159,17 +140,8 @@ HEADERS += $$SLHED/gl3w.h \
     $$SLHED/slProjectController.h \
     $$SLHED/vertexproperties.h \
     $$SLHED/objectcontroller.h \
-    $$PLYHED/meshcontainer.h \
-    $$PLYHED/meshextraction.h \
-    $$PLYHED/plydata.h \
-    $$PLYHED/plydataitens.h \
-    $$PLYHED/plyio.h \
     $$SLHED/slhemeshconstructor.h \
     $$SLHED/slhemesh.h \
-    $$HEHED/vertex.h \
-    $$HEHED/face.h \
-    $$HEHED/halfedge.h \
-    $$HEHED/halfedgedata.h \
     $$SLHED/attributeview.h \
     $$SLHED/plugincontroller.h \
     $$PLUGINS/PerVertexInterface.h
@@ -182,6 +154,6 @@ FORMS += $$SLFOR/MainWindow.ui \
     $$SLFOR/GlobalProperties.ui \
     $$SLFOR/ShaderCodeContainer2.ui \
     $$SLFOR/attributeview.ui
-    
+
 RESOURCES += $$SLRES/shaderlab.qrc
-OTHER_FILES += 
+OTHER_FILES +=
