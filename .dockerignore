@@ -1,0 +1,10 @@
+docker*
+Docker*
+docs
+3rd-party/qtbrowserplugin
+3rd-party/qtlockedfile
+3rd-party/qtscriptclassic
+3rd-party/qtservice
+3rd-party/qtsingleapplication
+3rd-party/qtsoap
+3rd-party/qtwinmigrate

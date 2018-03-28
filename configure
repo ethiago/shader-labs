@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+############## OPTION PARSE ###################
+
+STATIC=0
+MODE="release"
+TARBALL_PATH="output"
+TARBALL_NAME="output.tar.gz"
+
+print_usage(){
+cat <<- EOM
+Usage:
+ $0 [options]
+    
+ Options:
+
+  --static         Indicate to use Qt static link. Not used as default.
+  --mode           Indicate compilation mode. Valid options: release, debug, all. Default: ${MODE}.
+  --tarball-path   Output Path where tarball will be placed. Default: ${TARBALL_PATH}.
+  --tarball-name   File name of the output tarball. Default: ${TARBALL_NAME}.
+
+  --help           Print this help
+EOM
+}
+
+print_usage_exit(){
+    print_usage
+    exit 1
+}
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    --help)
+    print_usage_exit
+    ;;
+    --static)
+    STATIC=1
+    shift # past argument
+    ;;
+    --mode)
+    if [[ -z $2 ]]; then print_usage_exit; fi
+    MODE=$2
+    shift # past argument
+    shift # past argument value
+    ;;
+    --tarball-path)
+    TARBALL_PATH=${2%/}
+    shift # past argument
+    shift # past argument value
+    ;;
+    --tarball-name)
+    TARBALL_NAME=$2
+    shift # past argument
+    shift # past argument value
+    ;;
+    *)    # unknown option
+    print_usage_exit
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+########################################################3
+
+CONF="CONFIG+=${MODE}"
+
+if [[ $STATIC -eq 1 ]]; then CONF="${CONF} static"; fi
+
+rm -rf build
+mkdir build
+
+cd build
+qmake "${CONF}" ../ShaderLabs.pro
+EXC=$?
+
+if [[ ! $EXC -eq 0 ]]; then exit $EXC; fi
+
+cat >> Makefile << EOM
+
+targz: 
+$(printf '\t')@\$(CHK_DIR_EXISTS)  ${TARBALL_PATH} || \$(MKDIR) ${TARBALL_PATH}
+$(printf '\t')tar --create --gzip --file ${TARBALL_PATH}/${TARBALL_NAME} bin
+
+EOM
+
+cd ..
+
+exit $EXC
