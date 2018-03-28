@@ -26,7 +26,7 @@ jobs:
       - cd output && tar -xzf output.tar.gz && cd ..
       
       script:
-      - ./output/bin/shaderlabs -c 2> /dev/null
+      - ./output/bin/shaderlabs -c
 
       after_success:
       - cp ./output/output.tar.gz ./$TAR_FILE_NAME
@@ -49,7 +49,7 @@ jobs:
       - sudo apt-get update -q
       - wget "https://s3.amazonaws.com/$ARTIFACTS_BUCKET/$BUCKETPATH/$PACK_FILE_NAME"
       - sudo dpkg -i ./$PACK_FILE_NAME || sudo apt-get install -fy
-      - shaderlabs -c 2> /dev/null
+      - shaderlabs -c
 
       deploy:
         provider: releases
