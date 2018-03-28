@@ -61,7 +61,7 @@ RUN mkdir /qt                            && \
         -qt-libpng                          \
         -qt-libmng                          \
         -qt-libtiff                         \
-        -qt-libjpeg                      
+        -qt-libjpeg                      && \
     make && make install
 
 FROM packages
