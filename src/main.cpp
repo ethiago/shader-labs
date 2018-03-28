@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
                        "-v, --version\tprint version information and exit\n"<<
                        "-l, --license\tshow information about the license"<<
                        std::endl;
-            exit(-1);
+            return 0;
         }
         if ((!strcmp(argv[1],"-v")||!strcmp(argv[1],"--version")))
         {
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
                        SL_VERSION_MAJOR<<'.'<<
                        SL_VERSION_MINOR<<'.'<<
                        SL_VERSION_REV<<std::endl;
-            exit(-1);
+            return 0;
         }
         if ((!strcmp(argv[1],"-l")||!strcmp(argv[1],"--license")))
         {
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
                         "conditions.  There is NO\nwarranty; not even for "<<
                         "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."<<
                         std::endl;
-            exit(-1);
+            return 0;
         }
     }
 
@@ -47,6 +47,11 @@ int main(int argc, char *argv[])
 
     MainWindow mw;
     MainController mc(&mw);
+
+    if ((!strcmp(argv[1],"-c")||!strcmp(argv[1],"--check")))
+    {
+        return 0;
+    }
 
     return app.exec();
 }
