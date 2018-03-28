@@ -1,4 +1,4 @@
-FROM ethiago/shaderlabs-builder
+FROM ethiago/shader-labs-builder
 
 COPY . ./
 
