@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APPPATH="build"
+APPPATH="output"
 DEBPATH="$APPPATH/DEBIAN"
 BINPATH=usr/$BINNAME/$BINNAME-$VER
 
@@ -30,11 +30,10 @@ chmod +x $DEBPATH/postinst
 mkdir -p $APPPATH/$BINPATH
 
 mv $APPPATH/bin $APPPATH/$BINPATH/
-mv $APPPATH/lib $APPPATH/$BINPATH/
 
 dpkg-deb --build $APPPATH
 EXC=$?
 
-mv ./build/app.deb ./$BINNAME\_$VER.deb
+mv ./${APPPATH}.deb ./${BINNAME}_${VER}.deb
 
 exit $EXC

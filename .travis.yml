@@ -1,6 +1,8 @@
 sudo: required
 dist: trusty
-language: cpp
+services:
+  - docker
+language: generic
 env:
   global:
     - BINNAME="shaderlabs"
@@ -13,21 +15,17 @@ jobs:
   include:
     - stage: build
 
-      before_install:
+      install: skip
+
+      before_script:
       - export DISPLAY=:99.0
       - sh -e /etc/init.d/xvfb start
 
-      install:
-      - sudo apt-get update -q
-      - sudo apt-get install -y qt-sdk
-
-      before_script:
-      - export QT_SELECT=qt4
-
       script:
-      - ./build.sh
-      - ./build/bin/$BINNAME &
-      - tar --create --gzip --file $TAR_FILE_NAME ./build
+      - ./build_with_docker.sh
+      - cp output/output.tar.gz ./$TAR_FILE_NAME
+      - cd output
+      - tar -xzf output.tar.gz
       - if [[ ! -z  "$VER" ]]; then ./pack.sh; fi
       - rm -rf ./build
 
