@@ -18,7 +18,7 @@ RUN apt-get update -q && apt-get install -y \
     make                                    \
     mesa-common-dev
 
-FROM ubuntu:artful as source  
+FROM packages as source  
 
 RUN apt-get update -q && apt-get install -y \    
     git					    
@@ -27,13 +27,12 @@ RUN mkdir /qt-src                       && \
     git clone                              \
         --depth=1                          \
         --recurse-submodules               \
-	--shallow-submodules	           \
         --single-branch                    \
         -b v4.8.6                          \
         https://github.com/qt/qt.git       \
         /qt-src
 
-FROM packages as library
+FROM source as library
 
 RUN mkdir /qt-src
 COPY --from=source /qt-src /qt-src
