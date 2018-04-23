@@ -1,7 +1,9 @@
+#!/bin/bash
 
+DOCKERFILE_BUILDER=${1:-"builder/Dockerfile-ubuntu14"}
 DOCKER_IMAGE_NAME=shaderlabs-link
 
-sudo docker build --no-cache -t ${DOCKER_IMAGE_NAME} .
+sudo docker build --no-cache -t ${DOCKER_IMAGE_NAME} -f ${DOCKERFILE_BUILDER} .
 
 CONTAINER_ID=$(sudo docker run -d ${DOCKER_IMAGE_NAME})
 

@@ -1,0 +1,15 @@
+FROM shader-labs-builder:centos6
+
+RUN yum check-update && yum install -y  \
+    gcc                                 \
+    gcc-c++                             \
+    mesa-libGL-devel                    \
+    mesa-libGLU-devel
+
+COPY . ./
+
+RUN ./configure --static --mode release --tarball-path /output
+
+RUN cd build && make && make targz
+
+CMD ["/bin/bash" ]
