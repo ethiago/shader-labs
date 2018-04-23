@@ -1,4 +1,6 @@
-FROM ethiago/shader-labs-builder
+ARG TAG=latest 
+
+FROM ethiago/shader-labs-builder:$TAG
 
 COPY . ./
 
