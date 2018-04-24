@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     MainWindow mw;
     MainController mc(&mw);
 
-    if ((!strcmp(argv[1],"-c")||!strcmp(argv[1],"--check")))
+    if (argc > 1 && (!strcmp(argv[1],"-c")||!strcmp(argv[1],"--check")))
     {
         return 0;
     }
