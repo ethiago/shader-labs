@@ -7,6 +7,7 @@
 #include "Sphere.h"
 #include "Plane.h"
 #include "Cube.h"
+#include "line.h"
 #include "Point.h"
 #include "squarepatch.h"
 #include "Scene3D.h"
@@ -403,6 +404,14 @@ void RenderController2::configureModelsAndActions(QMenu* menu)
     act->setCheckable(true);
     act->setChecked(false);
     model_tmp = new SquarePatch();
+    model_tmp->setModelId(m_models.size());
+    m_models.append(qMakePair(act, model_tmp));
+    maxStaticModels++;
+
+    act = menu->addAction(tr("&Line"));
+    act->setCheckable(true);
+    act->setChecked(false);
+    model_tmp = new Line();
     model_tmp->setModelId(m_models.size());
     m_models.append(qMakePair(act, model_tmp));
     maxStaticModels++;

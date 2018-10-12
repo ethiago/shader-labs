@@ -91,7 +91,8 @@ SOURCES += $$SLSRC/gl3w.c \
     $$SLSRC/slhemeshconstructor.cpp \
     $$SLSRC/slhemesh.cpp \
     $$SLSRC/attributeview.cpp \
-    $$SLSRC/plugincontroller.cpp
+    $$SLSRC/plugincontroller.cpp \
+    $$SLSRC/line.cpp
 
 HEADERS += $$SLHED/gl3w.h \
     $$SLHED/glcorearb.h \
@@ -144,7 +145,8 @@ HEADERS += $$SLHED/gl3w.h \
     $$SLHED/slhemesh.h \
     $$SLHED/attributeview.h \
     $$SLHED/plugincontroller.h \
-    $$PLUGINS/PerVertexInterface.h
+    $$PLUGINS/PerVertexInterface.h \
+    $$SLHED/line.h
 
 FORMS += $$SLFOR/MainWindow.ui \
     $$SLFOR/ChooseShaderDialog.ui \
